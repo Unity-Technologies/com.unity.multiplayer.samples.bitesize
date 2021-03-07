@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.everyplay.Everyplay.view.EveryplayHorizontalScrollView
+        android:id="@+id/endscreenScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="#e6000000"
+        android:fillViewport="false"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/endScreenScrollViewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:id="@+id/endscreenInstallButton"
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/everyplay_video_endscreen_install_button"
+                >
+
+                <com.everyplay.Everyplay.view.EveryplayImageView
+                    android:id="@+id/endscreenInstallButtonImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/everyplay_splashscreen_logo"
+                    app:borderRadius="12" />
+
+                <TextView
+                    android:id="@+id/endscreenInstallButtonText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/endscreenInstallButtonImage"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/everyplay_install_game_text"
+                    android:textAppearance="@style/ActionListButtonText" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/endscreenVideoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/everyplay_video_endscreen_video" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.everyplay.Everyplay.view.EveryplayHorizontalScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:baselineAligned="true" >
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            layout="@layout/everyplay_video_control_buttons" />
+
+    </RelativeLayout>
+
+</LinearLayout>

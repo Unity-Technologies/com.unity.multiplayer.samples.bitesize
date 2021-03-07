@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/everyplay_editor_processing_bg"
+    android:padding="10dp">
+    
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/everyplay_editor_processing_text"
+            android:layout_centerVertical="true"
+            android:id="@+id/editorProcessingText" />
+
+		<ProgressBar
+		    android:id="@+id/editorProcessingProgressBar"
+		    style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
+		    android:layout_width="35dp"
+		    android:layout_height="35dp"
+		    android:indeterminate="true"
+		    android:minHeight="35dp"
+		    android:minWidth="35dp"
+		    android:layout_centerVertical="true"
+		    android:layout_toRightOf="@id/editorProcessingText"
+		    android:layout_marginLeft="5dp" />
+		
+</RelativeLayout>

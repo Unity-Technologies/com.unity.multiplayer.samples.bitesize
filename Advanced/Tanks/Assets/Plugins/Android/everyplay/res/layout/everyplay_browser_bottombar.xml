@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/everyplay_browser_bottombar_bg" >
+
+    <ImageButton
+        android:id="@+id/everyplayBrowserButtonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/everyplay_browser_button_back"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:id="@+id/everyplayBrowserButtonForward"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/everyplay_browser_button_forward"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:id="@+id/everyplayBrowserButtonRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/everyplay_browser_button_refresh"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter" />
+
+    <ImageButton
+        android:id="@+id/everyplayBrowserButtonShare"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/everyplay_browser_button_share"
+        android:layout_weight="0.25"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter" />
+
+</LinearLayout>

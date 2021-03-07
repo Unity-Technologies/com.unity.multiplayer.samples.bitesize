@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/everyplay_theme_splashscreen_background" >
+
+    <LinearLayout
+        android:id="@+id/splashScreenLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="false"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/splashScreenLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="0.3"
+            android:scaleType="fitCenter"
+            android:src="@drawable/everyplay_splashscreen_logo" />
+
+        <ProgressBar
+            android:id="@+id/splashScreenProgressBar"
+            style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:indeterminate="true"
+            android:minHeight="35dp"
+            android:minWidth="35dp" />
+
+        <TextView 
+            android:id="@+id/splashScreenStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="@color/everyplay_theme_splashscreen_statustext_color"
+            android:text="@string/everyplay_loading_text" />
+
+        <Button
+            android:id="@+id/splashScreenRetryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/everyplay_theme_distinct_button_background"
+            android:minHeight="40dp"
+            android:minWidth="100dip"
+            android:textColor="@color/everyplay_theme_splashscreen_retrybutton_text_color"
+            android:textColorHint="@color/everyplay_theme_splashscreen_retrybutton_text_color"
+            android:text="@string/everyplay_retry_text" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/splashScreenCloseButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/everyplay_topbar_closebutton"
+        android:minHeight="20dp"
+        android:minWidth="20dp"
+        android:width="20dp" />
+
+</RelativeLayout>

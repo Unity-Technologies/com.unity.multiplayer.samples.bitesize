@@ -1,0 +1,454 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000013544254940}
+  m_IsPrefabParent: 1
+--- !u!1 &1000013544254940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013345281454}
+  - 114: {fileID: 114000012174340400}
+  - 114: {fileID: 114000012743316094}
+  - 114: {fileID: 114000013780559864}
+  - 114: {fileID: 114000013195495346}
+  m_Layer: 0
+  m_Name: DynamicObjectLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000013345281454
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013544254940}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &114000012174340400
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013544254940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e6497fd26a14fa4bac841c0b753eeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tankDefinitions:
+  - id: balancedTank
+    name: Panzer
+    description: Panzers are widespread in their use. This is owing to their well-balanced
+      handling, speed and armor.
+    speed: 11
+    turnRate: 180
+    hitPoints: 100
+    fireRate: 0.6
+    displayPrefab: {fileID: 1000012306113064, guid: cf66e3e60e9f04b6db0ef7db23e7ad9b,
+      type: 2}
+    cost: 0
+    armourRating: 2
+    speedRating: 2
+    refireRating: 2
+  - id: heavyTank
+    name: Mastodon
+    description: The Mastodon is a super tank - highly armored and large. The drawback
+      is its limited speed.
+    speed: 10
+    turnRate: 180
+    hitPoints: 150
+    fireRate: 0.4
+    displayPrefab: {fileID: 1000012306113064, guid: 0dde95063a9d742a1981ac0549136180,
+      type: 2}
+    cost: 600
+    armourRating: 4
+    speedRating: 1
+    refireRating: 3
+  - id: fastTank
+    name: Armadillo
+    description: Armadillos are light tanks. What they lack in armor they make up
+      for in speed and maneuverability.
+    speed: 14
+    turnRate: 180
+    hitPoints: 60
+    fireRate: 0.7
+    displayPrefab: {fileID: 1000012306113064, guid: f33d845357142402aa5c98be3dad708e,
+      type: 2}
+    cost: 600
+    armourRating: 1
+    speedRating: 4
+    refireRating: 1
+--- !u!114 &114000012743316094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013544254940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f7618d8eefc410e834d25a0bef856e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shellDefinitions:
+  - id: bouncyBomb
+    name: Bouncy Bomb
+    weaponIcon: {fileID: 21300000, guid: 298f504c385824d2ba4d29c3eff0ba45, type: 3}
+    projectilePrefab: {fileID: 5409530, guid: 2280209b0f63f43dba30902b6ca304fe, type: 2}
+    weaponColor: {r: 1, g: 0.47586206, b: 0, a: 1}
+    fireSound:
+    - {fileID: 8300000, guid: 3ea5b9f29e8574979ba4a5e1793da249, type: 3}
+    - {fileID: 8300000, guid: 224408c6575ba412c91daf8a1af36d95, type: 3}
+    - {fileID: 8300000, guid: 7feb90ab6975a4351b67fd1e36fd72cd, type: 3}
+  - id: clusterBomb
+    name: Clusterbomb
+    weaponIcon: {fileID: 21300000, guid: 94721507521fa4cd9ae0590cd6120f6b, type: 3}
+    projectilePrefab: {fileID: 5409530, guid: a68fa89934d324aab86ce32e04c05cab, type: 2}
+    weaponColor: {r: 0, g: 1, b: 0.3295455, a: 1}
+    fireSound:
+    - {fileID: 8300000, guid: d318d9f30371d499dae3bbafb7c27a6a, type: 3}
+    - {fileID: 8300000, guid: 6d28dfc5b972a4a108c3d3b57b5ac4c5, type: 3}
+    - {fileID: 8300000, guid: 5fcb734a3fcde4cb89290191c5bc50cc, type: 3}
+--- !u!114 &114000013195495346
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013544254940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5796cf56d32e40c4a52643a3f6b8eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectsGroups:
+  - group: 0
+    smallExplosion: {fileID: 114000010892159760, guid: 06adbdc837241444b8a953567f4864d9,
+      type: 2}
+    smallExplosionSounds:
+    - {fileID: 8300000, guid: 29f57f011827f47c8b2ce21da67d38cb, type: 3}
+    - {fileID: 8300000, guid: 9459ebd7cb43749789829ade6ac441ce, type: 3}
+    - {fileID: 8300000, guid: 8cd7cd7b3d9674f318c8d81fcca500a0, type: 3}
+    - {fileID: 8300000, guid: ea85343dfec824ca79a95d72c4214772, type: 3}
+    - {fileID: 8300000, guid: 83bab24e3ba3d48e08fdc34fb82e2c9c, type: 3}
+    - {fileID: 8300000, guid: f780740f949ec4527b05ff5435251daf, type: 3}
+    - {fileID: 8300000, guid: 75d1ef9fde51b4eefa31b60cfc1b9c29, type: 3}
+    - {fileID: 8300000, guid: 3183d4bfae5894d37a9d07eeeacd9b08, type: 3}
+    largeExplosion: {fileID: 114000013783756612, guid: aaaa140ff709b9c4b9043f42666f59ee,
+      type: 2}
+    largeExplosionSounds:
+    - {fileID: 8300000, guid: 9fd00471544f948fb83cd9d64da8506a, type: 3}
+    - {fileID: 8300000, guid: 63c6ac042a04941e8a0f55faa29ed8e5, type: 3}
+    - {fileID: 8300000, guid: 5dffd2443651148b88234eb80946f084, type: 3}
+    - {fileID: 8300000, guid: 0f5845f7091f5410589fde932e047d34, type: 3}
+    extraLargeExplosion: {fileID: 114000010879945296, guid: 1d1beed5971b8465e8adbf1166440cc8,
+      type: 2}
+    extraLargeExplosionSounds:
+    - {fileID: 8300000, guid: 9fd00471544f948fb83cd9d64da8506a, type: 3}
+    - {fileID: 8300000, guid: 63c6ac042a04941e8a0f55faa29ed8e5, type: 3}
+    - {fileID: 8300000, guid: 5dffd2443651148b88234eb80946f084, type: 3}
+    - {fileID: 8300000, guid: 0f5845f7091f5410589fde932e047d34, type: 3}
+    tankExplosion: {fileID: 114000011781518004, guid: e69d2e2ec7eb449d297f34d0e673c788,
+      type: 2}
+    tankExplosionSounds:
+    - {fileID: 8300000, guid: 3632122dae52b459b84cdb126a3e435b, type: 3}
+    - {fileID: 8300000, guid: fa681c83f8e774da0b2957014ff4efb1, type: 3}
+    - {fileID: 8300000, guid: c2db1fb55527a470e81f79d74daaaa5b, type: 3}
+    - {fileID: 8300000, guid: 2cee6658b2cfd4132b761ce55e9e1b12, type: 3}
+    - {fileID: 8300000, guid: d9e50df83934040c28730ee84f260da2, type: 3}
+    - {fileID: 8300000, guid: 4e85ec0bf09f448c58b6ad93fe90b57d, type: 3}
+    - {fileID: 8300000, guid: a18234cffe30b4768870c35ae43bcb60, type: 3}
+    turretExplosion: {fileID: 114000012400991418, guid: 0afd53532931e4ceabe8f58c23d5a6e6,
+      type: 2}
+    turretExplosionSounds:
+    - {fileID: 8300000, guid: 3632122dae52b459b84cdb126a3e435b, type: 3}
+    - {fileID: 8300000, guid: 4267c3208306b475da41d8321c2d8a95, type: 3}
+    - {fileID: 8300000, guid: 8fdc51a8b4dd84434a11e713769909e6, type: 3}
+    - {fileID: 8300000, guid: a2e47f0b8673e49d18d80db94d755df9, type: 3}
+    - {fileID: 8300000, guid: 0c6a6d3b9623a49019d084d9d2455241, type: 3}
+    bouncyBombExplosionSounds:
+    - {fileID: 8300000, guid: a3e9809032fbb46f8b9c7ff7632f1cad, type: 3}
+    - {fileID: 8300000, guid: 94633cc538eac4d778b8965afc83014c, type: 3}
+    - {fileID: 8300000, guid: 5b18b93eed746489cb53e7503c8295e0, type: 3}
+    - {fileID: 8300000, guid: 4368edff9cd484f2b9dda3aaea20bee1, type: 3}
+    firingExplosion: {fileID: 114000011743276422, guid: 152fb7cde1a674327b5b93fb3b1e2d9b,
+      type: 2}
+    tankTrackParticles: {fileID: 1000012815749972, guid: 395eb0451cc1648659279876a0f1d06c,
+      type: 2}
+  - group: 1
+    smallExplosion: {fileID: 114000010892159760, guid: b2c180dcb18554c45a59283554443ffe,
+      type: 2}
+    smallExplosionSounds:
+    - {fileID: 8300000, guid: 29f57f011827f47c8b2ce21da67d38cb, type: 3}
+    - {fileID: 8300000, guid: 9459ebd7cb43749789829ade6ac441ce, type: 3}
+    - {fileID: 8300000, guid: 8cd7cd7b3d9674f318c8d81fcca500a0, type: 3}
+    - {fileID: 8300000, guid: ea85343dfec824ca79a95d72c4214772, type: 3}
+    - {fileID: 8300000, guid: 83bab24e3ba3d48e08fdc34fb82e2c9c, type: 3}
+    - {fileID: 8300000, guid: f780740f949ec4527b05ff5435251daf, type: 3}
+    - {fileID: 8300000, guid: 75d1ef9fde51b4eefa31b60cfc1b9c29, type: 3}
+    - {fileID: 8300000, guid: 3183d4bfae5894d37a9d07eeeacd9b08, type: 3}
+    largeExplosion: {fileID: 114000013783756612, guid: 77ff0295dcc6d4bd487a5c270caa4477,
+      type: 2}
+    largeExplosionSounds:
+    - {fileID: 8300000, guid: 9fd00471544f948fb83cd9d64da8506a, type: 3}
+    - {fileID: 8300000, guid: 63c6ac042a04941e8a0f55faa29ed8e5, type: 3}
+    - {fileID: 8300000, guid: 5dffd2443651148b88234eb80946f084, type: 3}
+    - {fileID: 8300000, guid: 0f5845f7091f5410589fde932e047d34, type: 3}
+    extraLargeExplosion: {fileID: 114000010879945296, guid: 9f041356011cb49b0a5db568b124ad98,
+      type: 2}
+    extraLargeExplosionSounds:
+    - {fileID: 8300000, guid: 9fd00471544f948fb83cd9d64da8506a, type: 3}
+    - {fileID: 8300000, guid: 63c6ac042a04941e8a0f55faa29ed8e5, type: 3}
+    - {fileID: 8300000, guid: 5dffd2443651148b88234eb80946f084, type: 3}
+    - {fileID: 8300000, guid: 0f5845f7091f5410589fde932e047d34, type: 3}
+    tankExplosion: {fileID: 114000012132510454, guid: 4090c45278e9f4482b3860ff7fd7756f,
+      type: 2}
+    tankExplosionSounds:
+    - {fileID: 8300000, guid: 3632122dae52b459b84cdb126a3e435b, type: 3}
+    - {fileID: 8300000, guid: fa681c83f8e774da0b2957014ff4efb1, type: 3}
+    - {fileID: 8300000, guid: c2db1fb55527a470e81f79d74daaaa5b, type: 3}
+    - {fileID: 8300000, guid: 2cee6658b2cfd4132b761ce55e9e1b12, type: 3}
+    - {fileID: 8300000, guid: d9e50df83934040c28730ee84f260da2, type: 3}
+    - {fileID: 8300000, guid: 4e85ec0bf09f448c58b6ad93fe90b57d, type: 3}
+    - {fileID: 8300000, guid: a18234cffe30b4768870c35ae43bcb60, type: 3}
+    turretExplosion: {fileID: 114000012400991418, guid: d9efde10a973d4aa38b3d0a54c77581d,
+      type: 2}
+    turretExplosionSounds:
+    - {fileID: 8300000, guid: 3632122dae52b459b84cdb126a3e435b, type: 3}
+    - {fileID: 8300000, guid: 4267c3208306b475da41d8321c2d8a95, type: 3}
+    - {fileID: 8300000, guid: 8fdc51a8b4dd84434a11e713769909e6, type: 3}
+    - {fileID: 8300000, guid: a2e47f0b8673e49d18d80db94d755df9, type: 3}
+    - {fileID: 8300000, guid: 0c6a6d3b9623a49019d084d9d2455241, type: 3}
+    bouncyBombExplosionSounds:
+    - {fileID: 8300000, guid: a3e9809032fbb46f8b9c7ff7632f1cad, type: 3}
+    - {fileID: 8300000, guid: 94633cc538eac4d778b8965afc83014c, type: 3}
+    - {fileID: 8300000, guid: 5b18b93eed746489cb53e7503c8295e0, type: 3}
+    - {fileID: 8300000, guid: 4368edff9cd484f2b9dda3aaea20bee1, type: 3}
+    firingExplosion: {fileID: 114000011743276422, guid: 152fb7cde1a674327b5b93fb3b1e2d9b,
+      type: 2}
+    tankTrackParticles: {fileID: 1000010005846732, guid: 3779aedc7a5554da3beecbfd7cbe6ac2,
+      type: 2}
+--- !u!114 &114000013780559864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013544254940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 279a76393231b4f2ab172e5438515744, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TankDecorations:
+  - id: none
+    name: NONE
+    decorationPrefab: {fileID: 0}
+    preview: {fileID: 0}
+    availableMaterials: []
+    selectionWeighting: 0
+    crateDecal: {fileID: 0}
+  - id: balloons
+    name: Balloons
+    decorationPrefab: {fileID: 114000010063660626, guid: 742103ba03e9e4c50a034411cb5cb399,
+      type: 2}
+    preview: {fileID: 21300000, guid: 8a59aa35e89884a8db727c9858fca1de, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 0d8cfb117bd294125b933ecae730a751, type: 2}
+    - {fileID: 2100000, guid: f556ebb346fb9436a91281110b74236f, type: 2}
+    - {fileID: 2100000, guid: 483fb614004e04df1ae4a852f2c333a4, type: 2}
+    - {fileID: 2100000, guid: 97cd4a4872dd040869fc3b1ab6a86cae, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 3ea3223a72889472aaff0c0266601314, type: 3}
+  - id: helmet
+    name: Helmet
+    decorationPrefab: {fileID: 114000010684511546, guid: 74e8760b93fe34c4a9e4aa779cf0122d,
+      type: 2}
+    preview: {fileID: 21300000, guid: b041c349ea64f4d9d871289d00c0dc1c, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 0d8cfb117bd294125b933ecae730a751, type: 2}
+    - {fileID: 2100000, guid: f556ebb346fb9436a91281110b74236f, type: 2}
+    - {fileID: 2100000, guid: 483fb614004e04df1ae4a852f2c333a4, type: 2}
+    - {fileID: 2100000, guid: 2d9e9674ccc0948af9bfdb2c10a21e4f, type: 2}
+    - {fileID: 2100000, guid: 91b30d061c34a4c53ae4298a823ab827, type: 2}
+    - {fileID: 2100000, guid: 97cd4a4872dd040869fc3b1ab6a86cae, type: 2}
+    - {fileID: 2100000, guid: f90eb74d213554c1ea12f82c051deace, type: 2}
+    - {fileID: 2100000, guid: 4c71aedfe848a4cdf942f8e37efc12b5, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: d0e695c150a39491ea6933e7f874a48a, type: 3}
+  - id: goggles
+    name: Goggles
+    decorationPrefab: {fileID: 114000013380141016, guid: cac2922218ab84ed4848960abfc27be8,
+      type: 2}
+    preview: {fileID: 21300000, guid: 74389791f3b9545fcb3a6ae29e3f853d, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    - {fileID: 2100000, guid: 4e0b91d1eb7614c08875e6a7a6713e81, type: 2}
+    - {fileID: 2100000, guid: 95e45045e06df49a6a47c962f7f60120, type: 2}
+    - {fileID: 2100000, guid: 544677f524f1649189476a9891edc0e3, type: 2}
+    - {fileID: 2100000, guid: deb76236bb2254aaf8a831353fb34c6a, type: 2}
+    - {fileID: 2100000, guid: b52ddc5bdee1e4e279fce70b3f95a8c9, type: 2}
+    - {fileID: 2100000, guid: 1e6aa18dded084647a91c926f7e6228b, type: 2}
+    - {fileID: 2100000, guid: 862c87cd6288d4067b5c3ed7c5270919, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 13fba877cfdf64ec681f4f7cdbcf1983, type: 3}
+  - id: moustache
+    name: Moustache
+    decorationPrefab: {fileID: 114000013979610652, guid: 2b4df7134bb51416883f8cb43afc9fb0,
+      type: 2}
+    preview: {fileID: 21300000, guid: 528cb202238ff467cb179c07d5c47c6b, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    - {fileID: 2100000, guid: 4b4b25f923792ce4ab819907a4629058, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: b9646f4c1b4d745f996ac9ad3578635d, type: 3}
+  - id: vikinghat
+    name: Viking Hat
+    decorationPrefab: {fileID: 114000010684511546, guid: ff086cb3b6738414db63243e1a8b3dfe,
+      type: 2}
+    preview: {fileID: 21300000, guid: 44f697299c8b443149403d0aca0502f4, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    - {fileID: 2100000, guid: 4e0b91d1eb7614c08875e6a7a6713e81, type: 2}
+    - {fileID: 2100000, guid: 95e45045e06df49a6a47c962f7f60120, type: 2}
+    - {fileID: 2100000, guid: 544677f524f1649189476a9891edc0e3, type: 2}
+    - {fileID: 2100000, guid: deb76236bb2254aaf8a831353fb34c6a, type: 2}
+    - {fileID: 2100000, guid: b52ddc5bdee1e4e279fce70b3f95a8c9, type: 2}
+    - {fileID: 2100000, guid: 1e6aa18dded084647a91c926f7e6228b, type: 2}
+    - {fileID: 2100000, guid: 862c87cd6288d4067b5c3ed7c5270919, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 2fccc235c4ca94b81b1cd9ba0c928b87, type: 3}
+  - id: carrot
+    name: Carrot Onna Stick
+    decorationPrefab: {fileID: 114000012821141166, guid: 41a15de6ac65545b2af1e53b2f3b4bdc,
+      type: 2}
+    preview: {fileID: 21300000, guid: 3450bb592da2d40838aa70bfe3548e88, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    - {fileID: 2100000, guid: 4e0b91d1eb7614c08875e6a7a6713e81, type: 2}
+    - {fileID: 2100000, guid: 95e45045e06df49a6a47c962f7f60120, type: 2}
+    - {fileID: 2100000, guid: 544677f524f1649189476a9891edc0e3, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 31ef96c55603b418dad0f8678c47f0d9, type: 3}
+  - id: animalballoons
+    name: Animal Balloon
+    decorationPrefab: {fileID: 114000013340712212, guid: fb4a5bba7440e4b00b34b14f7b99a365,
+      type: 2}
+    preview: {fileID: 21300000, guid: 7ee5486e6268149d1b8cb7877044b126, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    - {fileID: 2100000, guid: 4e0b91d1eb7614c08875e6a7a6713e81, type: 2}
+    - {fileID: 2100000, guid: 95e45045e06df49a6a47c962f7f60120, type: 2}
+    - {fileID: 2100000, guid: 544677f524f1649189476a9891edc0e3, type: 2}
+    - {fileID: 2100000, guid: deb76236bb2254aaf8a831353fb34c6a, type: 2}
+    - {fileID: 2100000, guid: b52ddc5bdee1e4e279fce70b3f95a8c9, type: 2}
+    - {fileID: 2100000, guid: 1e6aa18dded084647a91c926f7e6228b, type: 2}
+    - {fileID: 2100000, guid: 862c87cd6288d4067b5c3ed7c5270919, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 1e6dc5cf066d44aafb3f7ed6e2f6690f, type: 3}
+  - id: starballoons
+    name: Star Balloons
+    decorationPrefab: {fileID: 114000010848888050, guid: 66f0bdf4c10d74208956a27b4f88e2b0,
+      type: 2}
+    preview: {fileID: 21300000, guid: 05649756568114c98a4cc2ee5cbb3aee, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 862c87cd6288d4067b5c3ed7c5270919, type: 2}
+    - {fileID: 2100000, guid: c0d660c0333c4224098a02ecd84d6232, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: aebf2c1a00a384bada3462a76dc6f6c9, type: 3}
+  - id: heartballoons
+    name: Heart Balloons
+    decorationPrefab: {fileID: 114000013470709946, guid: bab9b51832386456e98b3522dcf9d162,
+      type: 2}
+    preview: {fileID: 21300000, guid: 3d2826a5104884a9585cab9e85b598e1, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 95e45045e06df49a6a47c962f7f60120, type: 2}
+    - {fileID: 2100000, guid: 1e6aa18dded084647a91c926f7e6228b, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 639094a0ebb1c4ee5979eb4c4a9c3249, type: 3}
+  - id: spoiler
+    name: Spoiler
+    decorationPrefab: {fileID: 114000010289550460, guid: 75c79442c650f43bda7c8e307970af3e,
+      type: 2}
+    preview: {fileID: 21300000, guid: 7a4ef1e707e384931b907b6c545adb81, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 12c120f2400576c4f97a98bcca5529bc, type: 2}
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 10bbe6b56a2214733bd8e91a64c293e8, type: 3}
+  - id: tusks
+    name: Tusks
+    decorationPrefab: {fileID: 114000010689277146, guid: 2f74c2cacf7424106a5e1528c8e9800e,
+      type: 2}
+    preview: {fileID: 21300000, guid: 1d462f751e721444ebca36068b66bba6, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 9bc8a8b2e57834d77ae2e43a92bb8ae3, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: b9f18850b6bfc4739a4a5b823074f278, type: 3}
+  - id: propcap
+    name: Propeller Cap
+    decorationPrefab: {fileID: 114000013974252476, guid: db5d3c63bbd5d4997bcf12ba3da35657,
+      type: 2}
+    preview: {fileID: 21300000, guid: fc02a8d3a3eee4ad2ae20f9ca2c10c43, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 544677f524f1649189476a9891edc0e3, type: 2}
+    - {fileID: 2100000, guid: 95e45045e06df49a6a47c962f7f60120, type: 2}
+    - {fileID: 2100000, guid: 4e0b91d1eb7614c08875e6a7a6713e81, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: dcee1aeae134b436aa2721b0575b182e, type: 3}
+  - id: cigar
+    name: Cigar
+    decorationPrefab: {fileID: 114000013155155676, guid: b45f87f70fb8d4f45819685e50345855,
+      type: 2}
+    preview: {fileID: 21300000, guid: 3c7b23e3b6edb4eaeb352601015e00d2, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 4b4b25f923792ce4ab819907a4629058, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 8e97de3c082104179b81fb8e29cd84ee, type: 3}
+  - id: unicornhorn
+    name: Unicorn Horn
+    decorationPrefab: {fileID: 114000012042449936, guid: 63a59ccfc11af467b98e13ac5d64bc62,
+      type: 2}
+    preview: {fileID: 21300000, guid: b67db6ba00be24c399907dbdd1fa09fd, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: c0d660c0333c4224098a02ecd84d6232, type: 2}
+    - {fileID: 2100000, guid: 483fb614004e04df1ae4a852f2c333a4, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: ebbdbddc7c3514d8b83e00f3c3fe5c62, type: 3}
+  - id: mohawk
+    name: Mohawk
+    decorationPrefab: {fileID: 114000012053934642, guid: 207399dd4ee774f31a1535ca369ba71c,
+      type: 2}
+    preview: {fileID: 21300000, guid: 84d603330db8f4dc68dd0533da5b7f05, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 65b34bd0b696fd64c809daa8ff1aac63, type: 2}
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    - {fileID: 2100000, guid: 1e6aa18dded084647a91c926f7e6228b, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 3b9fed0641ef344ef93930fc8e49afde, type: 3}
+  - id: eyebrows
+    name: Eyebrows
+    decorationPrefab: {fileID: 114000011502127018, guid: 8b9922f9e28c74d55b18975461393e40,
+      type: 2}
+    preview: {fileID: 21300000, guid: 784d7c51ec22241adb58e91b95855c92, type: 3}
+    availableMaterials:
+    - {fileID: 2100000, guid: 29bf3588b605a494489617e5c6dbb964, type: 2}
+    - {fileID: 2100000, guid: 2a6010a066ebd4f45a80ca0b4367a5d5, type: 2}
+    selectionWeighting: 10
+    crateDecal: {fileID: 2800000, guid: 86f7857389fca4250a3a2c6a6fc6644d, type: 3}

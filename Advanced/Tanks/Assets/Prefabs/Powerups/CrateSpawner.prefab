@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000011596543348}
+  m_IsPrefabParent: 1
+--- !u!1 &1000011596543348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000010265231008}
+  - 114: {fileID: 114000013415382592}
+  - 114: {fileID: 114000013508018516}
+  - 114: {fileID: 114000010679757504}
+  m_Layer: 0
+  m_Name: CrateSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000010265231008
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011596543348}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -33.04374, y: 0.6, z: 16.875805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &114000010679757504
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011596543348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0
+  m_SyncRotationAxis: 0
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114000013415382592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011596543348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 197
+    i1: 108
+    i2: 155
+    i3: 156
+    i4: 44
+    i5: 165
+    i6: 212
+    i7: 85
+    i8: 73
+    i9: 154
+    i10: 114
+    i11: 255
+    i12: 51
+    i13: 181
+    i14: 113
+    i15: 143
+  m_ServerOnly: 1
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114000013508018516
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011596543348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f366a4390d9b4e458402999e2ac97c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSpawnerActive: 0
+  m_SpawnExplosion: {fileID: 11400000, guid: f6a27c5d2a0bb44d3a69ff8ea3dbce8d, type: 2}
+  m_DropRadius: 40
+  m_DropInterval: 30
+  m_SpherecastRadius: 3
+  m_HotdropEffectPrefab: {fileID: 1000011249032958, guid: 279da410e4ecf46d6a7cad2df909e5a1,
+    type: 2}
+  m_PowerupsToSpawn:
+  - name: ShieldPickup
+    powerupPrefab: {fileID: 1000012400126340, guid: b9a88f5cda7864011920807c4040c7a7,
+      type: 2}
+    dropWeighting: 10
+  - name: NitroPickup
+    powerupPrefab: {fileID: 1000012400126340, guid: e36cff7cbcd3342eba0e73715f18a062,
+      type: 2}
+    dropWeighting: 10
+  - name: BouncybombPickup
+    powerupPrefab: {fileID: 1000010778064080, guid: 1c857e7e41f1d477db30e6f37488fde7,
+      type: 2}
+    dropWeighting: 10
+  - name: ClusterbombPickup
+    powerupPrefab: {fileID: 1000010778064080, guid: 38e7c1fd080f34844995570ff5e8603f,
+      type: 2}
+    dropWeighting: 10
+  - name: CurrencyPickup
+    powerupPrefab: {fileID: 1000012400126340, guid: 64150a8d3fa824c079d7486993a7081d,
+      type: 2}
+    dropWeighting: 2

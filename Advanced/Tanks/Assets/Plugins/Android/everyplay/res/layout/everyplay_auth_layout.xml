@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <include 
+        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        layout="@layout/everyplay_social_topbar"
+        android:id="@+id/everyplayAuthTopBar"
+        android:layout_alignParentTop="true" />
+
+	<com.everyplay.Everyplay.view.EveryplayWebView
+        android:id="@+id/everyplayAuthWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/everyplayAuthTopBar" />
+
+	<ProgressBar
+	    android:id="@+id/everyplayAuthProgressBar"
+	    style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
+	  	android:layout_width="56dp"
+	  	android:layout_height="56dp"
+	  	android:indeterminate="true"
+	  	android:minHeight="56dp"
+	  	android:minWidth="56dp"
+	  	android:layout_centerInParent="true" />
+
+</RelativeLayout>

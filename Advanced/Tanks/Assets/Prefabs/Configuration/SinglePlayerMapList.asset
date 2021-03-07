@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd12b7ff00f1c4ad49cb2078fb3447e4, type: 3}
+  m_Name: SinglePlayerMapList
+  m_EditorClassIdentifier: 
+  m_Details:
+  - m_Name: Elimination 101
+    m_IsLocked: 0
+    m_Description: Destroy all the turrets
+    m_SceneName: Mission1_MoveAndShoot
+    m_Id: mission1
+    m_Image: {fileID: 21300000, guid: 3d97c877a8212422f9bf37b4774597fb, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 0
+    m_LevelMusic: {fileID: 8300000, guid: 325873f9fcfd643ba908c47c5f6acf9f, type: 3}
+    m_MedalCountRequired: 0
+    m_RulesProcessor: {fileID: 114000011548316340, guid: cc917c16cba9243bb93ae3c21bb692cf,
+      type: 2}
+  - m_Name: Hunt or Fall Prey
+    m_IsLocked: 0
+    m_Description: Chase the enemy while avoiding fire
+    m_SceneName: Mission2_Chase
+    m_Id: mission2
+    m_Image: {fileID: 21300000, guid: a1cb15d41e1dc45e3907f785e6db231f, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 1
+    m_LevelMusic: {fileID: 8300000, guid: c3ff15dd5eae64554bd29b3ddec560e0, type: 3}
+    m_MedalCountRequired: 1
+    m_RulesProcessor: {fileID: 114000011548316340, guid: b174cb25e96c74efe9a65d3e125ae053,
+      type: 2}
+  - m_Name: Trailblazer
+    m_IsLocked: 0
+    m_Description: Clear mines and turrets to protect the VIP
+    m_SceneName: Mission3_Escort
+    m_Id: mission3
+    m_Image: {fileID: 21300000, guid: f991b46f74e804137aa634a6a59d32e7, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 1
+    m_LevelMusic: {fileID: 8300000, guid: c3ff15dd5eae64554bd29b3ddec560e0, type: 3}
+    m_MedalCountRequired: 1
+    m_RulesProcessor: {fileID: 114000011548316340, guid: 92a63a8108a6443adbe3f53b17b6a1f7,
+      type: 2}
+  - m_Name: Communication Breakdown
+    m_IsLocked: 0
+    m_Description: Reach the Radar Tower
+    m_SceneName: Mission4_GetToLocation
+    m_Id: mission4
+    m_Image: {fileID: 21300000, guid: e475d39fef90f4320949f9bb728359e5, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 0
+    m_LevelMusic: {fileID: 8300000, guid: 325873f9fcfd643ba908c47c5f6acf9f, type: 3}
+    m_MedalCountRequired: 5
+    m_RulesProcessor: {fileID: 114000013059421368, guid: c1dc1ad8f30ae4c78896981d5fed7492,
+      type: 2}
+  - m_Name: Hunter-Seeker
+    m_IsLocked: 0
+    m_Description: Eliminate the VIP, but be wary of his escort
+    m_SceneName: Mission5_VIPTakedown
+    m_Id: mission5
+    m_Image: {fileID: 21300000, guid: 7b7d9db1e813548c786c72896b517944, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 0
+    m_LevelMusic: {fileID: 8300000, guid: b3e11f2192ef5436aa9f2a6d4b782a4a, type: 3}
+    m_MedalCountRequired: 8
+    m_RulesProcessor: {fileID: 114000011548316340, guid: 67e18fa03be5c41d4b50a3eb418cf446,
+      type: 2}
+  - m_Name: Courier Duty
+    m_IsLocked: 0
+    m_Description: Find the 5 Drop Pods scattered across the snow
+    m_SceneName: Mission6_Collect
+    m_Id: mission6
+    m_Image: {fileID: 21300000, guid: 227c16ce7eecb4ca09440a7ee3f95ad6, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 1
+    m_LevelMusic: {fileID: 8300000, guid: c3ff15dd5eae64554bd29b3ddec560e0, type: 3}
+    m_MedalCountRequired: 9
+    m_RulesProcessor: {fileID: 114000013059421368, guid: 820204b9731d2497db474a01dcdbbc32,
+      type: 2}
+  - m_Name: Dead End
+    m_IsLocked: 0
+    m_Description: Find the helipad and escape to safety
+    m_SceneName: Mission7_GetToLocationAdvanced
+    m_Id: mission7
+    m_Image: {fileID: 21300000, guid: ff5207cac64e244e99ab3c44c73f0761, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 0
+    m_LevelMusic: {fileID: 8300000, guid: 325873f9fcfd643ba908c47c5f6acf9f, type: 3}
+    m_MedalCountRequired: 10
+    m_RulesProcessor: {fileID: 114000013059421368, guid: b1c1d30f42b6d498ab6a223c62cafe64,
+      type: 2}
+  - m_Name: Collateral Damage
+    m_IsLocked: 0
+    m_Description: Destroy the enemy at any cost
+    m_SceneName: Mission8_EscortAndChase
+    m_Id: mission8
+    m_Image: {fileID: 21300000, guid: 4de62019888be49b69eb7edc6c499354, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 1
+    m_LevelMusic: {fileID: 8300000, guid: c3ff15dd5eae64554bd29b3ddec560e0, type: 3}
+    m_MedalCountRequired: 12
+    m_RulesProcessor: {fileID: 114000011548316340, guid: 4ff725f9d9e0c46f7919a64a8e3bdf01,
+      type: 2}
+  - m_Name: Last Stand
+    m_IsLocked: 0
+    m_Description: Defeat the three incoming tanks
+    m_SceneName: Mission9_DefendTheBase
+    m_Id: mission9
+    m_Image: {fileID: 21300000, guid: 37dcd45e7ca7c481694c29a279a3aaae, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 0
+    m_LevelMusic: {fileID: 8300000, guid: 325873f9fcfd643ba908c47c5f6acf9f, type: 3}
+    m_MedalCountRequired: 15
+    m_RulesProcessor: {fileID: 114000011548316340, guid: 36c95d9e3731a4d649eaff7893d476dd,
+      type: 2}
+  - m_Name: Tanks for Playing!!!
+    m_IsLocked: 0
+    m_Description: Survive
+    m_SceneName: Mission10_Survive
+    m_Id: mission10
+    m_Image: {fileID: 21300000, guid: 3436a2b67284840cb807a01bd340464e, type: 3}
+    m_UnlockCost: 0
+    m_EffectsGroup: 0
+    m_LevelMusic: {fileID: 8300000, guid: b3e11f2192ef5436aa9f2a6d4b782a4a, type: 3}
+    m_MedalCountRequired: 20
+    m_RulesProcessor: {fileID: 114000011548316340, guid: e0dbcfc31ee114ee7bfe1f03705d1bfa,
+      type: 2}

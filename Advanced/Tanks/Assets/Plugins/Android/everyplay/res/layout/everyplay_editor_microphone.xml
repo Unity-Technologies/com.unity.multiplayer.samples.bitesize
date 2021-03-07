@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <RelativeLayout
+        android:id="@+id/everyplayMicrophoneContainer"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:background="@drawable/everyplay_video_microphone_bg"
+        >
+    <com.everyplay.Everyplay.view.EveryplayImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/everyplay_video_audio_icon"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/everyplayFaceCamAudioPlayerError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/everyplay_video_facecam_bg"
+        android:padding="1dp"
+        android:visibility="gone"
+        >
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="@string/everyplay_editor_loading_facecam_failed"
+        android:layout_centerInParent="true" android:padding="10dp"/>
+        </RelativeLayout>
+</RelativeLayout>

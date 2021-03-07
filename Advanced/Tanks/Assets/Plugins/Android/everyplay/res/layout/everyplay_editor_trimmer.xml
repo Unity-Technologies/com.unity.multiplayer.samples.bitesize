@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/editorTrimmerContainer"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:layout_gravity="bottom"
+    android:background="@drawable/everyplay_video_bg_seekbar"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/editorTimeElapsedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="@string/everyplay_zero_time_text" />
+
+    <com.everyplay.Everyplay.view.videoplayer.EveryplayRangeSlider
+        android:id="@+id/editorRangeSlider"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="0.9"
+        app:backgroundTrackDrawable="@drawable/everyplay_editor_trimmer_background_track"
+        app:currentTimeTrackDrawable="@drawable/everyplay_editor_trimmer_current_time_track"
+        app:endPointButtonDrawable="@drawable/everyplay_editor_trimmer_handle"
+        app:endPointButtonDrawablePressed="@drawable/everyplay_editor_trimmer_handle_pressed"
+        app:endPointButtonWidth="28dp"
+        app:startPointButtonDrawable="@drawable/everyplay_editor_trimmer_handle"
+        app:startPointButtonDrawablePressed="@drawable/everyplay_editor_trimmer_handle_pressed"
+        app:startPointButtonWidth="28dp"
+        app:trackerButtonDrawable="@drawable/everyplay_editor_trimmer_tracker_button"
+        app:trackerButtonDrawablePressed="@drawable/everyplay_editor_trimmer_tracker_button_pressed"
+        app:trackerButtonWidth="28dp" />
+ 
+	<TextView
+	    android:id="@+id/editorTimeLeftTextView"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent"
+	    android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:text="@string/everyplay_zero_time_text" />
+        
+	<ImageButton
+        android:id="@+id/editorTrimButton"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/everyplay_editor_button_background"
+        android:padding="0dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/everyplay_editor_icon_trim"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/editorUndoTrimButton"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/everyplay_editor_button_background"
+        android:padding="0dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/everyplay_editor_icon_undo_trim"
+        android:visibility="gone" />
+
+</LinearLayout>
