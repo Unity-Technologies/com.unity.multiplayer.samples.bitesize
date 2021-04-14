@@ -4,7 +4,7 @@
 |:-------:|:-------:|
 |2020.3|0.1.0|
 
-This repository contains a collection of small sample projects and games that showcase different 
+This repository contains a collection of bitesize sample projects and games that showcase different 
 sub-features of [MLAPI](https://github.com/Unity-Technologies/com.unity.multiplayer.mlapi). You can review these samples with [documentation](https://docs-multiplayer-sandbox.unity3d.com/docs/getting-started/about-mlapi) to better understand APIs and features.
 
 ## Who is this for?
@@ -22,7 +22,7 @@ For help, questions, networking advice or discussions about MLAPI and its extens
 
 ## Maintenance
 
-The MLAPI Shared Samples repository will be maintained and updated with the latest released MLAPI version and Unity LTS version. See this readme and the changelog for supported versions.
+The MLAPI Bitesize Samples repository will be maintained and updated with the latest released MLAPI version and Unity LTS version. See this readme and the changelog for supported versions.
 
 ## Contributing
 These samples, projects, and Unity MLAPI are open-source and welcome contributions. See our [contribution guidelines](CONTRIBUTING.md) for details.

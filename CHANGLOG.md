@@ -2,7 +2,7 @@
 
 ## [0.1.0] - 2021-04-07
 
-Initial release of MLAPI Shared Samples repository. Samples support the following versions:
+Initial release of MLAPI Bitesize Samples repository. Samples support the following versions:
 
 | Unity Version | Unity MLAPI Version |
 | -- | -- |
