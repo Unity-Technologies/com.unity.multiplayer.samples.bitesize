@@ -1,4 +1,4 @@
-# MLAPI Shared Samples
+# MLAPI Bitesize Samples
 
 |Unity Version|Unity MLAPI Version|
 |:-------:|:-------:|
