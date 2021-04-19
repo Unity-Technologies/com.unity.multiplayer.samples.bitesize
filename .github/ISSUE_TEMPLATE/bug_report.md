@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. Windows 10]
  - Unity Version: [e.g. 2019.1]
  - MLAPI Version: [e.g. v6.0.1]
- - Bitsize Samples Repository Version/Commit
+ - Bitesize Samples Repository Version/Commit
 
 **Additional context**
 Add any other context about the problem here.
