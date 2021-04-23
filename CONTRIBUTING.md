@@ -4,12 +4,11 @@ Thank you for your interest in contributing to MLAPI Bitesize Samples repository
 
 Here are our guidelines for contributing:
 
-* [Contributing](#contributing)
-  * [<a name="coc"></a> Code of Conduct](#-code-of-conduct)
-  * [<a name="ways"></a> Ways to Contribute](#-ways-to-contribute)
-    * [<a name="issue"></a> Issues and Bugs](#-issues-and-bugs)
-    * [<a name="feature"></a> Feature Requests](#-feature-requests)
-  * [<a name="cla"></a> Contributor License Agreements](#-contributor-license-agreements)
+* [Code of Conduct](#coc)
+* [Ways to Contribute](#ways)
+* [Issues and Bugs](#issue)
+* [Feature Requests](#feature)
+* [Contributor License Agreement](#cla)
 
 ## <a name="coc"></a> Code of Conduct
 
@@ -31,6 +30,6 @@ If you would like to see a certain feature in the samples or implement one yours
 
 If you would like to implement a new feature then please also get in contact with us in the #dev-samples channel of our [Discord](https://discord.gg/buMxnnPvTb).
 
-## <a name="cla"></a> Contributor License Agreements
+## <a name="cla"></a> Contributor License Agreement
 
 When you open a pull request, you will be asked to enter into Unity's License Agreement which is based on The Apache Software Foundation's contribution agreement. We allow both individual contributions and contributions made on behalf of companies. We use an open source tool called CLA assistant. If you have any questions on our CLA, please submit an issue
