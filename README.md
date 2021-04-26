@@ -22,7 +22,7 @@ For help, questions, networking advice or discussions about MLAPI and its extens
 
 ## Maintenance
 
-The MLAPI Bitesize Samples repository will be maintained and updated with the latest released MLAPI version and Unity LTS version. See this readme and the changelog for supported versions.
+The MLAPI Bitesize Samples repository will be maintained and updated with the latest released MLAPI version and Unity LTS version. See this readme and the [changelog](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/blob/main/CHANGELOG.md) for supported versions.
 
 ## Contributing
 These samples, projects, and Unity MLAPI are open-source and welcome contributions. See our [contribution guidelines](CONTRIBUTING.md) for details.
