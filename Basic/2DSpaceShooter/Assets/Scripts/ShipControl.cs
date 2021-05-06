@@ -342,7 +342,7 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
-    void OnCollision2DEnter(Collision2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
         if (NetworkManager.Singleton.IsServer)
         {
