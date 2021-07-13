@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d643b609c6a71c54984c1ad454faa28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alien1Prefab: {fileID: 100000, guid: 43ae6ad1bdadd0747811bb7a00740c2c, type: 3}
-  alien2Prefab: {fileID: 100000, guid: 38a8441efb2d6d245adbf08f08705374, type: 3}
-  alien3Prefab: {fileID: 100000, guid: aa50d36274d0dfc4faff2c69820b3711, type: 3}
-  saucerPrefab: {fileID: 100000, guid: e811e4fb062e31444aaf36dbec5de77c, type: 3}
+  enemy1Prefab: {fileID: 100000, guid: 43ae6ad1bdadd0747811bb7a00740c2c, type: 3}
+  enemy2Prefab: {fileID: 100000, guid: 38a8441efb2d6d245adbf08f08705374, type: 3}
+  enemy3Prefab: {fileID: 100000, guid: aa50d36274d0dfc4faff2c69820b3711, type: 3}
+  superEnemyPrefab: {fileID: 100000, guid: e811e4fb062e31444aaf36dbec5de77c, type: 3}
   shieldPrefab: {fileID: 100000, guid: b990a6e6dcf54b646a7397028fed6045, type: 3}
   gameTimerText: {fileID: 0}
   scoreText: {fileID: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
   m_DelayedStartTime: 5
   m_TickPeriodic:
     m_InternalValue: 0.2
-  m_AlienDirection:
+  m_EnemyMovingDirection:
     m_InternalValue: 0.3
   m_RandomThresholdForSaucerCreation: 0.92
 --- !u!114 &4266113290039088509

@@ -166,10 +166,11 @@ public class PlayerControl : NetworkBehaviour
         if (deltaX != 0)
         {
             var newMovement = new Vector3(deltaX, 0, 0);
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, 
+                transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKey(KeyCode.Space)) ShootServerRPC();
+        if (Input.GetKeyDown(KeyCode.Space)) ShootServerRPC();
     }
 
     [ServerRpc]
@@ -199,15 +200,41 @@ public class PlayerControl : NetworkBehaviour
             m_IsAlive = false;
             m_MoveX.Value = 0;
             m_Lives.Value = 0;
-            InvadersGame.Singleton.SetGameEnd(true);
-            NotifyDeathClientRpc(m_OwnerRPCParams);
+            InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
+            NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
         }
     }
 
     [ClientRpc]
-    public void NotifyDeathClientRpc(ClientRpcParams clientParams)
+    private void NotifyGameOverClientRpc(GameOverReason reason, ClientRpcParams clientParams)
     {
+        NotifyGameOver(reason);
+    }
+
+    /// <summary>
+    /// This should only be called locally, either through NotifyGameOverClientRpc or through the InvadersGame.BroadcastGameOverReason
+    /// </summary>
+    /// <param name="reason"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public void NotifyGameOver(GameOverReason reason)
+    {
+        Assert.IsTrue(IsLocalPlayer);
         m_HasGameStarted = false;
-        InvadersGame.Singleton.DisplayGameOverText("You Are Dead!");
+        switch (reason)
+        {
+            case GameOverReason.None:
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n Unknown reason!");
+                break;
+            case GameOverReason.EnemiesReachedBottom:
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n The enemies have invaded you!");
+                break;
+            case GameOverReason.Death:
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n Your health was depleted!");
+                break;
+            case GameOverReason.Max:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(reason), reason, null);
+        }
     }
 }
