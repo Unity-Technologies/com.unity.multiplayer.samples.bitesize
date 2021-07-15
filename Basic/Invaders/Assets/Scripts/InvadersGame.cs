@@ -352,7 +352,11 @@ public class InvadersGame : NetworkBehaviour
         for (var index = 0; index < enemiesCount; index++)
         {
             var enemy = m_Enemies[index];
-            Assert.IsTrue(enemy);
+            Assert.IsTrue(enemy != null);
+            if (m_Enemies == null)
+            {
+                continue;
+            }
             
             // If at least one of the enemies reached bottom, return early.
             if (enemy.transform.position.y <= k_BottomBoundaryOffset)
@@ -491,7 +495,7 @@ public class InvadersGame : NetworkBehaviour
                 gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
                 Assert.IsTrue(enemyAgent != null);
                 if (m_Enemies.Contains(enemyAgent))
-                    Assert.IsTrue(m_Enemies.Remove(enemyAgent));
+                    m_Enemies.Remove(enemyAgent);
                 break;
             }
             case InvadersObjectType.Shield:
@@ -499,7 +503,7 @@ public class InvadersGame : NetworkBehaviour
                 gameObject.TryGetComponent<Shield>(out var shield);
                 Assert.IsTrue(shield != null);
                 if (m_Shields.Contains(shield))
-                    Assert.IsTrue(m_Shields.Remove(shield));
+                    m_Shields.Remove(shield);
                 break;
             }
             default:
