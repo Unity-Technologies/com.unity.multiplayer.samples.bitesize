@@ -352,7 +352,7 @@ public class InvadersGame : NetworkBehaviour
         for (var index = 0; index < enemiesCount; index++)
         {
             var enemy = m_Enemies[index];
-            Assert.IsTrue(enemy != null);
+            Assert.IsNotNull(enemy);
             if (m_Enemies == null)
             {
                 continue;
