@@ -39,7 +39,7 @@ public class EnemyAgent : NetworkBehaviour
             m_FirstShootTimeAfterSpawn =
                 Time.time + Random.Range(GraceShootingPeriod - 0.1f, GraceShootingPeriod + 0.75f);
 
-            Assert.IsTrue(InvadersGame.Singleton);
+            Assert.IsNotNull(InvadersGame.Singleton);
             InvadersGame.Singleton.RegisterSpawnableObject(InvadersObjectType.Enemy, gameObject);
             InvadersGame.Singleton.isGameOver.OnValueChanged += OnGameOver;
         }
