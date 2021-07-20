@@ -141,11 +141,18 @@ public class PlayerControl : NetworkBehaviour
 
     private void OnLivesChanged(int previousAmount, int currentAmount)
     {
+        // Hide graphics client side upon death
+        if(currentAmount <= 0 && IsClient && TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+            spriteRenderer.enabled = false;
+        
         if (!IsOwner) return;
         Debug.LogFormat("Lives {0} ", currentAmount);
         if (InvadersGame.Singleton != null) InvadersGame.Singleton.SetLives(m_Lives.Value);
 
-        if (m_Lives.Value <= 0) m_IsAlive = false;
+        if (m_Lives.Value <= 0)
+        {
+            m_IsAlive = false;
+        }
     }
 
     private void OnScoreChanged(int previousAmount, int currentAmount)
@@ -154,6 +161,7 @@ public class PlayerControl : NetworkBehaviour
         Debug.LogFormat("Score {0} ", currentAmount);
         if (InvadersGame.Singleton != null) InvadersGame.Singleton.SetScore(m_Score.Value);
     } // ReSharper disable Unity.PerformanceAnalysis
+    
     private void InGameUpdate()
     {
         if (!IsLocalPlayer || !IsOwner || !m_HasGameStarted) return;
@@ -202,6 +210,11 @@ public class PlayerControl : NetworkBehaviour
             m_Lives.Value = 0;
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
             NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
+            
+            // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
+            // may stop the RPC's from reaching on the other side, as there is only one player controlled object
+            if (TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+                spriteRenderer.enabled = false;
         }
     }
 
