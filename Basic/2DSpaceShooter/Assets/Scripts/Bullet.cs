@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using MLAPI;
-using MLAPI.Extensions;
 
 public class Bullet : NetworkBehaviour
 {
@@ -46,27 +45,26 @@ public class Bullet : NetworkBehaviour
     
     void OnCollisionEnter2D(Collision2D other)
     {
+        var otherObject = other.gameObject;
+        
         if (!NetworkManager.Singleton.IsServer || !NetworkObject.IsSpawned)
         {
             return;
         }
-
-        var asteroid = other.gameObject.GetComponent<Asteroid>();
-        if (asteroid != null)
+        
+        if (otherObject.TryGetComponent<Asteroid>(out var asteroid))
         {
             asteroid.Explode();
             DestroyBullet();
+            return;
         }
-
-        var wall = other.gameObject.GetComponent<Wall>();
-        var obstacle = other.gameObject.GetComponent<Obstacle>();
-        if (m_Bounce == false && (wall != null || obstacle != null))
+        
+        if (m_Bounce == false && (otherObject.CompareTag("Wall") || otherObject.CompareTag("Obstacle")))
         {
             DestroyBullet();
         }
-
-        var shipControl = other.gameObject.GetComponent<ShipControl>();
-        if (shipControl != null)
+        
+        if (otherObject.TryGetComponent<ShipControl>(out var shipControl))
         {
             if (shipControl != m_Owner)
             {

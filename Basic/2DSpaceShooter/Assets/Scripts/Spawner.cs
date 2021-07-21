@@ -1,5 +1,4 @@
 ﻿using MLAPI;
-using MLAPI.Extensions;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
