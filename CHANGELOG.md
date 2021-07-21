@@ -1,8 +1,10 @@
 # Change log
 
-## Invaders - 2021-07-20
+## [0.2.0] - 2021-07-21
 
-### New Changes
+### Invaders
+
+#### New Changes
 
 - Game - rename all our alien prefabs to have a more generic name, the same principle was applied to our codebase, renamed variables/fields/classes to something more generic
 - Game: Fix a crash in shipping build
@@ -14,11 +16,26 @@
 - PlayerControl: Unified the NotifyGameOver function with the InvadersGame one + added different texts for all the possible game over reasons to be displayed
 - PlayerControl: Fix a minor issue where the Player graphics are not hidden on all connected instances upon "death".
 
-### Known Issues
+#### Known Issues
 
 - Upon import a MissingReferenceException is triggered from within MLAPI: **"MissingReferenceException: The object of type ‘GameObject’ has been destroyed but you are still trying to access it.
   Your script should either check if it is null or you should not destroy the object."** in:
   - UnityEngine.GameObject.GetComponent[T] () (at /Users/bokken/buildslave/unity/build/Runtime/Export/Scripting/GameObject.bindings.cs:28)
+
+### 2DSpaceShooter
+
+#### New Changes
+- Cleaned up project structure, removed duplicate art assets and moved remaining asset into sub folders.
+- Removed empty MonoBehaviours which were used as tags and using the Unity tag system instead.
+- Removed the dependency to the community contributions repository and copied `NetworkManagerHud` and `NetworkObjectPool` into the sample.
+- Small QoL improvements to scripting. Using `TryGetComponent` and `CompareTag`.
+
+#### Known Issues
+
+- Missing Reference Exception thrown when leaving playmode, can be ignored:<br>
+*MissingReferenceException: The object of type 'NetworkObjectPool' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.
+MLAPI.Extensions.NetworkObjectPool.ReturnNetworkObject*
 
 ## [0.1.0] - 2021-04-07
 
@@ -35,4 +52,4 @@ Initial release of MLAPI Bitesize Samples repository. Samples support the follow
 
 ### License
 
-The Bitside Samples repository and code projects are licensed under the Unity Companion License for Unity-dependent projects (see https://unity3d.com/legal/licenses/unity_companion_license). See [LICENSE](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/blob/master/LICENSE.md) for full details.
+The Bitesize Samples repository and code projects are licensed under the Unity Companion License for Unity-dependent projects (see https://unity3d.com/legal/licenses/unity_companion_license). See [LICENSE](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/blob/master/LICENSE.md) for full details.
