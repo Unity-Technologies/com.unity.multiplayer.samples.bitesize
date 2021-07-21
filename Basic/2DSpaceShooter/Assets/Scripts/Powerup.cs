@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using MLAPI;
-using MLAPI.Extensions;
 using MLAPI.NetworkVariable;
 using UnityEngine.Assertions;
 
