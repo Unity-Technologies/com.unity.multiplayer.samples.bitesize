@@ -12,6 +12,11 @@ public class LobbyControl : NetworkBehaviour
 
     [SerializeField]
     private string m_InGameSceneName = "InGame";
+    
+    // Minimum player count required to transition to next level
+    [SerializeField]
+    private int m_MinimumPlayerCount = 2;
+    
     public Text LobbyText;
     private bool m_AllPlayersInLobby;
 
@@ -84,8 +89,7 @@ public class LobbyControl : NetworkBehaviour
     /// </summary>
     private void UpdateAndCheckPlayersInLobby()
     {
-        //This is game preference, but I am assuming at least 2 players?
-        m_AllPlayersInLobby = m_ClientsInLobby.Count > 1;
+        m_AllPlayersInLobby = m_ClientsInLobby.Count >= m_MinimumPlayerCount;
 
         foreach (var clientLobbyStatus in m_ClientsInLobby)
         {

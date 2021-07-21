@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MLAPI;
 using MLAPI.Connection;
+using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using TMPro;
 using UnityEngine;
@@ -10,20 +11,41 @@ using Random = UnityEngine.Random;
 
 public enum InvadersObjectType
 {
-    Alien = 1,
+    Enemy = 1,
     Shield,
     Max
 }
 
+[Flags]
+public enum UpdateEnemiesResultFlags : byte
+{
+    None = 0x0000,
+    FoundEnemy = 0x0001, // Found at least one eligible enemy to continue, without creating a new set
+    ReachedHorizontalBoundary = 0x0002, // If at least one of the enemies reached either left or right boundary
+    ReachedBottom = 0x004, // If at least one of the enemies reached the bottom boundary the game is over
+    Max
+}
+
+public enum GameOverReason : byte
+{
+    None = 0,
+    EnemiesReachedBottom = 1,
+    Death = 2,
+    Max,
+}
+
 public class InvadersGame : NetworkBehaviour
 {
-    // The vertical offset we apply to each Alien transform once they touch an edge
-    private const float k_AlienVerticalMovementOffset = -0.8f;
+    // The vertical offset we apply to each Enemy transform once they touch an edge
+    private const float k_EnemyVerticalMovementOffset = -0.8f;
+    private const float k_LeftOrRightBoundaryOffset = 10.0f;
+    private const float k_BottomBoundaryOffset = 1.25f;
+
     [Header("Prefab settings")]
-    public GameObject alien1Prefab;
-    public GameObject alien2Prefab;
-    public GameObject alien3Prefab;
-    public GameObject saucerPrefab;
+    public GameObject enemy1Prefab;
+    public GameObject enemy2Prefab;
+    public GameObject enemy3Prefab;
+    public GameObject superEnemyPrefab;
     public GameObject shieldPrefab;
 
     [Header("UI Settings")]
@@ -43,12 +65,12 @@ public class InvadersGame : NetworkBehaviour
     private NetworkVariableFloat m_TickPeriodic = new NetworkVariableFloat(0.2f);
 
     [SerializeField]
-    private NetworkVariableFloat m_AlienDirection = new NetworkVariableFloat(0.3f);
+    private NetworkVariableFloat m_EnemyMovingDirection = new NetworkVariableFloat(0.3f);
 
     [SerializeField]
     private float m_RandomThresholdForSaucerCreation = 0.92f;
 
-    private List<AlienInvader> m_Aliens = new List<AlienInvader>();
+    private List<EnemyAgent> m_Enemies = new List<EnemyAgent>();
 
     //These help to simplify checking server vs client
     //[NSS]: This would also be a great place to add a state machine and use networked vars for this
@@ -127,7 +149,7 @@ public class InvadersGame : NetworkBehaviour
     {
         if (IsServer)
         {
-            m_Aliens.Clear();
+            m_Enemies.Clear();
             m_Shields.Clear();
         }
     }
@@ -268,90 +290,109 @@ public class InvadersGame : NetworkBehaviour
 
     /// <summary>
     ///     OnGameStarted
-    ///     Only invoked by the server, this hides the timer text and initializes the aliens and level
+    ///     Only invoked by the server, this hides the timer text and initializes the enemies and level
     /// </summary>
     private void OnGameStarted()
     {
         gameTimerText.gameObject.SetActive(false);
-        CreateAliens();
+        CreateEnemies();
         CreateShields();
-        CreateSaucer();
+        CreateSuperEnemy();
     }
 
     private void UpdateEnemies()
     {
-        // update aliens
+        // Update enemies
         if (Time.time >= m_NextTick)
         {
             m_NextTick = Time.time + m_TickPeriodic.Value;
 
-            var foundEdge = false;
-            var foundEligibleAlienEnemy = false;
-            UpdateShootingEnemies(ref foundEligibleAlienEnemy, ref foundEdge);
+            UpdateEnemiesResultFlags enemiesResultFlags = UpdateEnemiesResultFlags.None;
+            UpdateShootingEnemies(ref enemiesResultFlags);
 
-            if (!foundEligibleAlienEnemy)
+            if((enemiesResultFlags & UpdateEnemiesResultFlags.ReachedBottom) != 0)
             {
-                CreateAliens();
+                // Force game end as at least one of the enemies have reached the bottom!
+                SetGameEnd(GameOverReason.EnemiesReachedBottom);
+                return;
+            }
+            
+            // If we didn't find any enemies, then spawn some
+            if ((enemiesResultFlags & UpdateEnemiesResultFlags.FoundEnemy) == 0)
+            {
+                CreateEnemies();
                 m_TickPeriodic.Value = 0.2f;
             }
 
-            if (foundEdge)
+            // If the enemies reached the either side of the boundaries, then change the movement direction
+            // And move them to the next row below
+            if ((enemiesResultFlags & UpdateEnemiesResultFlags.ReachedHorizontalBoundary) != 0)
             {
-                m_AlienDirection.Value = -m_AlienDirection.Value;
+                m_EnemyMovingDirection.Value = -m_EnemyMovingDirection.Value;
                 m_TickPeriodic.Value *= 0.95f; // get faster
 
-                var aliensCount = m_Aliens.Count;
-                for (var index = 0; index < aliensCount; index++)
+                var enemiesCount = m_Enemies.Count;
+                for (var index = 0; index < enemiesCount; index++)
                 {
-                    var alien = m_Aliens[index];
-                    alien.transform.Translate(0, k_AlienVerticalMovementOffset, 0);
+                    var enemy = m_Enemies[index];
+                    enemy.transform.Translate(0, k_EnemyVerticalMovementOffset, 0);
                 }
             }
 
             if (m_Saucer == null)
                 if (Random.Range(0, 1.0f) > m_RandomThresholdForSaucerCreation)
-                    CreateSaucer();
+                    CreateSuperEnemy();
         }
     }
 
-    private bool UpdateShootingEnemies(ref bool foundAlien, ref bool foundEdge)
+    private void UpdateShootingEnemies(ref UpdateEnemiesResultFlags flags)
     {
-        var aliensCount = m_Aliens.Count;
-        for (var index = 0; index < aliensCount; index++)
+        flags = UpdateEnemiesResultFlags.None;
+        var enemiesCount = m_Enemies.Count;
+        for (var index = 0; index < enemiesCount; index++)
         {
-            var alien = m_Aliens[index];
-            Assert.IsTrue(alien);
-
-            if (alien.score > 100)
+            var enemy = m_Enemies[index];
+            Assert.IsNotNull(enemy);
+            if (m_Enemies == null)
+            {
+                continue;
+            }
+            
+            // If at least one of the enemies reached bottom, return early.
+            if (enemy.transform.position.y <= k_BottomBoundaryOffset)
+            {
+                flags |= UpdateEnemiesResultFlags.ReachedBottom;
+                return;
+            }
+            
+            if (enemy.score > 100)
                 continue;
 
-            foundAlien = true;
-            alien.transform.position += new Vector3(m_AlienDirection.Value, 0, 0);
+            flags |= UpdateEnemiesResultFlags.FoundEnemy;
+            enemy.transform.position += new Vector3(m_EnemyMovingDirection.Value, 0, 0);
 
-            if (alien.transform.position.x > 10 || alien.transform.position.x < -10)
-                foundEdge = true;
+            if (enemy.transform.position.x > k_LeftOrRightBoundaryOffset || enemy.transform.position.x < -k_LeftOrRightBoundaryOffset)
+                flags |= UpdateEnemiesResultFlags.ReachedHorizontalBoundary;
 
             // can shoot if the lowest in my column
             var canShoot = true;
-            var column = alien.column;
-            var row = alien.row;
-            for (var otherIndex = 0; otherIndex < aliensCount; otherIndex++)
+            var column = enemy.column;
+            var row = enemy.row;
+            for (var otherIndex = 0; otherIndex < enemiesCount; otherIndex++)
             {
-                var otherAlien = m_Aliens[otherIndex];
-                Assert.IsTrue(otherAlien != null);
+                var otherEnemy = m_Enemies[otherIndex];
+                Assert.IsTrue(otherEnemy != null);
 
-                if (Math.Abs(otherAlien.column - column) < 0.001f)
-                    if (otherAlien.row < row)
+                if (Math.Abs(otherEnemy.column - column) < 0.001f)
+                    if (otherEnemy.row < row)
                     {
                         canShoot = false;
                         break;
                     }
             }
 
-            alien.canShoot = canShoot;
+            enemy.canShoot = canShoot;
         }
-
-        return foundAlien;
     }
 
     public void SetScore(int score)
@@ -366,27 +407,46 @@ public class InvadersGame : NetworkBehaviour
 
     public void DisplayGameOverText(string message)
     {
-        if (gameOverText) gameOverText.gameObject.SetActive(true);
+        if (gameOverText)
+        {
+            gameOverText.SetText(message);
+            gameOverText.gameObject.SetActive(true);
+        }
     }
 
-    public void SetGameEnd(bool isGameOver)
+    public void SetGameEnd(GameOverReason reason)
     {
         Assert.IsTrue(IsServer, "SetGameEnd should only be called server side!");
 
         // We should only end the game if all the player's are dead
-        if (isGameOver)
+        if (reason != GameOverReason.Death)
         {
-            foreach (NetworkClient networkedClient in NetworkManager.Singleton.ConnectedClientsList)
-            {
-                var playerObject = networkedClient.PlayerObject;
-                if(playerObject == null) continue;
-
-                // We should just early out if any of the player's are still alive
-                if (playerObject.GetComponent<PlayerControl>().IsAlive)
-                    return;
-            }
+            this.isGameOver.Value = true;
+            BroadcastGameOverClientRpc(reason); // Notify our clients!
+            return;
         }
-        this.isGameOver.Value = isGameOver;
+        
+        foreach (NetworkClient networkedClient in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            var playerObject = networkedClient.PlayerObject;
+            if(playerObject == null) continue;
+            
+            // We should just early out if any of the player's are still alive
+            if (playerObject.GetComponent<PlayerControl>().IsAlive)
+                return;
+        }
+        
+        this.isGameOver.Value = true;
+    }
+
+    [ClientRpc]
+    public void BroadcastGameOverClientRpc(GameOverReason reason)
+    {
+        var localPlayerObject = NetworkManager.Singleton.ConnectedClients[NetworkManager.Singleton.LocalClientId].PlayerObject;
+        Assert.IsNotNull(localPlayerObject);
+
+        if (localPlayerObject.TryGetComponent<PlayerControl>(out var playerControl))
+            playerControl.NotifyGameOver(reason);
     }
 
     public void RegisterSpawnableObject(InvadersObjectType invadersObjectType, GameObject gameObject)
@@ -395,16 +455,16 @@ public class InvadersGame : NetworkBehaviour
 
         switch (invadersObjectType)
         {
-            case InvadersObjectType.Alien:
+            case InvadersObjectType.Enemy:
             {
                 // Don't register if this is a saucer
-                if (gameObject.TryGetComponent<Saucer>(out var saucer))
+                if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
                     return;
 
-                gameObject.TryGetComponent<AlienInvader>(out var alienInvader);
-                Assert.IsTrue(alienInvader != null);
-                if (!m_Aliens.Contains(alienInvader))
-                    m_Aliens.Add(alienInvader);
+                gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
+                Assert.IsTrue(enemyAgent != null);
+                if (!m_Enemies.Contains(enemyAgent))
+                    m_Enemies.Add(enemyAgent);
                 break;
             }
             case InvadersObjectType.Shield:
@@ -426,16 +486,16 @@ public class InvadersGame : NetworkBehaviour
 
         switch (invadersObjectType)
         {
-            case InvadersObjectType.Alien:
+            case InvadersObjectType.Enemy:
             {
                 // Don't unregister if this is a saucer
-                if (gameObject.TryGetComponent<Saucer>(out var saucer))
+                if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
                     return;
 
-                gameObject.TryGetComponent<AlienInvader>(out var alienInvader);
-                Assert.IsTrue(alienInvader != null);
-                if (m_Aliens.Contains(alienInvader))
-                    Assert.IsTrue(m_Aliens.Remove(alienInvader));
+                gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
+                Assert.IsTrue(enemyAgent != null);
+                if (m_Enemies.Contains(enemyAgent))
+                    m_Enemies.Remove(enemyAgent);
                 break;
             }
             case InvadersObjectType.Shield:
@@ -443,7 +503,7 @@ public class InvadersGame : NetworkBehaviour
                 gameObject.TryGetComponent<Shield>(out var shield);
                 Assert.IsTrue(shield != null);
                 if (m_Shields.Contains(shield))
-                    Assert.IsTrue(m_Shields.Remove(shield));
+                    m_Shields.Remove(shield);
                 break;
             }
             default:
@@ -497,48 +557,48 @@ public class InvadersGame : NetworkBehaviour
         CreateShield(shieldPrefab, 7, -1);
     }
 
-    private void CreateSaucer()
+    private void CreateSuperEnemy()
     {
         Assert.IsTrue(IsServer, "Create Saucer should be called server-side only!");
 
-        m_Saucer = Instantiate(saucerPrefab, saucerSpawnPoint.position, Quaternion.identity);
+        m_Saucer = Instantiate(superEnemyPrefab, saucerSpawnPoint.position, Quaternion.identity);
 
         // Spawn the Networked Object, this should notify the clients
         m_Saucer.GetComponent<NetworkObject>().Spawn();
     }
 
-    private void CreateAlien(GameObject prefab, float posX, float posY)
+    private void CreateEnemy(GameObject prefab, float posX, float posY)
     {
-        Assert.IsTrue(IsServer, "Create Alien should be called server-side only!");
+        Assert.IsTrue(IsServer, "Create Enemy should be called server-side only!");
 
-        var newAlien = Instantiate(prefab);
-        newAlien.transform.position = new Vector3(posX, posY, 0.0f);
-        newAlien.GetComponent<AlienInvader>().Setup(Mathf.RoundToInt(posX), Mathf.RoundToInt(posY));
+        var enemy = Instantiate(prefab);
+        enemy.transform.position = new Vector3(posX, posY, 0.0f);
+        enemy.GetComponent<EnemyAgent>().Setup(Mathf.RoundToInt(posX), Mathf.RoundToInt(posY));
 
         // Spawn the Networked Object, this should notify the clients
-        newAlien.GetComponent<NetworkObject>().Spawn();
+        enemy.GetComponent<NetworkObject>().Spawn();
     }
 
-    public void CreateAliens()
+    public void CreateEnemies()
     {
         float startx = -8;
         for (var i = 0; i < 10; i++)
         {
-            CreateAlien(alien1Prefab, startx, 12);
+            CreateEnemy(enemy1Prefab, startx, 12);
             startx += 1.6f;
         }
 
         startx = -8;
         for (var i = 0; i < 10; i++)
         {
-            CreateAlien(alien2Prefab, startx, 10);
+            CreateEnemy(enemy2Prefab, startx, 10);
             startx += 1.6f;
         }
 
         startx = -8;
         for (var i = 0; i < 10; i++)
         {
-            CreateAlien(alien3Prefab, startx, 8);
+            CreateEnemy(enemy3Prefab, startx, 8);
             startx += 1.6f;
         }
     }

@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 11400000}
   - component: {fileID: 6100000}
   - component: {fileID: 5000000}
-  - component: {fileID: 8401436849663568366}
-  - component: {fileID: 1361474663871475650}
+  - component: {fileID: 4223722966607089368}
+  - component: {fileID: 2037077820506562951}
   m_Layer: 0
-  m_Name: alien2
+  m_Name: enemy1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3369913, y: 1.6158211, z: 5.338147}
+  m_LocalPosition: {x: -2.521718, y: 0.97297525, z: 2.9156828}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bb17efd32f1b62b47b9d3876d96c0b2c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4ab7e7189ab754124aa83e1fa63dc0c2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,8 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a9ae1104cd467498bbb290e1c710f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 20
+  score: 10
   bulletPrefab: {fileID: 100000, guid: ac6ffb0923d0f7448852a32312a0263c, type: 3}
+  GraceShootingPeriod: 1
 --- !u!61 &6100000
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8401436849663568366
+--- !u!114 &4223722966607089368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,7 +197,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1361474663871475650
+--- !u!114 &2037077820506562951
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkInstanceId: 0
-  PrefabHash: 17307401896119025540
-  PrefabHashGenerator: alien2
+  PrefabHash: 17307401896119025543
+  PrefabHashGenerator: alien1
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
