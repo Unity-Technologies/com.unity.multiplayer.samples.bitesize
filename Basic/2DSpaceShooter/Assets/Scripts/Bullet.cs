@@ -40,7 +40,7 @@ public class Bullet : NetworkBehaviour
         Destroy(ex, 0.5f);
         
         NetworkObject.Despawn();
-        m_PoolToReturn.ReturnNetworkObject(NetworkObject);
+        m_PoolToReturn.ReturnNetworkObject(NetworkObject, null);
     }
     
     void OnCollisionEnter2D(Collision2D other)

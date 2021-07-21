@@ -138,7 +138,7 @@ namespace MLAPI.Prototyping
         /// <summary>
         /// Registers message handlers
         /// </summary>
-        public override void NetworkStart()
+        public override void OnNetworkSpawn()
         {
             m_LastSentRot = transform.rotation;
             m_LastSentPos = transform.position;

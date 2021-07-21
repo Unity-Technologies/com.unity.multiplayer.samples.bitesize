@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8200002}
   - component: {fileID: 509584576524893815}
   - component: {fileID: -1137344530773526120}
+  - component: {fileID: 3872297804272786357}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -367,11 +368,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkInstanceId: 0
-  PrefabHash: 14735065859013011121
-  PrefabHashGenerator: Ship2D
+  GlobalObjectIdHash: 951099334
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &-1137344530773526120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +420,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!81 &3872297804272786357
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 0
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0

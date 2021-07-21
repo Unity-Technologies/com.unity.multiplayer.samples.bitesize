@@ -105,7 +105,7 @@ public class ShipControl : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         GetComponent<AudioListener>().enabled = true;
     }
@@ -142,7 +142,7 @@ public class ShipControl : NetworkBehaviour
 
         bool bounce = BounceTimer.Value > Time.time;
         
-        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab);
+        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
         bullet.transform.position = transform.position + direction;
         
         var bulletRb = bullet.GetComponent<Rigidbody2D>();

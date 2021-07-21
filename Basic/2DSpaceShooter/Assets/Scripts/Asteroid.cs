@@ -28,7 +28,7 @@ public class Asteroid : NetworkBehaviour
         numAsteroids += 1;
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         var size = Size.Value;
         transform.localScale = new Vector3(size, size, size);
@@ -52,7 +52,7 @@ public class Asteroid : NetworkBehaviour
                 int dy = Random.Range(0, 4) - 2;
                 Vector3 diff = new Vector3(dx * 0.3f, dy * 0.3f, 0);
                 
-                var go = m_ObjectPool.GetNetworkObject(NetworkObject.PrefabHash, transform.position + diff, Quaternion.identity);
+                var go = m_ObjectPool.GetNetworkObject(null, transform.position + diff, Quaternion.identity);
                 
                 go.GetComponent<Asteroid>().Size.Value = newSize;
                 go.GetComponent<NetworkObject>().Spawn();
@@ -61,6 +61,6 @@ public class Asteroid : NetworkBehaviour
         }
         
         NetworkObject.Despawn();
-        m_ObjectPool.ReturnNetworkObject(NetworkObject);
+        m_ObjectPool.ReturnNetworkObject(NetworkObject, null);
     }
 }
