@@ -26,12 +26,12 @@ public class PlayerBullet : MonoBehaviour
         if (!NetworkManager.Singleton.IsServer)
             return;
 
-        var hitAlien = collider.gameObject.GetComponent<AlienInvader>();
-        if (hitAlien != null && owner)
+        var hitEnemy = collider.gameObject.GetComponent<EnemyAgent>();
+        if (hitEnemy != null && owner)
         {
-            owner.IncreasePlayerScore(hitAlien.score);
+            owner.IncreasePlayerScore(hitEnemy.score);
 
-            Destroy(hitAlien.gameObject);
+            Destroy(hitEnemy.gameObject);
             Destroy(gameObject);
             return;
         }

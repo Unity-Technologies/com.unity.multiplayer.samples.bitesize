@@ -3,7 +3,7 @@ using MLAPI;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class AlienBullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     private const float k_YBoundary = -4.0f;
 

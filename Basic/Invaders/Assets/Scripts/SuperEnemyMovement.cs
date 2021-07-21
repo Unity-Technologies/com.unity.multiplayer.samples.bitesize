@@ -2,7 +2,7 @@
 using MLAPI;
 using UnityEngine;
 
-public class Saucer : MonoBehaviour
+public class SuperEnemyMovement : MonoBehaviour
 {
     private const float k_YBoundary = 14.0f;
 
