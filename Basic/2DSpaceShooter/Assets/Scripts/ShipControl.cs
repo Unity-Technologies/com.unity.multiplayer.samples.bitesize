@@ -1,6 +1,5 @@
 ﻿using System;
 using MLAPI;
-using MLAPI.Extensions;
 using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using UnityEngine;
