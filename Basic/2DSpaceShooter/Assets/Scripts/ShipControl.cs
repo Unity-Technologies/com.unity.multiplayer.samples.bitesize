@@ -107,7 +107,10 @@ public class ShipControl : NetworkBehaviour
 
     public override void NetworkStart()
     {
-        GetComponent<AudioListener>().enabled = true;
+        if (IsOwner)
+        {
+            GetComponent<AudioListener>().enabled = true;
+        }
     }
 
     public void TakeDamage(int amount)
