@@ -127,7 +127,7 @@ public class ShipControl : NetworkBehaviour
 
             m_Deaths += 1;
             Health.Value = 100;
-            transform.position = Vector3.zero;
+            transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
         }
