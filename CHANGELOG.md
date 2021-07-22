@@ -29,6 +29,7 @@
 - Removed empty MonoBehaviours which were used as tags and using the Unity tag system instead.
 - Removed the dependency to the community contributions repository and copied `NetworkManagerHud` and `NetworkObjectPool` into the sample.
 - Small QoL improvements to scripting. Using `TryGetComponent` and `CompareTag`.
+- Fix audio issues by moving the audio listener onto the player ship object.
 
 #### Known Issues
 
