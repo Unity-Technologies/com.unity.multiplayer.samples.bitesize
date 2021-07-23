@@ -79,7 +79,6 @@ public class Powerup : NetworkBehaviour
         AudioSource.PlayClipAtPoint(GetComponent<AudioSource>().clip, transform.position);
         numPowerups -= 1;
        
-        NetworkObject.Despawn();
-        m_ObjectPool.ReturnNetworkObject(NetworkObject, null);
+        NetworkObject.Despawn(true);
     }
 }

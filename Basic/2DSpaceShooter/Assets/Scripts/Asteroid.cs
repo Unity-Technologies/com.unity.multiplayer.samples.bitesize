@@ -16,6 +16,9 @@ public class Asteroid : NetworkBehaviour
     [SerializeField]
     private int m_NumCreates = 3;
 
+    [SerializeField]
+    GameObject m_AsteroidPrefab;
+
     void Awake()
     {
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
@@ -52,7 +55,7 @@ public class Asteroid : NetworkBehaviour
                 int dy = Random.Range(0, 4) - 2;
                 Vector3 diff = new Vector3(dx * 0.3f, dy * 0.3f, 0);
                 
-                var go = m_ObjectPool.GetNetworkObject(null, transform.position + diff, Quaternion.identity);
+                var go = m_ObjectPool.GetNetworkObject(m_AsteroidPrefab, transform.position + diff, Quaternion.identity);
                 
                 go.GetComponent<Asteroid>().Size.Value = newSize;
                 go.GetComponent<NetworkObject>().Spawn();
@@ -60,7 +63,6 @@ public class Asteroid : NetworkBehaviour
             }
         }
         
-        NetworkObject.Despawn();
-        m_ObjectPool.ReturnNetworkObject(NetworkObject, null);
+        NetworkObject.Despawn(true);
     }
 }

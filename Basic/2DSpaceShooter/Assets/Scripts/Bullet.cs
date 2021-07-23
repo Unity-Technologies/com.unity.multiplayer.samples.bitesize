@@ -4,8 +4,6 @@ using MLAPI;
 
 public class Bullet : NetworkBehaviour
 {
-    NetworkObjectPool m_PoolToReturn;
-    
     bool m_Bounce = false;
     int m_Damage = 5;
     ShipControl m_Owner;
@@ -13,12 +11,11 @@ public class Bullet : NetworkBehaviour
     public GameObject explosionParticle;
     
 
-    public void Config(ShipControl owner, int damage, bool bounce, float lifetime, NetworkObjectPool poolToReturn)
+    public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
     {
         m_Owner = owner;
         m_Damage = damage;
         m_Bounce = bounce;
-        m_PoolToReturn = poolToReturn;
 
         if (IsServer)
         {
@@ -39,8 +36,7 @@ public class Bullet : NetworkBehaviour
         GameObject ex = Instantiate(explosionParticle, pos, Quaternion.identity);
         Destroy(ex, 0.5f);
         
-        NetworkObject.Despawn();
-        m_PoolToReturn.ReturnNetworkObject(NetworkObject, null);
+        NetworkObject.Despawn(true);
     }
     
     void OnCollisionEnter2D(Collision2D other)

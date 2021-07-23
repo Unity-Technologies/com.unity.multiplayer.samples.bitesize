@@ -151,7 +151,7 @@ public class ShipControl : NetworkBehaviour
         velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
-        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime, m_ObjectPool);
+        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime);
         
         bullet.GetComponent<NetworkObject>().Spawn(null, true);
     }

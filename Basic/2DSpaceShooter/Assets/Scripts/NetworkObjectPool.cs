@@ -6,6 +6,7 @@ using MLAPI.Spawning;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
 public class NetworkObjectPool : MonoBehaviour
 {
     [SerializeField]
@@ -90,7 +91,6 @@ public class NetworkObjectPool : MonoBehaviour
     /// </summary>
     private void RegisterPrefabInternal(GameObject prefab, int prewarmCount)
     {
-        var networkObject = prefab.GetComponent<NetworkObject>();
         prefabs.Add(prefab);
 
         var prefabQueue = new Queue<NetworkObject>();
