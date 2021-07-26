@@ -33,12 +33,16 @@ public class Bullet : NetworkBehaviour
         {
             return;
         }
-        
+
         Vector3 pos = transform.position;
         pos.z = -2;
-        GameObject ex = Instantiate(explosionParticle, pos, Quaternion.identity);
-        Destroy(ex, 0.5f);
-        
+
+        GameObject explosion = m_PoolToReturn.GetNetworkObject(explosionParticle);
+        explosion.transform.position = pos;
+
+        explosion.GetComponent<Explosion>().Config(0.5f, m_PoolToReturn);
+        explosion.GetComponent<NetworkObject>().Spawn(null, true);
+
         NetworkObject.Despawn();
         m_PoolToReturn.ReturnNetworkObject(NetworkObject);
     }
