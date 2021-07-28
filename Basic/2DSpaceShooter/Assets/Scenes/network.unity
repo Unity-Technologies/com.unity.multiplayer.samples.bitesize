@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e48fbd6d33eab48807525003196759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NetworkManager: {fileID: 0}
+  m_NetworkManager: {fileID: 872897446}
   PooledPrefabsList:
   - Prefab: {fileID: 100000, guid: f7120fa7a008f8d4fa6c6bb280d092ad, type: 3}
     PrewarmCount: 100
@@ -840,10 +840,10 @@ MonoBehaviour:
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
-    ReceiveTickrate: 64
-    NetworkTickIntervalSec: 0.05
+    ReceiveTickrate: 30
+    NetworkTickIntervalSec: 0.033333
     MaxReceiveEventsPerTickRate: 500
-    EventTickrate: 64
+    EventTickrate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 
