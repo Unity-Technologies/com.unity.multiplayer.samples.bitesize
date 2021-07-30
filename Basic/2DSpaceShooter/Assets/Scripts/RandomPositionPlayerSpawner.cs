@@ -30,7 +30,7 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
                 var index = Random.Range(0, m_SpawnPositions.Count);
                 return m_SpawnPositions[index];
             case SpawnMethod.RoundRobin:
-                m_RoundRobinIndex++;
+                m_RoundRobinIndex = (m_RoundRobinIndex + 1) % m_SpawnPositions.Count;
                 return m_SpawnPositions[m_RoundRobinIndex];
             default:
                 throw new NotImplementedException();
