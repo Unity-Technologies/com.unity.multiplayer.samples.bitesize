@@ -103,7 +103,6 @@ public class NetworkObjectPool : MonoBehaviour
         }
 
         // Register MLAPI Spawn handlers
-
         m_NetworkManager.PrefabHandler.AddHandler(prefab, new DummyPrefabInstanceHandler(prefab, this));
     }
 
@@ -175,12 +174,12 @@ class DummyPrefabInstanceHandler : INetworkPrefabInstanceHandler
         m_Pool = pool;
     }
 
-    public NetworkObject HandleNetworkPrefabSpawn(ulong ownerClientId, Vector3 position, Quaternion rotation)
+    public NetworkObject Instantiate(ulong ownerClientId, Vector3 position, Quaternion rotation)
     {
         return m_Pool.GetNetworkObject(m_Prefab, position, rotation);
     }
 
-    public void HandleNetworkPrefabDestroy(NetworkObject networkObject)
+    public void Destroy(NetworkObject networkObject)
     {
         m_Pool.ReturnNetworkObject(networkObject, m_Prefab);
     }

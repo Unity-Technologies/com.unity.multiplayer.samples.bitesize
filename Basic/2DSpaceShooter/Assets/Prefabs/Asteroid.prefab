@@ -130,7 +130,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -178,14 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransformAuthority: 0
-  FixedSendsPerSecond: 20
-  InterpolatePosition: 1
-  SnapDistance: 10
-  InterpolateServer: 1
-  MinMeters: 0.15
-  MinDegrees: 1.5
-  MinSize: 0.15
+  Authority: 0
   Channel: 0
-  m_UseLocal:
-    m_InternalValue: 0
+  InLocalSpace: 0
+  FixedSendsPerSecond: 20

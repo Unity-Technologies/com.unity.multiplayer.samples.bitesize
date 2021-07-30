@@ -81,7 +81,7 @@ public class Spawner : MonoBehaviour
             go.transform.rotation = Quaternion.Euler(0, 0, dir);
             go.GetComponent<Rigidbody2D>().angularVelocity = dir;
             go.GetComponent<Rigidbody2D>().velocity = new Vector2(dx, dy);
-
+            go.GetComponent<Asteroid>().asteroidPrefab = m_AsteroidPrefab;
             go.GetComponent<NetworkObject>().Spawn(null, true);
         }
     }

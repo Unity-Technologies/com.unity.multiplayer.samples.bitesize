@@ -822,7 +822,8 @@ MonoBehaviour:
     NetworkPrefabs:
     - Override: 0
       Prefab: {fileID: 100000, guid: c2549a141109b1c49b41b054580f950e, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
+      SourcePrefabToOverride: {fileID: 100000, guid: c2549a141109b1c49b41b054580f950e,
+        type: 3}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
@@ -840,10 +841,7 @@ MonoBehaviour:
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
-    ReceiveTickrate: 30
-    NetworkTickIntervalSec: 0.033333
-    MaxReceiveEventsPerTickRate: 500
-    EventTickrate: 30
+    TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 
@@ -857,7 +855,6 @@ MonoBehaviour:
     NetworkIdRecycleDelay: 120
     RpcHashSize: 0
     LoadSceneTimeOut: 120
-    EnableMessageBuffering: 1
     MessageBufferTimeout: 20
     EnableNetworkLogs: 1
 --- !u!4 &872897449

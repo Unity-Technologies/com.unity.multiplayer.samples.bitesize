@@ -55,7 +55,7 @@ public class ShipControl : NetworkBehaviour
 
     float m_EnergyTimer = 0;
 
-    public NetworkVariableString PlayerName = new NetworkVariableString("SomeGuy");
+    public NetworkVariableString PlayerName = new NetworkVariableString("");
 
     [SerializeField]
     Texture m_Box;
@@ -108,6 +108,7 @@ public class ShipControl : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         GetComponent<AudioListener>().enabled = IsOwner;
+        PlayerName.Value = $"Player {OwnerClientId}";
     }
 
     public void TakeDamage(int amount)
@@ -146,9 +147,8 @@ public class ShipControl : NetworkBehaviour
         bullet.transform.position = transform.position + direction;
         
         var bulletRb = bullet.GetComponent<Rigidbody2D>();
-        Vector2 velocity;
-        
-        velocity = m_Rigidbody2D.velocity;
+
+        var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
         bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime);

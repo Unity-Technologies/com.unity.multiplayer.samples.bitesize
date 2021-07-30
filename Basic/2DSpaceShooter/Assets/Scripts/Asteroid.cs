@@ -15,9 +15,9 @@ public class Asteroid : NetworkBehaviour
 
     [SerializeField]
     private int m_NumCreates = 3;
-
-    [SerializeField]
-    GameObject m_AsteroidPrefab;
+    
+    [HideInInspector]
+    public GameObject asteroidPrefab;
 
     void Awake()
     {
@@ -39,6 +39,10 @@ public class Asteroid : NetworkBehaviour
 
     public void Explode()
     {
+        if (NetworkObject.IsSpawned == false)
+        {
+            return;
+        }
         Assert.IsTrue(NetworkManager.IsServer);
         
         numAsteroids -= 1;
@@ -55,9 +59,11 @@ public class Asteroid : NetworkBehaviour
                 int dy = Random.Range(0, 4) - 2;
                 Vector3 diff = new Vector3(dx * 0.3f, dy * 0.3f, 0);
                 
-                var go = m_ObjectPool.GetNetworkObject(m_AsteroidPrefab, transform.position + diff, Quaternion.identity);
+                var go = m_ObjectPool.GetNetworkObject(asteroidPrefab, transform.position + diff, Quaternion.identity);
                 
-                go.GetComponent<Asteroid>().Size.Value = newSize;
+                var asteroid = go.GetComponent<Asteroid>();
+                asteroid.Size.Value = newSize;
+                asteroid.asteroidPrefab = asteroidPrefab;
                 go.GetComponent<NetworkObject>().Spawn();
                 go.GetComponent<Rigidbody2D>().AddForce(diff * 10, ForceMode2D.Impulse);
             }
