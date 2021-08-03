@@ -102,44 +102,7 @@ public class NetworkObjectPool : MonoBehaviour
             ReturnNetworkObject(go.GetComponent<NetworkObject>(), prefab);
         }
 
-        // Register MLAPI Spawn handlers
-        m_NetworkManager.PrefabHandler.AddHandler(prefab, new DummyPrefabInstanceHandler(prefab, this));
-    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private GameObject CreateInstance(GameObject prefab)
-    {
-        return Instantiate(prefab);
-    }
-
-    /// <summary>
-    /// This matches the signature of <see cref="NetworkSpawnManager.SpawnHandlerDelegate"/>
-    /// </summary>
-    /// <param name="prefabHash"></param>
-    /// <param name="position"></param>
-    /// <param name="rotation"></param>
-    /// <returns></returns>
-    private NetworkObject GetNetworkObjectInternal(GameObject prefab, Vector3 position, Quaternion rotation)
-    {
-        var queue = pooledObjects[prefab];
-
-        NetworkObject networkObject;
-        if (queue.Count > 0)
-        {
-            networkObject = queue.Dequeue();
-        }
-        else
-        {
-            networkObject = CreateInstance(prefab).GetComponent<NetworkObject>();
-        }
-
-        // Here we must reverse the logic in ReturnNetworkObject.
-        var go = networkObject.gameObject;
-        go.transform.SetParent(null);
-        go.SetActive(true);
-
-        go.transform.position = position;
-        go.transform.rotation = rotation;
 
         return networkObject;
     }
