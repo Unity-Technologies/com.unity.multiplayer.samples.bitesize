@@ -750,6 +750,7 @@ GameObject:
   - component: {fileID: 872897446}
   - component: {fileID: 872897444}
   - component: {fileID: 872897445}
+  - component: {fileID: 872897447}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -834,7 +835,7 @@ MonoBehaviour:
     MaxReceiveEventsPerTickRate: 500
     EventTickrate: 64
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -856,6 +857,23 @@ MonoBehaviour:
       type: {class: NullableBoolSerializable, ns: MLAPI.Configuration, asm: Unity.Multiplayer.MLAPI.Runtime}
       data:
         Value: 14735065859013011121
+--- !u!114 &872897447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872897443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e23a6243f7715c44ea5d997e13ccbaee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpawnMethod: 0
+  m_SpawnPositions:
+  - {x: 18, y: 12, z: 0}
+  - {x: 33, y: -32, z: 0}
+  - {x: 9, y: -25, z: 0}
 --- !u!4 &872897449
 Transform:
   m_ObjectHideFlags: 0
