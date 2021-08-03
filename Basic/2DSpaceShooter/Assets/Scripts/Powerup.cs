@@ -19,7 +19,7 @@ public class Powerup : NetworkBehaviour
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
     }
     
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         if (IsClient)
         {
@@ -79,7 +79,6 @@ public class Powerup : NetworkBehaviour
         AudioSource.PlayClipAtPoint(GetComponent<AudioSource>().clip, transform.position);
         numPowerups -= 1;
        
-        NetworkObject.Despawn();
-        m_ObjectPool.ReturnNetworkObject(NetworkObject);
+        NetworkObject.Despawn(true);
     }
 }
