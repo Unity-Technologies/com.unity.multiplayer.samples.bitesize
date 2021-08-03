@@ -1,0 +1,19 @@
+{% metadata_file .yamato/project.metafile %}
+---
+{% for project in projects -%}
+{% for editor in test_editors -%}
+{% for platform in test_platforms -%}
+test_{{ project.name }}_{{ editor }}_{{ platform.name }}:
+  name : Test Project {{ project.name }} - {{ editor }} on {{ platform.name }}
+  agent:
+    type: {{ platform.type }}
+    image: {{ platform.image }}
+    flavor: {{ platform.flavor}}
+  commands:
+    - echo "success!"
+  # dependencies:
+  #   - .yamato/project-pack.yml#pack_{{ project.name }}
+
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
