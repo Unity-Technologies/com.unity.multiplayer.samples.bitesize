@@ -26,7 +26,7 @@ develop_pull_request_trigger:
 {% for project in projects -%}
 {% for editor in test_editors -%}
 {% for platform in test_platforms -%}
-    - .yamato/build.yml#build_{{ project.name }}_com.unity.multiplayer.mlapi_{{ platform.name }}_{{ editor }}
+    - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
 {% endfor -%}
 {% endfor -%}
 {% endfor -%}
