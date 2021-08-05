@@ -24,11 +24,11 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
 {% endif -%}
 
 {% if platform.name == "mac" or platform.name == "linux" -%} #macos and linux
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr
+    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
     - chmod +x ./utr 
 {% endif -%}
 
-    - ./utr --suite=playmode --platform={{ platform.platform }} --editor-location=.Editor --testproject={{ project.path }} --player-save-path=build/players --artifacts_path=build/logs --build-only #all
+    - utr --suite=playmode --platform={{ platform.platform }} --editor-location=.Editor --testproject={{ project.path }} --player-save-path=build/players --artifacts_path=build/logs --build-only #all
   artifacts:
     players:
         paths:
