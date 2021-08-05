@@ -17,7 +17,7 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
       image: sdet/gamecode_win10:latest
       flavor: b1.xlarge
   commands:
-    - sudo pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+    - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
     - unity-downloader-cli -u trunk -c editor --wait --published --fast
     - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr
     - chmod +x ./utr
