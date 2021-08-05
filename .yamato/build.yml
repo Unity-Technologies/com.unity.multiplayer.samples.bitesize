@@ -17,18 +17,11 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
       image: sdet/gamecode_win10:latest
       flavor: b1.xlarge
   commands:
-    - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
-    - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast
-{% if platform.name == "win" -%} #windows
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
-{% endif -%}
-
-{% if platform.name == "mac" or platform.name == "linux" -%} #macos and linux
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
-    - chmod +x ./utr 
-{% endif -%}
-
-    - ./utr --suite=playmode --platform={{ platform.platform }} --editor-location=.Editor --testproject={{ project.path }} --player-save-path=build/players --artifacts_path=build/logs --build-only
+    - sudo pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+    - unity-downloader-cli -u trunk -c editor --wait --published --fast
+    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr
+    - chmod +x ./utr
+    - ./utr --suite=playmode --platform=StandaloneLinux64 --editor-location=.Editor --testproject=. --player-save-path=build/players --artifacts_path=build/logs --build-only
   artifacts:
     players:
         paths:
@@ -66,20 +59,20 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
 # Run all relevant tasks when a pull request targeting the develop
 # branch is created or updated. Currently only mlapi package tests are
 # enabled, since the others are missing test coverage and will fail CI.
-develop_pull_request_trigger:
-  name: Develop Branch Triggers
-  dependencies:
-{% for project in projects -%}
-{% for editor in test_editors -%}
-{% for platform in test_platforms -%}
-    - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
-{% endfor -%}
-{% endfor -%}
-{% endfor -%}
-  triggers:
-    cancel_old_ci: true
-    pull_requests:
-    - targets:
-        only:
-          - "main"
-          - "develop"
+# develop_pull_request_trigger:
+#   name: Develop Branch Triggers
+#   dependencies:
+# {% for project in projects -%}
+# {% for editor in test_editors -%}
+# {% for platform in test_platforms -%}
+#     - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
+# {% endfor -%}
+# {% endfor -%}
+# {% endfor -%}
+#   triggers:
+#     cancel_old_ci: true
+#     pull_requests:
+#     - targets:
+#         only:
+#           - "main"
+#           - "develop"
