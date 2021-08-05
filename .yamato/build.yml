@@ -19,9 +19,11 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
   commands:
     - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
     - unity-downloader-cli -u trunk -c editor --wait --published --fast
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr
+    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr]
+    - ls
     - chmod +x ./utr
-    - ./utr --suite=playmode --platform=StandaloneLinux64
+    - ls
+    - ./utr --suite=playmode --platform=StandaloneLinux64 --editor-location=.Editor --testproject=. --player-save-path=build/players --artifacts_path=build/logs --build-only
   artifacts:
     players:
         paths:
