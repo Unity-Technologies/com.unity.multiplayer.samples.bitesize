@@ -17,15 +17,13 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
       image: sdet/gamecode_win10:latest
       flavor: b1.xlarge
   commands:
-    - echo "{{ platform.name }}"=="win"
-
     - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
     - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast #all
-{% if "{{platform.name}}"=="win" -%} #windows
+{% if platform.name == "win" -%} #windows
     - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
 {% endif -%}
 
-{% if "{{ platform.name }}"=="mac" or "{{ platform.name }}"=="linux" -%} #macos and linux
+{% if platform.name == "mac" or platform.name == "linux" -%} #macos and linux
     - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr
     - chmod +x ./utr 
 {% endif -%}
