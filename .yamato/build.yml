@@ -17,13 +17,22 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
       image: sdet/gamecode_win10:latest
       flavor: b1.xlarge
   commands:
+{% if "{{ platform.name }}"=="mac" or "{{ platform.name }}"=="linux" -%} #macos and linux
     - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
-    # note: --fast tells unity downloader to get the latest available version editor. 
-    # Saves some time in case if editor is building after batch landed to trunk
-    # You might want to remove it.
-    - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast
+{% endif -%}
+
+    - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast #all
+
+{% if "{{ platform.name }}"=="win" -%} #windows
     - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
-    - ./utr --suite=playmode --platform={{ platform.platform }} --editor-location=.Editor --testproject={{ project.path }} --player-save-path=build/players --artifacts_path=build/logs --build-only
+{% endif -%}
+
+{% if "{{ platform.name }}"=="mac" or "{{ platform.name }}"=="linux" -%} #macos and linux
+    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr  --output utr
+    - chmod +x ./utr 
+{% endif -%}
+
+    - ./utr --suite=playmode --platform={{ platform.platform }} --editor-location=.Editor --testproject={{ project.path }} --player-save-path=build/players --artifacts_path=build/logs --build-only #all
   artifacts:
     players:
         paths:
@@ -31,6 +40,8 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
     logs:
         paths:
           - "build/logs/**"
+
+
 # run_{{ project.name }}_{{ editor }}_{{ platform.name }}:
 #   name: Run Test on a windows64 standalone player
 #   variables:
