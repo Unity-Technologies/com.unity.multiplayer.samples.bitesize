@@ -11,7 +11,19 @@ using Random = UnityEngine.Random;
 
 public enum InvadersObjectType
 {
+    Enemy = 1,
+    Shield,
+    Max
+}
 
+[Flags]
+public enum UpdateEnemiesResultFlags : byte
+{
+    None = 0x0000,
+    FoundEnemy = 0x0001, // Found at least one eligible enemy to continue, without creating a new set
+    ReachedHorizontalBoundary = 0x0002, // If at least one of the enemies reached either left or right boundary
+    ReachedBottom = 0x004, // If at least one of the enemies reached the bottom boundary the game is over
+    Max
 }
 
 public enum GameOverReason : byte
