@@ -20,9 +20,10 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
 {% if platform.name == "win" -%} #windows
     - .Editor\Unity.exe -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build\players\test.exe
 {% else -%}
-    - ls
+    - ls -d
     - cd .Editor
     - ls
+    - ls -d
     - ./.Editor/Unity.app -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer ./build/players/test
 {% endif -%}
 
