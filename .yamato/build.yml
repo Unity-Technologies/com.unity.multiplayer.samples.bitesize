@@ -16,19 +16,12 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
   commands:
     - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
     - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast
-{% if platform.name == "win" -%} #windows
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
-{% endif -%}
-
-{% if platform.name == "mac" or platform.name == "linux" -%} #macos and linux
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
-    - chmod +x ./utr 
-{% endif -%}
 
 {% if platform.name == "win" -%} #windows
     - .Editor\Unity.exe -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build\players\test.exe
 {% else -%}
-    - ./.Editor/Unity.app -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build/players/test
+    - tree -a
+    - ./.Editor/Unity.app -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer ./build/players/test
 {% endif -%}
 
 
