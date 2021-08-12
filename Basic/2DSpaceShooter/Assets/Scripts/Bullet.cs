@@ -8,7 +8,13 @@ public class Bullet : NetworkBehaviour
     int m_Damage = 5;
     ShipControl m_Owner;
 
+    public GameObject explosionParticle;
 
+    public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
+    {
+        m_Owner = owner;
+        m_Damage = damage;
+        m_Bounce = bounce;
         if (IsServer)
         {
             // This is bad code don't use invoke.
