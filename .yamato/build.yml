@@ -35,9 +35,7 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
 {% endfor -%}
 {% endfor -%}
 
-# Run all relevant tasks when a pull request targeting the develop
-# branch is created or updated. Currently only mlapi package tests are
-# enabled, since the others are missing test coverage and will fail CI.
+# Run all relevant tasks when a pull request targeting the develop / main
 develop_pull_request_trigger:
   name: Develop Branch Triggers
   dependencies:
