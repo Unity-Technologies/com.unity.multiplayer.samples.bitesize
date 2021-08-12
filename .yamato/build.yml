@@ -6,7 +6,7 @@
 {% for platform in test_platforms -%}
 
 build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
-  name: Build Project {{ projects.first.name }} - Package {{ package.name }} - {{ editor }} on {{ platform.name }}
+  name: Build Project {{ project.name }} - Package {{ package.name }} - {{ editor }} on {{ platform.name }}
   variables:
     UTR_VERSION: current
   agent:
