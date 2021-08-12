@@ -21,7 +21,7 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
     - .Editor\Unity.exe -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build\players\test.exe
 {% else -%}
     - ls -d
-    - cd .Editor
+    - cd .
     - ls
     - ls -d
     - ./.Editor/Unity.app -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer ./build/players/test
