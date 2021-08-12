@@ -20,15 +20,9 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
 {% if platform.name == "win" -%} #windows
     - .Editor\Unity.exe -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build\players\test.exe
 {% else -%}
-    - ls -d
-    - cd .
-    - ls
-    - ls -d
-    - ./.Editor/Unity.app -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer ./build/players/test
+    - .Editor/Unity.app/Contents/MacOS/Unity -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer ./build/players/test
 {% endif -%}
 
-
-    #- ./utr --suite=playmode --platform={{ platform.platform }} --editor-location=.Editor --testproject={{ project.path }} --player-save-path=build/players --artifacts_path=build/logs --build-only
   artifacts:
     players:
         paths:
