@@ -1,0 +1,55 @@
+{% metadata_file .yamato/project.metafile %}
+---
+
+{% for project in projects -%}
+{% for editor in test_editors -%}
+{% for platform in test_platforms -%}
+
+build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
+  name: Build Project {{ project.name }} - Package {{ package.name }} - {{ editor }} on {{ platform.name }}
+  variables:
+    UTR_VERSION: current
+  agent:
+    type: {{ platform.type }}
+    image: {{ platform.image }}
+    flavor: {{ platform.flavor}}
+  commands:
+    - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+    - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast
+
+{% if platform.name == "win" -%} #windows
+    - .Editor\Unity.exe -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build\players\test.exe
+{% else -%}
+    - .Editor/Unity.app/Contents/MacOS/Unity -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildOSXUniversalPlayer ./build/players/test
+{% endif -%}
+
+  artifacts:
+    players:
+        paths:
+          - "build/players/**"
+    logs:
+        paths:
+          - "build/logs/**"
+
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+
+# Run all relevant tasks when a pull request targeting the develop / main
+develop_pull_request_trigger:
+  name: Develop Branch Triggers
+  dependencies:
+{% for project in projects -%}
+{% for editor in test_editors -%}
+{% for platform in test_platforms -%}
+    - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+  triggers:
+    cancel_old_ci: true
+    pull_requests:
+    - targets:
+        only:
+          - "main"
+          - "develop"

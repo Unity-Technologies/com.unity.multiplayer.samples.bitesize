@@ -1,0 +1,29 @@
+# Editors where tests will happen. The first entry of this array is also used
+# for validation.
+#
+# Therefore, **do not** put an older V1-lifecycle ver. 
+#  like 2020.x or 2019.x on top of 'test_editors'
+test_editors:
+  - 2020.3
+
+# Platforms that will be tested. The first entry in this array will also
+# be used for validation
+test_platforms:
+  - name: win
+    type: Unity::VM
+    image: package-ci/win10:stable
+    platform: StandaloneWindows64
+    flavor: b1.large
+  - name: mac
+    type: Unity::VM::osx
+    image: package-ci/mac:stable
+    platform: StandaloneOSX
+    flavor: m1.mac
+
+# Projects within the repository that will be tested. Name will be used
+# for job ids, so it should not contain spaces/non-supported characters
+projects:
+  - name: 2dspaceshooter
+    path: Basic/2DSpaceShooter
+  - name: invaders
+    path: Basic/Invaders

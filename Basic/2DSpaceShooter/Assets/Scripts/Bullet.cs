@@ -15,7 +15,7 @@ public class Bullet : NetworkBehaviour
         m_Owner = owner;
         m_Damage = damage;
         m_Bounce = bounce;
-
+        
         if (IsServer)
         {
             // This is bad code don't use invoke.
