@@ -1,5 +1,4 @@
-﻿using System;
-using MLAPI;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
@@ -27,7 +26,7 @@ public class PlayerBullet : MonoBehaviour
             return;
 
         var hitEnemy = collider.gameObject.GetComponent<EnemyAgent>();
-        if (hitEnemy != null && owner)
+        if (hitEnemy != null && owner != null)
         {
             owner.IncreasePlayerScore(hitEnemy.score);
 

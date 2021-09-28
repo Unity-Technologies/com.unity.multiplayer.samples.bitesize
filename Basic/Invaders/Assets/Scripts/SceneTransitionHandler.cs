@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using MLAPI;
-using MLAPI.SceneManagement;
+using Unity.Netcode;
 
 public class SceneTransitionHandler : NetworkBehaviour
 {
@@ -20,8 +19,8 @@ public class SceneTransitionHandler : NetworkBehaviour
     [HideInInspector]
     public event SceneStateChangedDelegateHandler OnSceneStateChanged;
 
-    private SceneSwitchProgress m_SceneProgress;
-
+    private int m_numberOfClientLoaded;
+    
     /// <summary>
     /// Example scene states
     /// </summary>
@@ -94,23 +93,29 @@ public class SceneTransitionHandler : NetworkBehaviour
     {
         if(NetworkManager.Singleton.IsListening)
         {
-            m_SceneProgress = NetworkSceneManager.SwitchScene(scenename);
-
-            m_SceneProgress.OnClientLoadedScene += SceneProgress_OnClientLoadedScene;
+            NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
+            NetworkManager.Singleton.SceneManager.LoadScene(scenename, LoadSceneMode.Single);
         }
         else
         {
             SceneManager.LoadSceneAsync(scenename);
         }
     }
+    private void OnSceneEvent(SceneEvent sceneEvent)
+    {
+        //We are only interested by Client Loaded Scene events
+        if (sceneEvent.SceneEventType != SceneEventData.SceneEventTypes.C2S_LoadComplete) return;
+
+        m_numberOfClientLoaded += 1;
+        if(OnClientLoadedScene != null)
+        {
+            OnClientLoadedScene.Invoke(sceneEvent.ClientId);
+        }
+    }
 
     public bool AllClientsAreLoaded()
     {
-        if(m_SceneProgress != null)
-        {
-            return m_SceneProgress.IsAllClientsDoneLoading;
-        }
-        return false;
+        return m_numberOfClientLoaded == NetworkManager.Singleton.ConnectedClients.Count;
     }
 
     /// <summary>
@@ -131,15 +136,8 @@ public class SceneTransitionHandler : NetworkBehaviour
     /// </summary>
     public void ExitAndLoadStartMenu()
     {
-        if(m_SceneProgress != null)
-        {
-            m_SceneProgress = null;
-        }
-        if(OnClientLoadedScene != null)
-        {
-            OnClientLoadedScene = null;
-        }
-        SetSceneState(SceneTransitionHandler.SceneStates.Start);
+        OnClientLoadedScene = null;
+        SetSceneState(SceneStates.Start);
         SceneManager.LoadScene(1);
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using MLAPI;
-using MLAPI.Connection;
-using MLAPI.Messaging;
-using MLAPI.NetworkVariable;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -62,10 +59,10 @@ public class InvadersGame : NetworkBehaviour
     private float m_DelayedStartTime = 5.0f;
 
     [SerializeField]
-    private NetworkVariableFloat m_TickPeriodic = new NetworkVariableFloat(0.2f);
+    private NetworkVariable<float> m_TickPeriodic = new NetworkVariable<float>(0.2f);
 
     [SerializeField]
-    private NetworkVariableFloat m_EnemyMovingDirection = new NetworkVariableFloat(0.3f);
+    private NetworkVariable<float> m_EnemyMovingDirection = new NetworkVariable<float>(0.3f);
 
     [SerializeField]
     private float m_RandomThresholdForSaucerCreation = 0.92f;
@@ -78,22 +75,22 @@ public class InvadersGame : NetworkBehaviour
     private bool m_ClientGameStarted;
     private bool m_ClientStartCountdown;
 
-    private NetworkVariableBool m_CountdownStarted = new NetworkVariableBool(false);
+    private NetworkVariable<bool> m_CountdownStarted = new NetworkVariable<bool>(false);
 
     private float m_NextTick;
 
     // the timer should only be synced at the beginning
     // and then let the client to update it in a predictive manner
-    private NetworkVariableFloat m_ReplicatedTimeRemaining = new NetworkVariableFloat();
+    private bool m_ReplicatedTimeSent = false;
     private GameObject m_Saucer;
     private List<Shield> m_Shields = new List<Shield>();
     private float m_TimeRemaining;
 
     public static InvadersGame Singleton { get; private set; }
 
-    public NetworkVariableBool hasGameStarted { get; } = new NetworkVariableBool(false);
+    public NetworkVariable<bool> hasGameStarted { get; } = new NetworkVariable<bool>(false);
 
-    public NetworkVariableBool isGameOver { get; } = new NetworkVariableBool(false);
+    public NetworkVariable<bool> isGameOver { get; } = new NetworkVariable<bool>(false);
 
     /// <summary>
     ///     Awake
@@ -113,12 +110,12 @@ public class InvadersGame : NetworkBehaviour
             m_TimeRemaining = m_DelayedStartTime;
 
             //Set for server side
-            m_ReplicatedTimeRemaining.Value = m_DelayedStartTime;
+            m_ReplicatedTimeSent = false;
         }
         else
         {
             //We do a check for the client side value upon instantiating the class (should be zero)
-            Debug.LogFormat("Client side we started with a timer value of {0}", m_ReplicatedTimeRemaining.Value);
+            Debug.LogFormat("Client side we started with a timer value of {0}", m_TimeRemaining);
         }
     }
 
@@ -156,27 +153,13 @@ public class InvadersGame : NetworkBehaviour
 
     internal static event Action OnSingletonReady;
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         if (IsClient && !IsServer)
         {
             m_ClientGameOver = false;
             m_ClientStartCountdown = false;
             m_ClientGameStarted = false;
-
-            m_ReplicatedTimeRemaining.OnValueChanged += (oldAmount, newAmount) =>
-            {
-                // See the ShouldStartCountDown method for when the server updates the value
-                if (m_TimeRemaining == 0)
-                {
-                    Debug.LogFormat("Client side our first timer update value is {0}", newAmount);
-                    m_TimeRemaining = newAmount;
-                }
-                else
-                {
-                    Debug.LogFormat("Client side we got an update for a timer value of {0} when we shouldn't", m_ReplicatedTimeRemaining.Value);
-                }
-            };
 
             m_CountdownStarted.OnValueChanged += (oldValue, newValue) =>
             {
@@ -202,7 +185,7 @@ public class InvadersGame : NetworkBehaviour
         //and in turn makes the players visible and allows for the players to be controlled.
         SceneTransitionHandler.sceneTransitionHandler.SetSceneState(SceneTransitionHandler.SceneStates.Ingame);
 
-        base.NetworkStart();
+        base.OnNetworkSpawn();
     }
 
     /// <summary>
@@ -219,19 +202,36 @@ public class InvadersGame : NetworkBehaviour
             m_CountdownStarted.Value = SceneTransitionHandler.sceneTransitionHandler.AllClientsAreLoaded();
 
             //While we are counting down, continually set the m_ReplicatedTimeRemaining.Value (client should only receive the update once)
-            if (m_CountdownStarted.Value && m_ReplicatedTimeRemaining.Settings.SendTickrate != -1)
+            if (m_CountdownStarted.Value && !m_ReplicatedTimeSent)
             {
-                //Now we can specify that we only want this to be sent once
-                m_ReplicatedTimeRemaining.Settings.SendTickrate = -1;
-
-                //Now set the value for our one time m_ReplicatedTimeRemaining networked var for clients to get updated once
-                m_ReplicatedTimeRemaining.Value = m_DelayedStartTime;
+                SetReplicatedTimeRemainingClientRPC(m_DelayedStartTime);
+                m_ReplicatedTimeSent = true;
             }
 
             return m_CountdownStarted.Value;
         }
 
         return m_ClientStartCountdown;
+    }
+
+    /// <summary>
+    ///     We want to send only once the Time Remaining so the clients
+    ///     will deal with updating it. For that, we use a ClientRPC
+    /// </summary>
+    /// <param name="delayedStartTime"></param>
+    [ClientRpc]
+    private void SetReplicatedTimeRemainingClientRPC(float delayedStartTime)
+    {
+        // See the ShouldStartCountDown method for when the server updates the value
+        if (m_TimeRemaining == 0)
+        {
+            Debug.LogFormat("Client side our first timer update value is {0}", delayedStartTime);
+            m_TimeRemaining = delayedStartTime;
+        }
+        else
+        {
+            Debug.LogFormat("Client side we got an update for a timer value of {0} when we shouldn't", delayedStartTime);
+        }
     }
 
     /// <summary>
@@ -271,16 +271,11 @@ public class InvadersGame : NetworkBehaviour
         {
             m_TimeRemaining -= Time.deltaTime;
 
-            if (IsServer) // Only the server should be updating this
+            if (IsServer && m_TimeRemaining <= 0.0f) // Only the server should be updating this
             {
-                if (m_TimeRemaining <= 0.0f)
-                {
-                    m_TimeRemaining = 0.0f;
-                    hasGameStarted.Value = true;
-                    OnGameStarted();
-                }
-
-                m_ReplicatedTimeRemaining.Value = m_TimeRemaining;
+                m_TimeRemaining = 0.0f;
+                hasGameStarted.Value = true;
+                OnGameStarted();
             }
 
             if (m_TimeRemaining > 0.1f)
@@ -514,8 +509,7 @@ public class InvadersGame : NetworkBehaviour
 
     public void ExitGame()
     {
-        if (IsServer) NetworkManager.Singleton.StopServer();
-        if (IsClient) NetworkManager.Singleton.StopClient();
+        NetworkManager.Singleton.Shutdown();
         SceneTransitionHandler.sceneTransitionHandler.ExitAndLoadStartMenu();
     }
 

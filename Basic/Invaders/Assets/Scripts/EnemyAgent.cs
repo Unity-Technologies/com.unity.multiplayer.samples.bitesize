@@ -1,5 +1,5 @@
 ﻿using System;
-using MLAPI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -26,9 +26,9 @@ public class EnemyAgent : NetworkBehaviour
         m_FirstShootTimeAfterSpawn = Single.PositiveInfinity;
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
-        base.NetworkStart();
+        base.OnNetworkSpawn();
 
         if (IsServer)
         {
