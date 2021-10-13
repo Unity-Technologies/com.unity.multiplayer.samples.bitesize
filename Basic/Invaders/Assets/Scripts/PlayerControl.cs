@@ -54,8 +54,9 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    protected void OnDestroy()
+    public override void OnNetworkDespawn()
     {
+        base.OnNetworkDespawn();
         if (IsClient)
         {
             m_Lives.OnValueChanged -= OnLivesChanged;

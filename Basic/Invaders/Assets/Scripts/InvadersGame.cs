@@ -99,6 +99,7 @@ public class InvadersGame : NetworkBehaviour
     private void Awake()
     {
         // TODO: Improve this singleton pattern
+        Debug.Log("Awake");
         Singleton = this;
         OnSingletonReady?.Invoke();
 
@@ -138,12 +139,9 @@ public class InvadersGame : NetworkBehaviour
         if (HasGameStarted()) UpdateEnemies();
     }
 
-    /// <summary>
-    ///     OnDestroy
-    ///     Clean up upon destruction of this class
-    /// </summary>
-    protected void OnDestroy()
+    public override void OnNetworkDespawn()
     {
+        base.OnNetworkDespawn();
         if (IsServer)
         {
             m_Enemies.Clear();
@@ -155,6 +153,7 @@ public class InvadersGame : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        Debug.Log("On Network Spawn");
         if (IsClient && !IsServer)
         {
             m_ClientGameOver = false;

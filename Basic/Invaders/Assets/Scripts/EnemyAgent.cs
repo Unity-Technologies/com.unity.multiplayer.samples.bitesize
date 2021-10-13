@@ -45,14 +45,15 @@ public class EnemyAgent : NetworkBehaviour
         }
     }
 
-    protected void OnDestroy()
+    public override void OnNetworkDespawn()
     {
+        base.OnNetworkDespawn();
         if (!InvadersGame.Singleton) return;
 
         if (IsServer) InvadersGame.Singleton.UnregisterSpawnableObject(InvadersObjectType.Enemy, gameObject);
         InvadersGame.Singleton.isGameOver.OnValueChanged -= OnGameOver;
     }
-    
+
     private void Update()
     {
         if (Time.time <= m_FirstShootTimeAfterSpawn)

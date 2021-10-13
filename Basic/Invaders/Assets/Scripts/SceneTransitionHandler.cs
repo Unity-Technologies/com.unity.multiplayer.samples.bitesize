@@ -104,30 +104,15 @@ public class SceneTransitionHandler : NetworkBehaviour
     private void OnSceneEvent(SceneEvent sceneEvent)
     {
         //We are only interested by Client Loaded Scene events
-        if (sceneEvent.SceneEventType != SceneEventData.SceneEventTypes.C2S_LoadComplete) return;
+        if (sceneEvent.SceneEventType != SceneEventType.LoadComplete) return;
 
         m_numberOfClientLoaded += 1;
-        if(OnClientLoadedScene != null)
-        {
-            OnClientLoadedScene.Invoke(sceneEvent.ClientId);
-        }
+        OnClientLoadedScene?.Invoke(sceneEvent.ClientId);
     }
 
     public bool AllClientsAreLoaded()
     {
         return m_numberOfClientLoaded == NetworkManager.Singleton.ConnectedClients.Count;
-    }
-
-    /// <summary>
-    /// Invoked when a client has finished loading a scene
-    /// </summary>
-    /// <param name="clientId"></param>
-    private void SceneProgress_OnClientLoadedScene(ulong clientId)
-    {
-        if(OnClientLoadedScene != null)
-        {
-            OnClientLoadedScene.Invoke(clientId);
-        }
     }
 
     /// <summary>
