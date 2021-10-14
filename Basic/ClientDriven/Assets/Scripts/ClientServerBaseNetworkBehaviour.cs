@@ -1,8 +1,11 @@
-using UnityEngine.Assertions;
-
 namespace Unity.Netcode.Samples
 {
-    public abstract class ClientServerNetworkBehaviour : NetworkBehaviour
+    /// <summary>
+    /// Helper to reduce the amount of times you forget about isServer/isClient checks. With this, all classes are server driven by default,
+    /// which can be overriden with the virtual properties Both/ServerOnly/ClientOnly
+    /// This really is an experiment, there will still be Netcode events called on disabled GameObjects. This class might give a false sense of security
+    /// </summary>
+    public abstract class ClientServerBaseNetworkBehaviour : NetworkBehaviour
     {
         protected virtual bool Both { get; } = false;
         protected virtual bool ServerOnly { get; } = true;
@@ -26,7 +29,6 @@ namespace Unity.Netcode.Samples
             if (ServerOnly)
             {
                 enabled = IsServer;
-                return;
             }
         }
     }

@@ -1,22 +1,20 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpawnPoints : MonoBehaviour
+public class ServerPlayerSpawnPoints : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> m_SpawnPoints;
 
-    private static PlayerSpawnPoints s_Instance;
+    private static ServerPlayerSpawnPoints s_Instance;
 
-    public static PlayerSpawnPoints Instance
+    public static ServerPlayerSpawnPoints Instance
     {
         get
         {
             if (s_Instance == null)
             {
-                s_Instance = FindObjectOfType<PlayerSpawnPoints>();
+                s_Instance = FindObjectOfType<ServerPlayerSpawnPoints>();
             }
 
             return s_Instance;

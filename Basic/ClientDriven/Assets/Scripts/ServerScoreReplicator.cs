@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Samples;
-using UnityEngine;
 
-public class ServerScoreReplicator : ClientServerNetworkBehaviour
+public class ServerScoreReplicator : ClientServerBaseNetworkBehaviour
 {
     // [SerializeField]
     // private ScoreTracker m_Score;

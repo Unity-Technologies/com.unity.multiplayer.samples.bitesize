@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Samples;
 using UnityEngine;
@@ -15,10 +12,10 @@ public enum IngredientType
     red,
     blue,
     purple,
-    max
+    max // should be always last
 }
 
-public class ServerObjectWithIngredientType : ClientServerNetworkBehaviour
+public class ServerObjectWithIngredientType : ClientServerBaseNetworkBehaviour
 {
     [SerializeField]
     public NetworkVariable<IngredientType> CurrentIngredientType;

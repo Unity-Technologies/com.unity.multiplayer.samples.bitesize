@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Unity.Netcode.Samples
 {
-    public class ClientObjectWithIngredientType : ClientServerNetworkBehaviour
+    public class ClientObjectWithIngredientType : ClientServerBaseNetworkBehaviour
     {
         protected override bool ClientOnly => true;
 
@@ -16,16 +16,12 @@ namespace Unity.Netcode.Samples
         private Material m_RedMaterial;
 
         private ServerObjectWithIngredientType m_Server;
-
-        private Material Material
-        {
-            get { return GetComponent<Renderer>().material; }
-            set { GetComponent<Renderer>().material = value; }
-        }
+        private Renderer m_Renderer;
 
         private void Awake()
         {
             m_Server = GetComponent<ServerObjectWithIngredientType>();
+            m_Renderer = GetComponent<Renderer>();
         }
 
         void UpdateMaterial()
@@ -33,20 +29,20 @@ namespace Unity.Netcode.Samples
             switch (m_Server.CurrentIngredientType.Value)
             {
                 case IngredientType.blue:
-                    Material = m_BlueMaterial;
+                    m_Renderer.material = m_BlueMaterial;
                     break;
                 case IngredientType.red:
-                    Material = m_RedMaterial;
+                    m_Renderer.material = m_RedMaterial;
                     break;
                 case IngredientType.purple:
-                    Material = m_PurpleMaterial;
+                    m_Renderer.material = m_PurpleMaterial;
                     break;
             }
         }
 
         protected void Update()
         {
-            UpdateMaterial();
+            UpdateMaterial(); // don't do this at home kids, this is me being lazy, this shouldn't happen every update...
         }
     }
 }

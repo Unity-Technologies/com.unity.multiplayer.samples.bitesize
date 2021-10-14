@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using Unity.Netcode.Samples;
 using UnityEngine;
 using Random = System.Random;
 
-public class ServerIngredientSpawner : ClientServerNetworkBehaviour
+public class ServerIngredientSpawner : ClientServerBaseNetworkBehaviour
 {
     [SerializeField]
     private List<GameObject> m_SpawnPoints;
@@ -36,6 +33,5 @@ public class ServerIngredientSpawner : ClientServerNetworkBehaviour
 
             m_LastSpawnTime = Time.time;
         }
-
     }
 }
