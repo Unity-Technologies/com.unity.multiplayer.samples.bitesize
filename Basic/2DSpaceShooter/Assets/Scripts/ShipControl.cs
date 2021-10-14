@@ -31,7 +31,7 @@ public class Buff
 public class ShipControl : NetworkBehaviour
 {
     static string s_ObjectPoolTag = "ObjectPool";
-    
+
     NetworkObjectPool m_ObjectPool;
     public GameObject BulletPrefab;
     public AudioSource fireSound;
@@ -55,14 +55,14 @@ public class ShipControl : NetworkBehaviour
 
     float m_EnergyTimer = 0;
 
-    public NetworkVariableString PlayerName = new NetworkVariableString("SomeGuy");
+    public NetworkVariableString PlayerName = new NetworkVariableString("");
 
     [SerializeField]
     Texture m_Box;
     public ParticleSystem friction;
     public ParticleSystem thrust;
 
-    float m_FrictionStopTimer = 0;
+    private NetworkVariableFloat m_FrictionEffectStartTimer = new NetworkVariableFloat(-10);
 
     // for client movement command throttling
     float m_OldMoveForce = 0;
@@ -70,9 +70,9 @@ public class ShipControl : NetworkBehaviour
 
     // server movement
     private NetworkVariableFloat m_Thrusting = new NetworkVariableFloat();
-    
+
     float m_Spin;
-    
+
     Rigidbody2D m_Rigidbody2D;
 
     void Awake()
@@ -99,22 +99,21 @@ public class ShipControl : NetworkBehaviour
 
     void Start()
     {
-        friction.Stop();
         thrust.Stop();
 
         DontDestroyOnLoad(gameObject);
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         GetComponent<AudioListener>().enabled = IsOwner;
+        PlayerName.Value = $"Player {OwnerClientId}";
     }
 
     public void TakeDamage(int amount)
     {
         Health.Value = Health.Value - amount;
-        friction.Play();
-        m_FrictionStopTimer = Time.time + 1.0f;
+        m_FrictionEffectStartTimer.Value = NetworkManager.LocalTime.TimeAsFloat;
 
         if (Health.Value <= 0)
         {
@@ -124,7 +123,7 @@ public class ShipControl : NetworkBehaviour
 
             m_Deaths += 1;
             Health.Value = 100;
-            transform.position = Vector3.zero;
+            transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
         }
@@ -141,21 +140,20 @@ public class ShipControl : NetworkBehaviour
         }
 
         bool bounce = BounceTimer.Value > Time.time;
-        
-        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab);
+
+        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
         bullet.transform.position = transform.position + direction;
-        
+
         var bulletRb = bullet.GetComponent<Rigidbody2D>();
-        Vector2 velocity;
-        
-        velocity = m_Rigidbody2D.velocity;
+
+        var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
-        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime, m_ObjectPool);
-        
+        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime);
+
         bullet.GetComponent<NetworkObject>().Spawn(null, true);
     }
-    
+
     void Update()
     {
         if (IsServer)
@@ -224,16 +222,36 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
+    private void HandleFrictionGraphics()
+    {
+        var time = NetworkManager.ServerTime.Time;
+        var start = m_FrictionEffectStartTimer.Value;
+        
+        bool frictionShouldBeActive = time >= start && time < start + 1f; // 1f is the duration of the effect
+
+        if (frictionShouldBeActive)
+        {
+            if (friction.isPlaying == false)
+            {
+                friction.Play();
+            }
+        }
+        else
+        {
+            if (friction.isPlaying)
+            {
+                friction.Stop();
+            }
+        }
+    }
+
     void UpdateClient()
     {
+        HandleFrictionGraphics();
+
         if (!IsLocalPlayer)
         {
             return;
-        }
-
-        if (m_FrictionStopTimer < Time.time)
-        {
-            friction.Stop();
         }
 
         // movement
