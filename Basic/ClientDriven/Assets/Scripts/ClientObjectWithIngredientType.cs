@@ -2,23 +2,22 @@ using UnityEngine;
 
 namespace Unity.Netcode.Samples
 {
-
-    public class ClientObjectWithIngredientType : SamNetworkBehaviour
+    public class ClientObjectWithIngredientType : ClientServerNetworkBehaviour
     {
-        protected override bool ClientOnly { get; } = true;
+        protected override bool ClientOnly => true;
 
         [SerializeField]
-        private Material purpleMaterial;
+        private Material m_PurpleMaterial;
 
         [SerializeField]
-        private Material blueMaterial;
+        private Material m_BlueMaterial;
 
         [SerializeField]
-        private Material redMaterial;
+        private Material m_RedMaterial;
 
         private ServerObjectWithIngredientType m_Server;
 
-        private Material m_Material
+        private Material Material
         {
             get { return GetComponent<Renderer>().material; }
             set { GetComponent<Renderer>().material = value; }
@@ -34,18 +33,18 @@ namespace Unity.Netcode.Samples
             switch (m_Server.CurrentIngredientType.Value)
             {
                 case IngredientType.blue:
-                    m_Material = blueMaterial;
+                    Material = m_BlueMaterial;
                     break;
                 case IngredientType.red:
-                    m_Material = redMaterial;
+                    Material = m_RedMaterial;
                     break;
                 case IngredientType.purple:
-                    m_Material = purpleMaterial;
+                    Material = m_PurpleMaterial;
                     break;
             }
         }
 
-        protected virtual void Update()
+        protected void Update()
         {
             UpdateMaterial();
         }

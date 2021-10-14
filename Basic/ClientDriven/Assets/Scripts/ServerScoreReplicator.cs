@@ -5,7 +5,7 @@ using Unity.Netcode;
 using Unity.Netcode.Samples;
 using UnityEngine;
 
-public class ServerScoreReplicator : SamNetworkBehaviour
+public class ServerScoreReplicator : ClientServerNetworkBehaviour
 {
     // [SerializeField]
     // private ScoreTracker m_Score;

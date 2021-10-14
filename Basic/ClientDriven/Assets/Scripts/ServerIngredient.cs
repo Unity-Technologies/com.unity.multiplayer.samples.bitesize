@@ -18,7 +18,7 @@ public enum IngredientType
     max
 }
 
-public class ServerObjectWithIngredientType : SamNetworkBehaviour
+public class ServerObjectWithIngredientType : ClientServerNetworkBehaviour
 {
     [SerializeField]
     public NetworkVariable<IngredientType> CurrentIngredientType;

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 [DefaultExecutionOrder(0)] // before client component
-public class ServerPlayerMove : SamNetworkBehaviour
+public class ServerPlayerMove : ClientServerNetworkBehaviour
 {
     private ClientPlayerMove m_Client;
 

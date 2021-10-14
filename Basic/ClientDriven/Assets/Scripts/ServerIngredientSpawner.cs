@@ -6,7 +6,7 @@ using Unity.Netcode.Samples;
 using UnityEngine;
 using Random = System.Random;
 
-public class ServerIngredientSpawner : SamNetworkBehaviour
+public class ServerIngredientSpawner : ClientServerNetworkBehaviour
 {
     [SerializeField]
     private List<GameObject> m_SpawnPoints;

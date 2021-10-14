@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(ServerPlayerMove))]
 [DefaultExecutionOrder(1)] // after server component
-public class ClientPlayerMove : SamNetworkBehaviour
+public class ClientPlayerMove : ClientServerNetworkBehaviour
 {
     protected override bool ClientOnly { get; } = true;
 

@@ -2,7 +2,7 @@ using UnityEngine.Assertions;
 
 namespace Unity.Netcode.Samples
 {
-    public abstract class SamNetworkBehaviour : NetworkBehaviour
+    public abstract class ClientServerNetworkBehaviour : NetworkBehaviour
     {
         protected virtual bool Both { get; } = false;
         protected virtual bool ServerOnly { get; } = true;
