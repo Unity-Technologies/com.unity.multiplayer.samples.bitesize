@@ -98,13 +98,13 @@ public class NetworkManagerHud : MonoBehaviour
         if (m_NetworkManager.IsServer)
         {
             var mode = m_NetworkManager.IsHost ? "Host" : "Server";
-            //GUILayout.Label($"{mode} active on port: {m_Transport.ConnectPort.ToString()}", m_LabelTextStyle); // TODO currently not supported by UTP
+            GUILayout.Label($"{mode} active on port: {m_Transport.ConnectionData.Port.ToString()}", m_LabelTextStyle);
         }
         else
         {
             if (m_NetworkManager.IsConnectedClient)
             {
-                //GUILayout.Label($"Client connected {m_Transport.ConnectAddress}:{m_Transport.ConnectPort.ToString()}", m_LabelTextStyle); // TODO currently not supported by UTP
+                GUILayout.Label($"Client connected {m_Transport.ConnectionData.Address}:{m_Transport.ConnectionData.Port.ToString()}", m_LabelTextStyle);
             }
         }
 

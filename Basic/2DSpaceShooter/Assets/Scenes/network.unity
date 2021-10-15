@@ -772,7 +772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DrawOffset: {x: 10, y: 10}
-  LabelColor: {r: 0, g: 0, b: 0, a: 1}
+  LabelColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &872897446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,12 +859,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProtocolType: 0
-  m_MessageBufferSize: 6144
-  m_ReciveQueueSize: 128
-  m_SendQueueSize: 128
+  m_MaximumPacketSize: 1400
+  m_MaxPacketQueueSize: 128
   m_SendQueueBatchSize: 4096
-  m_ServerAddress: 127.0.0.1
-  m_ServerPort: 7777
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
 --- !u!4 &872897449
 Transform:
   m_ObjectHideFlags: 0
