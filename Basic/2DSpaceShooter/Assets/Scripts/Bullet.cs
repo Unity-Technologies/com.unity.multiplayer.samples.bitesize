@@ -1,6 +1,6 @@
 ﻿using System;
+using Unity.Netcode;
 using UnityEngine;
-using MLAPI;
 
 public class Bullet : NetworkBehaviour
 {
