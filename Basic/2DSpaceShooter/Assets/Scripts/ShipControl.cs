@@ -151,6 +151,17 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
+    void LateUpdate()
+    {
+        if (IsLocalPlayer)
+        {
+            // center camera.. only if this is MY player!
+            Vector3 pos = transform.position;
+            pos.z = -50;
+            Camera.main.transform.position = pos;
+        }
+    }
+
     void UpdateServer()
     {
         // energy regen
@@ -285,11 +296,6 @@ public class ShipControl : NetworkBehaviour
         {
             FireServerRpc();
         }
-
-        // center camera.. only if this is MY player!
-        Vector3 pos = transform.position;
-        pos.z = -50;
-        Camera.main.transform.position = pos;
     }
 
     public void AddBuff(Buff.BuffType buff)
