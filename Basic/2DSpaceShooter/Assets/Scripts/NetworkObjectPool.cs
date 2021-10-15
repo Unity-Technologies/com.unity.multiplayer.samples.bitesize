@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using MLAPI;
-using MLAPI.Spawning;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
