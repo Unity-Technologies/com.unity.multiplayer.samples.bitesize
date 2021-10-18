@@ -1,5 +1,15 @@
 # Change log
 
+## [develop]
+
+
+### 2DSpaceShooter
+
+#### New Changes
+- Fixed a bug where explosions from bullet impacts where only visible on the host.
+- Updated to MLAPI develop TODO replace with next release
+- Player name is no longer static but based on the client id.
+
 ## [0.2.0] - 2021-07-21
 
 ### Invaders

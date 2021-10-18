@@ -1,7 +1,6 @@
 ﻿using System;
-using MLAPI;
-using MLAPI.Messaging;
-using MLAPI.NetworkVariable;
+using Unity.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -31,7 +30,7 @@ public class Buff
 public class ShipControl : NetworkBehaviour
 {
     static string s_ObjectPoolTag = "ObjectPool";
-    
+
     NetworkObjectPool m_ObjectPool;
     public GameObject BulletPrefab;
     public AudioSource fireSound;
@@ -41,38 +40,36 @@ public class ShipControl : NetworkBehaviour
     float bulletLifetime = 2;
     float topSpeed = 7.0f;
 
-    public NetworkVariableInt Health = new NetworkVariableInt(100);
-    public NetworkVariableInt Energy = new NetworkVariableInt(100);
-
-    int m_Deaths = 0;
-
-    public NetworkVariableFloat SpeedBuffTimer = new NetworkVariableFloat(0);
-    public NetworkVariableFloat RotateBuffTimer = new NetworkVariableFloat(0);
-    public NetworkVariableFloat TripleShotTimer = new NetworkVariableFloat(0);
-    public NetworkVariableFloat DoubleShotTimer = new NetworkVariableFloat(0);
-    public NetworkVariableFloat QuadDamageTimer = new NetworkVariableFloat(0);
-    public NetworkVariableFloat BounceTimer = new NetworkVariableFloat(0);
+    public NetworkVariable<int> Health = new NetworkVariable<int>(100);
+    public NetworkVariable<int> Energy = new NetworkVariable<int>(100);
+    
+    public NetworkVariable<float> SpeedBuffTimer = new NetworkVariable<float>(0f);
+    public NetworkVariable<float> RotateBuffTimer = new NetworkVariable<float>(0f);
+    public NetworkVariable<float> TripleShotTimer = new NetworkVariable<float>(0f);
+    public NetworkVariable<float> DoubleShotTimer = new NetworkVariable<float>(0f);
+    public NetworkVariable<float> QuadDamageTimer = new NetworkVariable<float>(0f);
+    public NetworkVariable<float> BounceTimer = new NetworkVariable<float>(0f);
 
     float m_EnergyTimer = 0;
 
-    public NetworkVariableString PlayerName = new NetworkVariableString("SomeGuy");
+    public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
     [SerializeField]
     Texture m_Box;
     public ParticleSystem friction;
     public ParticleSystem thrust;
 
-    float m_FrictionStopTimer = 0;
+    private NetworkVariable<float> m_FrictionEffectStartTimer = new NetworkVariable<float>(-10);
 
     // for client movement command throttling
     float m_OldMoveForce = 0;
     float m_OldSpin = 0;
 
     // server movement
-    private NetworkVariableFloat m_Thrusting = new NetworkVariableFloat();
-    
+    private NetworkVariable<float> m_Thrusting = new NetworkVariable<float>();
+
     float m_Spin;
-    
+
     Rigidbody2D m_Rigidbody2D;
 
     void Awake()
@@ -81,50 +78,36 @@ public class ShipControl : NetworkBehaviour
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
     }
-
-    void OnHealth(int oldValue, int newValue)
-    {
-        Health.Value = newValue;
-    }
-
-    void OnEnable()
-    {
-        Health.OnValueChanged += OnHealth;
-    }
-
-    void OnDisable()
-    {
-        Health.OnValueChanged -= OnHealth;
-    }
-
+    
     void Start()
     {
-        friction.Stop();
         thrust.Stop();
 
         DontDestroyOnLoad(gameObject);
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         GetComponent<AudioListener>().enabled = IsOwner;
+        if (IsServer)
+        {
+            PlayerName.Value = $"Player {OwnerClientId}";
+        }
     }
 
     public void TakeDamage(int amount)
     {
         Health.Value = Health.Value - amount;
-        friction.Play();
-        m_FrictionStopTimer = Time.time + 1.0f;
+        m_FrictionEffectStartTimer.Value = NetworkManager.LocalTime.TimeAsFloat;
 
         if (Health.Value <= 0)
         {
             Health.Value = 0;
 
             //todo: reset all buffs
-
-            m_Deaths += 1;
+            
             Health.Value = 100;
-            transform.position = Vector3.zero;
+            transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
         }
@@ -141,21 +124,20 @@ public class ShipControl : NetworkBehaviour
         }
 
         bool bounce = BounceTimer.Value > Time.time;
-        
-        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab);
+
+        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
         bullet.transform.position = transform.position + direction;
-        
+
         var bulletRb = bullet.GetComponent<Rigidbody2D>();
-        Vector2 velocity;
-        
-        velocity = m_Rigidbody2D.velocity;
+
+        var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
-        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime, m_ObjectPool);
-        
-        bullet.GetComponent<NetworkObject>().Spawn(null, true);
+        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime);
+
+        bullet.GetComponent<NetworkObject>().Spawn(true);
     }
-    
+
     void Update()
     {
         if (IsServer)
@@ -166,6 +148,17 @@ public class ShipControl : NetworkBehaviour
         if (IsClient)
         {
             UpdateClient();
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (IsLocalPlayer)
+        {
+            // center camera.. only if this is MY player!
+            Vector3 pos = transform.position;
+            pos.z = -50;
+            Camera.main.transform.position = pos;
         }
     }
 
@@ -224,16 +217,36 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
+    private void HandleFrictionGraphics()
+    {
+        var time = NetworkManager.ServerTime.Time;
+        var start = m_FrictionEffectStartTimer.Value;
+        
+        bool frictionShouldBeActive = time >= start && time < start + 1f; // 1f is the duration of the effect
+
+        if (frictionShouldBeActive)
+        {
+            if (friction.isPlaying == false)
+            {
+                friction.Play();
+            }
+        }
+        else
+        {
+            if (friction.isPlaying)
+            {
+                friction.Stop();
+            }
+        }
+    }
+
     void UpdateClient()
     {
+        HandleFrictionGraphics();
+
         if (!IsLocalPlayer)
         {
             return;
-        }
-
-        if (m_FrictionStopTimer < Time.time)
-        {
-            friction.Stop();
         }
 
         // movement
@@ -283,11 +296,6 @@ public class ShipControl : NetworkBehaviour
         {
             FireServerRpc();
         }
-
-        // center camera.. only if this is MY player!
-        Vector3 pos = transform.position;
-        pos.z = -50;
-        Camera.main.transform.position = pos;
     }
 
     public void AddBuff(Buff.BuffType buff)
@@ -406,7 +414,7 @@ public class ShipControl : NetworkBehaviour
 
         // draw the name with a shadow (colored for buf)	
         GUI.color = Color.black;
-        GUI.Label(new Rect(pos.x - 20, Screen.height - pos.y - 30, 100, 30), PlayerName.Value);
+        GUI.Label(new Rect(pos.x - 20, Screen.height - pos.y - 30, 400, 30), PlayerName.Value.Value);
 
         GUI.color = Color.white;
         if (SpeedBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Speed); }
@@ -421,7 +429,7 @@ public class ShipControl : NetworkBehaviour
 
         if (BounceTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Bounce); }
 
-        GUI.Label(new Rect(pos.x - 21, Screen.height - pos.y - 31, 100, 30), PlayerName.Value);
+        GUI.Label(new Rect(pos.x - 21, Screen.height - pos.y - 31, 400, 30), PlayerName.Value.Value);
 
         // draw health bar background
         GUI.color = Color.grey;
@@ -439,66 +447,4 @@ public class ShipControl : NetworkBehaviour
         GUI.color = Color.magenta;
         GUI.DrawTexture(new Rect(pos.x - 25, Screen.height - pos.y + 28, Energy.Value / 2, 5), m_Box);
     }
-
-    // ShipControl
-    // public void FakeOnUnserializeVars(NetworkReader reader, bool initialState)
-    // {
-    //     int num = (int)reader.ReadPackedUInt32();
-    //     if ((num & 1) != 0)
-    //     {
-    //         if (initialState)
-    //         {
-    //             Health.Value = (int)reader.ReadPackedUInt32();
-    //         }
-    //         else
-    //         { 
-    //             OnHealth((int)reader.ReadPackedUInt32());
-    //         }
-    //     }
-    //
-    //     if ((num & 2) != 0)
-    //     {
-    //         this.energy = (int)reader.ReadPackedUInt32();
-    //     }
-    //
-    //     if ((num & 4) != 0)
-    //     {
-    //         this.speedBufTimer = reader.ReadSingle();
-    //     }
-    //
-    //     if ((num & 8) != 0)
-    //     {
-    //         this.rotateBufTimer = reader.ReadSingle();
-    //     }
-    //
-    //     if ((num & 16) != 0)
-    //     {
-    //         this.tripleshotTimer = reader.ReadSingle();
-    //     }
-    //
-    //     if ((num & 32) != 0)
-    //     {
-    //         this.doubleshotTimer = reader.ReadSingle();
-    //     }
-    //
-    //     if ((num & 64) != 0)
-    //     {
-    //         this.quadDamageTimer = reader.ReadSingle();
-    //     }
-    //
-    //     if ((num & 128) != 0)
-    //     {
-    //         this.bounceTimer = reader.ReadSingle();
-    //     }
-    //
-    //     if ((num & 256) != 0)
-    //     {
-    //         this.playerName = reader.ReadString();
-    //     }
-    //
-    //     if ((num & 512) != 0)
-    //     {
-    //         this.m_Thrusting = reader.ReadSingle();
-    //     }
-    // }
 }
