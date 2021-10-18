@@ -1061,12 +1061,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProtocolType: 0
-  m_MessageBufferSize: 6144
-  m_ReciveQueueSize: 128
-  m_SendQueueSize: 128
+  m_MaximumPacketSize: 1400
+  m_MaxPacketQueueSize: 128
   m_SendQueueBatchSize: 4096
-  m_ServerAddress: 127.0.0.1
-  m_ServerPort: 7777
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
 --- !u!114 &1114774667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,7 +1084,7 @@ MonoBehaviour:
   LogLevel: 1
   NetworkConfig:
     ProtocolVersion: 0
-    NetworkTransport: {fileID: 1114774670}
+    NetworkTransport: {fileID: 1114774666}
     PlayerPrefab: {fileID: 3439633038736912633, guid: 2a2c42bf260b04db580cf31345132259, type: 3}
     NetworkPrefabs:
     - Override: 0

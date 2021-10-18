@@ -29,16 +29,6 @@ public class ServerPlayerMove : ClientServerBaseNetworkBehaviour
         if (!enabled) return;
 
         // the following two lines should work, yet they don't. The second client connecting won't receive this position set and will spawn at the wrong position
-        // var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
-        // m_Client.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
-
-        // this workaround works
-        StartCoroutine(SendSpawnLater());
-    }
-
-    private IEnumerator SendSpawnLater()
-    {
-        yield return new WaitForSeconds(0.5f); // looks like if server sends client RPC before client is spawned, RPC is lost?
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         m_Client.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
     }
