@@ -1,4 +1,4 @@
-﻿using MLAPI;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -82,10 +82,10 @@ public class Spawner : MonoBehaviour
             go.GetComponent<Rigidbody2D>().angularVelocity = dir;
             go.GetComponent<Rigidbody2D>().velocity = new Vector2(dx, dy);
             go.GetComponent<Asteroid>().asteroidPrefab = m_AsteroidPrefab;
-            go.GetComponent<NetworkObject>().Spawn(null, true);
+            go.GetComponent<NetworkObject>().Spawn( true); // TODO
         }
     }
-
+    
     void SpawnObstacles()
     {
         // Obstacles are not networked we just spawn them as static objects on each peer
@@ -131,7 +131,7 @@ public class Spawner : MonoBehaviour
             GameObject powerUp = m_ObjectPool.GetNetworkObject(m_PowerupPrefab).gameObject;
             powerUp.transform.position = pos;
             powerUp.GetComponent<Powerup>().buffType.Value = (Buff.BuffType)Random.Range(0, (int)Buff.BuffType.Last);
-            powerUp.GetComponent<NetworkObject>().Spawn(null, true);
+            powerUp.GetComponent<NetworkObject>().Spawn(true);
         }
 
         if (Asteroid.numAsteroids == 0)

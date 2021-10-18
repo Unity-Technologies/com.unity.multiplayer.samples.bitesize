@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using MLAPI;
-using MLAPI.NetworkVariable;
+﻿using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Powerup : NetworkBehaviour
