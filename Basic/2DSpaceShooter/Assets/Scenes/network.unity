@@ -749,9 +749,9 @@ GameObject:
   m_Component:
   - component: {fileID: 872897449}
   - component: {fileID: 872897446}
-  - component: {fileID: 872897444}
   - component: {fileID: 872897445}
   - component: {fileID: 872897447}
+  - component: {fileID: 872897448}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -759,31 +759,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &872897444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872897443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84c2d8dfe509a34fb59e2b81f8e1319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MessageBufferSize: 5120
-  MaxConnections: 100
-  MaxSentMessageQueueSize: 128
-  ConnectAddress: 127.0.0.1
-  ConnectPort: 7777
-  ServerListenPort: 7777
-  ServerWebsocketListenPort: 8887
-  SupportWebsocket: 0
-  Channels: []
-  UseMLAPIRelay: 0
-  MLAPIRelayAddress: 184.72.104.138
-  MLAPIRelayPort: 8888
-  MessageSendMode: 0
 --- !u!114 &872897445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,7 +772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DrawOffset: {x: 10, y: 10}
-  LabelColor: {r: 0, g: 0, b: 0, a: 1}
+  LabelColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &872897446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -815,10 +790,7 @@ MonoBehaviour:
   LogLevel: 1
   NetworkConfig:
     ProtocolVersion: 0
-    NetworkTransport: {fileID: 872897444}
-    RegisteredScenes:
-    - network
-    AllowRuntimeSceneChanges: 0
+    NetworkTransport: {fileID: 872897448}
     PlayerPrefab: {fileID: 100000, guid: c2549a141109b1c49b41b054580f950e, type: 3}
     NetworkPrefabs:
     - Override: 0
@@ -848,7 +820,6 @@ MonoBehaviour:
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
-    EnableNetworkVariable: 1
     EnsureNetworkVariableLengthSafety: 0
     EnableSceneManagement: 1
     ForceSamePrefabs: 1
@@ -858,12 +829,6 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     MessageBufferTimeout: 20
     EnableNetworkLogs: 1
-  references:
-    version: 1
-    00000000:
-      type: {class: NullableBoolSerializable, ns: MLAPI.Configuration, asm: Unity.Multiplayer.MLAPI.Runtime}
-      data:
-        Value: 14735065859013011121
 --- !u!114 &872897447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -881,6 +846,25 @@ MonoBehaviour:
   - {x: 18, y: 12, z: 0}
   - {x: 33, y: -32, z: 0}
   - {x: 9, y: -25, z: 0}
+--- !u!114 &872897448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872897443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ProtocolType: 0
+  m_MaximumPacketSize: 1400
+  m_MaxPacketQueueSize: 128
+  m_SendQueueBatchSize: 4096
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
 --- !u!4 &872897449
 Transform:
   m_ObjectHideFlags: 0

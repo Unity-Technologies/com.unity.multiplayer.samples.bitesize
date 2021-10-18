@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using MLAPI;
-using MLAPI.NetworkVariable;
+﻿using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Asteroid : NetworkBehaviour
@@ -11,7 +10,7 @@ public class Asteroid : NetworkBehaviour
 
     NetworkObjectPool m_ObjectPool;
 
-    public NetworkVariableInt Size = new NetworkVariableInt(4);
+    public NetworkVariable<int> Size = new NetworkVariable<int>(4);
 
     [SerializeField]
     private int m_NumCreates = 3;
