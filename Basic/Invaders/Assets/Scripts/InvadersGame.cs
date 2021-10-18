@@ -98,9 +98,17 @@ public class InvadersGame : NetworkBehaviour
     /// </summary>
     private void Awake()
     {
-        // TODO: Improve this singleton pattern
-        Debug.Log("Awake");
-        Singleton = this;
+        if (Singleton != null && Singleton != this)
+        {
+            Destroy(this);
+            return;
+        }
+        
+        if (Singleton == null)
+        {
+            Singleton = this;    
+        }
+        
         OnSingletonReady?.Invoke();
 
         if (IsServer)
