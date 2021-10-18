@@ -1,10 +1,8 @@
 using Unity.Netcode;
-using Unity.Netcode.Samples;
 using UnityEngine;
 
 public class ServerIngredient : ServerObjectWithIngredientType
 {
-    protected override bool Both { get; } = true;
 }
 
 public enum IngredientType
@@ -15,8 +13,18 @@ public enum IngredientType
     max // should be always last
 }
 
-public class ServerObjectWithIngredientType : ClientServerBaseNetworkBehaviour
+public class ServerObjectWithIngredientType : NetworkBehaviour
 {
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsServer)
+        {
+            enabled = false;
+            return;
+        }
+    }
+
     [SerializeField]
     public NetworkVariable<IngredientType> CurrentIngredientType;
 }

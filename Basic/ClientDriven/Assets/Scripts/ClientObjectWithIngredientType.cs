@@ -2,10 +2,8 @@ using UnityEngine;
 
 namespace Unity.Netcode.Samples
 {
-    public class ClientObjectWithIngredientType : ClientServerBaseNetworkBehaviour
+    public class ClientObjectWithIngredientType : NetworkBehaviour
     {
-        protected override bool ClientOnly => true;
-
         [SerializeField]
         private Material m_PurpleMaterial;
 
@@ -22,6 +20,12 @@ namespace Unity.Netcode.Samples
         {
             m_Server = GetComponent<ServerObjectWithIngredientType>();
             m_Renderer = GetComponent<Renderer>();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            enabled = IsClient;
         }
 
         void UpdateMaterial()

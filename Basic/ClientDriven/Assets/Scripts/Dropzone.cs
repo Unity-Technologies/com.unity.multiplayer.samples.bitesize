@@ -5,18 +5,9 @@ public class Dropzone : ServerObjectWithIngredientType
     [SerializeField]
     private ServerScoreReplicator m_ScoreTracker;
 
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        if (!IsServer)
-        {
-            enabled = false;
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!enabled) return;
+        if (!IsServer) return;
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();
         if (ingredient == null)
         {

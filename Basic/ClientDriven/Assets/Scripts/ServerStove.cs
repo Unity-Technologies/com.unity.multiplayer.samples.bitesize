@@ -9,9 +9,20 @@ public class ServerStove : ServerObjectWithIngredientType
     [SerializeField]
     private Transform m_IngredientCookingLocation;
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsServer)
+        {
+            enabled = false;
+            return;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!enabled) return;
+        if (!IsServer) return;
+
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();
         if (ingredient == null)
         {

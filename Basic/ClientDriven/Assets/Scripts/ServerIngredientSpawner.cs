@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Unity.Netcode.Samples;
+using Unity.Netcode;
 using UnityEngine;
 using Random = System.Random;
 
-public class ServerIngredientSpawner : ClientServerBaseNetworkBehaviour
+public class ServerIngredientSpawner : NetworkBehaviour
 {
     [SerializeField]
     private List<GameObject> m_SpawnPoints;
@@ -16,6 +16,16 @@ public class ServerIngredientSpawner : ClientServerBaseNetworkBehaviour
 
     private float m_LastSpawnTime;
     private Random r = new Random();
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsServer)
+        {
+            enabled = false;
+            return;
+        }
+    }
 
     private void FixedUpdate()
     {

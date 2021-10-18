@@ -7,10 +7,8 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(ServerPlayerMove))]
 [DefaultExecutionOrder(1)] // after server component
-public class ClientPlayerMove : ClientServerBaseNetworkBehaviour
+public class ClientPlayerMove : NetworkBehaviour
 {
-    protected override bool ClientOnly { get; } = true;
-
     private ServerPlayerMove m_Server;
 
     [SerializeField]
@@ -34,6 +32,8 @@ public class ClientPlayerMove : ClientServerBaseNetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        enabled = IsClient;
         if (!IsOwner)
         {
             m_Camera.gameObject.SetActive(false);
@@ -56,6 +56,7 @@ public class ClientPlayerMove : ClientServerBaseNetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // enabled = false if we're not the owner, so no need to guard the following code if isOwner check
         // move client authoritative object. Those moves will be replicated to other players using ClientNetworkTransform (taken from Netcode's samples)
         Vector3 move = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
         m_CharacterController.SimpleMove(move * Time.deltaTime * m_Speed);

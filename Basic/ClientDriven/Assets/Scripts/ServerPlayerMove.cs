@@ -1,7 +1,5 @@
-using System.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Components;
-using Unity.Netcode.Samples;
 using UnityEngine;
 
 /// <summary>
@@ -9,7 +7,7 @@ using UnityEngine;
 /// and picking up objects
 /// </summary>
 [DefaultExecutionOrder(0)] // before client component
-public class ServerPlayerMove : ClientServerBaseNetworkBehaviour
+public class ServerPlayerMove : NetworkBehaviour
 {
     private ClientPlayerMove m_Client;
 
@@ -26,7 +24,11 @@ public class ServerPlayerMove : ClientServerBaseNetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (!enabled) return;
+        if (!IsServer)
+        {
+            enabled = false;
+            return;
+        }
 
         // the following two lines should work, yet they don't. The second client connecting won't receive this position set and will spawn at the wrong position
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
