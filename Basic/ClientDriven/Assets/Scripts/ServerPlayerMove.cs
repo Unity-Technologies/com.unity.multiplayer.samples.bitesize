@@ -21,6 +21,7 @@ public class ServerPlayerMove : NetworkBehaviour
         m_Client = GetComponent<ClientPlayerMove>();
     }
 
+    // DOC START HERE
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -38,7 +39,6 @@ public class ServerPlayerMove : NetworkBehaviour
 
     private NetworkObject m_PickedUpObj;
 
-    // DOC START HERE
     [ServerRpc]
     public void PickupObjServerRpc(ulong objToPickupID)
     {
