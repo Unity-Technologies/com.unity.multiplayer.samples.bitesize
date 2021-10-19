@@ -46,7 +46,7 @@ namespace Unity.Netcode.Samples
 
         protected void Update()
         {
-            UpdateMaterial(); // don't do this at home kids, this is me being lazy, this shouldn't happen every update...
+            UpdateMaterial(); // this is not performant to be called every update, don't do this.
         }
     }
 }
