@@ -161,7 +161,6 @@ public class InvadersGame : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log("On Network Spawn");
         if (IsClient && !IsServer)
         {
             m_ClientGameOver = false;
