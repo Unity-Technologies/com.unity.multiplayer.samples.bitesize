@@ -53,7 +53,7 @@ public class ClientPlayerMove : NetworkBehaviour
         gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
+    // DOC START HERE
     void FixedUpdate()
     {
         // enabled = false if we're not the owner, so no need to guard the following code if isOwner check
@@ -62,6 +62,7 @@ public class ClientPlayerMove : NetworkBehaviour
         m_CharacterController.SimpleMove(move * Time.deltaTime * m_Speed);
         transform.Rotate(0, (Input.GetAxis("Mouse X")) * Time.deltaTime * m_RotSpeed, 0);
     }
+    // DOC END HERE
 
     void Update()
     {

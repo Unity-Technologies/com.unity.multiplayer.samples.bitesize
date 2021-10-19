@@ -37,10 +37,13 @@ public class ServerPlayerMove : NetworkBehaviour
 
     private NetworkObject m_PickedUpObj;
 
+    // DOC START HERE
     [ServerRpc]
     public void PickupObjServerRpc(ulong objToPickupID)
     {
-        var objToPickup = NetworkManager.SpawnManager.SpawnedObjects[objToPickupID];
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
+        if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
+
         objToPickup.GetComponent<Rigidbody>().isKinematic = true;
         objToPickup.transform.parent = transform;
         objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
@@ -64,4 +67,5 @@ public class ServerPlayerMove : NetworkBehaviour
 
         ObjPickedUp.Value = false;
     }
+    // DOC END HERE
 }
