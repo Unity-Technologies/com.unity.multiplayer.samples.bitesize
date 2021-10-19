@@ -1,5 +1,4 @@
-﻿using System;
-using MLAPI;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
@@ -14,6 +13,8 @@ public class PlayerBullet : MonoBehaviour
 
     private void Update()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+        
         transform.Translate(0, m_TravelSpeed * Time.deltaTime, 0);
 
         if (transform.position.y > k_YBoundary)
@@ -27,7 +28,7 @@ public class PlayerBullet : MonoBehaviour
             return;
 
         var hitEnemy = collider.gameObject.GetComponent<EnemyAgent>();
-        if (hitEnemy != null && owner)
+        if (hitEnemy != null && owner != null)
         {
             owner.IncreasePlayerScore(hitEnemy.score);
 

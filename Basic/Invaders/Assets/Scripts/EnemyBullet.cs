@@ -1,5 +1,4 @@
-﻿using System;
-using MLAPI;
+﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -24,6 +23,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void Update()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
         transform.Translate(0, -m_TravelSpeed * Time.deltaTime, 0);
 
         if (transform.position.y < k_YBoundary) Destroy(gameObject);
