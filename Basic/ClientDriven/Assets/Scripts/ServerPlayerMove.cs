@@ -30,8 +30,9 @@ public class ServerPlayerMove : NetworkBehaviour
             return;
         }
 
-        // the following two lines should work, yet they don't. The second client connecting won't receive this position set and will spawn at the wrong position
+        // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
+        // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
         m_Client.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
     }
 
