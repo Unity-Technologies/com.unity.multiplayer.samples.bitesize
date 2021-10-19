@@ -98,16 +98,8 @@ public class InvadersGame : NetworkBehaviour
     /// </summary>
     private void Awake()
     {
-        if (Singleton != null && Singleton != this)
-        {
-            Destroy(this);
-            return;
-        }
-        
-        if (Singleton == null)
-        {
-            Singleton = this;    
-        }
+        Assert.IsNull(Singleton, $"Multiple instances of {nameof(InvadersGame)} detected. This should not happen.");
+        Singleton = this;
         
         OnSingletonReady?.Invoke();
 
