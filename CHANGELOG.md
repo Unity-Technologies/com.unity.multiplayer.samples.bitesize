@@ -2,6 +2,10 @@
 
 ## [1.0.0] - 2021-10-20
 
+### Client Driven
+
+A new sample was added named client driven. It focus on client driven movements, networked physics, spawning vs statically placed objects, object reparenting
+
 ### Invaders
 
 #### Changed
