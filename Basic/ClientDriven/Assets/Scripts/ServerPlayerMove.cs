@@ -21,6 +21,7 @@ public class ServerPlayerMove : NetworkBehaviour
         m_Client = GetComponent<ClientPlayerMove>();
     }
 
+    // DOC START HERE
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -30,8 +31,9 @@ public class ServerPlayerMove : NetworkBehaviour
             return;
         }
 
-        // the following two lines should work, yet they don't. The second client connecting won't receive this position set and will spawn at the wrong position
+        // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
+        // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
         m_Client.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
     }
 
@@ -40,7 +42,9 @@ public class ServerPlayerMove : NetworkBehaviour
     [ServerRpc]
     public void PickupObjServerRpc(ulong objToPickupID)
     {
-        var objToPickup = NetworkManager.SpawnManager.SpawnedObjects[objToPickupID];
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
+        if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
+
         objToPickup.GetComponent<Rigidbody>().isKinematic = true;
         objToPickup.transform.parent = transform;
         objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
@@ -64,4 +68,5 @@ public class ServerPlayerMove : NetworkBehaviour
 
         ObjPickedUp.Value = false;
     }
+    // DOC END HERE
 }
