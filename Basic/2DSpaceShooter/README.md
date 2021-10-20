@@ -1,6 +1,6 @@
 ## 2D Space Shooter
 
-This is a UNet sample project converted to Unity MLAPI.
+This is a UNet sample project converted to Netcode for GameObjects.
 
 ## Sample Features
 
@@ -11,7 +11,4 @@ This sample shows you:
 - How to pool network objects such as bullets and asteroids to improve performance
 
 ## Future Work
-
-- Player should spawn at random position instead of center of the map.
 - Add a way to assign a player name to each player.
-- NetworkTransform + Rigidbody is really jittery.

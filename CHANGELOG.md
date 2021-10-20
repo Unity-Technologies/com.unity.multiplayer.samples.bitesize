@@ -1,14 +1,16 @@
 # Change log
 
-## [develop]
-
+## [1.0.0]
 
 ### 2DSpaceShooter
 
-#### New Changes
-- Fixed a bug where explosions from bullet impacts where only visible on the host.
-- Updated to MLAPI develop TODO replace with next release
+#### Changed
+- Updated to Netcode for GameObjects 1.0.0.
 - Player name is no longer static but based on the client id.
+
+#### Fixed
+- Fixed a bug where explosions from bullet impacts where only visible on the host.
+- Fixed a bug where setting the hosts port in the UI wouldn't change the port on which the server was hosted.
 
 ## [0.2.0] - 2021-07-21
 
