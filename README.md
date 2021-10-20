@@ -18,7 +18,7 @@ You need Unity and [Unity Netcode](https://github.com/Unity-Technologies/com.uni
 
 ## Community and Feedback
 
-For help, questions, networking advice or discussions about Netcode for GameObjects and its samples, please join our [Discord Community](https://discord.gg/FM8SE9E) or create a post in the [Unity Multiplayer Forum](https://forum.unity.com/forums/multiplayer.26/).
+For help, questions, networking advice or discussions about Netcode for GameObjects and its samples, please join our [Discord Community](https://discord.gg/FM8SE9E) or create a post in the [Unity Multiplayer Forum](https://forum.unity.com/forums/netcode-for-gameobjects.661/).
 
 ## Maintenance
 
