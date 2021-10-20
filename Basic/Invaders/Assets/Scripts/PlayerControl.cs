@@ -1,7 +1,5 @@
 ﻿using System;
-using MLAPI;
-using MLAPI.Messaging;
-using MLAPI.NetworkVariable;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -16,20 +14,20 @@ public class PlayerControl : NetworkBehaviour
 
     [Header("Player Settings")]
     [SerializeField]
-    private NetworkVariableInt m_Lives = new NetworkVariableInt(3);
+    private NetworkVariable<int> m_Lives = new NetworkVariable<int>(3);
 
     private SceneTransitionHandler.SceneStates m_CurrentSceneState;
     private bool m_HasGameStarted;
 
     private bool m_IsAlive = true;
 
-    private NetworkVariableInt m_MoveX = new NetworkVariableInt(0);
+    private NetworkVariable<int> m_MoveX = new NetworkVariable<int>(0);
 
     private GameObject m_MyBullet;
     private ClientRpcParams m_OwnerRPCParams;
 
     private SpriteRenderer m_PlayerVisual;
-    private NetworkVariableInt m_Score = new NetworkVariableInt(0);
+    private NetworkVariable<int> m_Score = new NetworkVariable<int>(0);
 
     public bool IsAlive => m_Lives.Value > 0;
 
@@ -56,8 +54,9 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    protected void OnDestroy()
+    public override void OnNetworkDespawn()
     {
+        base.OnNetworkDespawn();
         if (IsClient)
         {
             m_Lives.OnValueChanged -= OnLivesChanged;
@@ -95,9 +94,9 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
-        base.NetworkStart();
+        base.OnNetworkSpawn();
 
         // Bind to OnValueChanged to display in log the remaining lives of this player
         // And to update InvadersGame singleton client-side
