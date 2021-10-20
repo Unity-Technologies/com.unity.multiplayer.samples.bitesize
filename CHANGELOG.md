@@ -12,7 +12,7 @@
 - InvadersGame : replicated time remaining now uses a RPC instead of a one time synchonized NetworkVariable
 
 #### Fixed
-- Network behaviour in OnDestroy was moved to OnNetworkUnspawn
+- Network behaviour in OnDestroy was moved to OnNetworkDespawn
 
 ### 2DSpaceShooter
 
