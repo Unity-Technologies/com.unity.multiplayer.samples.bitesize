@@ -1,6 +1,18 @@
 # Change log
 
-## [1.0.0]
+## [1.0.0] - 2021-10-20
+
+### Invaders
+
+#### Changed
+- Updated to Netcode for GameObjects 1.0.0.
+- Player now use ClientNetworkTransform for client driven movement
+- Network Manager now uses Unity Transport instead of UNet
+- SceneTransitionHandler : now uses the new Scene Manager and Scene Loading events
+- InvadersGame : replicated time remaining now uses a RPC instead of a one time synchonized NetworkVariable
+
+#### Fixed
+- Network behaviour in OnDestroy was moved to OnNetworkUnspawn
 
 ### 2DSpaceShooter
 
