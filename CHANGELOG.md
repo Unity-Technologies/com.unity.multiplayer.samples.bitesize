@@ -1,6 +1,22 @@
 # Change log
 
-## [1.0.0]
+## [1.0.0] - 2021-10-20
+
+### Client Driven
+
+A new sample was added named client driven. It focus on client driven movements, networked physics, spawning vs statically placed objects, object reparenting
+
+### Invaders
+
+#### Changed
+- Updated to Netcode for GameObjects 1.0.0.
+- Player now use ClientNetworkTransform for client driven movement
+- Network Manager now uses Unity Transport instead of UNet
+- SceneTransitionHandler : now uses the new Scene Manager and Scene Loading events
+- InvadersGame : replicated time remaining now uses a RPC instead of a one time synchonized NetworkVariable
+
+#### Fixed
+- Network behaviour in OnDestroy was moved to OnNetworkDespawn
 
 ### 2DSpaceShooter
 
@@ -65,4 +81,4 @@ Initial release of MLAPI Bitesize Samples repository. Samples support the follow
 
 ### License
 
-The Bitesize Samples repository and code projects are licensed under the Unity Companion License for Unity-dependent projects (see https://unity3d.com/legal/licenses/unity_companion_license). See [LICENSE](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/blob/master/LICENSE.md) for full details.
+The Bitesize Samples repository and code projects are licensed under the Unity Companion License for Unity-dependent projects (see https://unity3d.com/legal/licenses/unity_companion_license). See [LICENSE](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/blob/main/LICENSE.md) for full details.
