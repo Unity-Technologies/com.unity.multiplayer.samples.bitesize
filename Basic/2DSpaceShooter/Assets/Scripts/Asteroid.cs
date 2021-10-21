@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using MLAPI;
-using MLAPI.NetworkVariable;
+﻿using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Asteroid : NetworkBehaviour
@@ -11,10 +10,13 @@ public class Asteroid : NetworkBehaviour
 
     NetworkObjectPool m_ObjectPool;
 
-    public NetworkVariableInt Size = new NetworkVariableInt(4);
+    public NetworkVariable<int> Size = new NetworkVariable<int>(4);
 
     [SerializeField]
     private int m_NumCreates = 3;
+    
+    [HideInInspector]
+    public GameObject asteroidPrefab;
 
     void Awake()
     {
@@ -28,7 +30,7 @@ public class Asteroid : NetworkBehaviour
         numAsteroids += 1;
     }
 
-    public override void NetworkStart()
+    public override void OnNetworkSpawn()
     {
         var size = Size.Value;
         transform.localScale = new Vector3(size, size, size);
@@ -36,6 +38,10 @@ public class Asteroid : NetworkBehaviour
 
     public void Explode()
     {
+        if (NetworkObject.IsSpawned == false)
+        {
+            return;
+        }
         Assert.IsTrue(NetworkManager.IsServer);
         
         numAsteroids -= 1;
@@ -52,15 +58,16 @@ public class Asteroid : NetworkBehaviour
                 int dy = Random.Range(0, 4) - 2;
                 Vector3 diff = new Vector3(dx * 0.3f, dy * 0.3f, 0);
                 
-                var go = m_ObjectPool.GetNetworkObject(NetworkObject.PrefabHash, transform.position + diff, Quaternion.identity);
+                var go = m_ObjectPool.GetNetworkObject(asteroidPrefab, transform.position + diff, Quaternion.identity);
                 
-                go.GetComponent<Asteroid>().Size.Value = newSize;
+                var asteroid = go.GetComponent<Asteroid>();
+                asteroid.Size.Value = newSize;
+                asteroid.asteroidPrefab = asteroidPrefab;
                 go.GetComponent<NetworkObject>().Spawn();
                 go.GetComponent<Rigidbody2D>().AddForce(diff * 10, ForceMode2D.Impulse);
             }
         }
         
-        NetworkObject.Despawn();
-        m_ObjectPool.ReturnNetworkObject(NetworkObject);
+        NetworkObject.Despawn(true);
     }
 }

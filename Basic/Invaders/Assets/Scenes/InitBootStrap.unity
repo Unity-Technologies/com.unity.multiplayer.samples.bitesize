@@ -130,6 +130,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2053099818, guid: a33721e9ba3981444b972ae70c494d73, type: 3}
+      propertyPath: m_SendQueueSize
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 2053099818, guid: a33721e9ba3981444b972ae70c494d73, type: 3}
+      propertyPath: m_ReciveQueueSize
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 2053099818, guid: a33721e9ba3981444b972ae70c494d73, type: 3}
+      propertyPath: m_MaxPacketQueueSize
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 2053099818, guid: a33721e9ba3981444b972ae70c494d73, type: 3}
+      propertyPath: m_SendQueueBatchSize
+      value: 32000
+      objectReference: {fileID: 0}
     - target: {fileID: 2577463361084716459, guid: a33721e9ba3981444b972ae70c494d73,
         type: 3}
       propertyPath: m_Name
@@ -190,5 +206,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2577463361084716463, guid: a33721e9ba3981444b972ae70c494d73,
+        type: 3}
+      propertyPath: NetworkConfig.PlayerPrefab
+      value: 
+      objectReference: {fileID: 100000, guid: c02eab22aaa0b68408500d6e87878b32, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a33721e9ba3981444b972ae70c494d73, type: 3}

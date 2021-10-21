@@ -1,5 +1,4 @@
-﻿using System;
-using MLAPI;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class SuperEnemyMovement : MonoBehaviour
@@ -14,6 +13,8 @@ public class SuperEnemyMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+        
         if (transform.position.x > k_YBoundary)
         {
             if (NetworkManager.Singleton.IsServer) Destroy(gameObject);

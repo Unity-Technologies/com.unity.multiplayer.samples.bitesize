@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
-using MLAPI;
-using MLAPI.Transports.UNET;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UNET;
 using UnityEngine;
 
 [RequireComponent(typeof(NetworkManager))]
@@ -10,12 +10,13 @@ public class NetworkManagerHud : MonoBehaviour
 {
     NetworkManager m_NetworkManager;
 
-    UNetTransport m_Transport;
+    UnityTransport m_Transport;
 
     GUIStyle m_LabelTextStyle;
 
     // This is needed to make the port field more convenient. GUILayout.TextField is very limited and we want to be able to clear the field entirely so we can't cache this as ushort.
-    string m_PortString;
+    string m_PortString = "7777";
+    string m_ConnectAddress = "127.0.0.1";
 
     public Vector2 DrawOffset = new Vector2(10, 10);
 
@@ -32,12 +33,7 @@ public class NetworkManagerHud : MonoBehaviour
     {
         m_LabelTextStyle.normal.textColor = LabelColor;
 
-        m_Transport = (UNetTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
-
-        if (m_PortString == null)
-        {
-            m_PortString = m_Transport.ConnectPort.ToString();
-        }
+        m_Transport = (UnityTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
 
         GUILayout.BeginArea(new Rect(DrawOffset, new Vector2(200, 200)));
 
@@ -64,11 +60,15 @@ public class NetworkManagerHud : MonoBehaviour
 
         GUILayout.BeginHorizontal();
 
-        m_Transport.ConnectAddress = GUILayout.TextField(m_Transport.ConnectAddress);
+        m_ConnectAddress = GUILayout.TextField(m_ConnectAddress);
         m_PortString = GUILayout.TextField(m_PortString);
         if (ushort.TryParse(m_PortString, out ushort port))
         {
-            m_Transport.ConnectPort = port;
+            m_Transport.SetConnectionData(m_ConnectAddress, port);
+        }
+        else
+        {
+            m_Transport.SetConnectionData(m_ConnectAddress, 7777);
         }
 
         GUILayout.EndHorizontal();
@@ -98,30 +98,19 @@ public class NetworkManagerHud : MonoBehaviour
         if (m_NetworkManager.IsServer)
         {
             var mode = m_NetworkManager.IsHost ? "Host" : "Server";
-            GUILayout.Label($"{mode} active on port: {m_Transport.ConnectPort.ToString()}", m_LabelTextStyle);
+            GUILayout.Label($"{mode} active on port: {m_Transport.ConnectionData.Port.ToString()}", m_LabelTextStyle);
         }
         else
         {
             if (m_NetworkManager.IsConnectedClient)
             {
-                GUILayout.Label($"Client connected {m_Transport.ConnectAddress}:{m_Transport.ConnectPort.ToString()}", m_LabelTextStyle);
+                GUILayout.Label($"Client connected {m_Transport.ConnectionData.Address}:{m_Transport.ConnectionData.Port.ToString()}", m_LabelTextStyle);
             }
         }
 
-        if (GUILayout.Button("Stop"))
+        if (GUILayout.Button("Shutdown"))
         {
-            if (m_NetworkManager.IsHost)
-            {
-                m_NetworkManager.StopHost();
-            }
-            else if (m_NetworkManager.IsServer)
-            {
-                m_NetworkManager.StopServer();
-            }
-            else if (m_NetworkManager.IsClient)
-            {
-                m_NetworkManager.StopClient();
-            }
+            m_NetworkManager.Shutdown();
         }
     }
 
