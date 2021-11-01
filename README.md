@@ -14,7 +14,7 @@ project using [Netcode for GameObjects](https://github.com/Unity-Technologies/co
 
 ## Requirements
 
-You need Unity and [Unity Netcode](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects) installed to use these samples. Complete the [Hello World Getting Started](https://docs-multiplayer.unity3d.com/docs/tutorials/helloworldintro/index.html) to prepare your environment. You can then access and use these samples for Netcode for GameObjects in a more self-contained scenario.
+You need Unity and [Unity Netcode](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects) installed to use these samples. Complete the [Hello World Getting Started](https://docs-multiplayer.unity3d.com/docs/tutorials/helloworld/helloworldintro) to prepare your environment. You can then access and use these samples for Netcode for GameObjects in a more self-contained scenario.
 
 ## Community and Feedback
 
