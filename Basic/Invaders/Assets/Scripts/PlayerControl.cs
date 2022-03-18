@@ -60,7 +60,7 @@ public class PlayerControl : NetworkBehaviour
         if (IsClient)
         {
             m_Lives.OnValueChanged -= OnLivesChanged;
-            m_Lives.OnValueChanged -= OnScoreChanged;
+            m_Score.OnValueChanged -= OnScoreChanged;
         }
 
         if (InvadersGame.Singleton)
