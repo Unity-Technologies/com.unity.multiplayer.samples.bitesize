@@ -12,6 +12,9 @@ public class Powerup : NetworkBehaviour
 
     public NetworkVariable<Buff.BuffType> buffType = new NetworkVariable<Buff.BuffType>();
 
+    [SerializeField] private Renderer m_powerUpGlow;
+    [SerializeField] private Renderer m_powerUpGlow2;
+
     void Awake()
     {
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
@@ -33,12 +36,16 @@ public class Powerup : NetworkBehaviour
 
     void OnStartClient()
     {
-        float dir = 170.0f;
+        float dir = -70.0f;
         transform.rotation = Quaternion.Euler(0, 180, dir);
         GetComponent<Rigidbody2D>().angularVelocity = dir;
 
         Color color = Buff.bufColors[(int)buffType.Value];
         GetComponent<Renderer>().material.color = color;
+        m_powerUpGlow.material.SetColor("_Color", color);
+        m_powerUpGlow.material.SetColor("_EmissiveColor", color);
+        m_powerUpGlow2.material.SetColor("_Color", color);
+        m_powerUpGlow2.material.SetColor("_EmissiveColor", color);
 
         if (!IsServer)
         {

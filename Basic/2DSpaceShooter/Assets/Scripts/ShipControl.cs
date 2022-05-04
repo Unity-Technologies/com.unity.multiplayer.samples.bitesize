@@ -19,7 +19,7 @@ public class Buff
         Last
     };
 
-    public static Color[] bufColors = { Color.red, Color.blue, Color.cyan, Color.yellow, Color.green, Color.magenta, new Color(1, 0.5f, 0), new Color(0, 1, 0.5f) };
+    public static Color[] bufColors = { Color.red, new Color(0.5f,0.3f,1), Color.cyan, Color.yellow, Color.green, Color.magenta, new Color(1, 0.5f, 0), new Color(0, 1, 0.5f) };
 
     public static Color GetColor(BuffType bt)
     {
@@ -58,6 +58,10 @@ public class ShipControl : NetworkBehaviour
     Texture m_Box;
     public ParticleSystem friction;
     public ParticleSystem thrust;
+    [SerializeField] private Vector2 m_nameLabelOffset;
+    [SerializeField] private Vector2 m_resourceBarsOffset;
+    [SerializeField] SpriteRenderer m_shipGlow;
+    [SerializeField] private Color m_shipGlowDefaultColor;
 
     private NetworkVariable<float> m_FrictionEffectStartTimer = new NetworkVariable<float>(-10);
 
@@ -77,12 +81,11 @@ public class ShipControl : NetworkBehaviour
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
+        m_shipGlow.color = m_shipGlowDefaultColor;
     }
     
     void Start()
     {
-        thrust.Stop();
-
         DontDestroyOnLoad(gameObject);
     }
 
@@ -110,6 +113,18 @@ public class ShipControl : NetworkBehaviour
             transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
+        }
+    }
+
+    void HandleShipColor(Color buffGlowColor)
+    {
+        Color currentColor = m_shipGlow.color;
+        var thrustMain = thrust.main;
+        
+        if (currentColor != buffGlowColor)
+        {
+            thrustMain.startColor = buffGlowColor;
+            m_shipGlow.color = buffGlowColor;
         }
     }
 
@@ -243,6 +258,7 @@ public class ShipControl : NetworkBehaviour
     void UpdateClient()
     {
         HandleFrictionGraphics();
+        var thrustMain = thrust.main;
 
         if (!IsLocalPlayer)
         {
@@ -282,12 +298,14 @@ public class ShipControl : NetworkBehaviour
         // control thrust particles
         if (moveForce == 0.0f)
         {
-            thrust.Stop();
+            thrustMain.startLifetime = 0.1f;
+            thrustMain.startSize = 1f;
             GetComponent<AudioSource>().Pause();
         }
         else
         {
-            thrust.Play();
+            thrustMain.startLifetime = 0.4f;
+            thrustMain.startSize = 1.2f;
             GetComponent<AudioSource>().Play();
         }
 
@@ -303,21 +321,25 @@ public class ShipControl : NetworkBehaviour
         if (buff == Buff.BuffType.Speed)
         {
             SpeedBuffTimer.Value = Time.time + 10;
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Speed));
         }
 
         if (buff == Buff.BuffType.Rotate)
         {
             RotateBuffTimer.Value = Time.time + 10;
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Rotate));
         }
 
         if (buff == Buff.BuffType.Triple)
         {
             TripleShotTimer.Value = Time.time + 10;
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Triple));
         }
 
         if (buff == Buff.BuffType.Double)
         {
             DoubleShotTimer.Value = Time.time + 10;
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Double));
         }
 
         if (buff == Buff.BuffType.Health)
@@ -327,6 +349,7 @@ public class ShipControl : NetworkBehaviour
             {
                 Health.Value = 100;
             }
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Health));
         }
 
         if (buff == Buff.BuffType.Energy)
@@ -336,16 +359,19 @@ public class ShipControl : NetworkBehaviour
             {
                 Energy.Value = 100;
             }
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Energy));
         }
 
         if (buff == Buff.BuffType.QuadDamage)
         {
             QuadDamageTimer.Value = Time.time + 10;
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.QuadDamage));
         }
 
         if (buff == Buff.BuffType.Bounce)
         {
             QuadDamageTimer.Value = Time.time + 10;
+            //HandleShipColor(Buff.GetColor(Buff.BuffType.Bounce));
         }
     }
 
@@ -410,41 +436,80 @@ public class ShipControl : NetworkBehaviour
 
     void OnGUI()
     {
+        
         Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
 
         // draw the name with a shadow (colored for buf)	
         GUI.color = Color.black;
-        GUI.Label(new Rect(pos.x - 20, Screen.height - pos.y - 30, 400, 30), PlayerName.Value.Value);
+        GUI.Label(new Rect((pos.x + m_nameLabelOffset.x) - 20, Screen.height - (pos.y + m_nameLabelOffset.y) - 30, 400, 30), PlayerName.Value.Value);
 
         GUI.color = Color.white;
-        if (SpeedBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Speed); }
+        HandleShipColor(m_shipGlowDefaultColor);
+        
+        if (SpeedBuffTimer.Value > Time.time)
+        {
+            GUI.color = Buff.GetColor(Buff.BuffType.Speed);
+            HandleShipColor(Buff.GetColor(Buff.BuffType.Speed));
+        }
+        
+        if (RotateBuffTimer.Value > Time.time)
+        {
+            GUI.color = Buff.GetColor(Buff.BuffType.Rotate);
+            HandleShipColor(Buff.GetColor(Buff.BuffType.Rotate));
+        }
+        
+        if (TripleShotTimer.Value > Time.time)
+        {
+            GUI.color = Buff.GetColor(Buff.BuffType.Triple);
+            HandleShipColor(Buff.GetColor(Buff.BuffType.Triple));
+        }
+        
+        if (DoubleShotTimer.Value > Time.time)
+        {
+            GUI.color = Buff.GetColor(Buff.BuffType.Double);
+            HandleShipColor(Buff.GetColor(Buff.BuffType.Double));
+        }
+        
+        if (QuadDamageTimer.Value > Time.time)
+        {
+            GUI.color = Buff.GetColor(Buff.BuffType.QuadDamage);
+            HandleShipColor(Buff.GetColor(Buff.BuffType.QuadDamage));
+        }
+        
+        if (BounceTimer.Value > Time.time)
+        {
+            GUI.color = Buff.GetColor(Buff.BuffType.Bounce);
+            HandleShipColor(Buff.GetColor(Buff.BuffType.Bounce));
+        }
+        
+        //if (SpeedBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Speed); }
 
-        if (RotateBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Rotate); }
+        //if (RotateBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Rotate); }
 
-        if (TripleShotTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Triple); }
+        //if (TripleShotTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Triple); }
 
-        if (DoubleShotTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Double); }
+        //if (DoubleShotTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Double); }
 
-        if (QuadDamageTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.QuadDamage); }
+        //if (QuadDamageTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.QuadDamage); }
 
-        if (BounceTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Bounce); }
+        //if (BounceTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Bounce); }
 
-        GUI.Label(new Rect(pos.x - 21, Screen.height - pos.y - 31, 400, 30), PlayerName.Value.Value);
+        GUI.Label(new Rect((pos.x + m_nameLabelOffset.x) - 21, Screen.height - (pos.y + m_nameLabelOffset.y) - 31, 400, 30), PlayerName.Value.Value);
 
         // draw health bar background
         GUI.color = Color.grey;
-        GUI.DrawTexture(new Rect(pos.x - 26, Screen.height - pos.y + 20, 52, 7), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 26, Screen.height - (pos.y + m_resourceBarsOffset.y) + 20, 52, 7), m_Box);
 
         // draw health bar amount
         GUI.color = Color.green;
-        GUI.DrawTexture(new Rect(pos.x - 25, Screen.height - pos.y + 21, Health.Value / 2, 5), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 25, Screen.height - (pos.y + m_resourceBarsOffset.y) + 21, Health.Value / 2, 5), m_Box);
 
         // draw energy bar background
         GUI.color = Color.grey;
-        GUI.DrawTexture(new Rect(pos.x - 26, Screen.height - pos.y + 27, 52, 7), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 26, Screen.height - (pos.y + m_resourceBarsOffset.y) + 27, 52, 7), m_Box);
 
         // draw energy bar amount
         GUI.color = Color.magenta;
-        GUI.DrawTexture(new Rect(pos.x - 25, Screen.height - pos.y + 28, Energy.Value / 2, 5), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 25, Screen.height - (pos.y + m_resourceBarsOffset.y) + 28, Energy.Value / 2, 5), m_Box);
     }
 }
