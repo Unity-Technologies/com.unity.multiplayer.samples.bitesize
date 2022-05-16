@@ -51,6 +51,9 @@ public class ShipControl : NetworkBehaviour
     public NetworkVariable<float> BounceTimer = new NetworkVariable<float>(0f);
 
     float m_EnergyTimer = 0;
+    
+    private Color m_latestShipColor;
+    private bool m_isBuffed;
 
     public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
@@ -82,6 +85,7 @@ public class ShipControl : NetworkBehaviour
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
         m_shipGlow.color = m_shipGlowDefaultColor;
+        m_isBuffed = false;
     }
     
     void Start()
@@ -113,18 +117,6 @@ public class ShipControl : NetworkBehaviour
             transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
-        }
-    }
-
-    void HandleShipColor(Color buffGlowColor)
-    {
-        Color currentColor = m_shipGlow.color;
-        var thrustMain = thrust.main;
-        
-        if (currentColor != buffGlowColor)
-        {
-            thrustMain.startColor = buffGlowColor;
-            m_shipGlow.color = buffGlowColor;
         }
     }
 
@@ -254,6 +246,20 @@ public class ShipControl : NetworkBehaviour
             }
         }
     }
+    
+    void HandleShipColor()
+    {
+        //Color currentColor = m_shipGlow.color;
+        var thrustMain = thrust.main;
+        thrustMain.startColor = m_latestShipColor;
+        m_shipGlow.color = m_latestShipColor;
+ 
+        /*if (currentColor != m_latestShipColor)
+        {
+            thrustMain.startColor = m_latestShipColor;
+            m_shipGlow.color = m_latestShipColor;
+        }*/
+    }
 
     void UpdateClient()
     {
@@ -314,6 +320,51 @@ public class ShipControl : NetworkBehaviour
         {
             FireServerRpc();
         }
+        HandleIfBuffed();
+    }
+
+    private void HandleIfBuffed()
+    {
+        if (SpeedBuffTimer.Value > Time.time)
+        {
+            m_isBuffed = true;
+        }
+
+        else if (RotateBuffTimer.Value > Time.time)
+        {
+            m_isBuffed = true;
+        }
+
+        else if (TripleShotTimer.Value > Time.time)
+        {
+            m_isBuffed = true;
+        }
+
+        else if (DoubleShotTimer.Value > Time.time)
+        {
+            m_isBuffed = true;
+        }
+
+        else if (QuadDamageTimer.Value > Time.time)
+        {
+            m_isBuffed = true;
+        }
+
+        else if (BounceTimer.Value > Time.time)
+        {
+            m_isBuffed = true;
+        }
+
+        else
+        {
+            m_isBuffed = false;
+        }
+
+        if (m_isBuffed == false)
+        {
+            m_latestShipColor = m_shipGlowDefaultColor;
+            HandleShipColor();
+        }
     }
 
     public void AddBuff(Buff.BuffType buff)
@@ -321,25 +372,25 @@ public class ShipControl : NetworkBehaviour
         if (buff == Buff.BuffType.Speed)
         {
             SpeedBuffTimer.Value = Time.time + 10;
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Speed));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Speed);
         }
 
         if (buff == Buff.BuffType.Rotate)
         {
             RotateBuffTimer.Value = Time.time + 10;
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Rotate));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Rotate);
         }
 
         if (buff == Buff.BuffType.Triple)
         {
             TripleShotTimer.Value = Time.time + 10;
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Triple));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Triple);
         }
 
         if (buff == Buff.BuffType.Double)
         {
             DoubleShotTimer.Value = Time.time + 10;
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Double));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Double);
         }
 
         if (buff == Buff.BuffType.Health)
@@ -349,7 +400,7 @@ public class ShipControl : NetworkBehaviour
             {
                 Health.Value = 100;
             }
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Health));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Health);
         }
 
         if (buff == Buff.BuffType.Energy)
@@ -359,20 +410,21 @@ public class ShipControl : NetworkBehaviour
             {
                 Energy.Value = 100;
             }
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Energy));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Energy);
         }
 
         if (buff == Buff.BuffType.QuadDamage)
         {
             QuadDamageTimer.Value = Time.time + 10;
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.QuadDamage));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.QuadDamage);
         }
 
         if (buff == Buff.BuffType.Bounce)
         {
             QuadDamageTimer.Value = Time.time + 10;
-            //HandleShipColor(Buff.GetColor(Buff.BuffType.Bounce));
+            m_latestShipColor = Buff.GetColor(Buff.BuffType.Bounce);
         }
+        HandleShipColor();
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -444,55 +496,6 @@ public class ShipControl : NetworkBehaviour
         GUI.Label(new Rect((pos.x + m_nameLabelOffset.x) - 20, Screen.height - (pos.y + m_nameLabelOffset.y) - 30, 400, 30), PlayerName.Value.Value);
 
         GUI.color = Color.white;
-        HandleShipColor(m_shipGlowDefaultColor);
-        
-        if (SpeedBuffTimer.Value > Time.time)
-        {
-            GUI.color = Buff.GetColor(Buff.BuffType.Speed);
-            HandleShipColor(Buff.GetColor(Buff.BuffType.Speed));
-        }
-        
-        if (RotateBuffTimer.Value > Time.time)
-        {
-            GUI.color = Buff.GetColor(Buff.BuffType.Rotate);
-            HandleShipColor(Buff.GetColor(Buff.BuffType.Rotate));
-        }
-        
-        if (TripleShotTimer.Value > Time.time)
-        {
-            GUI.color = Buff.GetColor(Buff.BuffType.Triple);
-            HandleShipColor(Buff.GetColor(Buff.BuffType.Triple));
-        }
-        
-        if (DoubleShotTimer.Value > Time.time)
-        {
-            GUI.color = Buff.GetColor(Buff.BuffType.Double);
-            HandleShipColor(Buff.GetColor(Buff.BuffType.Double));
-        }
-        
-        if (QuadDamageTimer.Value > Time.time)
-        {
-            GUI.color = Buff.GetColor(Buff.BuffType.QuadDamage);
-            HandleShipColor(Buff.GetColor(Buff.BuffType.QuadDamage));
-        }
-        
-        if (BounceTimer.Value > Time.time)
-        {
-            GUI.color = Buff.GetColor(Buff.BuffType.Bounce);
-            HandleShipColor(Buff.GetColor(Buff.BuffType.Bounce));
-        }
-        
-        //if (SpeedBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Speed); }
-
-        //if (RotateBuffTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Rotate); }
-
-        //if (TripleShotTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Triple); }
-
-        //if (DoubleShotTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Double); }
-
-        //if (QuadDamageTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.QuadDamage); }
-
-        //if (BounceTimer.Value > Time.time) { GUI.color = Buff.GetColor(Buff.BuffType.Bounce); }
 
         GUI.Label(new Rect((pos.x + m_nameLabelOffset.x) - 21, Screen.height - (pos.y + m_nameLabelOffset.y) - 31, 400, 30), PlayerName.Value.Value);
 
