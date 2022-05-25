@@ -48,13 +48,13 @@ public class ShipControl : NetworkBehaviour
     public NetworkVariable<float> DoubleShotTimer = new NetworkVariable<float>(0f);
     public NetworkVariable<float> QuadDamageTimer = new NetworkVariable<float>(0f);
     public NetworkVariable<float> BounceTimer = new NetworkVariable<float>(0f);
+    public NetworkVariable<Color> LatestShipColor = new NetworkVariable<Color>();
 
     float m_EnergyTimer = 0;
     
-    private Color m_latestShipColor;
-    private Color m_latestBulletColor;
+    //private Color m_latestShipColor;
     private bool m_isBuffed;
-    private float m_latestBuff;
+    //private float m_latestBuff;
 
     public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
@@ -101,6 +101,7 @@ public class ShipControl : NetworkBehaviour
         GetComponent<AudioListener>().enabled = IsOwner;
         if (IsServer)
         {
+            LatestShipColor.Value = m_shipGlowDefaultColor;
             PlayerName.Value = $"Player {OwnerClientId}";
         }
     }
@@ -139,8 +140,6 @@ public class ShipControl : NetworkBehaviour
         bullet.transform.position = transform.position + direction;
 
         var bulletRb = bullet.GetComponent<Rigidbody2D>();
-        var trail = bullet.GetComponentInChildren<TrailRenderer>();
-
         var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
@@ -253,14 +252,15 @@ public class ShipControl : NetworkBehaviour
     // changes color of the ship glow sprite and the trail effects based on the latest buff color
     void HandleBuffColors()
     {
-        m_thrustMain.startColor = m_latestShipColor;
-        m_shipGlow.material.color = m_latestShipColor;
+        m_thrustMain.startColor = m_isBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
+        m_shipGlow.material.color = m_isBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
+        //Debug.Log($"OwnerClientId {OwnerClientId} LatestShipColor.Value {LatestShipColor.Value}");
     }
 
     void UpdateClient()
     {
         HandleFrictionGraphics();
-        
+        HandleIfBuffed();
 
         if (!IsLocalPlayer)
         {
@@ -316,7 +316,6 @@ public class ShipControl : NetworkBehaviour
         {
             FireServerRpc();
         }
-        HandleIfBuffed();
     }
 
     // a check to see if there's currently a buff applied, returns ship to default color if not
@@ -357,11 +356,7 @@ public class ShipControl : NetworkBehaviour
             m_isBuffed = false;
         }
 
-        if (m_isBuffed == false)
-        {
-            m_latestShipColor = m_shipGlowDefaultColor;
-            HandleBuffColors();
-        }
+        HandleBuffColors();
     }
 
     public void AddBuff(Buff.BuffType buff)
@@ -369,25 +364,25 @@ public class ShipControl : NetworkBehaviour
         if (buff == Buff.BuffType.Speed)
         {
             SpeedBuffTimer.Value = Time.time + 10;
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Speed);
+            LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Speed);
         }
 
         if (buff == Buff.BuffType.Rotate)
         {
             RotateBuffTimer.Value = Time.time + 10;
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Rotate);
+            LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Rotate);
         }
 
         if (buff == Buff.BuffType.Triple)
         {
             TripleShotTimer.Value = Time.time + 10;
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Triple);
+            LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Triple);
         }
 
         if (buff == Buff.BuffType.Double)
         {
             DoubleShotTimer.Value = Time.time + 10;
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Double);
+            LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Double);
         }
 
         if (buff == Buff.BuffType.Health)
@@ -402,13 +397,13 @@ public class ShipControl : NetworkBehaviour
         if (buff == Buff.BuffType.QuadDamage)
         {
             QuadDamageTimer.Value = Time.time + 10;
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.QuadDamage);
+            LatestShipColor.Value = Buff.GetColor(Buff.BuffType.QuadDamage);
         }
 
         if (buff == Buff.BuffType.Bounce)
         {
             QuadDamageTimer.Value = Time.time + 10;
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Bounce);
+            LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Bounce);
         }
 
         if (buff == Buff.BuffType.Energy)
