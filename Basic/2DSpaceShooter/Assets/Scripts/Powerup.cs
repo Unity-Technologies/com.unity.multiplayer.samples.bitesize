@@ -40,7 +40,7 @@ public class Powerup : NetworkBehaviour
         transform.rotation = Quaternion.Euler(0, 180, dir);
         GetComponent<Rigidbody2D>().angularVelocity = dir;
 
-        Color color = Buff.bufColors[(int)buffType.Value];
+        Color color = Buff.buffColors[(int)buffType.Value];
         GetComponent<Renderer>().material.color = color;
         m_powerUpGlow.material.SetColor("_Color", color);
         m_powerUpGlow.material.SetColor("_EmissiveColor", color);
@@ -60,7 +60,7 @@ public class Powerup : NetworkBehaviour
 
     void OnGUI()
     {
-        GUI.color = Buff.bufColors[(int)buffType.Value];
+        GUI.color = Buff.buffColors[(int)buffType.Value];
         Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
         GUI.Label(new Rect(pos.x - 20, Screen.height - pos.y - 30, 100, 30), buffType.Value.ToString());
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -19,11 +18,11 @@ public class Buff
         Last
     };
 
-    public static Color[] bufColors = { Color.red, new Color(0.5f,0.3f,1), Color.cyan, Color.yellow, Color.green, Color.magenta, new Color(1, 0.5f, 0), new Color(0, 1, 0.5f) };
+    public static Color[] buffColors = { Color.red, new Color(0.5f,0.3f,1), Color.cyan, Color.yellow, Color.green, Color.magenta, new Color(1, 0.5f, 0), new Color(0, 1, 0.5f) };
 
     public static Color GetColor(BuffType bt)
     {
-        return bufColors[(int)bt];
+        return buffColors[(int)bt];
     }
 };
 
@@ -53,18 +52,21 @@ public class ShipControl : NetworkBehaviour
     float m_EnergyTimer = 0;
     
     private Color m_latestShipColor;
+    private Color m_latestBulletColor;
     private bool m_isBuffed;
+    private float m_latestBuff;
 
     public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
     [SerializeField]
     Texture m_Box;
     public ParticleSystem friction;
-    public ParticleSystem thrust;
+    [SerializeField] ParticleSystem thrust;
     [SerializeField] private Vector2 m_nameLabelOffset;
     [SerializeField] private Vector2 m_resourceBarsOffset;
     [SerializeField] SpriteRenderer m_shipGlow;
     [SerializeField] private Color m_shipGlowDefaultColor;
+    private ParticleSystem.MainModule m_thrustMain;
 
     private NetworkVariable<float> m_FrictionEffectStartTimer = new NetworkVariable<float>(-10);
 
@@ -84,6 +86,7 @@ public class ShipControl : NetworkBehaviour
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
+        m_thrustMain = thrust.main;
         m_shipGlow.color = m_shipGlowDefaultColor;
         m_isBuffed = false;
     }
@@ -136,12 +139,12 @@ public class ShipControl : NetworkBehaviour
         bullet.transform.position = transform.position + direction;
 
         var bulletRb = bullet.GetComponent<Rigidbody2D>();
+        var trail = bullet.GetComponentInChildren<TrailRenderer>();
 
         var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
         bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime);
-
         bullet.GetComponent<NetworkObject>().Spawn(true);
     }
 
@@ -247,24 +250,17 @@ public class ShipControl : NetworkBehaviour
         }
     }
     
-    void HandleShipColor()
+    // changes color of the ship glow sprite and the trail effects based on the latest buff color
+    void HandleBuffColors()
     {
-        //Color currentColor = m_shipGlow.color;
-        var thrustMain = thrust.main;
-        thrustMain.startColor = m_latestShipColor;
-        m_shipGlow.color = m_latestShipColor;
- 
-        /*if (currentColor != m_latestShipColor)
-        {
-            thrustMain.startColor = m_latestShipColor;
-            m_shipGlow.color = m_latestShipColor;
-        }*/
+        m_thrustMain.startColor = m_latestShipColor;
+        m_shipGlow.material.color = m_latestShipColor;
     }
 
     void UpdateClient()
     {
         HandleFrictionGraphics();
-        var thrustMain = thrust.main;
+        
 
         if (!IsLocalPlayer)
         {
@@ -304,14 +300,14 @@ public class ShipControl : NetworkBehaviour
         // control thrust particles
         if (moveForce == 0.0f)
         {
-            thrustMain.startLifetime = 0.1f;
-            thrustMain.startSize = 1f;
+            m_thrustMain.startLifetime = 0.1f;
+            m_thrustMain.startSize = 1f;
             GetComponent<AudioSource>().Pause();
         }
         else
         {
-            thrustMain.startLifetime = 0.4f;
-            thrustMain.startSize = 1.2f;
+            m_thrustMain.startLifetime = 0.4f;
+            m_thrustMain.startSize = 1.2f;
             GetComponent<AudioSource>().Play();
         }
 
@@ -323,6 +319,7 @@ public class ShipControl : NetworkBehaviour
         HandleIfBuffed();
     }
 
+    // a check to see if there's currently a buff applied, returns ship to default color if not
     private void HandleIfBuffed()
     {
         if (SpeedBuffTimer.Value > Time.time)
@@ -363,7 +360,7 @@ public class ShipControl : NetworkBehaviour
         if (m_isBuffed == false)
         {
             m_latestShipColor = m_shipGlowDefaultColor;
-            HandleShipColor();
+            HandleBuffColors();
         }
     }
 
@@ -400,19 +397,8 @@ public class ShipControl : NetworkBehaviour
             {
                 Health.Value = 100;
             }
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Health);
         }
-
-        if (buff == Buff.BuffType.Energy)
-        {
-            Energy.Value += 50;
-            if (Energy.Value >= 100)
-            {
-                Energy.Value = 100;
-            }
-            m_latestShipColor = Buff.GetColor(Buff.BuffType.Energy);
-        }
-
+        
         if (buff == Buff.BuffType.QuadDamage)
         {
             QuadDamageTimer.Value = Time.time + 10;
@@ -424,7 +410,16 @@ public class ShipControl : NetworkBehaviour
             QuadDamageTimer.Value = Time.time + 10;
             m_latestShipColor = Buff.GetColor(Buff.BuffType.Bounce);
         }
-        HandleShipColor();
+
+        if (buff == Buff.BuffType.Energy)
+        {
+            Energy.Value += 50;
+            if (Energy.Value >= 100)
+            {
+                Energy.Value = 100;
+            }
+        }
+        HandleBuffColors();
     }
 
     void OnCollisionEnter2D(Collision2D other)

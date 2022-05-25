@@ -15,7 +15,6 @@ public class Bullet : NetworkBehaviour
         m_Owner = owner;
         m_Damage = damage;
         m_Bounce = bounce;
-        
         if (IsServer)
         {
             // This is bad code don't use invoke.
@@ -27,7 +26,6 @@ public class Bullet : NetworkBehaviour
     {
         // This is inefficient, the explosion object could be pooled.
         GameObject ex = Instantiate(explosionParticle, transform.position + new Vector3(0, 0, -2), Quaternion.identity);
-        Destroy(ex, 0.5f);
     }
 
     private void DestroyBullet()
