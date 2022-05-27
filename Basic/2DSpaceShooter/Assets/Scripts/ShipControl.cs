@@ -99,6 +99,10 @@ public class ShipControl : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         GetComponent<AudioListener>().enabled = IsOwner;
+        if (IsOwner)
+        {
+            Camera.main.GetComponent<AudioListener>().enabled = false;
+        }
         if (IsServer)
         {
             LatestShipColor.Value = m_shipGlowDefaultColor;
@@ -129,12 +133,12 @@ public class ShipControl : NetworkBehaviour
         fireSound.Play();
 
         int damage = 5;
-        if (QuadDamageTimer.Value > Time.time)
+        if (QuadDamageTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
             damage = 20;
         }
 
-        bool bounce = BounceTimer.Value > Time.time;
+        bool bounce = BounceTimer.Value > NetworkManager.ServerTime.TimeAsFloat;
 
         GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
         bullet.transform.position = transform.position + direction;
@@ -174,7 +178,7 @@ public class ShipControl : NetworkBehaviour
     void UpdateServer()
     {
         // energy regen
-        if (m_EnergyTimer < Time.time)
+        if (m_EnergyTimer < NetworkManager.ServerTime.TimeAsFloat)
         {
             if (Energy.Value < 100)
             {
@@ -188,12 +192,12 @@ public class ShipControl : NetworkBehaviour
                 }
             }
 
-            m_EnergyTimer = Time.time + 1;
+            m_EnergyTimer = NetworkManager.ServerTime.TimeAsFloat + 1;
         }
 
         // update rotation 
         float rotate = m_Spin * rotateSpeed;
-        if (RotateBuffTimer.Value > Time.time)
+        if (RotateBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
             rotate *= 2;
         }
@@ -204,7 +208,7 @@ public class ShipControl : NetworkBehaviour
         if (m_Thrusting.Value != 0)
         {
             float accel = acceleration;
-            if (SpeedBuffTimer.Value > Time.time)
+            if (SpeedBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
             {
                 accel *= 2;
             }
@@ -214,7 +218,7 @@ public class ShipControl : NetworkBehaviour
 
             // restrict max speed
             float top = topSpeed;
-            if (SpeedBuffTimer.Value > Time.time)
+            if (SpeedBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
             {
                 top *= 1.5f;
             }
@@ -230,8 +234,9 @@ public class ShipControl : NetworkBehaviour
     {
         var time = NetworkManager.ServerTime.Time;
         var start = m_FrictionEffectStartTimer.Value;
+        var duration = friction.main.duration;
         
-        bool frictionShouldBeActive = time >= start && time < start + 1f; // 1f is the duration of the effect
+        bool frictionShouldBeActive = time >= start && time < start + duration; // 1f is the duration of the effect
 
         if (frictionShouldBeActive)
         {
@@ -254,7 +259,6 @@ public class ShipControl : NetworkBehaviour
     {
         m_thrustMain.startColor = m_isBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
         m_shipGlow.material.color = m_isBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
-        //Debug.Log($"OwnerClientId {OwnerClientId} LatestShipColor.Value {LatestShipColor.Value}");
     }
 
     void UpdateClient()
@@ -321,32 +325,32 @@ public class ShipControl : NetworkBehaviour
     // a check to see if there's currently a buff applied, returns ship to default color if not
     private void HandleIfBuffed()
     {
-        if (SpeedBuffTimer.Value > Time.time)
+        if (SpeedBuffTimer.Value > NetworkManager.ServerTime.Time)
         {
             m_isBuffed = true;
         }
 
-        else if (RotateBuffTimer.Value > Time.time)
+        else if (RotateBuffTimer.Value > NetworkManager.ServerTime.Time)
         {
             m_isBuffed = true;
         }
 
-        else if (TripleShotTimer.Value > Time.time)
+        else if (TripleShotTimer.Value > NetworkManager.ServerTime.Time)
         {
             m_isBuffed = true;
         }
 
-        else if (DoubleShotTimer.Value > Time.time)
+        else if (DoubleShotTimer.Value > NetworkManager.ServerTime.Time)
         {
             m_isBuffed = true;
         }
 
-        else if (QuadDamageTimer.Value > Time.time)
+        else if (QuadDamageTimer.Value > NetworkManager.ServerTime.Time)
         {
             m_isBuffed = true;
         }
 
-        else if (BounceTimer.Value > Time.time)
+        else if (BounceTimer.Value > NetworkManager.ServerTime.Time)
         {
             m_isBuffed = true;
         }
@@ -363,25 +367,25 @@ public class ShipControl : NetworkBehaviour
     {
         if (buff == Buff.BuffType.Speed)
         {
-            SpeedBuffTimer.Value = Time.time + 10;
+            SpeedBuffTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Speed);
         }
 
         if (buff == Buff.BuffType.Rotate)
         {
-            RotateBuffTimer.Value = Time.time + 10;
+            RotateBuffTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Rotate);
         }
 
         if (buff == Buff.BuffType.Triple)
         {
-            TripleShotTimer.Value = Time.time + 10;
+            TripleShotTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Triple);
         }
 
         if (buff == Buff.BuffType.Double)
         {
-            DoubleShotTimer.Value = Time.time + 10;
+            DoubleShotTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Double);
         }
 
@@ -396,13 +400,13 @@ public class ShipControl : NetworkBehaviour
         
         if (buff == Buff.BuffType.QuadDamage)
         {
-            QuadDamageTimer.Value = Time.time + 10;
+            QuadDamageTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.QuadDamage);
         }
 
         if (buff == Buff.BuffType.Bounce)
         {
-            QuadDamageTimer.Value = Time.time + 10;
+            QuadDamageTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Bounce);
         }
 
@@ -446,13 +450,13 @@ public class ShipControl : NetworkBehaviour
         if (Energy.Value >= 10)
         {
             var right = transform.right;
-            if (TripleShotTimer.Value > Time.time)
+            if (TripleShotTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
             {
                 Fire(Quaternion.Euler(0, 0, 20) * right);
                 Fire(Quaternion.Euler(0, 0, -20) * right);
                 Fire(right);
             }
-            else if (DoubleShotTimer.Value > Time.time)
+            else if (DoubleShotTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
             {
                 Fire(Quaternion.Euler(0, 0, -10) * right);
                 Fire(Quaternion.Euler(0, 0, 10) * right);
