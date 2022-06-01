@@ -52,9 +52,7 @@ public class ShipControl : NetworkBehaviour
 
     float m_EnergyTimer = 0;
     
-    //private Color m_latestShipColor;
-    private bool m_isBuffed;
-    //private float m_latestBuff;
+    private bool m_IsBuffed;
 
     public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
@@ -88,7 +86,7 @@ public class ShipControl : NetworkBehaviour
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
         m_thrustMain = thrust.main;
         m_shipGlow.color = m_shipGlowDefaultColor;
-        m_isBuffed = false;
+        m_IsBuffed = false;
     }
     
     void Start()
@@ -253,8 +251,8 @@ public class ShipControl : NetworkBehaviour
     // changes color of the ship glow sprite and the trail effects based on the latest buff color
     void HandleBuffColors()
     {
-        m_thrustMain.startColor = m_isBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
-        m_shipGlow.material.color = m_isBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
+        m_thrustMain.startColor = m_IsBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
+        m_shipGlow.material.color = m_IsBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
     }
 
     void UpdateClient()
@@ -323,37 +321,37 @@ public class ShipControl : NetworkBehaviour
     {
         if (SpeedBuffTimer.Value > NetworkManager.ServerTime.Time)
         {
-            m_isBuffed = true;
+            m_IsBuffed = true;
         }
 
         else if (RotateBuffTimer.Value > NetworkManager.ServerTime.Time)
         {
-            m_isBuffed = true;
+            m_IsBuffed = true;
         }
 
         else if (TripleShotTimer.Value > NetworkManager.ServerTime.Time)
         {
-            m_isBuffed = true;
+            m_IsBuffed = true;
         }
 
         else if (DoubleShotTimer.Value > NetworkManager.ServerTime.Time)
         {
-            m_isBuffed = true;
+            m_IsBuffed = true;
         }
 
         else if (QuadDamageTimer.Value > NetworkManager.ServerTime.Time)
         {
-            m_isBuffed = true;
+            m_IsBuffed = true;
         }
 
         else if (BounceTimer.Value > NetworkManager.ServerTime.Time)
         {
-            m_isBuffed = true;
+            m_IsBuffed = true;
         }
 
         else
         {
-            m_isBuffed = false;
+            m_IsBuffed = false;
         }
 
         HandleBuffColors();
@@ -414,7 +412,6 @@ public class ShipControl : NetworkBehaviour
                 Energy.Value = 100;
             }
         }
-        HandleBuffColors();
     }
 
     void OnCollisionEnter2D(Collision2D other)
