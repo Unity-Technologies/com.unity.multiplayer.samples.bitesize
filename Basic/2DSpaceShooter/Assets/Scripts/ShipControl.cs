@@ -98,11 +98,7 @@ public class ShipControl : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        GetComponent<AudioListener>().enabled = IsOwner;
-        if (IsOwner)
-        {
-            Camera.main.GetComponent<AudioListener>().enabled = false;
-        }
+        
         if (IsServer)
         {
             LatestShipColor.Value = m_shipGlowDefaultColor;

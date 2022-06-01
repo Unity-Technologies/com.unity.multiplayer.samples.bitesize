@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 8200002}
   - component: {fileID: 509584576524893815}
   - component: {fileID: -360930162699739946}
-  - component: {fileID: 7678745961864154063}
   - component: {fileID: -8406883944196582507}
   m_Layer: 0
   m_Name: Ship
@@ -263,7 +262,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: cc129677ab3dbe14494fe4ee9e0dadc4, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.328
-  m_Pitch: 1
+  m_Pitch: 0.79
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -389,14 +388,6 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   CanCommitToTransform: 0
---- !u!81 &7678745961864154063
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 0
 --- !u!114 &-8406883944196582507
 MonoBehaviour:
   m_ObjectHideFlags: 0
