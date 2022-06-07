@@ -2,6 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class PlayerControl : NetworkBehaviour
 {
@@ -15,6 +16,9 @@ public class PlayerControl : NetworkBehaviour
     [Header("Player Settings")]
     [SerializeField]
     private NetworkVariable<int> m_Lives = new NetworkVariable<int>(3);
+
+    [SerializeField] private Color m_playerColorInGame;
+
 
     private SceneTransitionHandler.SceneStates m_CurrentSceneState;
     private bool m_HasGameStarted;
@@ -39,7 +43,7 @@ public class PlayerControl : NetworkBehaviour
     private void Start()
     {
         m_PlayerVisual = GetComponent<SpriteRenderer>();
-        if (m_PlayerVisual != null) m_PlayerVisual.material.color = Color.black;
+        if (m_PlayerVisual != null) m_PlayerVisual.color = Color.black;
     }
 
     private void Update()
@@ -52,6 +56,20 @@ public class PlayerControl : NetworkBehaviour
                 break;
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        HandleCameraMovement();
+    }
+
+    private void HandleCameraMovement()
+    {
+        Vector3 cameraPosition = transform.position;
+        cameraPosition.x = cameraPosition.x * 0.05f;
+        cameraPosition.y = 5.7f;
+        cameraPosition.z = -30f;
+        Camera.main.transform.position = cameraPosition;
     }
 
     public override void OnNetworkDespawn()
@@ -86,11 +104,11 @@ public class PlayerControl : NetworkBehaviour
         m_CurrentSceneState = newState;
         if (m_CurrentSceneState == SceneTransitionHandler.SceneStates.Ingame)
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.material.color = Color.green;
+            if (m_PlayerVisual != null) m_PlayerVisual.color = m_playerColorInGame;
         }
         else
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.material.color = Color.black;
+            if (m_PlayerVisual != null) m_PlayerVisual.color = Color.black;
         }
     }
 
