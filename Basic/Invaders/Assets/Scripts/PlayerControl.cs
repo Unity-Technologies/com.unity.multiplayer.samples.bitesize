@@ -67,8 +67,8 @@ public class PlayerControl : NetworkBehaviour
     {
         Vector3 cameraPosition = transform.position;
         cameraPosition.x = cameraPosition.x * 0.05f;
-        cameraPosition.y = 5.7f;
-        cameraPosition.z = -30f;
+        cameraPosition.y = 6.2f;
+        cameraPosition.z = -35f;
         Camera.main.transform.position = cameraPosition;
     }
 
