@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class EnemyAgent : NetworkBehaviour
 {
     private const float k_ShootingRandomThreshold = 0.996f;
-    private const float k_ShootTimer = 1.25f;
+    private const float k_ShootTimer = 6f;
     [Header("Enemy Settings")]
     public int score = 50;
     public GameObject bulletPrefab;

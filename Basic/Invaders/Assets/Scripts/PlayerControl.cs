@@ -43,7 +43,7 @@ public class PlayerControl : NetworkBehaviour
     private void Start()
     {
         m_PlayerVisual = GetComponent<SpriteRenderer>();
-        if (m_PlayerVisual != null) m_PlayerVisual.color = Color.black;
+        if (m_PlayerVisual != null) m_PlayerVisual.color = new Color(m_playerColorInGame.r,m_playerColorInGame.g,m_playerColorInGame.b, 0);
     }
 
     private void Update()
@@ -108,7 +108,7 @@ public class PlayerControl : NetworkBehaviour
         }
         else
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.color = Color.black;
+            if (m_PlayerVisual != null) m_PlayerVisual.color = new Color(m_playerColorInGame.r,m_playerColorInGame.g,m_playerColorInGame.b, 0);
         }
     }
 
