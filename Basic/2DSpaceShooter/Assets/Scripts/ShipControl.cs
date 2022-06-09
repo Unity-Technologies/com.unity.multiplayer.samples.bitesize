@@ -51,20 +51,19 @@ public class ShipControl : NetworkBehaviour
     public NetworkVariable<Color> LatestShipColor = new NetworkVariable<Color>();
 
     float m_EnergyTimer = 0;
-    
-    private bool m_IsBuffed;
+    bool m_IsBuffed;
 
     public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
     [SerializeField]
     Texture m_Box;
-    public ParticleSystem friction;
-    [SerializeField] ParticleSystem thrust;
-    [SerializeField] private Vector2 m_nameLabelOffset;
-    [SerializeField] private Vector2 m_resourceBarsOffset;
-    [SerializeField] SpriteRenderer m_shipGlow;
-    [SerializeField] private Color m_shipGlowDefaultColor;
-    private ParticleSystem.MainModule m_thrustMain;
+    [SerializeField] ParticleSystem m_Friction;
+    [SerializeField] ParticleSystem m_Thrust;
+    [SerializeField] Vector2 m_NameLabelOffset;
+    [SerializeField] Vector2 m_ResourceBarsOffset;
+    [SerializeField] SpriteRenderer m_ShipGlow;
+    [SerializeField] Color m_ShipGlowDefaultColor;
+    ParticleSystem.MainModule m_ThrustMain;
 
     private NetworkVariable<float> m_FrictionEffectStartTimer = new NetworkVariable<float>(-10);
 
@@ -84,8 +83,8 @@ public class ShipControl : NetworkBehaviour
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
-        m_thrustMain = thrust.main;
-        m_shipGlow.color = m_shipGlowDefaultColor;
+        m_ThrustMain = m_Thrust.main;
+        m_ShipGlow.color = m_ShipGlowDefaultColor;
         m_IsBuffed = false;
     }
     
@@ -99,7 +98,7 @@ public class ShipControl : NetworkBehaviour
         
         if (IsServer)
         {
-            LatestShipColor.Value = m_shipGlowDefaultColor;
+            LatestShipColor.Value = m_ShipGlowDefaultColor;
             PlayerName.Value = $"Player {OwnerClientId}";
         }
     }
@@ -228,22 +227,22 @@ public class ShipControl : NetworkBehaviour
     {
         var time = NetworkManager.ServerTime.Time;
         var start = m_FrictionEffectStartTimer.Value;
-        var duration = friction.main.duration;
+        var duration = m_Friction.main.duration;
         
         bool frictionShouldBeActive = time >= start && time < start + duration; // 1f is the duration of the effect
 
         if (frictionShouldBeActive)
         {
-            if (friction.isPlaying == false)
+            if (m_Friction.isPlaying == false)
             {
-                friction.Play();
+                m_Friction.Play();
             }
         }
         else
         {
-            if (friction.isPlaying)
+            if (m_Friction.isPlaying)
             {
-                friction.Stop();
+                m_Friction.Stop();
             }
         }
     }
@@ -251,8 +250,8 @@ public class ShipControl : NetworkBehaviour
     // changes color of the ship glow sprite and the trail effects based on the latest buff color
     void HandleBuffColors()
     {
-        m_thrustMain.startColor = m_IsBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
-        m_shipGlow.material.color = m_IsBuffed ? LatestShipColor.Value : m_shipGlowDefaultColor;
+        m_ThrustMain.startColor = m_IsBuffed ? LatestShipColor.Value : m_ShipGlowDefaultColor;
+        m_ShipGlow.material.color = m_IsBuffed ? LatestShipColor.Value : m_ShipGlowDefaultColor;
     }
 
     void UpdateClient()
@@ -298,14 +297,14 @@ public class ShipControl : NetworkBehaviour
         // control thrust particles
         if (moveForce == 0.0f)
         {
-            m_thrustMain.startLifetime = 0.1f;
-            m_thrustMain.startSize = 1f;
+            m_ThrustMain.startLifetime = 0.1f;
+            m_ThrustMain.startSize = 1f;
             GetComponent<AudioSource>().Pause();
         }
         else
         {
-            m_thrustMain.startLifetime = 0.4f;
-            m_thrustMain.startSize = 1.2f;
+            m_ThrustMain.startLifetime = 0.4f;
+            m_ThrustMain.startSize = 1.2f;
             GetComponent<AudioSource>().Play();
         }
 
@@ -480,26 +479,26 @@ public class ShipControl : NetworkBehaviour
 
         // draw the name with a shadow (colored for buf)	
         GUI.color = Color.black;
-        GUI.Label(new Rect((pos.x + m_nameLabelOffset.x) - 20, Screen.height - (pos.y + m_nameLabelOffset.y) - 30, 400, 30), PlayerName.Value.Value);
+        GUI.Label(new Rect((pos.x + m_NameLabelOffset.x) - 20, Screen.height - (pos.y + m_NameLabelOffset.y) - 30, 400, 30), PlayerName.Value.Value);
 
         GUI.color = Color.white;
 
-        GUI.Label(new Rect((pos.x + m_nameLabelOffset.x) - 21, Screen.height - (pos.y + m_nameLabelOffset.y) - 31, 400, 30), PlayerName.Value.Value);
+        GUI.Label(new Rect((pos.x + m_NameLabelOffset.x) - 21, Screen.height - (pos.y + m_NameLabelOffset.y) - 31, 400, 30), PlayerName.Value.Value);
 
         // draw health bar background
         GUI.color = Color.grey;
-        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 26, Screen.height - (pos.y + m_resourceBarsOffset.y) + 20, 52, 7), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 26, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 20, 52, 7), m_Box);
 
         // draw health bar amount
         GUI.color = Color.green;
-        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 25, Screen.height - (pos.y + m_resourceBarsOffset.y) + 21, Health.Value / 2, 5), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 25, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 21, Health.Value / 2, 5), m_Box);
 
         // draw energy bar background
         GUI.color = Color.grey;
-        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 26, Screen.height - (pos.y + m_resourceBarsOffset.y) + 27, 52, 7), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 26, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 27, 52, 7), m_Box);
 
         // draw energy bar amount
         GUI.color = Color.magenta;
-        GUI.DrawTexture(new Rect((pos.x + m_resourceBarsOffset.x) - 25, Screen.height - (pos.y + m_resourceBarsOffset.y) + 28, Energy.Value / 2, 5), m_Box);
+        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 25, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 28, Energy.Value / 2, 5), m_Box);
     }
 }
