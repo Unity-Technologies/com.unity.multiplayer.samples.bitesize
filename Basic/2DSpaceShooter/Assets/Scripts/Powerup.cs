@@ -12,8 +12,8 @@ public class Powerup : NetworkBehaviour
 
     public NetworkVariable<Buff.BuffType> buffType = new NetworkVariable<Buff.BuffType>();
 
-    [SerializeField] private Renderer m_powerUpGlow;
-    [SerializeField] private Renderer m_powerUpGlow2;
+    [SerializeField] private Renderer m_PowerUpGlow;
+    [SerializeField] private Renderer m_PowerUpGlow2;
 
     void Awake()
     {
@@ -42,10 +42,10 @@ public class Powerup : NetworkBehaviour
 
         Color color = Buff.buffColors[(int)buffType.Value];
         GetComponent<Renderer>().material.color = color;
-        m_powerUpGlow.material.SetColor("_Color", color);
-        m_powerUpGlow.material.SetColor("_EmissiveColor", color);
-        m_powerUpGlow2.material.SetColor("_Color", color);
-        m_powerUpGlow2.material.SetColor("_EmissiveColor", color);
+        m_PowerUpGlow.material.SetColor("_Color", color);
+        m_PowerUpGlow.material.SetColor("_EmissiveColor", color);
+        m_PowerUpGlow2.material.SetColor("_Color", color);
+        m_PowerUpGlow2.material.SetColor("_EmissiveColor", color);
 
         if (!IsServer)
         {
