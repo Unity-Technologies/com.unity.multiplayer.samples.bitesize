@@ -1,8 +1,10 @@
-﻿using Unity.Netcode;
+﻿using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
+    [SerializeField]
     protected void Start()
     {
         var networkingManager = NetworkManager.Singleton;

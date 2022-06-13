@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -11,6 +12,9 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField]
     [Tooltip("The constant speed at which the Bullet travels")]
     private float m_TravelSpeed = 3.0f;
+    
+    [SerializeField]
+    ParticleSystem m_ShieldExplosionParticle;
 
     private void Start()
     {
@@ -52,6 +56,7 @@ public class EnemyBullet : MonoBehaviour
         {
             Destroy(hitShield.gameObject);
             Destroy(gameObject);
+            Instantiate(m_ShieldExplosionParticle, transform.position, quaternion.identity);
         }
     }
 

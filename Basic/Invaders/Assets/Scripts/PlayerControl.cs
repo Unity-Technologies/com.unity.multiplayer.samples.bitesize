@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -16,6 +17,11 @@ public class PlayerControl : NetworkBehaviour
     [Header("Player Settings")]
     [SerializeField]
     private NetworkVariable<int> m_Lives = new NetworkVariable<int>(3);
+
+    [SerializeField]
+    ParticleSystem m_ExplosionParticleSystem;
+    [SerializeField]
+    ParticleSystem m_HitParticleSystem;
 
     [SerializeField] private Color m_playerColorInGame;
 
@@ -216,9 +222,9 @@ public class PlayerControl : NetworkBehaviour
     {
         Assert.IsTrue(IsServer, "HitByBullet must be called server-side only!");
         if (!m_IsAlive) return;
-
+        
         m_Lives.Value -= 1;
-
+        
         if (m_Lives.Value <= 0)
         {
             // gameover!
@@ -227,11 +233,16 @@ public class PlayerControl : NetworkBehaviour
             m_Lives.Value = 0;
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
             NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
+            Instantiate(m_ExplosionParticleSystem, transform.position, quaternion.identity);
             
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
             // may stop the RPC's from reaching on the other side, as there is only one player controlled object
             if (TryGetComponent<SpriteRenderer>(out var spriteRenderer))
                 spriteRenderer.enabled = false;
+        }
+        else
+        {
+            Instantiate(m_HitParticleSystem, transform.position, quaternion.identity);
         }
     }
 
