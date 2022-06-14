@@ -23,9 +23,8 @@ public class PlayerControl : NetworkBehaviour
     [SerializeField]
     ParticleSystem m_HitParticleSystem;
 
-    [SerializeField] 
-    Color m_playerColorInGame;
-
+    [SerializeField]
+    Color m_PlayerColorInGame;
 
     private SceneTransitionHandler.SceneStates m_CurrentSceneState;
     private bool m_HasGameStarted;
@@ -111,7 +110,7 @@ public class PlayerControl : NetworkBehaviour
         m_CurrentSceneState = newState;
         if (m_CurrentSceneState == SceneTransitionHandler.SceneStates.Ingame)
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.color = m_playerColorInGame;
+            if (m_PlayerVisual != null) m_PlayerVisual.color = m_PlayerColorInGame;
         }
         else
         {
@@ -166,9 +165,9 @@ public class PlayerControl : NetworkBehaviour
     private void OnLivesChanged(int previousAmount, int currentAmount)
     {
         // Hide graphics client side upon death
-        if(currentAmount <= 0 && IsClient && TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+        if (currentAmount <= 0 && IsClient && TryGetComponent<SpriteRenderer>(out var spriteRenderer))
             spriteRenderer.enabled = false;
-        
+
         if (!IsOwner) return;
         Debug.LogFormat("Lives {0} ", currentAmount);
         if (InvadersGame.Singleton != null) InvadersGame.Singleton.SetLives(m_Lives.Value);
@@ -185,7 +184,7 @@ public class PlayerControl : NetworkBehaviour
         Debug.LogFormat("Score {0} ", currentAmount);
         if (InvadersGame.Singleton != null) InvadersGame.Singleton.SetScore(m_Score.Value);
     } // ReSharper disable Unity.PerformanceAnalysis
-    
+
     private void InGameUpdate()
     {
         if (!IsLocalPlayer || !IsOwner || !m_HasGameStarted) return;
@@ -198,9 +197,10 @@ public class PlayerControl : NetworkBehaviour
         if (deltaX != 0)
         {
             var newMovement = new Vector3(deltaX, 0, 0);
-            transform.position = Vector3.MoveTowards(transform.position, 
+            transform.position = Vector3.MoveTowards(transform.position,
                 transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
         }
+
         if (Input.GetKeyDown(KeyCode.Space)) ShootServerRPC();
     }
 
@@ -222,9 +222,9 @@ public class PlayerControl : NetworkBehaviour
     {
         Assert.IsTrue(IsServer, "HitByBullet must be called server-side only!");
         if (!m_IsAlive) return;
-        
+
         m_Lives.Value -= 1;
-        
+
         if (m_Lives.Value <= 0)
         {
             // gameover!
@@ -234,7 +234,7 @@ public class PlayerControl : NetworkBehaviour
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
             NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
             Instantiate(m_ExplosionParticleSystem, transform.position, quaternion.identity);
-            
+
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
             // may stop the RPC's from reaching on the other side, as there is only one player controlled object
             if (TryGetComponent<SpriteRenderer>(out var spriteRenderer))
