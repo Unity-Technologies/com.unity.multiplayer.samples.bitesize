@@ -23,7 +23,8 @@ public class PlayerControl : NetworkBehaviour
     [SerializeField]
     ParticleSystem m_HitParticleSystem;
 
-    [SerializeField] private Color m_playerColorInGame;
+    [SerializeField] 
+    Color m_playerColorInGame;
 
 
     private SceneTransitionHandler.SceneStates m_CurrentSceneState;
@@ -49,7 +50,7 @@ public class PlayerControl : NetworkBehaviour
     private void Start()
     {
         m_PlayerVisual = GetComponent<SpriteRenderer>();
-        if (m_PlayerVisual != null) m_PlayerVisual.color = new Color(m_playerColorInGame.r,m_playerColorInGame.g,m_playerColorInGame.b, 0);
+        if (m_PlayerVisual != null) m_PlayerVisual.color = Color.clear;
     }
 
     private void Update()
@@ -114,7 +115,7 @@ public class PlayerControl : NetworkBehaviour
         }
         else
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.color = new Color(m_playerColorInGame.r,m_playerColorInGame.g,m_playerColorInGame.b, 0);
+            if (m_PlayerVisual != null) m_PlayerVisual.color = Color.clear;
         }
     }
 
@@ -200,7 +201,6 @@ public class PlayerControl : NetworkBehaviour
             transform.position = Vector3.MoveTowards(transform.position, 
                 transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
         }
-
         if (Input.GetKeyDown(KeyCode.Space)) ShootServerRPC();
     }
 

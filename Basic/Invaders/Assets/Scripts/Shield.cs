@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-    [SerializeField]
     protected void Start()
     {
         var networkingManager = NetworkManager.Singleton;
