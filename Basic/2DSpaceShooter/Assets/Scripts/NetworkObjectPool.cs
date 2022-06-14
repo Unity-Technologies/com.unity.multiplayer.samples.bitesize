@@ -101,7 +101,7 @@ public class NetworkObjectPool : MonoBehaviour
             ReturnNetworkObject(go.GetComponent<NetworkObject>(), prefab);
         }
 
-        // Register MLAPI Spawn handlers
+        // Register Netcode Spawn handlers
         m_NetworkManager.PrefabHandler.AddHandler(prefab, new DummyPrefabInstanceHandler(prefab, this));
     }
 
