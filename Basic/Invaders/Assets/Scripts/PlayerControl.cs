@@ -1,7 +1,9 @@
 ﻿using System;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class PlayerControl : NetworkBehaviour
 {
@@ -15,6 +17,14 @@ public class PlayerControl : NetworkBehaviour
     [Header("Player Settings")]
     [SerializeField]
     private NetworkVariable<int> m_Lives = new NetworkVariable<int>(3);
+
+    [SerializeField]
+    ParticleSystem m_ExplosionParticleSystem;
+    [SerializeField]
+    ParticleSystem m_HitParticleSystem;
+
+    [SerializeField]
+    Color m_PlayerColorInGame;
 
     private SceneTransitionHandler.SceneStates m_CurrentSceneState;
     private bool m_HasGameStarted;
@@ -39,7 +49,7 @@ public class PlayerControl : NetworkBehaviour
     private void Start()
     {
         m_PlayerVisual = GetComponent<SpriteRenderer>();
-        if (m_PlayerVisual != null) m_PlayerVisual.material.color = Color.black;
+        if (m_PlayerVisual != null) m_PlayerVisual.color = Color.clear;
     }
 
     private void Update()
@@ -52,6 +62,20 @@ public class PlayerControl : NetworkBehaviour
                 break;
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        HandleCameraMovement();
+    }
+
+    private void HandleCameraMovement()
+    {
+        Vector3 cameraPosition = transform.position;
+        cameraPosition.x = cameraPosition.x * 0.05f;
+        cameraPosition.y = 6.2f;
+        cameraPosition.z = -35f;
+        Camera.main.transform.position = cameraPosition;
     }
 
     public override void OnNetworkDespawn()
@@ -86,11 +110,11 @@ public class PlayerControl : NetworkBehaviour
         m_CurrentSceneState = newState;
         if (m_CurrentSceneState == SceneTransitionHandler.SceneStates.Ingame)
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.material.color = Color.green;
+            if (m_PlayerVisual != null) m_PlayerVisual.color = m_PlayerColorInGame;
         }
         else
         {
-            if (m_PlayerVisual != null) m_PlayerVisual.material.color = Color.black;
+            if (m_PlayerVisual != null) m_PlayerVisual.color = Color.clear;
         }
     }
 
@@ -141,9 +165,9 @@ public class PlayerControl : NetworkBehaviour
     private void OnLivesChanged(int previousAmount, int currentAmount)
     {
         // Hide graphics client side upon death
-        if(currentAmount <= 0 && IsClient && TryGetComponent<SpriteRenderer>(out var spriteRenderer))
+        if (currentAmount <= 0 && IsClient && TryGetComponent<SpriteRenderer>(out var spriteRenderer))
             spriteRenderer.enabled = false;
-        
+
         if (!IsOwner) return;
         Debug.LogFormat("Lives {0} ", currentAmount);
         if (InvadersGame.Singleton != null) InvadersGame.Singleton.SetLives(m_Lives.Value);
@@ -160,7 +184,7 @@ public class PlayerControl : NetworkBehaviour
         Debug.LogFormat("Score {0} ", currentAmount);
         if (InvadersGame.Singleton != null) InvadersGame.Singleton.SetScore(m_Score.Value);
     } // ReSharper disable Unity.PerformanceAnalysis
-    
+
     private void InGameUpdate()
     {
         if (!IsLocalPlayer || !IsOwner || !m_HasGameStarted) return;
@@ -173,7 +197,7 @@ public class PlayerControl : NetworkBehaviour
         if (deltaX != 0)
         {
             var newMovement = new Vector3(deltaX, 0, 0);
-            transform.position = Vector3.MoveTowards(transform.position, 
+            transform.position = Vector3.MoveTowards(transform.position,
                 transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
         }
 
@@ -209,11 +233,16 @@ public class PlayerControl : NetworkBehaviour
             m_Lives.Value = 0;
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
             NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
-            
+            Instantiate(m_ExplosionParticleSystem, transform.position, quaternion.identity);
+
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
             // may stop the RPC's from reaching on the other side, as there is only one player controlled object
             if (TryGetComponent<SpriteRenderer>(out var spriteRenderer))
                 spriteRenderer.enabled = false;
+        }
+        else
+        {
+            Instantiate(m_HitParticleSystem, transform.position, quaternion.identity);
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
@@ -10,6 +11,9 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField]
     [Tooltip("The constant speed at which the Bullet travels")]
     private float m_TravelSpeed = 4.0f;
+
+    [SerializeField]
+    ParticleSystem m_EnemyExplosionParticle;
 
     private void Update()
     {
@@ -34,6 +38,10 @@ public class PlayerBullet : MonoBehaviour
 
             Destroy(hitEnemy.gameObject);
             Destroy(gameObject);
+            
+            // this instantiates at the position of the bullet, there is an offset in the Y axis on the 
+            // particle systems in the prefab so it looks like it spawns in the middle of the enemy
+            Instantiate(m_EnemyExplosionParticle, transform.position, quaternion.identity);
             return;
         }
 
