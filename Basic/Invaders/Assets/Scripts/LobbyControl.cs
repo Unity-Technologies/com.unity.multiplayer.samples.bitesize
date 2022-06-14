@@ -123,7 +123,7 @@ public class LobbyControl : NetworkBehaviour
 
     /// <summary>
     ///     OnClientConnectedCallback
-    ///     Since we are entering a lobby and MLAPI NetowrkingManager is spawning the player,
+    ///     Since we are entering a lobby and Netcode's NetworkManager is spawning the player,
     ///     the server can be configured to only listen for connected clients at this stage.
     /// </summary>
     /// <param name="clientId">client that connected</param>
@@ -194,14 +194,13 @@ public class LobbyControl : NetworkBehaviour
     /// </summary>
     public void PlayerIsReady()
     {
+        m_ClientsInLobby[NetworkManager.Singleton.LocalClientId] = true;
         if (IsServer)
         {
-            m_ClientsInLobby[NetworkManager.Singleton.ServerClientId] = true;
             UpdateAndCheckPlayersInLobby();
         }
         else
         {
-            m_ClientsInLobby[NetworkManager.Singleton.LocalClientId] = true;
             OnClientIsReadyServerRpc(NetworkManager.Singleton.LocalClientId);
         }
 
