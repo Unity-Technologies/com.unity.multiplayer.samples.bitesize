@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class LobbyControl : NetworkBehaviour
 {
-    [HideInInspector]
-    public static bool isHosting;
-
     [SerializeField]
     private string m_InGameSceneName = "InGame";
     
@@ -22,39 +19,26 @@ public class LobbyControl : NetworkBehaviour
     private Dictionary<ulong, bool> m_ClientsInLobby;
     private string m_UserLobbyStatusText;
 
-    /// <summary>
-    ///     Awake
-    ///     This is one way to kick off a multiplayer session
-    /// </summary>
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
         m_ClientsInLobby = new Dictionary<ulong, bool>();
+        
+        //Always add ourselves to the list at first
+        m_ClientsInLobby.Add(NetworkManager.LocalClientId, false);
 
-        //We added this information to tell us if we are going to host a game or join an the game session
-        if (isHosting)
-            NetworkManager.Singleton.StartHost(); //Spin up the host
-        else
-            NetworkManager.Singleton.StartClient(); //Spin up the client
-
-        if (NetworkManager.Singleton.IsListening)
+        //If we are hosting, then handle the server side for detecting when clients have connected
+        //and when their lobby scenes are finished loading.
+        if (IsServer)
         {
-            //Always add ourselves to the list at first
-            m_ClientsInLobby.Add(NetworkManager.Singleton.LocalClientId, false);
+            m_AllPlayersInLobby = false;
 
-            //If we are hosting, then handle the server side for detecting when clients have connected
-            //and when their lobby scenes are finished loading.
-            if (IsServer)
-            {
-                m_AllPlayersInLobby = false;
-
-                //Server will be notified when a client connects
-                NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-                SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
-            }
-
-            //Update our lobby
-            GenerateUserStatsForLobby();
+            //Server will be notified when a client connects
+            NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
+            SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
         }
+
+        //Update our lobby
+        GenerateUserStatsForLobby();
 
         SceneTransitionHandler.sceneTransitionHandler.SetSceneState(SceneTransitionHandler.SceneStates.Lobby);
     }
