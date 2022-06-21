@@ -264,13 +264,13 @@ public class PlayerControl : NetworkBehaviour
         switch (reason)
         {
             case GameOverReason.None:
-                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n Unknown reason!");
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! Unknown reason!");
                 break;
             case GameOverReason.EnemiesReachedBottom:
-                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n The enemies have invaded you!");
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! The enemies have invaded you!");
                 break;
             case GameOverReason.Death:
-                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n Your health was depleted!");
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! Your health was depleted!");
                 break;
             case GameOverReason.Max:
                 break;

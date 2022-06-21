@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using TMPro;
+using Unity.Netcode;
 using Unity.Netcode.Transports.UNET;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 public class MenuControl : MonoBehaviour
 {
     [SerializeField]
-    private Text m_HostIpInput;
+    private TMP_Text m_HostIpInput;
 
     [SerializeField]
     private string m_LobbySceneName = "InvadersLobby";
