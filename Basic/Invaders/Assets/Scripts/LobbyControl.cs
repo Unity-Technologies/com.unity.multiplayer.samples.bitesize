@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ public class LobbyControl : NetworkBehaviour
     [SerializeField]
     private int m_MinimumPlayerCount = 2;
     
-    public Text LobbyText;
+    public TMP_Text LobbyText;
     private bool m_AllPlayersInLobby;
 
     private Dictionary<ulong, bool> m_ClientsInLobby;
