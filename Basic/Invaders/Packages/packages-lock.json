@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "com.unity.burst": {
-      "version": "1.6.5",
-      "depth": 1,
+      "version": "1.6.6",
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1"
@@ -10,11 +10,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
-      "version": "1.2.3",
-      "depth": 1,
+      "version": "1.2.4",
+      "depth": 2,
       "source": "registry",
       "dependencies": {
-        "com.unity.burst": "1.6.4",
+        "com.unity.burst": "1.6.6",
         "com.unity.test-framework": "1.1.31"
       },
       "url": "https://packages.unity.com"
@@ -76,17 +76,18 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.multiplayer.samples.coop": {
-      "version": "https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop.git?path=/Packages/com.unity.multiplayer.samples.coop#sam/feat/bump-pre.10",
+      "version": "https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop.git?path=/Packages/com.unity.multiplayer.samples.coop",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.learn.iet-framework": "1.2.1",
+        "com.unity.multiplayer.tools": "1.0.0-pre.7",
         "com.unity.netcode.gameobjects": "1.0.0-pre.10",
         "com.unity.services.authentication": "1.0.0-pre.4",
         "com.unity.services.lobby": "1.0.0-pre.6",
         "com.unity.services.relay": "1.0.2"
       },
-      "hash": "4a582430f46bc4117aba765f26680f2d8881f4a8"
+      "hash": "55bc606b0ae04e2368bdaeda903440570bd44900"
     },
     "com.unity.multiplayer.tools": {
       "version": "1.0.0-pre.7",
@@ -102,14 +103,14 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.netcode.gameobjects": {
-      "version": "https://github.com/Unity-Technologies/com.unity.netcode.gameobjects.git?path=/com.unity.netcode.gameobjects#develop",
+      "version": "1.0.0-pre.10",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {
         "com.unity.nuget.mono-cecil": "1.10.1",
-        "com.unity.transport": "1.0.0"
+        "com.unity.transport": "1.1.0"
       },
-      "hash": "f0631414e5a5358a5ac7811d43273b1a82a60ca9"
+      "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.10.1",
@@ -278,13 +279,13 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.transport": {
-      "version": "1.0.0",
+      "version": "1.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.collections": "1.2.3",
-        "com.unity.burst": "1.6.4",
-        "com.unity.mathematics": "1.2.5"
+        "com.unity.collections": "1.2.4",
+        "com.unity.burst": "1.6.6",
+        "com.unity.mathematics": "1.2.6"
       },
       "url": "https://packages.unity.com"
     },
