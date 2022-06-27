@@ -72,8 +72,8 @@ public class PlayerControl : NetworkBehaviour
     private void HandleCameraMovement()
     {
         Vector3 cameraPosition = transform.position;
-        cameraPosition.x = cameraPosition.x * 0.05f;
-        cameraPosition.y = 6.2f;
+        cameraPosition.x *= 0.05f;
+        cameraPosition.y = 7.2f;
         cameraPosition.z = -35f;
         Camera.main.transform.position = cameraPosition;
     }
