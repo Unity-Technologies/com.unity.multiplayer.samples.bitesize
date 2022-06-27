@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ public class LobbyControl : NetworkBehaviour
     [SerializeField]
     private int m_MinimumPlayerCount = 2;
     
-    public Text LobbyText;
+    public TMP_Text LobbyText;
     private bool m_AllPlayersInLobby;
 
     private Dictionary<ulong, bool> m_ClientsInLobby;
@@ -58,11 +59,11 @@ public class LobbyControl : NetworkBehaviour
         m_UserLobbyStatusText = string.Empty;
         foreach (var clientLobbyStatus in m_ClientsInLobby)
         {
-            m_UserLobbyStatusText += "Player_" + clientLobbyStatus.Key + "          ";
+            m_UserLobbyStatusText += "PLAYER_" + clientLobbyStatus.Key + "          ";
             if (clientLobbyStatus.Value)
-                m_UserLobbyStatusText += "(Ready)\n";
+                m_UserLobbyStatusText += "(READY)\n";
             else
-                m_UserLobbyStatusText += "(Not Ready)\n";
+                m_UserLobbyStatusText += "(NOT READY)\n";
         }
     }
 
