@@ -193,13 +193,13 @@ public class InvadersGame : NetworkBehaviour
     /// <returns>true or false</returns>
     private bool ShouldStartCountDown()
     {
-        //If the game has started, then don't both with the rest of the count down checks.
+        //If the game has started, then don't bother with the rest of the count down checks.
         if (HasGameStarted()) return false;
         if (IsServer)
         {
             m_CountdownStarted.Value = SceneTransitionHandler.sceneTransitionHandler.AllClientsAreLoaded();
 
-            //While we are counting down, continually set the m_ReplicatedTimeRemaining.Value (client should only receive the update once)
+            //While we are counting down, continually set the replicated time remaining value for clients (client should only receive the update once)
             if (m_CountdownStarted.Value && !m_ReplicatedTimeSent)
             {
                 SetReplicatedTimeRemainingClientRPC(m_DelayedStartTime);
