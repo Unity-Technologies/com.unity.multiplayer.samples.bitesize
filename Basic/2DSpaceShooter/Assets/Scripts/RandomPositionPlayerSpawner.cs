@@ -49,15 +49,7 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
         response.CreatePlayerObject = true;
         response.Position = GetNextSpawnPosition();
         response.Rotation = Quaternion.identity;
-        response.Pending = true;
-        StartCoroutine(test(response));
-    }
-
-    IEnumerator test(NetworkManager.ConnectionApprovalResponse response)
-    {
-        yield return null;
         response.Approved = true;
-        response.Pending = false;
     }
 }
 
