@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
@@ -47,6 +48,7 @@ public class SceneTransitionHandler : NetworkBehaviour
         }
         sceneTransitionHandler = this;
         SetSceneState(SceneStates.Init);
+        DontDestroyOnLoad(this);
     }
 
     /// <summary>
@@ -93,7 +95,9 @@ public class SceneTransitionHandler : NetworkBehaviour
     {
         if(NetworkManager.Singleton.IsListening)
         {
-            NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
+            m_numberOfClientLoaded = 0;
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
             NetworkManager.Singleton.SceneManager.LoadScene(scenename, LoadSceneMode.Single);
         }
         else
@@ -101,13 +105,17 @@ public class SceneTransitionHandler : NetworkBehaviour
             SceneManager.LoadSceneAsync(scenename);
         }
     }
-    private void OnSceneEvent(SceneEvent sceneEvent)
-    {
-        //We are only interested by Client Loaded Scene events
-        if (sceneEvent.SceneEventType != SceneEventType.LoadComplete) return;
 
+    void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    {
         m_numberOfClientLoaded += 1;
-        OnClientLoadedScene?.Invoke(sceneEvent.ClientId);
+        OnClientLoadedScene?.Invoke(clientId);
+    }
+
+    void OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnLoadEventCompleted;
     }
 
     public bool AllClientsAreLoaded()

@@ -72,8 +72,8 @@ public class PlayerControl : NetworkBehaviour
     private void HandleCameraMovement()
     {
         Vector3 cameraPosition = transform.position;
-        cameraPosition.x = cameraPosition.x * 0.05f;
-        cameraPosition.y = 6.2f;
+        cameraPosition.x *= 0.05f;
+        cameraPosition.y = 7.2f;
         cameraPosition.z = -35f;
         Camera.main.transform.position = cameraPosition;
     }
@@ -264,13 +264,13 @@ public class PlayerControl : NetworkBehaviour
         switch (reason)
         {
             case GameOverReason.None:
-                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n Unknown reason!");
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! Unknown reason!");
                 break;
             case GameOverReason.EnemiesReachedBottom:
-                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n The enemies have invaded you!");
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! The enemies have invaded you!");
                 break;
             case GameOverReason.Death:
-                InvadersGame.Singleton.DisplayGameOverText("You have lost! \n Your health was depleted!");
+                InvadersGame.Singleton.DisplayGameOverText("You have lost! Your health was depleted!");
                 break;
             case GameOverReason.Max:
                 break;
