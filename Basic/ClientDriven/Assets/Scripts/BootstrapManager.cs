@@ -1,3 +1,4 @@
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 namespace Unity.Netcode.Samples
