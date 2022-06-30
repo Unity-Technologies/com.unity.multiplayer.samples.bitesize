@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -43,9 +44,13 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
         networkManager.ConnectionApprovalCallback += ConnectionApprovalWithRandomSpawnPos;
     }
 
-    void ConnectionApprovalWithRandomSpawnPos(byte[] payload, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
+    void ConnectionApprovalWithRandomSpawnPos(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        callback(true, null, true, GetNextSpawnPosition(), Quaternion.identity);
+        // Here we are only using ConnectionApproval to set the player's spawn position. Connections are always approved.
+        response.CreatePlayerObject = true;
+        response.Position = GetNextSpawnPosition();
+        response.Rotation = Quaternion.identity;
+        response.Approved = true;
     }
 }
 
