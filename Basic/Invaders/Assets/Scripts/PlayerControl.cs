@@ -26,7 +26,6 @@ public class PlayerControl : NetworkBehaviour
     [SerializeField]
     Color m_PlayerColorInGame;
 
-    private SceneTransitionHandler.SceneStates m_CurrentSceneState;
     private bool m_HasGameStarted;
 
     private bool m_IsAlive = true;
@@ -36,6 +35,7 @@ public class PlayerControl : NetworkBehaviour
     private GameObject m_MyBullet;
     private ClientRpcParams m_OwnerRPCParams;
 
+    [SerializeField]
     private SpriteRenderer m_PlayerVisual;
     private NetworkVariable<int> m_Score = new NetworkVariable<int>(0);
 
@@ -46,15 +46,9 @@ public class PlayerControl : NetworkBehaviour
         m_HasGameStarted = false;
     }
 
-    private void Start()
-    {
-        m_PlayerVisual = GetComponent<SpriteRenderer>();
-        if (m_PlayerVisual != null) m_PlayerVisual.color = Color.clear;
-    }
-
     private void Update()
     {
-        switch (m_CurrentSceneState)
+        switch (SceneTransitionHandler.sceneTransitionHandler.GetCurrentSceneState())
         {
             case SceneTransitionHandler.SceneStates.Ingame:
             {
@@ -94,21 +88,14 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    private void SceneTransitionHandler_clientLoadedScene(ulong clientId)
-    {
-        SceneStateChangedClientRpc(m_CurrentSceneState);
-    }
-
-    [ClientRpc]
-    private void SceneStateChangedClientRpc(SceneTransitionHandler.SceneStates state)
-    {
-        if (!IsServer) SceneTransitionHandler.sceneTransitionHandler.SetSceneState(state);
-    }
-
     private void SceneTransitionHandler_sceneStateChanged(SceneTransitionHandler.SceneStates newState)
     {
-        m_CurrentSceneState = newState;
-        if (m_CurrentSceneState == SceneTransitionHandler.SceneStates.Ingame)
+        UpdateColor();
+    }
+
+    private void UpdateColor()
+    {
+        if (SceneTransitionHandler.sceneTransitionHandler.GetCurrentSceneState() == SceneTransitionHandler.SceneStates.Ingame)
         {
             if (m_PlayerVisual != null) m_PlayerVisual.color = m_PlayerColorInGame;
         }
@@ -133,10 +120,9 @@ public class PlayerControl : NetworkBehaviour
             InvadersGame.OnSingletonReady += SubscribeToDelegatesAndUpdateValues;
         else
             SubscribeToDelegatesAndUpdateValues();
-
-        if (IsServer) SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += SceneTransitionHandler_clientLoadedScene;
-
+        
         SceneTransitionHandler.sceneTransitionHandler.OnSceneStateChanged += SceneTransitionHandler_sceneStateChanged;
+        UpdateColor();
     }
 
     private void SubscribeToDelegatesAndUpdateValues()
@@ -149,6 +135,8 @@ public class PlayerControl : NetworkBehaviour
             InvadersGame.Singleton.SetScore(m_Score.Value);
             InvadersGame.Singleton.SetLives(m_Lives.Value);
         }
+
+        m_HasGameStarted = InvadersGame.Singleton.hasGameStarted.Value;
     }
 
     public void IncreasePlayerScore(int amount)
