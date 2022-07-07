@@ -153,8 +153,8 @@ public class PlayerControl : NetworkBehaviour
     private void OnLivesChanged(int previousAmount, int currentAmount)
     {
         // Hide graphics client side upon death
-        if (currentAmount <= 0 && IsClient && TryGetComponent<SpriteRenderer>(out var spriteRenderer))
-            spriteRenderer.enabled = false;
+        if (currentAmount <= 0 && IsClient)
+            m_PlayerVisual.enabled = false;
 
         if (!IsOwner) return;
         Debug.LogFormat("Lives {0} ", currentAmount);
@@ -225,8 +225,7 @@ public class PlayerControl : NetworkBehaviour
 
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
             // may stop the RPC's from reaching on the other side, as there is only one player controlled object
-            if (TryGetComponent<SpriteRenderer>(out var spriteRenderer))
-                spriteRenderer.enabled = false;
+            m_PlayerVisual.enabled = false;
         }
         else
         {
