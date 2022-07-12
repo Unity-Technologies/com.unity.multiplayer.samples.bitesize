@@ -148,7 +148,7 @@ public class InvadersGame : NetworkBehaviour
             m_Shields.Clear();
         }
 
-        NetworkManager.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
     }
 
     internal static event Action OnSingletonReady;
@@ -187,7 +187,7 @@ public class InvadersGame : NetworkBehaviour
 
         if (IsServer)
         {
-            NetworkManager.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
 
         base.OnNetworkSpawn();
