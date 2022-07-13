@@ -88,6 +88,15 @@ public class SceneTransitionHandler : NetworkBehaviour
     }
 
     /// <summary>
+    /// Registers callbacks to the NetworkSceneManager. This should be called when starting the server
+    /// </summary>
+    public void RegisterCallbacks()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+        
+    }
+
+    /// <summary>
     /// Switches to a new scene
     /// </summary>
     /// <param name="scenename"></param>
@@ -96,8 +105,6 @@ public class SceneTransitionHandler : NetworkBehaviour
         if(NetworkManager.Singleton.IsListening)
         {
             m_numberOfClientLoaded = 0;
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
-            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
             NetworkManager.Singleton.SceneManager.LoadScene(scenename, LoadSceneMode.Single);
         }
         else
@@ -106,16 +113,10 @@ public class SceneTransitionHandler : NetworkBehaviour
         }
     }
 
-    void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    private void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
         m_numberOfClientLoaded += 1;
         OnClientLoadedScene?.Invoke(clientId);
-    }
-
-    void OnLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
-    {
-        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
-        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnLoadEventCompleted;
     }
 
     public bool AllClientsAreLoaded()
@@ -129,6 +130,7 @@ public class SceneTransitionHandler : NetworkBehaviour
     /// </summary>
     public void ExitAndLoadStartMenu()
     {
+        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
         OnClientLoadedScene = null;
         SetSceneState(SceneStates.Start);
         SceneManager.LoadScene(1);

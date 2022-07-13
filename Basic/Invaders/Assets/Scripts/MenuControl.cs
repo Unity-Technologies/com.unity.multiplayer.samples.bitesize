@@ -20,6 +20,7 @@ public class MenuControl : MonoBehaviour
         if (utpTransport) m_HostIpInput.text = "127.0.0.1";
         if (NetworkManager.Singleton.StartHost())
         {
+            SceneTransitionHandler.sceneTransitionHandler.RegisterCallbacks();
             SceneTransitionHandler.sceneTransitionHandler.SwitchScene(m_LobbySceneName);
         }
         else
