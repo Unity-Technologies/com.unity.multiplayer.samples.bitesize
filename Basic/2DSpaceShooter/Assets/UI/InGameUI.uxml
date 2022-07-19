@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/2DSpaceShooterUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#2DSpaceShooterUIStyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: center; align-items: center; position: relative;">
+        <ui:VisualElement style="height: 110px; align-items: center; justify-content: space-between; position: relative; top: auto; left: auto; flex-direction: column; flex-wrap: nowrap; margin-top: 20px;">
+            <ui:Label text="Player #" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); -unity-font-definition: url(&apos;project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&amp;guid=793a48946cad7b84e95befa70ab4795b&amp;type=2#ccaps SDF&apos;); -unity-text-outline-width: 0.5px; -unity-text-outline-color: rgb(0, 0, 0); align-items: auto; -unity-text-align: upper-center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+            <ui:VisualElement name="ResourceBarWrapper" style="justify-content: center; flex-direction: column; width: 64px; height: 25px; align-items: center; left: auto; top: auto; position: relative; flex-grow: 0; translate: 0 0;">
+                <ui:VisualElement name="HealthBar" class="resource-bar">
+                    <ui:VisualElement name="HealthBarFill" class="resource-bar_fill" style="background-color: rgb(27, 204, 32); width: 75%;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="ResourceBar" class="resource-bar">
+                    <ui:VisualElement name="ResourceBarFill" class="resource-bar_fill" style="background-color: rgb(194, 65, 204);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
