@@ -5,7 +5,7 @@
 |2020.3|1.0.0-pre|
 
 This repository contains a collection of bitesize sample projects and games that showcase different 
-sub-features of [Netcode](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects). You can review these samples with [documentation](https://docs-multiplayer.unity3d.com/docs/learn/bitesize-introduction) to better understand APIs and features.
+sub-features of [Netcode](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects). You can review these samples with [documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize-introduction) to better understand APIs and features.
 
 ## Who is this for?
 

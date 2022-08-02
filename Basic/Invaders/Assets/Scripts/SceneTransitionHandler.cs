@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
@@ -47,6 +48,7 @@ public class SceneTransitionHandler : NetworkBehaviour
         }
         sceneTransitionHandler = this;
         SetSceneState(SceneStates.Init);
+        DontDestroyOnLoad(this);
     }
 
     /// <summary>
@@ -86,6 +88,15 @@ public class SceneTransitionHandler : NetworkBehaviour
     }
 
     /// <summary>
+    /// Registers callbacks to the NetworkSceneManager. This should be called when starting the server
+    /// </summary>
+    public void RegisterCallbacks()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+        
+    }
+
+    /// <summary>
     /// Switches to a new scene
     /// </summary>
     /// <param name="scenename"></param>
@@ -93,7 +104,7 @@ public class SceneTransitionHandler : NetworkBehaviour
     {
         if(NetworkManager.Singleton.IsListening)
         {
-            NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
+            m_numberOfClientLoaded = 0;
             NetworkManager.Singleton.SceneManager.LoadScene(scenename, LoadSceneMode.Single);
         }
         else
@@ -101,13 +112,11 @@ public class SceneTransitionHandler : NetworkBehaviour
             SceneManager.LoadSceneAsync(scenename);
         }
     }
-    private void OnSceneEvent(SceneEvent sceneEvent)
-    {
-        //We are only interested by Client Loaded Scene events
-        if (sceneEvent.SceneEventType != SceneEventType.LoadComplete) return;
 
+    private void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    {
         m_numberOfClientLoaded += 1;
-        OnClientLoadedScene?.Invoke(sceneEvent.ClientId);
+        OnClientLoadedScene?.Invoke(clientId);
     }
 
     public bool AllClientsAreLoaded()
@@ -121,6 +130,7 @@ public class SceneTransitionHandler : NetworkBehaviour
     /// </summary>
     public void ExitAndLoadStartMenu()
     {
+        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
         OnClientLoadedScene = null;
         SetSceneState(SceneStates.Start);
         SceneManager.LoadScene(1);

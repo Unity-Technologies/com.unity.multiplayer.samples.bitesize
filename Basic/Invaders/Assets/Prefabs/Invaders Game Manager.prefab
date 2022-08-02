@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4266113290039088506}
   - component: {fileID: 4266113290039088507}
-  - component: {fileID: 4266113290039088509}
+  - component: {fileID: 2756959678467573149}
   m_Layer: 0
   m_Name: Invaders Game Manager
   m_TagString: Untagged
@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -60,7 +61,7 @@ MonoBehaviour:
   m_EnemyMovingDirection:
     m_InternalValue: 0.3
   m_RandomThresholdForSaucerCreation: 0.92
---- !u!114 &4266113290039088509
+--- !u!114 &2756959678467573149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,8 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkInstanceId: 0
-  PrefabHash: 16858280994969747278
-  PrefabHashGenerator: Invaders Game Manager
+  GlobalObjectIdHash: 951099334
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

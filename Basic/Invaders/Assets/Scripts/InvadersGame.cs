@@ -147,6 +147,8 @@ public class InvadersGame : NetworkBehaviour
             m_Enemies.Clear();
             m_Shields.Clear();
         }
+
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
     }
 
     internal static event Action OnSingletonReady;
@@ -183,7 +185,21 @@ public class InvadersGame : NetworkBehaviour
         //and in turn makes the players visible and allows for the players to be controlled.
         SceneTransitionHandler.sceneTransitionHandler.SetSceneState(SceneTransitionHandler.SceneStates.Ingame);
 
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        }
+
         base.OnNetworkSpawn();
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        if (m_ReplicatedTimeSent)
+        {
+            // Send the RPC only to the newly connected client
+            SetReplicatedTimeRemainingClientRPC(m_TimeRemaining, new ClientRpcParams {Send = new ClientRpcSendParams{TargetClientIds = new List<ulong>() {clientId}}});
+        }
     }
 
     /// <summary>
@@ -193,13 +209,13 @@ public class InvadersGame : NetworkBehaviour
     /// <returns>true or false</returns>
     private bool ShouldStartCountDown()
     {
-        //If the game has started, then don't both with the rest of the count down checks.
+        //If the game has started, then don't bother with the rest of the count down checks.
         if (HasGameStarted()) return false;
         if (IsServer)
         {
             m_CountdownStarted.Value = SceneTransitionHandler.sceneTransitionHandler.AllClientsAreLoaded();
 
-            //While we are counting down, continually set the m_ReplicatedTimeRemaining.Value (client should only receive the update once)
+            //While we are counting down, continually set the replicated time remaining value for clients (client should only receive the update once)
             if (m_CountdownStarted.Value && !m_ReplicatedTimeSent)
             {
                 SetReplicatedTimeRemainingClientRPC(m_DelayedStartTime);
@@ -217,8 +233,9 @@ public class InvadersGame : NetworkBehaviour
     ///     will deal with updating it. For that, we use a ClientRPC
     /// </summary>
     /// <param name="delayedStartTime"></param>
+    /// <param name="clientRpcParams"></param>
     [ClientRpc]
-    private void SetReplicatedTimeRemainingClientRPC(float delayedStartTime)
+    private void SetReplicatedTimeRemainingClientRPC(float delayedStartTime, ClientRpcParams clientRpcParams = new ClientRpcParams())
     {
         // See the ShouldStartCountDown method for when the server updates the value
         if (m_TimeRemaining == 0)

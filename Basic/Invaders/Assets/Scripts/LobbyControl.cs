@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LobbyControl : NetworkBehaviour
 {
-    [HideInInspector]
-    public static bool isHosting;
-
     [SerializeField]
     private string m_InGameSceneName = "InGame";
     
@@ -16,45 +14,32 @@ public class LobbyControl : NetworkBehaviour
     [SerializeField]
     private int m_MinimumPlayerCount = 2;
     
-    public Text LobbyText;
+    public TMP_Text LobbyText;
     private bool m_AllPlayersInLobby;
 
     private Dictionary<ulong, bool> m_ClientsInLobby;
     private string m_UserLobbyStatusText;
 
-    /// <summary>
-    ///     Awake
-    ///     This is one way to kick off a multiplayer session
-    /// </summary>
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
         m_ClientsInLobby = new Dictionary<ulong, bool>();
+        
+        //Always add ourselves to the list at first
+        m_ClientsInLobby.Add(NetworkManager.LocalClientId, false);
 
-        //We added this information to tell us if we are going to host a game or join an the game session
-        if (isHosting)
-            NetworkManager.Singleton.StartHost(); //Spin up the host
-        else
-            NetworkManager.Singleton.StartClient(); //Spin up the client
-
-        if (NetworkManager.Singleton.IsListening)
+        //If we are hosting, then handle the server side for detecting when clients have connected
+        //and when their lobby scenes are finished loading.
+        if (IsServer)
         {
-            //Always add ourselves to the list at first
-            m_ClientsInLobby.Add(NetworkManager.Singleton.LocalClientId, false);
+            m_AllPlayersInLobby = false;
 
-            //If we are hosting, then handle the server side for detecting when clients have connected
-            //and when their lobby scenes are finished loading.
-            if (IsServer)
-            {
-                m_AllPlayersInLobby = false;
-
-                //Server will be notified when a client connects
-                NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-                SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
-            }
-
-            //Update our lobby
-            GenerateUserStatsForLobby();
+            //Server will be notified when a client connects
+            NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
+            SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
         }
+
+        //Update our lobby
+        GenerateUserStatsForLobby();
 
         SceneTransitionHandler.sceneTransitionHandler.SetSceneState(SceneTransitionHandler.SceneStates.Lobby);
     }
@@ -74,11 +59,11 @@ public class LobbyControl : NetworkBehaviour
         m_UserLobbyStatusText = string.Empty;
         foreach (var clientLobbyStatus in m_ClientsInLobby)
         {
-            m_UserLobbyStatusText += "Player_" + clientLobbyStatus.Key + "          ";
+            m_UserLobbyStatusText += "PLAYER_" + clientLobbyStatus.Key + "          ";
             if (clientLobbyStatus.Value)
-                m_UserLobbyStatusText += "(Ready)\n";
+                m_UserLobbyStatusText += "(READY)\n";
             else
-                m_UserLobbyStatusText += "(Not Ready)\n";
+                m_UserLobbyStatusText += "(NOT READY)\n";
         }
     }
 
@@ -123,7 +108,7 @@ public class LobbyControl : NetworkBehaviour
 
     /// <summary>
     ///     OnClientConnectedCallback
-    ///     Since we are entering a lobby and MLAPI NetowrkingManager is spawning the player,
+    ///     Since we are entering a lobby and Netcode's NetworkManager is spawning the player,
     ///     the server can be configured to only listen for connected clients at this stage.
     /// </summary>
     /// <param name="clientId">client that connected</param>
@@ -194,14 +179,13 @@ public class LobbyControl : NetworkBehaviour
     /// </summary>
     public void PlayerIsReady()
     {
+        m_ClientsInLobby[NetworkManager.Singleton.LocalClientId] = true;
         if (IsServer)
         {
-            m_ClientsInLobby[NetworkManager.Singleton.ServerClientId] = true;
             UpdateAndCheckPlayersInLobby();
         }
         else
         {
-            m_ClientsInLobby[NetworkManager.Singleton.LocalClientId] = true;
             OnClientIsReadyServerRpc(NetworkManager.Singleton.LocalClientId);
         }
 
