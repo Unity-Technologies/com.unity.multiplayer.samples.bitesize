@@ -63,6 +63,7 @@ public class ShipControl : NetworkBehaviour
     [SerializeField] Vector2 m_ResourceBarsOffset;
     [SerializeField] SpriteRenderer m_ShipGlow;
     [SerializeField] Color m_ShipGlowDefaultColor;
+    [SerializeField] PlayerUIHandler m_PlayerUIHandler;
     ParticleSystem.MainModule m_ThrustMain;
 
     private NetworkVariable<float> m_FrictionEffectStartTimer = new NetworkVariable<float>(-10);
@@ -95,12 +96,32 @@ public class ShipControl : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        
         if (IsServer)
         {
             LatestShipColor.Value = m_ShipGlowDefaultColor;
             PlayerName.Value = $"Player {OwnerClientId}";
         }
+        Energy.OnValueChanged += OnEnergyChanged;
+        Health.OnValueChanged += OnHealthChanged;
+        OnEnergyChanged(0, Health.Value);
+        OnHealthChanged(0, Energy.Value);
+        m_PlayerUIHandler.SetPlayerName(PlayerName.Value.ToString());
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        Energy.OnValueChanged -= OnEnergyChanged;
+        Health.OnValueChanged -= OnHealthChanged;
+    }
+
+    void OnEnergyChanged(int previousvalue, int newvalue)
+    {
+        m_PlayerUIHandler.SetEnergyBarValue(newvalue);
+    }
+
+    void OnHealthChanged(int previousvalue, int newvalue)
+    {
+        m_PlayerUIHandler.SetHealthBarValue(newvalue);
     }
 
     public void TakeDamage(int amount)
@@ -258,6 +279,7 @@ public class ShipControl : NetworkBehaviour
     {
         HandleFrictionGraphics();
         HandleIfBuffed();
+        m_PlayerUIHandler.SetWrapperPosition(transform.position);
 
         if (!IsLocalPlayer)
         {
@@ -472,7 +494,7 @@ public class ShipControl : NetworkBehaviour
         PlayerName.Value = name;
     }
 
-    void OnGUI()
+    /*void OnGUI()
     {
         
         Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
@@ -485,7 +507,7 @@ public class ShipControl : NetworkBehaviour
 
         GUI.Label(new Rect((pos.x + m_NameLabelOffset.x) - 21, Screen.height - (pos.y + m_NameLabelOffset.y) - 31, 400, 30), PlayerName.Value.Value);
 
-        // draw health bar background
+        /#1#/ draw health bar background
         GUI.color = Color.grey;
         GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 26, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 20, 52, 7), m_Box);
 
@@ -499,6 +521,6 @@ public class ShipControl : NetworkBehaviour
 
         // draw energy bar amount
         GUI.color = Color.magenta;
-        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 25, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 28, Energy.Value / 2, 5), m_Box);
-    }
+        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 25, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 28, Energy.Value / 2, 5), m_Box);#1#
+    }*/
 }

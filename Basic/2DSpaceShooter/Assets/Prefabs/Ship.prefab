@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 509584576524893815}
   - component: {fileID: -360930162699739946}
   - component: {fileID: -8406883944196582507}
+  - component: {fileID: 5529000440653472126}
+  - component: {fileID: 7896695181562740567}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -152,6 +154,7 @@ MonoBehaviour:
   m_ResourceBarsOffset: {x: 0, y: 0}
   m_ShipGlow: {fileID: 5983711199006031825}
   m_ShipGlowDefaultColor: {r: 1, g: 1, b: 1, a: 1}
+  m_PlayerUIHandler: {fileID: 5529000440653472126}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 0
@@ -400,6 +403,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5529000440653472126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8765362011278494698575f571381f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIDocument: {fileID: 7896695181562740567}
+--- !u!114 &7896695181562740567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 279250231012e1a4ebf54124e4caeae2, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 76454dd33610f9640aaf91de0a03d878,
+    type: 3}
+  m_SortingOrder: 0
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,7 @@
+* {
+    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
+}
+
 .layout-buttons {
     flex-direction: row;
     justify-content: space-around;
@@ -50,7 +54,6 @@
     border-top-width: 0;
     -unity-text-align: middle-center;
     text-shadow: 1px 1px 0 rgb(0, 3, 161);
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
 }
 
 .button-style:hover {
@@ -82,10 +85,6 @@
     border-bottom-right-radius: 20px;
     -unity-font-style: normal;
     white-space: nowrap;
-    letter-spacing: 4px;
-    -unity-text-outline-width: 0;
-    -unity-text-outline-color: rgba(0, 0, 0, 0);
-    font-size: 27px;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
@@ -96,7 +95,6 @@
     border-top-width: 0;
     -unity-text-align: middle-center;
     text-shadow: 1px 1px 0 rgb(0, 3, 161);
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
     translate: -1px -1px;
 }
 
@@ -143,7 +141,6 @@
     border-top-width: 0;
     -unity-text-align: middle-center;
     text-shadow: 1px 1px 0 rgb(0, 3, 161);
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
     translate: 1px 1px;
 }
 
@@ -168,7 +165,6 @@
     margin-right: 6px;
     margin-top: 6px;
     margin-bottom: 6px;
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
 }
 
 .input-field:hover {
@@ -238,7 +234,6 @@
     margin-right: 6px;
     margin-top: 6px;
     margin-bottom: 6px;
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
     scale: 1 1;
     translate: 0 0;
 }
@@ -262,55 +257,67 @@
     -unity-text-align: upper-center;
     -unity-background-image-tint-color: rgba(0, 81, 255, 0.11);
     font-size: 27px;
-    padding-top: 3%;
+    padding-top: 5%;
     text-shadow: 1px 0 0 rgb(0, 2, 161);
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
+    justify-content: flex-start;
 }
 
-.resource-bar {
+#unity-progress-bar {
+    flex-grow: 1;
+    max-height: none;
+    height: auto;
+    flex-shrink: 1;
+    opacity: 1;
     width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0);
-    justify-content: space-around;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-top: 1px;
-    margin-bottom: 1px;
-    align-items: stretch;
+    justify-content: center;
     flex-direction: column;
+}
+
+.unity-progress-bar .unity-progress-bar__background {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
     border-left-color: rgb(0, 47, 168);
     border-right-color: rgb(0, 47, 168);
     border-top-color: rgb(0, 47, 168);
     border-bottom-color: rgb(0, 47, 168);
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-}
-
-.resource-bar_fill {
-    background-color: rgba(128, 128, 128, 255);
     flex-grow: 1;
+    flex-shrink: 1;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
+    margin-top: 0;
     margin-left: 0;
     margin-right: 0;
-    margin-top: 0;
     margin-bottom: 0;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    flex-direction: row;
-    width: 50%;
-    justify-content: flex-start;
+    height: auto;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    visibility: visible;
     overflow: visible;
-    align-items: stretch;
-    -unity-background-scale-mode: scale-to-fit;
+    opacity: 1;
+    border-left-width: 7px;
+    border-right-width: 7px;
+    border-top-width: 7px;
+    border-bottom-width: 7px;
+}
+
+#HealthBar.unity-progress-bar .unity-progress-bar__progress {
+    background-color: rgb(27, 204, 32);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+#EnergyBar.unity-progress-bar .unity-progress-bar__progress {
+    background-color: rgb(194, 65, 204);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }

@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UNET;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(NetworkManager))]
 [DisallowMultipleComponent]
@@ -21,13 +22,79 @@ public class NetworkManagerHud : MonoBehaviour
     public Vector2 DrawOffset = new Vector2(10, 10);
 
     public Color LabelColor = Color.black;
+    
+    [SerializeField]
+    UIDocument m_MainMenuUIDocument;
+
+    [SerializeField]
+    UIDocument m_InGameUIDocument;
+    
+    VisualElement m_MainMenuRootVisualElement;
+
+    VisualElement m_InGameRootVisualElement;
+    
+    Button m_HostButton;
+    
+    Button m_ServerButton;
+    
+    Button m_ClientButton;
+
+    Button m_ShutdownButton;
+    
+    TextField m_IPAddressField;
+    
+    TextField m_PortField;
+
+    TextElement m_HostPortNumber;
 
     void Awake()
     {
         // Only cache networking manager but not transport here because transport could change anytime.
         m_NetworkManager = GetComponent<NetworkManager>();
+        
+        m_NetworkManager.OnClientConnectedCallback += OnOnClientConnectedCallback;
+        m_NetworkManager.OnClientDisconnectCallback += OnOnClientDisconnectCallback;
+        
         m_LabelTextStyle = new GUIStyle(GUIStyle.none);
+        
+        m_MainMenuRootVisualElement = m_MainMenuUIDocument.rootVisualElement;
+        m_HostButton = m_MainMenuRootVisualElement.Q<Button>("HostButton");
+        m_ServerButton = m_MainMenuRootVisualElement.Q<Button>("ServerButton");
+        m_ClientButton = m_MainMenuRootVisualElement.Q<Button>("ClientButton");
+        m_IPAddressField = m_MainMenuRootVisualElement.Q<TextField>("IPAddressField");
+        m_PortField = m_MainMenuRootVisualElement.Q<TextField>("PortField");
+
+        m_InGameRootVisualElement = m_InGameUIDocument.rootVisualElement;
+        m_ShutdownButton = m_InGameRootVisualElement.Q<Button>("ShutdownButton");
+        m_HostPortNumber = m_InGameRootVisualElement.Q<TextElement>("HostPortNumber");
+        
+        m_IPAddressField.value = m_ConnectAddress;
+        m_PortField.value = m_PortString;
+        
+        m_HostButton.clickable.clickedWithEventInfo += HostButtonClicked;
+        m_ServerButton.clickable.clickedWithEventInfo += ServerButtonClicked;
+        m_ClientButton.clickable.clickedWithEventInfo += ClientButtonClicked;
+        
+        ShowMainMenuUI(true);
+        ShowInGameUI(false);
     }
+
+    void OnOnClientConnectedCallback(ulong obj)
+    {
+        ShowMainMenuUI(false);
+        ShowInGameUI(true);
+    }
+
+    void OnOnClientDisconnectCallback(ulong clientId)
+    {
+        if ((m_NetworkManager.IsServer && clientId != m_NetworkManager.ServerClientId))
+        {
+            return;
+        }
+        ShowMainMenuUI(true);
+        ShowInGameUI(false);
+    }
+
 
     void OnGUI()
     {
@@ -116,4 +183,53 @@ public class NetworkManagerHud : MonoBehaviour
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     bool IsRunning(NetworkManager networkManager) => networkManager.IsServer || networkManager.IsClient;
+    
+    void ClientButtonClicked(EventBase obj)
+    {
+        
+    }
+
+    void ServerButtonClicked(EventBase obj)
+    {
+        
+    }
+
+    void HostButtonClicked(EventBase obj)
+    {
+        
+    }
+    
+    void ShowMainMenuUI(bool visible)
+    {
+        m_MainMenuUIDocument.enabled = visible;
+        Debug.Log($"main menu visibility {visible}");
+    }
+
+    void ShowInGameUI(bool visible)
+    {
+        m_InGameUIDocument.enabled = visible;
+        Debug.Log($"in game visibility {visible}");
+    }
+
+
+    void OnDestroy()
+    {
+        if (m_HostButton != null)
+        {
+            m_HostButton.clickable.clickedWithEventInfo -= HostButtonClicked;
+        }
+
+        if (m_ServerButton != null)
+        {
+            m_ServerButton.clickable.clickedWithEventInfo -= ServerButtonClicked;
+        }
+
+        if (m_ClientButton != null)
+        {
+            m_ClientButton.clickable.clickedWithEventInfo -= ClientButtonClicked;
+        }
+        
+        m_NetworkManager.OnClientConnectedCallback -= OnOnClientConnectedCallback;
+        m_NetworkManager.OnClientDisconnectCallback -= OnOnClientDisconnectCallback;
+    }
 }
