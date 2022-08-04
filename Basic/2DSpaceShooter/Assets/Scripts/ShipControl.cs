@@ -2,6 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UIElements;
 
 public class Buff
 {
@@ -31,45 +32,77 @@ public class ShipControl : NetworkBehaviour
     static string s_ObjectPoolTag = "ObjectPool";
 
     NetworkObjectPool m_ObjectPool;
+    
     public GameObject BulletPrefab;
+    
     public AudioSource fireSound;
-
-    float rotateSpeed = 200f;
-    float acceleration = 12f;
-    float bulletLifetime = 2;
-    float topSpeed = 7.0f;
-
+    
+    float m_RotateSpeed = 200f;
+    
+    float m_Acceleration = 12f;
+    
+    float m_BulletLifetime = 2;
+    
+    float m_TopSpeed = 7.0f;
+    
     public NetworkVariable<int> Health = new NetworkVariable<int>(100);
+    
     public NetworkVariable<int> Energy = new NetworkVariable<int>(100);
     
     public NetworkVariable<float> SpeedBuffTimer = new NetworkVariable<float>(0f);
+    
     public NetworkVariable<float> RotateBuffTimer = new NetworkVariable<float>(0f);
+    
     public NetworkVariable<float> TripleShotTimer = new NetworkVariable<float>(0f);
+    
     public NetworkVariable<float> DoubleShotTimer = new NetworkVariable<float>(0f);
+    
     public NetworkVariable<float> QuadDamageTimer = new NetworkVariable<float>(0f);
+    
     public NetworkVariable<float> BounceTimer = new NetworkVariable<float>(0f);
+    
     public NetworkVariable<Color> LatestShipColor = new NetworkVariable<Color>();
 
     float m_EnergyTimer = 0;
+    
     bool m_IsBuffed;
 
     public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
+    [SerializeField] 
+    ParticleSystem m_Friction;
+    
+    [SerializeField] 
+    ParticleSystem m_Thrust;
+    
+    [SerializeField] 
+    SpriteRenderer m_ShipGlow;
+    
+    [SerializeField] 
+    Color m_ShipGlowDefaultColor;
+
     [SerializeField]
-    Texture m_Box;
-    [SerializeField] ParticleSystem m_Friction;
-    [SerializeField] ParticleSystem m_Thrust;
-    [SerializeField] Vector2 m_NameLabelOffset;
-    [SerializeField] Vector2 m_ResourceBarsOffset;
-    [SerializeField] SpriteRenderer m_ShipGlow;
-    [SerializeField] Color m_ShipGlowDefaultColor;
-    [SerializeField] PlayerUIHandler m_PlayerUIHandler;
+    UIDocument m_UIDocument;
+    
+    VisualElement m_RootVisualElement;
+    
+    ProgressBar m_HealthBar;
+    
+    ProgressBar m_EnergyBar;
+    
+    VisualElement m_PlayerUIWrapper;
+    
+    TextElement m_PlayerName;
+    
+    Camera m_MainCamera;
+    
     ParticleSystem.MainModule m_ThrustMain;
 
     private NetworkVariable<float> m_FrictionEffectStartTimer = new NetworkVariable<float>(-10);
 
     // for client movement command throttling
     float m_OldMoveForce = 0;
+    
     float m_OldSpin = 0;
 
     // server movement
@@ -84,14 +117,23 @@ public class ShipControl : NetworkBehaviour
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
+        
         m_ThrustMain = m_Thrust.main;
         m_ShipGlow.color = m_ShipGlowDefaultColor;
         m_IsBuffed = false;
+        
+        m_RootVisualElement = m_UIDocument.rootVisualElement;
+        m_PlayerUIWrapper = m_RootVisualElement.Q<VisualElement>("PlayerUIWrapper");
+        m_HealthBar = m_RootVisualElement.Q<ProgressBar>(name:"HealthBar");
+        m_EnergyBar = m_RootVisualElement.Q<ProgressBar>(name:"EnergyBar");
+        m_PlayerName = m_RootVisualElement.Q<TextElement>("PlayerName");
+        m_MainCamera = Camera.main;
     }
     
     void Start()
     {
         DontDestroyOnLoad(gameObject);
+        SetPlayerUIVisibility(true);
     }
 
     public override void OnNetworkSpawn()
@@ -99,13 +141,20 @@ public class ShipControl : NetworkBehaviour
         if (IsServer)
         {
             LatestShipColor.Value = m_ShipGlowDefaultColor;
+            
             PlayerName.Value = $"Player {OwnerClientId}";
+            
+            if (!IsHost)
+            {
+                SetPlayerUIVisibility(false);
+            }
         }
         Energy.OnValueChanged += OnEnergyChanged;
         Health.OnValueChanged += OnHealthChanged;
         OnEnergyChanged(0, Health.Value);
         OnHealthChanged(0, Energy.Value);
-        m_PlayerUIHandler.SetPlayerName(PlayerName.Value.ToString());
+        
+        SetPlayerName(PlayerName.Value.ToString());
     }
 
     public override void OnNetworkDespawn()
@@ -114,14 +163,14 @@ public class ShipControl : NetworkBehaviour
         Health.OnValueChanged -= OnHealthChanged;
     }
 
-    void OnEnergyChanged(int previousvalue, int newvalue)
+    void OnEnergyChanged(int previousValue, int newValue)
     {
-        m_PlayerUIHandler.SetEnergyBarValue(newvalue);
+        SetEnergyBarValue(newValue);
     }
 
-    void OnHealthChanged(int previousvalue, int newvalue)
+    void OnHealthChanged(int previousValue, int newValue)
     {
-        m_PlayerUIHandler.SetHealthBarValue(newvalue);
+        SetHealthBarValue(newValue);
     }
 
     public void TakeDamage(int amount)
@@ -161,7 +210,7 @@ public class ShipControl : NetworkBehaviour
         var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
         bulletRb.velocity = velocity;
-        bullet.GetComponent<Bullet>().Config(this, damage, bounce, bulletLifetime);
+        bullet.GetComponent<Bullet>().Config(this, damage, bounce, m_BulletLifetime);
         bullet.GetComponent<NetworkObject>().Spawn(true);
     }
 
@@ -185,7 +234,8 @@ public class ShipControl : NetworkBehaviour
             // center camera.. only if this is MY player!
             Vector3 pos = transform.position;
             pos.z = -50;
-            Camera.main.transform.position = pos;
+            m_MainCamera.transform.position = pos;
+            SetWrapperPosition();
         }
     }
 
@@ -210,7 +260,7 @@ public class ShipControl : NetworkBehaviour
         }
 
         // update rotation 
-        float rotate = m_Spin * rotateSpeed;
+        float rotate = m_Spin * m_RotateSpeed;
         if (RotateBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
             rotate *= 2;
@@ -221,7 +271,7 @@ public class ShipControl : NetworkBehaviour
         // update thrust
         if (m_Thrusting.Value != 0)
         {
-            float accel = acceleration;
+            float accel = m_Acceleration;
             if (SpeedBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
             {
                 accel *= 2;
@@ -231,7 +281,7 @@ public class ShipControl : NetworkBehaviour
             m_Rigidbody2D.AddForce(thrustVec);
 
             // restrict max speed
-            float top = topSpeed;
+            float top = m_TopSpeed;
             if (SpeedBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
             {
                 top *= 1.5f;
@@ -279,7 +329,6 @@ public class ShipControl : NetworkBehaviour
     {
         HandleFrictionGraphics();
         HandleIfBuffed();
-        m_PlayerUIHandler.SetWrapperPosition(transform.position);
 
         if (!IsLocalPlayer)
         {
@@ -374,7 +423,6 @@ public class ShipControl : NetworkBehaviour
         {
             m_IsBuffed = false;
         }
-
         HandleBuffColors();
     }
 
@@ -493,34 +541,30 @@ public class ShipControl : NetworkBehaviour
     {
         PlayerName.Value = name;
     }
-
-    /*void OnGUI()
+    
+    void SetWrapperPosition()
     {
-        
-        Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 screenPosition = RuntimePanelUtils.CameraTransformWorldToPanel(m_PlayerUIWrapper.panel, transform.position, m_MainCamera);
+        m_PlayerUIWrapper.transform.position = screenPosition;
+    }
+    
+    void SetHealthBarValue(int healthBarValue)
+    {
+        m_HealthBar.value = healthBarValue;
+    }
 
-        // draw the name with a shadow (colored for buf)	
-        GUI.color = Color.black;
-        GUI.Label(new Rect((pos.x + m_NameLabelOffset.x) - 20, Screen.height - (pos.y + m_NameLabelOffset.y) - 30, 400, 30), PlayerName.Value.Value);
+    void SetEnergyBarValue(int resourceBarValue)
+    {
+        m_EnergyBar.value = resourceBarValue;
+    }
 
-        GUI.color = Color.white;
-
-        GUI.Label(new Rect((pos.x + m_NameLabelOffset.x) - 21, Screen.height - (pos.y + m_NameLabelOffset.y) - 31, 400, 30), PlayerName.Value.Value);
-
-        /#1#/ draw health bar background
-        GUI.color = Color.grey;
-        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 26, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 20, 52, 7), m_Box);
-
-        // draw health bar amount
-        GUI.color = Color.green;
-        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 25, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 21, Health.Value / 2, 5), m_Box);
-
-        // draw energy bar background
-        GUI.color = Color.grey;
-        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 26, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 27, 52, 7), m_Box);
-
-        // draw energy bar amount
-        GUI.color = Color.magenta;
-        GUI.DrawTexture(new Rect((pos.x + m_ResourceBarsOffset.x) - 25, Screen.height - (pos.y + m_ResourceBarsOffset.y) + 28, Energy.Value / 2, 5), m_Box);#1#
-    }*/
+    void SetPlayerName(string playerName)
+    {
+        m_PlayerName.text = playerName;
+    }
+    
+    void SetPlayerUIVisibility(bool visible)
+    {
+        m_RootVisualElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+    }
 }

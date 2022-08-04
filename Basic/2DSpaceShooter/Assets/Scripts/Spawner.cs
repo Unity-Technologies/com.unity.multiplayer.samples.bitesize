@@ -140,7 +140,7 @@ public class Spawner : MonoBehaviour
             return;
         }
 
-        if (Powerup.numPowerups < m_Amount * 4)
+        if (Powerup.numPowerUps < m_Amount * 4)
         {
             Vector3 pos = new Vector3(Random.Range(-40, 40), Random.Range(-40, 40), 0);
             var hits = Physics2D.OverlapCircleAll(pos, 2.0f);

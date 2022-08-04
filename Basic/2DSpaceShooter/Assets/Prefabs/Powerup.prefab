@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5000000}
   - component: {fileID: 8200000}
   - component: {fileID: -3020370375573540695}
+  - component: {fileID: 5428136450459688780}
   m_Layer: 0
   m_Name: Powerup
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1286672388234975269}
   - {fileID: 5839582501528190854}
@@ -49,6 +51,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -105,6 +108,8 @@ MonoBehaviour:
     m_InternalValue: 0
   m_PowerUpGlow: {fileID: 1532004007453178554}
   m_PowerUpGlow2: {fileID: 4941848220983738205}
+  m_PowerUpUIDocument: {fileID: 5428136450459688780}
+  m_ScreenPosition: {x: 0, y: 0}
 --- !u!58 &5800000
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -149,7 +154,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100000}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -8602871781434457368, guid: 5a7e2197c4000c8449830bc6b760d2c7,
     type: 2}
@@ -255,6 +260,23 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 0
+--- !u!114 &5428136450459688780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 279250231012e1a4ebf54124e4caeae2, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 77526b76dfa05ee4fa7c5d98165d8a98,
+    type: 3}
+  m_SortingOrder: 0
 --- !u!1 &5407604804647354228
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +306,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: -0.00000064820046, z: 0.0000006573968, w: 0.70710677}
   m_LocalPosition: {x: 0.02, y: 0, z: -0.055}
   m_LocalScale: {x: -1.2624413, y: 1.2624413, z: 1.2624413}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
   m_RootOrder: 1
@@ -307,6 +330,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -377,6 +401,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: -0.00000064820046, z: 0.0000006573968, w: 0.70710677}
   m_LocalPosition: {x: 0.02, y: -0, z: -0.055}
   m_LocalScale: {x: 1.7593282, y: 1.7593282, z: 1.7593282}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
   m_RootOrder: 0
@@ -400,6 +425,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

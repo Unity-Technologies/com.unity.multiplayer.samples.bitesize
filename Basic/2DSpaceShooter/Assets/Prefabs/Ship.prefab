@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 509584576524893815}
   - component: {fileID: -360930162699739946}
   - component: {fileID: -8406883944196582507}
-  - component: {fileID: 5529000440653472126}
   - component: {fileID: 7896695181562740567}
   m_Layer: 0
   m_Name: Ship
@@ -147,14 +146,11 @@ MonoBehaviour:
         byte0027: 0
         byte0028: 0
         byte0029: 0
-  m_Box: {fileID: 2800000, guid: 8e7a4402ab9f0ec4bbc0457c590caef2, type: 3}
   m_Friction: {fileID: 19800002}
   m_Thrust: {fileID: 19800000}
-  m_NameLabelOffset: {x: 0, y: 0}
-  m_ResourceBarsOffset: {x: 0, y: 0}
   m_ShipGlow: {fileID: 5983711199006031825}
   m_ShipGlowDefaultColor: {r: 1, g: 1, b: 1, a: 1}
-  m_PlayerUIHandler: {fileID: 5529000440653472126}
+  m_UIDocument: {fileID: 7896695181562740567}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 0
@@ -390,7 +386,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  CanCommitToTransform: 0
 --- !u!114 &-8406883944196582507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,19 +398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5529000440653472126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8765362011278494698575f571381f85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UIDocument: {fileID: 7896695181562740567}
 --- !u!114 &7896695181562740567
 MonoBehaviour:
   m_ObjectHideFlags: 0
