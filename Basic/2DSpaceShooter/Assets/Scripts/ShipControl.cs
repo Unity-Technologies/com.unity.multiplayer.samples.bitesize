@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using System;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -129,7 +130,7 @@ public class ShipControl : NetworkBehaviour
         m_PlayerName = m_RootVisualElement.Q<TextElement>("PlayerName");
         m_MainCamera = Camera.main;
     }
-    
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -235,8 +236,8 @@ public class ShipControl : NetworkBehaviour
             Vector3 pos = transform.position;
             pos.z = -50;
             m_MainCamera.transform.position = pos;
-            SetWrapperPosition();
         }
+        SetWrapperPosition();
     }
 
     void UpdateServer()
