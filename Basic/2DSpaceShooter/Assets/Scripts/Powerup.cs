@@ -68,7 +68,7 @@ public class Powerup : NetworkBehaviour
         m_PowerUpGlow2.material.SetColor("_Color", buffColor);
         m_PowerUpGlow2.material.SetColor("_EmissiveColor", buffColor);
 
-        m_PowerUpLabel.text = buffType.Value.ToString();
+        m_PowerUpLabel.text = buffType.Value.ToString().ToUpper();
         
         if (buffType.Value == Buff.BuffType.QuadDamage)
         {

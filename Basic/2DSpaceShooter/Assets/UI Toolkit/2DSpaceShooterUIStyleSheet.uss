@@ -1,5 +1,13 @@
 * {
-    -unity-font-definition: url('project://database/Assets/Fonts/ccaps%20SDF.asset?fileID=11400000&guid=793a48946cad7b84e95befa70ab4795b&type=2#ccaps SDF');
+    -unity-font-definition: url('project://database/Assets/Fonts/chintzy%20SDF.asset?fileID=11400000&guid=0f86c86d1283c774a8d75462d97fcde6&type=2#chintzy SDF');
+    color: rgb(96, 174, 255);
+    font-size: 34px;
+    text-shadow: 1px 1px 0 rgb(0, 0, 0);
+    letter-spacing: 3px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 2.7px;
+    -unity-text-outline-color: rgb(0, 0, 0);
 }
 
 .layout-buttons {
@@ -11,200 +19,82 @@
     flex-grow: 1;
 }
 
-.button-style:disabled {
+.button-style {
     align-items: stretch;
     display: flex;
     width: 0;
-    height: 60px;
+    height: 67px;
     margin-left: 6px;
     margin-right: 6px;
     margin-top: 6px;
     margin-bottom: 6px;
     flex-grow: 1;
-    -unity-slice-left: 0;
-    -unity-slice-right: 0;
-    -unity-slice-top: 0;
-    -unity-slice-bottom: 0;
-    -unity-background-scale-mode: stretch-to-fill;
-    background-color: rgba(0, 88, 222, 0.27);
-    border-left-color: rgb(0, 47, 168);
-    border-right-color: rgb(0, 47, 168);
-    border-top-color: rgb(0, 47, 168);
-    border-bottom-color: rgb(0, 47, 168);
-    -unity-background-image-tint-color: rgba(0, 114, 255, 0.24);
-    color: rgba(93, 168, 255, 0.36);
+    background-color: rgb(48, 53, 63);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
     justify-content: space-around;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    -unity-font-style: normal;
-    white-space: nowrap;
-    letter-spacing: 4px;
-    -unity-text-outline-width: 0;
-    -unity-text-outline-color: rgba(0, 0, 0, 0);
-    font-size: 27px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    border-bottom-width: 6px;
-    border-right-width: 6px;
-    border-left-width: 0;
-    border-top-width: 0;
-    -unity-text-align: middle-center;
-    text-shadow: 1px 1px 0 rgb(0, 3, 161);
+    border-bottom-width: 4px;
+    border-right-width: 4px;
+    border-left-width: 2px;
+    border-top-width: 2px;
+    overflow: visible;
 }
 
 .button-style:inactive {
-    align-items: stretch;
-    display: flex;
-    width: 0;
-    height: 60px;
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    flex-grow: 1;
-    -unity-slice-left: 0;
-    -unity-slice-right: 0;
-    -unity-slice-top: 0;
-    -unity-slice-bottom: 0;
-    -unity-background-scale-mode: stretch-to-fill;
-    background-color: rgba(0, 88, 222, 0.84);
-    border-left-color: rgb(0, 47, 168);
-    border-right-color: rgb(0, 47, 168);
-    border-top-color: rgb(0, 47, 168);
-    border-bottom-color: rgb(0, 47, 168);
-    -unity-background-image-tint-color: rgba(0, 114, 255, 0.24);
-    color: rgb(93, 168, 255);
-    justify-content: space-around;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    -unity-font-style: normal;
-    white-space: nowrap;
-    letter-spacing: 4px;
-    -unity-text-outline-width: 0;
-    -unity-text-outline-color: rgba(0, 0, 0, 0);
-    font-size: 27px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom-width: 6px;
-    border-right-width: 6px;
-    border-left-width: 0;
-    border-top-width: 0;
-    -unity-text-align: middle-center;
-    text-shadow: 1px 1px 0 rgb(0, 3, 161);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    background-color: rgb(54, 54, 63);
 }
 
 .button-style:hover {
-    align-items: stretch;
     display: flex;
-    width: 0;
-    height: 60px;
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    flex-grow: 1;
-    -unity-slice-left: 0;
-    -unity-slice-right: 0;
-    -unity-slice-top: 0;
-    -unity-slice-bottom: 0;
-    -unity-background-scale-mode: stretch-to-fill;
-    background-color: rgba(21, 108, 240, 0.84);
-    border-left-color: rgb(0, 47, 168);
-    border-right-color: rgb(0, 47, 168);
-    border-top-color: rgb(0, 47, 168);
-    border-bottom-color: rgb(0, 47, 168);
-    -unity-background-image-tint-color: rgba(0, 40, 164, 0.24);
-    color: rgb(127, 192, 255);
-    justify-content: space-around;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    -unity-font-style: normal;
-    white-space: nowrap;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom-width: 6px;
-    border-right-width: 6px;
-    border-left-width: 0;
-    border-top-width: 0;
-    -unity-text-align: middle-center;
-    text-shadow: 1px 1px 0 rgb(0, 3, 161);
     translate: -1px -1px;
+    background-color: rgb(68, 68, 78);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
 }
 
 .button-style:active {
-    align-items: stretch;
     display: flex;
-    width: 0;
-    height: 60px;
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    flex-grow: 1;
-    -unity-slice-left: 0;
-    -unity-slice-right: 0;
-    -unity-slice-top: 0;
-    -unity-slice-bottom: 0;
-    -unity-background-scale-mode: stretch-to-fill;
-    background-color: rgb(0, 47, 168);
-    border-left-color: rgb(0, 47, 168);
-    border-right-color: rgb(0, 47, 168);
-    border-top-color: rgb(0, 47, 168);
-    border-bottom-color: rgb(0, 47, 168);
-    -unity-background-image-tint-color: rgba(0, 114, 255, 0.24);
-    color: rgb(93, 168, 255);
-    justify-content: space-around;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    -unity-font-style: normal;
-    white-space: nowrap;
-    letter-spacing: 4px;
-    -unity-text-outline-width: 0;
-    -unity-text-outline-color: rgba(0, 0, 0, 0);
-    font-size: 27px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom-width: 6px;
-    border-right-width: 6px;
-    border-left-width: 0;
-    border-top-width: 0;
-    -unity-text-align: middle-center;
-    text-shadow: 1px 1px 0 rgb(0, 3, 161);
     translate: 1px 1px;
+    background-color: rgb(37, 37, 43);
+}
+
+.button-style:disabled {
+    background-color: rgb(20, 20, 20);
+    color: rgb(48, 87, 128);
 }
 
 .input-field:inactive {
     flex-grow: 1;
     color: rgb(93, 168, 255);
-    background-color: rgba(0, 21, 101, 0.62);
-    border-left-color: rgb(0, 47, 168);
-    border-right-color: rgb(0, 47, 168);
-    border-top-color: rgb(0, 47, 168);
-    border-bottom-color: rgb(0, 47, 168);
+    background-color: rgb(20, 56, 117);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
     border-left-width: 2px;
-    border-right-width: 6px;
+    border-right-width: 4px;
     border-top-width: 2px;
-    border-bottom-width: 6px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-width: 4px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
     font-size: 20px;
     margin-left: 6px;
     margin-right: 6px;
@@ -215,19 +105,7 @@
 .input-field:hover {
     flex-grow: 1;
     color: rgb(127, 192, 255);
-    background-color: rgba(0, 21, 101, 0.62);
-    border-left-color: rgb(21, 80, 211);
-    border-right-color: rgb(21, 80, 211);
-    border-top-color: rgb(21, 80, 211);
-    border-bottom-color: rgb(21, 80, 211);
-    border-left-width: 2px;
-    border-right-width: 6px;
-    border-top-width: 2px;
-    border-bottom-width: 6px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: rgb(0, 68, 178);
     font-size: 20px;
     margin-left: 6px;
     margin-right: 6px;
@@ -238,19 +116,7 @@
 .input-field:focus {
     flex-grow: 1;
     color: rgb(127, 192, 255);
-    background-color: rgba(0, 21, 101, 0.62);
-    border-left-color: rgb(21, 80, 211);
-    border-right-color: rgb(21, 80, 211);
-    border-top-color: rgb(21, 80, 211);
-    border-bottom-color: rgb(21, 80, 211);
-    border-left-width: 2px;
-    border-right-width: 6px;
-    border-top-width: 2px;
-    border-bottom-width: 6px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: rgb(0, 39, 114);
     font-size: 20px;
     margin-left: 6px;
     margin-right: 6px;
@@ -261,19 +127,7 @@
 .input-field:active {
     flex-grow: 1;
     color: rgb(24, 102, 218);
-    background-color: rgba(0, 21, 101, 0.62);
-    border-left-color: rgb(0, 23, 112);
-    border-right-color: rgb(0, 23, 112);
-    border-top-color: rgb(0, 23, 112);
-    border-bottom-color: rgb(0, 23, 112);
-    border-left-width: 2px;
-    border-right-width: 6px;
-    border-top-width: 2px;
-    border-bottom-width: 6px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: rgb(0, 21, 94);
     font-size: 20px;
     margin-left: 6px;
     margin-right: 6px;
@@ -286,28 +140,14 @@
 .input-field > .unity-base-text-field__input:inactive {
     background-color: rgba(0, 0, 0, 0);
     border-color: rgba(0, 0, 0, 0);
-    border-left-color: rgb(0, 0, 0);
-    border-right-color: rgb(0, 0, 0);
-    border-top-color: rgb(0, 0, 0);
-    border-bottom-color: rgb(0, 0, 0);
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    -unity-font-style: normal;
-    -unity-text-align: upper-center;
-    -unity-background-image-tint-color: rgba(0, 81, 255, 0.11);
-    font-size: 27px;
-    padding-top: 5%;
-    text-shadow: 1px 0 0 rgb(0, 2, 161);
-    justify-content: flex-start;
+    padding-top: 0;
+    margin-top: 10px;
+    -unity-font-style: italic;
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 1px;
 }
 
-#unity-progress-bar {
+.unity-progress-bar {
     flex-grow: 1;
     max-height: none;
     height: auto;
@@ -319,52 +159,76 @@
 }
 
 .unity-progress-bar .unity-progress-bar__background {
-    background-color: rgba(0, 0, 0, 0);
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border-left-color: rgb(0, 47, 168);
-    border-right-color: rgb(0, 47, 168);
-    border-top-color: rgb(0, 47, 168);
-    border-bottom-color: rgb(0, 47, 168);
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    height: auto;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.53);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
     justify-content: center;
-    flex-direction: column;
-    display: flex;
-    visibility: visible;
-    overflow: visible;
-    opacity: 1;
-    border-left-width: 7px;
-    border-right-width: 7px;
-    border-top-width: 7px;
-    border-bottom-width: 7px;
+    align-items: center;
+    margin-top: -22px;
+    margin-bottom: -22px;
 }
 
 #HealthBar.unity-progress-bar .unity-progress-bar__progress {
-    background-color: rgb(27, 204, 32);
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    background-color: rgb(0, 204, 6);
+    margin-top: 0;
+    margin-bottom: 0;
+    flex-grow: 1;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-image: url('project://database/Assets/Textures/gradient01.png?fileID=2800000&guid=ddf020482581fd442a740f2128fc5ab4&type=3#gradient01');
+    -unity-background-image-tint-color: rgba(176, 255, 57, 0.39);
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-left: 0;
+    -unity-slice-top: -49;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
 }
 
 #EnergyBar.unity-progress-bar .unity-progress-bar__progress {
-    background-color: rgb(194, 65, 204);
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    background-color: rgb(237, 0, 255);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    flex-grow: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+    background-image: url('project://database/Assets/Textures/gradient01.png?fileID=2800000&guid=ddf020482581fd442a740f2128fc5ab4&type=3#gradient01');
+    -unity-background-image-tint-color: rgba(189, 0, 204, 0.53);
+    -unity-slice-bottom: 0;
+    -unity-slice-top: -49;
+}
+
+.unity-progress-bar .unity-progress-bar__title-container {
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    background-image: url('project://database/Assets/Sprites/block04.png?fileID=2800000&guid=232c0b2b063bfd74da67ea233c558eb1&type=3#block04');
+    -unity-slice-left: 80;
+    -unity-slice-top: 0;
+    -unity-slice-right: 80;
+    -unity-slice-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -6px;
+    margin-bottom: -6px;
+    width: 108%;
+    border-left-width: 6px;
+    border-right-width: 6px;
+    border-top-width: 6px;
+    border-bottom-width: 6px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .powerup {

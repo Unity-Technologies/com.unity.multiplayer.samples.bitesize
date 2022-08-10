@@ -78,6 +78,7 @@ public class NetworkManagerHud : MonoBehaviour
         
         ShowMainMenuUI(true);
         ShowInGameUI(false);
+        ShowStatusText(false);
         
         NetworkManager.Singleton.OnClientConnectedCallback += OnOnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnOnClientDisconnectCallback;
@@ -206,7 +207,7 @@ public class NetworkManagerHud : MonoBehaviour
         // wait to verify connect status
         yield return new WaitForSeconds(1f);
         
-        m_MenuStatusText.text = "Connection attempt failed";
+        m_MenuStatusText.text = "Connection Attempt Failed";
         m_HostButton.SetEnabled(true);
         m_ServerButton.SetEnabled(true);
         
@@ -227,14 +228,14 @@ public class NetworkManagerHud : MonoBehaviour
         if (m_NetworkManager.IsServer)
         {
             var mode = m_NetworkManager.IsHost ? "Host" : "Server";
-            m_InGameStatusText.text = ($"{mode} active on port: {m_Transport.ConnectionData.Port.ToString()}");
+            m_InGameStatusText.text = ($"ACTIVE ON PORT: {m_Transport.ConnectionData.Port.ToString()}");
             m_ShutdownButton.text = ($"Shutdown {mode}");
         }
         else
         {
             if (m_NetworkManager.IsConnectedClient)
             {
-                m_InGameStatusText.text = ($"Client connected {m_Transport.ConnectionData.Address} : {m_Transport.ConnectionData.Port.ToString()}");
+                m_InGameStatusText.text = ($"CONNECTED {m_Transport.ConnectionData.Address} : {m_Transport.ConnectionData.Port.ToString()}");
                 m_ShutdownButton.text = "Shutdown Client";
             }
         }

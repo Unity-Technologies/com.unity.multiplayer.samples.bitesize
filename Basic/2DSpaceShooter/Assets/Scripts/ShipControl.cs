@@ -155,7 +155,7 @@ public class ShipControl : NetworkBehaviour
         OnEnergyChanged(0, Health.Value);
         OnHealthChanged(0, Energy.Value);
         
-        SetPlayerName(PlayerName.Value.ToString());
+        SetPlayerName(PlayerName.Value.ToString().ToUpper());
     }
 
     public override void OnNetworkDespawn()
