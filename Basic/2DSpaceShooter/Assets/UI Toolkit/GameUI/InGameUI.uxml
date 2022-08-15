@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/2DSpaceShooterUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#2DSpaceShooterUIStyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: flex-end; align-items: flex-end; -unity-slice-left: 95; -unity-slice-top: 95; -unity-slice-right: 95; -unity-slice-bottom: 95; -unity-background-scale-mode: stretch-to-fill; height: 100%; width: 100%;">
+        <ui:VisualElement style="transform-origin: right bottom; scale: 0.7 0.7; margin-left: -18px; margin-right: -18px; margin-top: -18px; margin-bottom: -18px; width: 584px; height: 252px;">
+            <ui:VisualElement name="BackgroundGlow" style="position: relative; height: 100%; width: 100%; background-image: url(&apos;project://database/Assets/Textures/backgroundGlow.png?fileID=2800000&amp;guid=54479458116cb0b47af67b1eab91865a&amp;type=3#backgroundGlow&apos;); -unity-background-image-tint-color: rgb(0, 77, 255); -unity-slice-left: 53; -unity-slice-top: 53; -unity-slice-right: 53; -unity-slice-bottom: 53; top: auto; left: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; justify-content: center; align-items: center;">
+                <ui:VisualElement name="Background" style="align-items: center; justify-content: center; width: 85%; background-image: url(&apos;project://database/Assets/Sprites/block03.png?fileID=2800000&amp;guid=42919749fcd44f74f9d9964b14e674cc&amp;type=3#block03&apos;); -unity-slice-left: 55; -unity-slice-top: 55; -unity-slice-right: 55; -unity-slice-bottom: 55; height: 65%; background-color: rgba(72, 72, 72, 0); -unity-background-image-tint-color: rgb(200, 203, 235); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-shrink: 0;">
+                    <ui:VisualElement name="ButtonsLayout" style="height: 61px; width: 367px; justify-content: space-around; align-items: stretch; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; top: -2px;">
+                        <ui:VisualElement name="ShutdownButtonWrapper" class="layout-buttons" style="height: 81px;">
+                            <ui:Button text="Shutdown Server" display-tooltip-when-elided="true" name="ShutdownButton" tabindex="1" focusable="false" class="button-style" style="height: 56px; width: 346px; font-size: 24px; flex-grow: 0; -unity-text-outline-width: 1.1px;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="HostPortNumberWrapper" class="layout-buttons" style="height: 25px; position: relative; flex-shrink: 0; flex-grow: 0; width: 368px; align-items: center; justify-content: center;">
+                        <ui:Label text="CONNECTED ###.##.##.## : #####" display-tooltip-when-elided="true" name="InGameStatusText" style="-unity-text-align: middle-center; color: rgb(93, 168, 255); font-size: 18px; -unity-text-outline-width: 1.2px; flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

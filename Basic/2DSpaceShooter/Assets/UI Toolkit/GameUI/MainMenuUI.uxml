@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/2DSpaceShooterUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#2DSpaceShooterUIStyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: center; align-items: center; height: 100%; width: 100%; opacity: 1; background-image: url(&apos;project://database/Assets/Textures/blockEmissive02.png?fileID=2800000&amp;guid=b0ec8278615a9ce4a869b5587ce910f2&amp;type=3#blockEmissive02&apos;); -unity-background-image-tint-color: rgba(0, 27, 114, 0.58);">
+        <ui:VisualElement name="BackgroundGlow" style="position: absolute; height: 509px; width: 785px; background-image: url(&apos;project://database/Assets/Textures/backgroundGlow.png?fileID=2800000&amp;guid=54479458116cb0b47af67b1eab91865a&amp;type=3#backgroundGlow&apos;); -unity-background-image-tint-color: rgb(0, 77, 255); -unity-slice-left: 53; -unity-slice-top: 53; -unity-slice-right: 53; -unity-slice-bottom: 53;" />
+        <ui:VisualElement name="Background" style="align-items: center; justify-content: center; width: 693px; background-image: url(&apos;project://database/Assets/Sprites/block03.png?fileID=2800000&amp;guid=42919749fcd44f74f9d9964b14e674cc&amp;type=3#block03&apos;); -unity-slice-left: 55; -unity-slice-top: 55; -unity-slice-right: 55; -unity-slice-bottom: 55; height: 419px; background-color: rgba(72, 72, 72, 0); -unity-background-image-tint-color: rgb(200, 203, 235);">
+            <ui:VisualElement name="MainMenuUIWrapper" style="height: 352px; width: 569px; align-items: center; justify-content: flex-start; visibility: visible; display: flex; opacity: 1; flex-shrink: 0; margin-top: -14px;">
+                <ui:VisualElement name="ButtonsLayout" style="height: 266px; width: 560px; justify-content: space-around; align-items: stretch; margin-left: 0; margin-right: 0; margin-top: 31px; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 0;">
+                    <ui:VisualElement name="InputFieldLabelWrapper" class="layout-buttons" style="height: 120px; justify-content: space-around; align-items: stretch; margin-bottom: 5px;">
+                        <ui:Label text="IP Address" display-tooltip-when-elided="true" style="flex-grow: 1; height: 25px; width: 50px;" />
+                        <ui:Label text="Port" display-tooltip-when-elided="true" style="flex-grow: 1; height: 25px; width: 50px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="InputFieldWrapper" class="layout-buttons" style="margin-bottom: 14px;">
+                        <ui:TextField picking-mode="Ignore" text="0.0.0.0" name="IPAddressField" focusable="true" is-delayed="true" class="input-field" style="width: 100px; height: 60px;" />
+                        <ui:TextField picking-mode="Ignore" text="0000" name="PortField" focusable="true" is-delayed="true" class="input-field" style="width: 100px; height: 60px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="HostButtonWrapper" class="layout-buttons" style="margin-bottom: 6px;">
+                        <ui:Button text="Host (Client + Server)" display-tooltip-when-elided="true" name="HostButton" tabindex="1" focusable="false" class="button-style" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ClientServerButtonsWrapper" class="layout-buttons">
+                        <ui:Button text="Server" display-tooltip-when-elided="true" name="ServerButton" tabindex="3" focusable="false" class="button-style" />
+                        <ui:Button text="Client" display-tooltip-when-elided="true" name="ClientButton" tabindex="2" focusable="false" class="button-style" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Label text="Connection Status" display-tooltip-when-elided="true" name="ConnectionStatusText" style="-unity-font-style: bold-and-italic; margin-top: 5px; font-size: 30px; -unity-text-outline-width: 2px; display: flex;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

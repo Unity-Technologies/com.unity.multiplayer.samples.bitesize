@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(NetworkManager))]
 [DisallowMultipleComponent]
@@ -11,57 +14,116 @@ public class NetworkManagerHud : MonoBehaviour
     NetworkManager m_NetworkManager;
 
     UnityTransport m_Transport;
-
-    GUIStyle m_LabelTextStyle;
-
+    
     // This is needed to make the port field more convenient. GUILayout.TextField is very limited and we want to be able to clear the field entirely so we can't cache this as ushort.
     string m_PortString = "7777";
     string m_ConnectAddress = "127.0.0.1";
+    
+    [SerializeField]
+    UIDocument m_MainMenuUIDocument;
 
-    public Vector2 DrawOffset = new Vector2(10, 10);
+    [SerializeField]
+    UIDocument m_InGameUIDocument;
+    
+    VisualElement m_MainMenuRootVisualElement;
 
-    public Color LabelColor = Color.black;
+    VisualElement m_InGameRootVisualElement;
+    
+    Button m_HostButton;
+    
+    Button m_ServerButton;
+    
+    Button m_ClientButton;
+
+    Button m_ShutdownButton;
+    
+    TextField m_IPAddressField;
+    
+    TextField m_PortField;
+
+    TextElement m_MenuStatusText;
+    
+    TextElement m_InGameStatusText;
 
     void Awake()
     {
         // Only cache networking manager but not transport here because transport could change anytime.
         m_NetworkManager = GetComponent<NetworkManager>();
-        m_LabelTextStyle = new GUIStyle(GUIStyle.none);
+
+        m_MainMenuRootVisualElement = m_MainMenuUIDocument.rootVisualElement;
+        
+        m_IPAddressField = m_MainMenuRootVisualElement.Q<TextField>("IPAddressField");
+        m_PortField = m_MainMenuRootVisualElement.Q<TextField>("PortField");
+        m_HostButton = m_MainMenuRootVisualElement.Q<Button>("HostButton");
+        m_ClientButton = m_MainMenuRootVisualElement.Q<Button>("ClientButton");
+        m_ServerButton = m_MainMenuRootVisualElement.Q<Button>("ServerButton");
+        m_MenuStatusText = m_MainMenuRootVisualElement.Q<TextElement>("ConnectionStatusText");
+
+        m_InGameRootVisualElement = m_InGameUIDocument.rootVisualElement;
+        m_ShutdownButton = m_InGameRootVisualElement.Q<Button>("ShutdownButton");
+        m_InGameStatusText = m_InGameRootVisualElement.Q<TextElement>("InGameStatusText");
+
+        m_IPAddressField.value = m_ConnectAddress;
+        m_PortField.value = m_PortString;
+        
+        m_HostButton.clickable.clickedWithEventInfo += HostButtonClicked;
+        m_ServerButton.clickable.clickedWithEventInfo += ServerButtonClicked;
+        m_ClientButton.clickable.clickedWithEventInfo += ClientButtonClicked;
+        m_ShutdownButton.clickable.clickedWithEventInfo += ShutdownButtonClicked;
     }
-
-    void OnGUI()
+    
+    void Start()
     {
-        m_LabelTextStyle.normal.textColor = LabelColor;
-
         m_Transport = (UnityTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
-
-        GUILayout.BeginArea(new Rect(DrawOffset, new Vector2(200, 200)));
-
-        if (IsRunning(m_NetworkManager))
-        {
-            DrawStatusGUI();
-        }
-        else
-        {
-            DrawConnectGUI();
-        }
-
-        GUILayout.EndArea();
+        
+        ShowMainMenuUI(true);
+        ShowInGameUI(false);
+        ShowStatusText(false);
+        
+        NetworkManager.Singleton.OnClientConnectedCallback += OnOnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnOnClientDisconnectCallback;
     }
 
-    void DrawConnectGUI()
+    void OnOnClientConnectedCallback(ulong obj)
     {
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(10);
-        GUILayout.Label("Address", m_LabelTextStyle);
-        GUILayout.Label("Port", m_LabelTextStyle);
+        ShowMainMenuUI(false);
+        ShowInGameUI(true);
+    }
 
-        GUILayout.EndHorizontal();
+    void OnOnClientDisconnectCallback(ulong clientId)
+    {
+        if ((NetworkManager.Singleton.IsServer && clientId != NetworkManager.ServerClientId))
+        {
+            return;
+        }
+        ShowMainMenuUI(true);
+        ShowInGameUI(false);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    bool IsRunning(NetworkManager networkManager) => networkManager.IsServer || networkManager.IsClient;
 
-        GUILayout.BeginHorizontal();
+    bool SetConnectionData()
+    {
+        m_ConnectAddress = SanitizeInput(m_IPAddressField.value);
+        m_PortString = SanitizeInput(m_PortField.value);
 
-        m_ConnectAddress = GUILayout.TextField(m_ConnectAddress);
-        m_PortString = GUILayout.TextField(m_PortString);
+        if (m_ConnectAddress == "")
+        {
+            m_MenuStatusText.text = "IP Address Invalid";
+            StopAllCoroutines();
+            StartCoroutine(ShowInvalidInputStatus());
+            return false;
+        }
+        
+        if (m_PortString == "")
+        {
+            m_MenuStatusText.text = "Port Invalid";
+            StopAllCoroutines();
+            StartCoroutine(ShowInvalidInputStatus());
+            return false;
+        }
+
         if (ushort.TryParse(m_PortString, out ushort port))
         {
             m_Transport.SetConnectionData(m_ConnectAddress, port);
@@ -70,50 +132,137 @@ public class NetworkManagerHud : MonoBehaviour
         {
             m_Transport.SetConnectionData(m_ConnectAddress, 7777);
         }
-
-        GUILayout.EndHorizontal();
-
-        if (GUILayout.Button("Host (Server + Client)"))
+        return true;
+    }
+    
+    static string SanitizeInput(string dirtyString)
+    {
+        // sanitize the input for the ip address
+        return Regex.Replace(dirtyString, "[^0-9.]", "");
+    }
+    
+    void HostButtonClicked(EventBase obj)
+    {
+        if (SetConnectionData())
         {
-            m_NetworkManager.StartHost();
+            NetworkManager.Singleton.StartHost();
         }
-
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Server"))
+    }
+    
+    void ClientButtonClicked(EventBase obj)
+    {
+        if (SetConnectionData())
+        {
+            NetworkManager.Singleton.StartClient();
+            StopAllCoroutines();
+            StartCoroutine(ShowConnectingStatus());
+        }
+    }
+    
+    void ServerButtonClicked(EventBase obj)
+    {
+        if (SetConnectionData())
         {
             m_NetworkManager.StartServer();
+            ShowMainMenuUI(false);
+            ShowInGameUI(true);
         }
-
-        if (GUILayout.Button("Client"))
-        {
-            m_NetworkManager.StartClient();
-        }
-
-        GUILayout.EndHorizontal();
+    }
+    
+    void ShutdownButtonClicked(EventBase obj)
+    {
+        m_NetworkManager.Shutdown();
+        ShowMainMenuUI(true);
+        ShowInGameUI(false);
+    }
+    
+    void ShowStatusText(bool visible)
+    {
+        m_MenuStatusText.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    void DrawStatusGUI()
+    IEnumerator ShowInvalidInputStatus()
     {
+        ShowStatusText(true);
+
+        yield return new WaitForSeconds(3f);
+        
+        ShowStatusText(false);
+    }
+    
+    IEnumerator ShowConnectingStatus()
+    {
+        m_MenuStatusText.text = "Attempting to Connect...";
+        ShowStatusText(true);
+        
+        m_HostButton.SetEnabled(false);
+        m_ServerButton.SetEnabled(false);
+        
+        var unityTransport = m_NetworkManager.GetComponent<UnityTransport>();
+        var connectTimeoutMs = unityTransport.ConnectTimeoutMS;
+        var maxConnectAttempts = unityTransport.MaxConnectAttempts;
+
+        yield return new WaitForSeconds(connectTimeoutMs * maxConnectAttempts / 1000f);
+
+        // wait to verify connect status
+        yield return new WaitForSeconds(1f);
+        
+        m_MenuStatusText.text = "Connection Attempt Failed";
+        m_HostButton.SetEnabled(true);
+        m_ServerButton.SetEnabled(true);
+        
+        yield return new WaitForSeconds(3f);
+        
+        ShowStatusText(false);
+    }
+
+    void ShowMainMenuUI(bool visible)
+    {
+        m_MainMenuRootVisualElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    void ShowInGameUI(bool visible)
+    {
+        m_InGameRootVisualElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        
         if (m_NetworkManager.IsServer)
         {
             var mode = m_NetworkManager.IsHost ? "Host" : "Server";
-            GUILayout.Label($"{mode} active on port: {m_Transport.ConnectionData.Port.ToString()}", m_LabelTextStyle);
+            m_InGameStatusText.text = ($"ACTIVE ON PORT: {m_Transport.ConnectionData.Port.ToString()}");
+            m_ShutdownButton.text = ($"Shutdown {mode}");
         }
         else
         {
             if (m_NetworkManager.IsConnectedClient)
             {
-                GUILayout.Label($"Client connected {m_Transport.ConnectionData.Address}:{m_Transport.ConnectionData.Port.ToString()}", m_LabelTextStyle);
+                m_InGameStatusText.text = ($"CONNECTED {m_Transport.ConnectionData.Address} : {m_Transport.ConnectionData.Port.ToString()}");
+                m_ShutdownButton.text = "Shutdown Client";
             }
         }
-
-        if (GUILayout.Button("Shutdown"))
-        {
-            m_NetworkManager.Shutdown();
-        }
     }
+    
+    void OnDestroy()
+    {
+        if (m_HostButton != null)
+        {
+            m_HostButton.clickable.clickedWithEventInfo -= HostButtonClicked;
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    bool IsRunning(NetworkManager networkManager) => networkManager.IsServer || networkManager.IsClient;
+        if (m_ServerButton != null)
+        {
+            m_ServerButton.clickable.clickedWithEventInfo -= ServerButtonClicked;
+        }
+
+        if (m_ClientButton != null)
+        {
+            m_ClientButton.clickable.clickedWithEventInfo -= ClientButtonClicked;
+        }
+
+        if (m_ShutdownButton != null)
+        {
+            m_ShutdownButton.clickable.clickedWithEventInfo -= ShutdownButtonClicked;
+        }
+        m_NetworkManager.OnClientConnectedCallback -= OnOnClientConnectedCallback;
+        m_NetworkManager.OnClientDisconnectCallback -= OnOnClientDisconnectCallback;
+    }
 }
