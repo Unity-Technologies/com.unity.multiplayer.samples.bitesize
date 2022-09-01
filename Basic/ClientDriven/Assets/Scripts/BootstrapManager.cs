@@ -18,22 +18,29 @@ namespace Unity.Netcode.Samples
             if (!networkManager.IsClient && !networkManager.IsServer)
             {
                 IPToConnectTo = GUILayout.TextField(IPToConnectTo);
-                if (GUILayout.Button("Host"))
+                if (GUILayout.Button("Host") || Input.GetKeyUp(KeyCode.H))
                 {
                     (networkManager.NetworkConfig.NetworkTransport as UnityTransport).SetConnectionData(IPToConnectTo, 9998);
                     networkManager.StartHost();
                 }
 
-                if (GUILayout.Button("Client"))
+                if (GUILayout.Button("Client")|| Input.GetKeyUp(KeyCode.C))
                 {
                     (networkManager.NetworkConfig.NetworkTransport as UnityTransport).SetConnectionData(IPToConnectTo, 9998);
                     networkManager.StartClient();
                 }
 
-                if (GUILayout.Button("Server"))
+                if (GUILayout.Button("Server")|| Input.GetKeyUp(KeyCode.P))
                 {
                     (networkManager.NetworkConfig.NetworkTransport as UnityTransport).SetConnectionData(IPToConnectTo, 9998);
                     networkManager.StartServer();
+                }
+            }
+            else
+            {
+                if (Input.GetKeyUp(KeyCode.Q))
+                {
+                    networkManager.Shutdown();
                 }
             }
 
