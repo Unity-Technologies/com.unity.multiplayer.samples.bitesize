@@ -5,7 +5,7 @@
 |2020.3|1.0.0-pre|
 
 This repository contains a collection of bitesize sample projects and games that showcase different 
-sub-features of [Netcode](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects). You can review these samples with [documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize-introduction) to better understand APIs and features.
+sub-features of Netcode. You can review these samples with [documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) to better understand APIs and features.
 
 ## Who is this for?
 
@@ -14,7 +14,7 @@ project using [Netcode for GameObjects](https://github.com/Unity-Technologies/co
 
 ## Requirements
 
-You need Unity and [Unity Netcode](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects) installed to use these samples. Complete the [Hello World Getting Started](https://docs-multiplayer.unity3d.com/docs/tutorials/helloworld/helloworldintro) to prepare your environment. You can then access and use these samples for Netcode for GameObjects in a more self-contained scenario.
+You need Unity and Netcode for GameObjects installed to use these samples. Complete the [Hello World Getting Started](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld) to prepare your environment. You can then access and use these samples for Netcode for GameObjects in a more self-contained scenario.
 
 ## Community and Feedback
 
