@@ -30,3 +30,6 @@ See our other samples for more multiplayer content
 
 ## Contributing
 We welcome your contributions to this sample code and objects. See our [contribution guidelines](CONTRIBUTING.md) for details.
+
+## Feedback
+If you have tried these samples already, please follow the link to fill out your feedback: https://unitytech.typeform.com/bitesize - ETA: 1 min 30 secs.
