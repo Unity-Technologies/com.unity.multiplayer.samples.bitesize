@@ -1,43 +1,31 @@
-using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 namespace Unity.Netcode.Samples
 {
     /// <summary>
-    /// Class to display helper buttons and status labels on the GUI, as well as buttons to start host/client/server.
-    /// Once a connection has been established to the server, the local player can be teleported to random positions via a GUI button.
+    /// Class to manage UI to start host/client/server.
     /// </summary>
     public class BootstrapManager : MonoBehaviour
     {
-        public static string IPToConnectTo = "127.0.0.1";
-        private void OnGUI()
+        [SerializeField]
+        GameObject m_ConnectionPanel;
+
+        public void StartHost()
         {
-            GUILayout.BeginArea(new Rect(10, 10, 300, 300));
+            NetworkManager.Singleton.StartHost();
+            m_ConnectionPanel.SetActive(false);
+        }
 
-            var networkManager = NetworkManager.Singleton;
-            if (!networkManager.IsClient && !networkManager.IsServer)
-            {
-                IPToConnectTo = GUILayout.TextField(IPToConnectTo);
-                if (GUILayout.Button("Host"))
-                {
-                    (networkManager.NetworkConfig.NetworkTransport as UnityTransport).SetConnectionData(IPToConnectTo, 9998);
-                    networkManager.StartHost();
-                }
+        public void StartClient()
+        {
+            NetworkManager.Singleton.StartClient();
+            m_ConnectionPanel.SetActive(false);
+        }
 
-                if (GUILayout.Button("Client"))
-                {
-                    (networkManager.NetworkConfig.NetworkTransport as UnityTransport).SetConnectionData(IPToConnectTo, 9998);
-                    networkManager.StartClient();
-                }
-
-                if (GUILayout.Button("Server"))
-                {
-                    (networkManager.NetworkConfig.NetworkTransport as UnityTransport).SetConnectionData(IPToConnectTo, 9998);
-                    networkManager.StartServer();
-                }
-            }
-
-            GUILayout.EndArea();
+        public void StartServer()
+        {
+            NetworkManager.Singleton.StartServer();
+            m_ConnectionPanel.SetActive(false);
         }
     }
 }
