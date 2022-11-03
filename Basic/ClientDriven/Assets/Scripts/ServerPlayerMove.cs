@@ -9,17 +9,12 @@ using UnityEngine;
 [DefaultExecutionOrder(0)] // before client component
 public class ServerPlayerMove : NetworkBehaviour
 {
-    private ClientPlayerMove m_Client;
-
     [SerializeField]
-    private Camera m_Camera;
+    ClientPlayerMove m_ClientPlayerMove;
 
     public NetworkVariable<bool> ObjPickedUp = new NetworkVariable<bool>();
-
-    private void Awake()
-    {
-        m_Client = GetComponent<ClientPlayerMove>();
-    }
+    
+    NetworkObject m_PickedUpObj;
 
     // DOC START HERE
     public override void OnNetworkSpawn()
@@ -34,10 +29,8 @@ public class ServerPlayerMove : NetworkBehaviour
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
-        m_Client.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
+        m_ClientPlayerMove.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
     }
-
-    private NetworkObject m_PickedUpObj;
 
     [ServerRpc]
     public void PickupObjServerRpc(ulong objToPickupID)
