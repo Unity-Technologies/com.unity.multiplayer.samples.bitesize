@@ -19,7 +19,7 @@ namespace Game
     /// Then we wait for a configured amount of time, and then spawn the prefab on the server, which replicates it to the clients.
     /// Then we hope that the clients will be able to load the prefab during the (m_SpawnDelayInSeconds + m_SpawnTimeoutInSeconds) time window.
     /// 
-    /// Currently latejoin doesn't work with dynaic prefabs, because the initial sync message doesn't allow the clients any time to load prefabs. That's a bug.
+    /// Currently latejoin doesn't work with dynamic prefabs, because the initial sync message doesn't allow the clients any time to load prefabs. That's a bug.
     /// To circumvent this issue we simply disallow latejoins (and reconnections :( ) and do not spawn dynamic things until all clients are connected and the gameplay is started by the server.
     ///
     /// This is not ideal, and in the future we will be able to deal with latejoiners who need to preload a bunch of
