@@ -22,8 +22,6 @@ namespace Game
     /// Currently latejoin doesn't work with dynamic prefabs, because the initial sync message doesn't allow the clients any time to load prefabs. That's a bug.
     /// To circumvent this issue we simply disallow latejoins (and reconnections :( ) and do not spawn dynamic things until all clients are connected and the gameplay is started by the server.
     ///
-    /// This is not ideal, and in the future we will be able to deal with latejoiners who need to preload a bunch of
-    /// prefabs before they can properly replicate.
     /// We will need to maintain a collection of loaded dynamic prefabs on the server, and they will need to be loaded when a new client connects.
     /// 
     /// </summary>
