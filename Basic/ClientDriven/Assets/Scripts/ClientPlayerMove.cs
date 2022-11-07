@@ -30,6 +30,8 @@ public class ClientPlayerMove : NetworkBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        m_ThirdPersonController.enabled = false;
     }
 
     public override void OnNetworkSpawn()
@@ -39,6 +41,7 @@ public class ClientPlayerMove : NetworkBehaviour
         enabled = IsClient;
         if (!IsOwner)
         {
+            m_ThirdPersonController.enabled = false;
             enabled = false;
             return;
         }
