@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Netcode;
@@ -9,21 +10,18 @@ using UnityEngine.UI;
 namespace Game
 {
     /// <summary>
-    /// This is probably the most advanced scenario - we are spawning prefabs that aren't known to clients beforehand.
+    /// In this scenario we are spawning prefabs that aren't known to the clients beforehand.
     ///
-    /// Here we are not implementing client acknowledgement of the prefab loading completion -
-    /// this would allow the server to wait for all the clients to have loaded the prefab and spawn it only then, which is safer.
-    /// However, this is not implemented here for simplicity - there is a whole slew of potential failures that this would have to handle.
+    /// NGO requires us to load the prefab before we spawn it.
     ///
-    /// Instead we load the prefab from an addressable, and then send an RPC to the clients, telling them to start loading the prefab.
-    /// Then we wait for a configured amount of time, and then spawn the prefab on the server, which replicates it to the clients.
-    /// Then we hope that the clients will be able to load the prefab during the (m_SpawnDelayInSeconds + m_SpawnTimeoutInSeconds) time window.
+    /// The inbuilt delay that is accessible through NetworkManager.NetworkConfig.SpawnTimeout is NOT MEANT to serve
+    /// as a buffering time during which the clients attempt to catch up with the server's spawn command by loading the prefab and hoping that this load won't take more than the timeout.
+    /// Such approach would inevitably lead to desyncs in production.
     /// 
-    /// Currently latejoin doesn't work with dynamic prefabs, because the initial sync message doesn't allow the clients any time to load prefabs. That's a bug.
-    /// To circumvent this issue we simply disallow latejoins (and reconnections :( ) and do not spawn dynamic things until all clients are connected and the gameplay is started by the server.
-    ///
-    /// We will need to maintain a collection of loaded dynamic prefabs on the server, and they will need to be loaded when a new client connects.
-    /// 
+    /// To be safe and to respect the NGO requirement of loading the prefab before spawning it, we:
+    ///  - ensure that the clients acknowledge that they have loaded the prefab
+    ///  - the server waits for a specified amount of time for the clients to acknowledge the load, and if all the clients are successful - it spawns the prefab
+    ///  - otherwise the server runs out of time and the spawn is cancelled
     /// </summary>
     public sealed class SparseLoadingNoLatejoinSample : NetworkBehaviour
     {
@@ -39,12 +37,16 @@ namespace Game
         [SerializeField]
         float m_SpawnDelayInSeconds;
         
-        bool m_isGameStarted = false;
+        bool m_IsGameStarted = false;
+
+        int m_CountOfClientsThatLoadedThePrefab = 0;
+        float m_SpawnTimeoutTimer = 0;
+        
+        private Dictionary<string, GameObject> m_LoadedDynamicPrefabs = new Dictionary<string, GameObject>();
         
         void Awake()
         {
             _networkManager.NetworkConfig.ForceSamePrefabs = false;
-            _networkManager.NetworkConfig.SpawnTimeout = m_SpawnTimeoutInSeconds;
             _networkManager.ConnectionApprovalCallback = ConnectionApprovalCallback;
         }
 
@@ -52,7 +54,7 @@ namespace Game
         {
             if (IsServer)
             {
-                m_StartGameButton.onClick.AddListener(StartGame);
+                m_StartGameButton.onClick.AddListener(OnClickedSpawnButton);
             }
             else
             {
@@ -60,21 +62,25 @@ namespace Game
             }
         }
 
-        private void StartGame()
+        async void OnClickedSpawnButton()
         {
-            if (!m_isGameStarted)
+            if (!m_IsGameStarted)
             {
-                m_isGameStarted = true;
-                
-                SpawnDynamicPrefabWithDelay();
-                
+                m_IsGameStarted = true;
                 m_StartGameButton.gameObject.SetActive(false);
+                
+                bool didManageToSpawn = await TrySpawnDynamicPrefabWithDelay();
+
+                if (!didManageToSpawn)
+                {
+                    m_StartGameButton.gameObject.SetActive(true);
+                }
             }
         }
 
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            if (m_isGameStarted)
+            if (m_IsGameStarted)
             {
                 response.Approved = false;
             }
@@ -84,26 +90,49 @@ namespace Game
             }
         }
 
-        private async void SpawnDynamicPrefabWithDelay()
+        async Task<bool> TrySpawnDynamicPrefabWithDelay()
         {
-            if (IsServer || IsHost)
+            if (IsServer)
             {
+                m_CountOfClientsThatLoadedThePrefab = 0;
+                m_SpawnTimeoutTimer = 0;
+                
+                Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(m_DynamicPrefabRef.AssetGUID);
 
-                var prefab = await LoadDynamicAddressablePrefab(m_DynamicPrefabRef.AssetGUID);
-                await SpawnAfterDelay(_networkManager.LocalClientId, (int)(m_SpawnDelayInSeconds * 1000), prefab);
+                int requiredAcknowledgementsCount = IsHost ? _networkManager.ConnectedClients.Count - 1 : _networkManager.ConnectedClients.Count;
+                
+                while (m_SpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
+                {
+                    if (m_CountOfClientsThatLoadedThePrefab >= requiredAcknowledgementsCount)
+                    {
+                        Debug.Log($"All clients have loaded the prefab in {m_SpawnTimeoutTimer} seconds, spawning the prefab on the server...");
+                        var prefab = await EnsureDynamicPrefabIsLoaded(m_DynamicPrefabRef.AssetGUID);
+                        await SpawnAfterDelay(_networkManager.LocalClientId, (int)(m_SpawnDelayInSeconds * 1000), prefab);
+                        return true;
+                    }
+                    
+                    m_SpawnTimeoutTimer += Time.deltaTime;
+                    await Task.Yield();
+                }
+                
+                Debug.LogError("Failed to spawn dynamic prefab - timeout");
+                return false;
             }
 
+            return false;
+            
             async Task SpawnAfterDelay(ulong ownerId, int delayMS, GameObject prefab)
             {
                 await Task.Delay(delayMS);
                 var obj = Instantiate(prefab).GetComponent<NetworkObject>();
                 obj.SpawnWithOwnership(ownerId);
+                Debug.Log("Spawned dynamic prefab");
             }
         }
 
         [ClientRpc]
-        private void LoadAddressableClientRpc(FixedString64Bytes guid, ClientRpcParams rpcParams = default)
+        void LoadAddressableClientRpc(FixedString64Bytes guid, ClientRpcParams rpcParams = default)
         {
             if (!IsHost)
             {
@@ -112,18 +141,35 @@ namespace Game
 
             async void LoadPrefab(FixedString64Bytes guid)
             {
-                await LoadDynamicAddressablePrefab(guid.ToString());
+                Debug.Log("Loading dynamic prefab on the client...");
+                await EnsureDynamicPrefabIsLoaded(guid.ToString());
+                Debug.Log("Client loaded dynamic prefab");
+                AcknowledgeSuccessfulPrefabLoadServerRpc(guid);
             }
         }
-
-        private async Task<GameObject> LoadDynamicAddressablePrefab(string guid)
+        
+        [ServerRpc(RequireOwnership = false)]
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(FixedString64Bytes guid, ServerRpcParams rpcParams = default)
         {
+            m_CountOfClientsThatLoadedThePrefab++;
+            Debug.Log("Client acknowledged successful prefab load");
+        }
+
+        async Task<GameObject> EnsureDynamicPrefabIsLoaded(string guid)
+        {
+            if(m_LoadedDynamicPrefabs.ContainsKey(guid))
+            {
+                Debug.Log("Prefab has already been loaded, skipping loading this time");
+                return m_LoadedDynamicPrefabs[guid];
+            }
+            
             var op = Addressables.LoadAssetAsync<GameObject>(guid);
             var prefab = await op.Task;
             Addressables.Release(op);
 
             _networkManager.AddNetworkPrefab(prefab);
-
+            m_LoadedDynamicPrefabs.Add(guid, prefab);
+            
             return prefab;
         }
     }
