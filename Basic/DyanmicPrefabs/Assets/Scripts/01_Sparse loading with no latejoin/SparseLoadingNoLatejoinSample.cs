@@ -32,17 +32,12 @@ namespace Game
         
         [SerializeField] NetworkManager _networkManager;
 
-        [SerializeField]
-        float m_SpawnTimeoutInSeconds;
-        [SerializeField]
-        float m_SpawnDelayInSeconds;
+        [SerializeField] float m_SpawnTimeoutInSeconds;
         
         bool m_IsGameStarted = false;
-
         int m_CountOfClientsThatLoadedThePrefab = 0;
         float m_SpawnTimeoutTimer = 0;
-        
-        private Dictionary<string, GameObject> m_LoadedDynamicPrefabs = new Dictionary<string, GameObject>();
+        Dictionary<string, GameObject> m_LoadedDynamicPrefabs = new Dictionary<string, GameObject>();
         
         void Awake()
         {
@@ -69,7 +64,7 @@ namespace Game
                 m_IsGameStarted = true;
                 m_StartGameButton.gameObject.SetActive(false);
                 
-                bool didManageToSpawn = await TrySpawnDynamicPrefabWithDelay();
+                bool didManageToSpawn = await TrySpawnDynamicPrefab(m_DynamicPrefabRef.AssetGUID);
 
                 if (!didManageToSpawn)
                 {
@@ -90,10 +85,17 @@ namespace Game
             }
         }
 
-        async Task<bool> TrySpawnDynamicPrefabWithDelay()
+        async Task<bool> TrySpawnDynamicPrefab(string guid)
         {
             if (IsServer)
             {
+                if (m_LoadedDynamicPrefabs.ContainsKey(guid))
+                {
+                    Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
+                    await Spawn(guid);
+                    return true;
+                }
+                
                 m_CountOfClientsThatLoadedThePrefab = 0;
                 m_SpawnTimeoutTimer = 0;
                 
@@ -107,8 +109,7 @@ namespace Game
                     if (m_CountOfClientsThatLoadedThePrefab >= requiredAcknowledgementsCount)
                     {
                         Debug.Log($"All clients have loaded the prefab in {m_SpawnTimeoutTimer} seconds, spawning the prefab on the server...");
-                        var prefab = await EnsureDynamicPrefabIsLoaded(m_DynamicPrefabRef.AssetGUID);
-                        await SpawnAfterDelay(_networkManager.LocalClientId, (int)(m_SpawnDelayInSeconds * 1000), prefab);
+                        await Spawn(guid);
                         return true;
                     }
                     
@@ -121,12 +122,12 @@ namespace Game
             }
 
             return false;
-            
-            async Task SpawnAfterDelay(ulong ownerId, int delayMS, GameObject prefab)
+
+            async Task Spawn(string assetGuid)
             {
-                await Task.Delay(delayMS);
+                var prefab = await EnsureDynamicPrefabIsLoaded(assetGuid);
                 var obj = Instantiate(prefab).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(ownerId);
+                obj.SpawnWithOwnership(_networkManager.LocalClientId);
                 Debug.Log("Spawned dynamic prefab");
             }
         }
