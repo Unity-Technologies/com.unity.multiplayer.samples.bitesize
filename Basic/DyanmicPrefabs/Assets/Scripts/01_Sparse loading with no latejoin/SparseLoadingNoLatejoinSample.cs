@@ -25,13 +25,9 @@ namespace Game
     /// </summary>
     public sealed class SparseLoadingNoLatejoinSample : NetworkBehaviour
     {
-        [SerializeField]
-        Button m_StartGameButton;
-        
+        [SerializeField] Button m_StartGameButton;
         [SerializeField] AssetReferenceGameObject m_DynamicPrefabRef;
-        
         [SerializeField] NetworkManager _networkManager;
-
         [SerializeField] float m_SpawnTimeoutInSeconds;
         
         bool m_IsGameStarted = false;
@@ -140,17 +136,17 @@ namespace Game
                 LoadPrefab(guid);
             }
 
-            async void LoadPrefab(FixedString64Bytes guid)
+            async void LoadPrefab(FixedString64Bytes assetGuid)
             {
                 Debug.Log("Loading dynamic prefab on the client...");
-                await EnsureDynamicPrefabIsLoaded(guid.ToString());
+                await EnsureDynamicPrefabIsLoaded(assetGuid.ToString());
                 Debug.Log("Client loaded dynamic prefab");
-                AcknowledgeSuccessfulPrefabLoadServerRpc(guid);
+                AcknowledgeSuccessfulPrefabLoadServerRpc();
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(FixedString64Bytes guid, ServerRpcParams rpcParams = default)
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(ServerRpcParams rpcParams = default)
         {
             m_CountOfClientsThatLoadedThePrefab++;
             Debug.Log("Client acknowledged successful prefab load");
