@@ -43,16 +43,23 @@ public class HostJoinUI : MonoBehaviour
         m_ClientButton.clickable.clickedWithEventInfo += StartClient;
     }
 
+    void OnDestroy()
+    {
+        m_HostButton.clickable.clickedWithEventInfo -= StartHost;
+        m_ServerButton.clickable.clickedWithEventInfo -= StartServer;
+        m_ClientButton.clickable.clickedWithEventInfo -= StartClient;
+    }
+
     void Start()
     {
         ToggleMainMenuUI(true);
         ToggleInGameUI(false);
     }
 
-    public void StartHost(EventBase obj)
+    void StartHost(EventBase obj)
     {
         SetUtpConnectionData();
-        var result= NetworkManager.Singleton.StartHost();
+        var result = NetworkManager.Singleton.StartHost();
         if (result)
         {
             ToggleInGameUI(true);
@@ -60,10 +67,10 @@ public class HostJoinUI : MonoBehaviour
         }
     }
 
-    public void StartClient(EventBase obj)
+    void StartClient(EventBase obj)
     {
         SetUtpConnectionData();
-        var result= NetworkManager.Singleton.StartClient();
+        var result = NetworkManager.Singleton.StartClient();
         if (result)
         {
             ToggleInGameUI(true);
@@ -71,10 +78,10 @@ public class HostJoinUI : MonoBehaviour
         }
     }
 
-    public void StartServer(EventBase obj)
+    void StartServer(EventBase obj)
     {
         SetUtpConnectionData();
-        var result= NetworkManager.Singleton.StartServer();
+        var result = NetworkManager.Singleton.StartServer();
         if (result)
         {
             ToggleInGameUI(true);

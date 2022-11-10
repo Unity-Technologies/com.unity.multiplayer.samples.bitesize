@@ -26,6 +26,8 @@ public class ClientPlayerMove : NetworkBehaviour
     [SerializeField]
     PlayerInput m_PlayerInput;
 
+    Collider[] m_HitColliders = new Collider[4];
+
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,7 +43,6 @@ public class ClientPlayerMove : NetworkBehaviour
         enabled = IsClient;
         if (!IsOwner)
         {
-            m_ThirdPersonController.enabled = false;
             enabled = false;
             return;
         }
@@ -61,12 +62,15 @@ public class ClientPlayerMove : NetworkBehaviour
         }
         else
         {
-            // todo use non-alloc, don't do the below at home
             // detect nearby ingredients
-            var hit = Physics.OverlapSphere(transform.position, 5, LayerMask.GetMask(new[] {"PickupItems"}), QueryTriggerInteraction.Ignore);
-            if (hit.Length > 0)
+            var hits = Physics.OverlapSphereNonAlloc(transform.position,
+                5f,
+                m_HitColliders,
+                LayerMask.GetMask(new[] { "PickupItems" }),
+                QueryTriggerInteraction.Ignore);
+            if (hits > 0)
             {
-                var ingredient = hit[0].gameObject.GetComponent<ServerIngredient>();
+                var ingredient = m_HitColliders[0].gameObject.GetComponent<ServerIngredient>();
                 if (ingredient != null)
                 {
                     var netObj = ingredient.NetworkObjectId;
