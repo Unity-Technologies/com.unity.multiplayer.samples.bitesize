@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GridOrange_01_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: f91577fa529feca41b76e7bf08e064e2, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b8d7679189d4a5940af46004f3870920, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_C5E3E723:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Base_Texture:
         m_Texture: {fileID: 2800000, guid: d1118dda59970a2449ee890fa247c4c5, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -45,6 +49,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emissive:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Grid_Normal_Map:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -86,6 +94,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Boolean_35A71344: 0
+    - Boolean_7A5F3F39: 0
+    - Boolean_7AC8D832: 0
+    - Vector1_3402D67A: 1
+    - Vector1_3655428E: 2
+    - Vector1_5B05FA1F: 0.3
+    - Vector1_7810F718: 1
+    - Vector1_B6126E6E: 0
+    - Vector1_CA7D5F3: 1
+    - Vector1_D5FBE925: 0.3
+    - Vector1_F2A922B4: 1
+    - Vector1_F5FD9210: 30
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -94,6 +114,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.477
     - _GlossyReflections: 0
+    - _Grid_Normal_Strength: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 0
@@ -107,6 +128,8 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - Color_2B671050: {r: 1, g: 0.6, b: 0, a: 1}
+    - Color_30A0CA2F: {r: 1, g: 0.6, b: 0, a: 1}
     - _Base_Color: {r: 1, g: 0.6, b: 0, a: 1}
     - _Color: {r: 1, g: 0.5985916, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
