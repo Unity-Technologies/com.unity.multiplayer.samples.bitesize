@@ -1,9 +1,22 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Dropzone : ServerObjectWithIngredientType
 {
     [SerializeField]
     private ServerScoreReplicator m_ScoreTracker;
+
+    [SerializeField]
+    Animator m_Animator;
+
+    [SerializeField]
+    float m_AnimationOffset;
+
+    void Start()
+    {
+        m_Animator.SetFloat("Offset", m_AnimationOffset);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
