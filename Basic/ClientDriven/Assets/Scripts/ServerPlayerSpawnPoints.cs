@@ -28,6 +28,11 @@ public class ServerPlayerSpawnPoints : MonoBehaviour
 
     public GameObject ConsumeNextSpawnPoint()
     {
+        if (m_SpawnPoints.Count == 0)
+        {
+            return null;
+        }
+        
         var toReturn = m_SpawnPoints[m_SpawnPoints.Count - 1];
         m_SpawnPoints.RemoveAt(m_SpawnPoints.Count - 1);
         return toReturn;

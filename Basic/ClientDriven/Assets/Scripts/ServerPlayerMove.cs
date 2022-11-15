@@ -28,8 +28,9 @@ public class ServerPlayerMove : NetworkBehaviour
 
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
+        var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
         // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
-        m_ClientPlayerMove.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
+        m_ClientPlayerMove.SetSpawnClientRpc(spawnPosition, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
     }
 
     [ServerRpc]
