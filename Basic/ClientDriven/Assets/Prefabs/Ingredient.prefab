@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4621998539424734916}
-  - component: {fileID: 6691487417621146171}
   - component: {fileID: 4840591773774142929}
   - component: {fileID: 7759258758774188825}
   - component: {fileID: 8268979759230423690}
@@ -44,48 +43,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &6691487417621146171
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8321201880322001125}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 8971d505c9bc540de9fcf9747828175d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &4840591773774142929
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -198,6 +155,7 @@ MonoBehaviour:
   m_PurpleMaterial: {fileID: 2100000, guid: 8971d505c9bc540de9fcf9747828175d, type: 2}
   m_BlueMaterial: {fileID: 2100000, guid: b423dced7a4ac4f40a119b84a23cfc9b, type: 2}
   m_RedMaterial: {fileID: 2100000, guid: d1a9058ddc5c2461298f65541af6fcd9, type: 2}
+  m_ColorMesh: {fileID: 6206319821543937579}
 --- !u!1001 &2596981318218469326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -431,13 +389,18 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8971d505c9bc540de9fcf9747828175d, type: 2}
     - target: {fileID: 919132149155446097, guid: f7698f93880c2514a860d6ca1245a6a5, type: 3}
       propertyPath: m_Name
-      value: ClearHemisphere
+      value: ColorMesh
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7698f93880c2514a860d6ca1245a6a5, type: 3}
 --- !u!4 &5073984626218265924 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f7698f93880c2514a860d6ca1245a6a5, type: 3}
+  m_PrefabInstance: {fileID: 4747026412613208751}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6206319821543937579 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: f7698f93880c2514a860d6ca1245a6a5, type: 3}
   m_PrefabInstance: {fileID: 4747026412613208751}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6935742399039784074
