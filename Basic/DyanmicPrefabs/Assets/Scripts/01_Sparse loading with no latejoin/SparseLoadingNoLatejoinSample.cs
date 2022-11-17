@@ -1,5 +1,6 @@
 using System;
 using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -183,7 +184,7 @@ namespace Game
                 //enumerate and log all the GUIDs that the server sent us
                 foreach (var guid in addressableGUIDCollection.GUIDs)
                 {
-                    Debug.Log($"Client needs to preload {guid.Value}");
+                    Debug.Log($"Client needs to preload {guid.Value.ToString()}");
                 }
                 
                 //todo: load missing prefabs and then retry connection
@@ -219,7 +220,7 @@ namespace Game
             }
         }
 
-        async void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+        void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
@@ -259,7 +260,7 @@ namespace Game
                 return;
             }
 
-            await WaitToDenyApproval(clientId, ConnectStatus.ClientNeedsToPreload, m_LoadedDynamicPrefabs.Keys);
+            StartCoroutine(WaitToDenyApproval(clientId, ConnectStatus.ClientNeedsToPreload, m_LoadedDynamicPrefabs.Keys));
             
             void Approve()
             {
@@ -277,14 +278,14 @@ namespace Game
             // This could happen after an auth check on a service or because of gameplay reasons (server full, wrong build version, etc)
             // Since network objects haven't synced yet (still in the approval process), we need to send a custom message to clients, wait for
             // UTP to update a frame and flush that message, then give our response to NetworkManager's connection approval process, with a denied approval.
-            async Task WaitToDenyApproval(ulong clientID, ConnectStatus status, ICollection<AddressableGUID> addressableGUIDs)
+            IEnumerator WaitToDenyApproval(ulong clientID, ConnectStatus status, ICollection<AddressableGUID> addressableGUIDs)
             {
                 response.Pending = true; // give some time for server to send connection status message to clients
                 response.Approved = false;
                 var dynamicPrefabGUIDs = ArrayPool<AddressableGUID>.Shared.Rent(m_LoadedDynamicPrefabs.Keys.Count);
                 m_LoadedDynamicPrefabs.Keys.CopyTo(dynamicPrefabGUIDs, 0);
                 SendServerToClientSetDisconnectReason(clientID, status, new AddressableGUIDCollection(){GUIDs = dynamicPrefabGUIDs});
-                await Task.Yield();// wait a frame so UTP can flush it's messages on next update
+                yield return null; // wait a frame so UTP can flush it's messages on next update
                 response.Pending = false; // connection approval process can be finished.
                 ArrayPool<AddressableGUID>.Shared.Return(dynamicPrefabGUIDs);
             }
