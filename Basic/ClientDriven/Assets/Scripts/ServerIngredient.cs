@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,14 +8,19 @@ public class ServerIngredient : ServerObjectWithIngredientType
 
 public enum IngredientType
 {
-    red,
-    blue,
-    purple,
-    max // should be always last
+    Red,
+    Blue,
+    Purple,
+    MAX // should be always last
 }
 
 public class ServerObjectWithIngredientType : NetworkBehaviour
 {
+    [SerializeField]
+    public NetworkVariable<IngredientType> CurrentIngredientType;
+
+    public event Action ingredientDespawned;
+    
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -25,6 +31,8 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
         }
     }
 
-    [SerializeField]
-    public NetworkVariable<IngredientType> CurrentIngredientType;
+    public override void OnNetworkDespawn()
+    {
+        ingredientDespawned?.Invoke();
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,8 +21,19 @@ public class ScoreUI : MonoBehaviour
         m_ScoreText = m_InGameRootVisualElement.Query<TextElement>("ScoreText");
     }
 
-    void Update()
+    void Start()
     {
-        m_ScoreText.text = $"{m_ScoreTracker.Score}"; // ouch my perf
+        OnScoreChanged(0, m_ScoreTracker.replicatedScore.Value);
+        m_ScoreTracker.replicatedScore.OnValueChanged += OnScoreChanged;
+    }
+
+    void OnDestroy()
+    {
+        m_ScoreTracker.replicatedScore.OnValueChanged -= OnScoreChanged;
+    }
+
+    void OnScoreChanged(int previousValue, int newValue)
+    {
+        m_ScoreText.text = $"{m_ScoreTracker.Score}";
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -12,9 +13,17 @@ public class ServerPlayerMove : NetworkBehaviour
     [SerializeField]
     ClientPlayerMove m_ClientPlayerMove;
 
-    public NetworkVariable<bool> ObjPickedUp = new NetworkVariable<bool>();
+    public NetworkVariable<bool> isObjectPickedUp = new NetworkVariable<bool>();
     
-    NetworkObject m_PickedUpObj;
+    NetworkObject m_PickedUpObject;
+
+    [SerializeField]
+    Vector3 m_LocalHeldPosition;
+
+    [SerializeField]
+    Vector3 m_LocalDropPosition;
+
+    bool m_DropRequested;
 
     // DOC START HERE
     public override void OnNetworkSpawn()
@@ -26,41 +35,66 @@ public class ServerPlayerMove : NetworkBehaviour
             return;
         }
 
+        OnServerSpawnPlayer();
+    }
+
+    void OnServerSpawnPlayer()
+    {
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
         // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
-        m_ClientPlayerMove.SetSpawnClientRpc(spawnPosition, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
+        m_ClientPlayerMove.SetSpawnClientRpc(spawnPosition, 
+            new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
     }
 
     [ServerRpc]
     public void PickupObjServerRpc(ulong objToPickupID)
-    {
+    {        
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
         if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
         objToPickup.GetComponent<Rigidbody>().isKinematic = true;
-        objToPickup.transform.parent = transform;
-        objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
-        objToPickup.transform.localPosition = Vector3.up;
-        ObjPickedUp.Value = true;
-        m_PickedUpObj = objToPickup;
+        if (objToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
+        {
+            objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
+            objToPickup.transform.localPosition = m_LocalHeldPosition;
+            objToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
+            isObjectPickedUp.Value = true;
+            m_PickedUpObject = objToPickup;
+        }
+    }
+
+    void IngredientDespawned()
+    {
+        m_PickedUpObject = null;
+        isObjectPickedUp.Value = false;
+    }
+
+    void FixedUpdate()
+    {
+        if (m_DropRequested)
+        {
+            m_DropRequested = false;
+
+            if (m_PickedUpObject != null)
+            {
+                // can be null if enter drop zone while carrying
+                m_PickedUpObject.transform.localPosition = m_LocalDropPosition;
+                m_PickedUpObject.transform.parent = null;
+                m_PickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
+                m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
+                m_PickedUpObject = null;
+            }
+            
+            isObjectPickedUp.Value = false;
+        }
     }
 
     [ServerRpc]
     public void DropObjServerRpc()
     {
-        if (m_PickedUpObj != null)
-        {
-            // can be null if enter drop zone while carying
-            m_PickedUpObj.transform.localPosition = new Vector3(0, 0, 2);
-            m_PickedUpObj.transform.parent = null;
-            m_PickedUpObj.GetComponent<Rigidbody>().isKinematic = false;
-            m_PickedUpObj.GetComponent<NetworkTransform>().InLocalSpace = false;
-            m_PickedUpObj = null;
-        }
-
-        ObjPickedUp.Value = false;
+        m_DropRequested = true;
     }
     // DOC END HERE
 }

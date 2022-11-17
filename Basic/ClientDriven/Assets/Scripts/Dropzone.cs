@@ -3,9 +3,9 @@ using UnityEngine;
 public class Dropzone : ServerObjectWithIngredientType
 {
     [SerializeField]
-    private ServerScoreReplicator m_ScoreTracker;
+    ServerScoreReplicator m_ScoreTracker;
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (!IsServer) return;
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();

@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using StarterAssets;
 using Unity.Netcode;
@@ -26,7 +27,7 @@ public class ClientPlayerMove : NetworkBehaviour
     [SerializeField]
     PlayerInput m_PlayerInput;
 
-    Collider[] m_HitColliders = new Collider[4];
+    RaycastHit[] m_HitColliders = new RaycastHit[4];
 
     void Awake()
     {
@@ -56,21 +57,24 @@ public class ClientPlayerMove : NetworkBehaviour
 
     void OnPickUp()
     {
-        if (m_ServerPlayerMove.ObjPickedUp.Value)
+        if (m_ServerPlayerMove.isObjectPickedUp.Value)
         {
             m_ServerPlayerMove.DropObjServerRpc();
         }
         else
         {
             // detect nearby ingredients
-            var hits = Physics.OverlapSphereNonAlloc(transform.position,
-                5f,
+            var hits = Physics.BoxCastNonAlloc(transform.position,
+                Vector3.one,
+                transform.forward,
                 m_HitColliders,
+                Quaternion.identity,
+                1f,
                 LayerMask.GetMask(new[] { "PickupItems" }),
                 QueryTriggerInteraction.Ignore);
             if (hits > 0)
             {
-                var ingredient = m_HitColliders[0].gameObject.GetComponent<ServerIngredient>();
+                var ingredient = m_HitColliders[0].collider.gameObject.GetComponent<ServerIngredient>();
                 if (ingredient != null)
                 {
                     var netObj = ingredient.NetworkObjectId;

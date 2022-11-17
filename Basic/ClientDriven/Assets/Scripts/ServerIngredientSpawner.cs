@@ -21,7 +21,7 @@ public class ServerIngredientSpawner : NetworkBehaviour
 
     float m_LastSpawnTime;
 
-    Random r = new Random();
+    Random m_RandomGenerator = new Random();
 
     public override void OnNetworkSpawn()
     {
@@ -47,8 +47,8 @@ public class ServerIngredientSpawner : NetworkBehaviour
                 var newIngredientObject = Instantiate(m_IngredientPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
                 newIngredientObject.transform.position = spawnPoint.transform.position;
                 var ingredient = newIngredientObject.GetComponent<ServerIngredient>();
-                ingredient.CurrentIngredientType.Value = (IngredientType) r.Next((int)IngredientType.max);
                 ingredient.NetworkObject.Spawn();
+                ingredient.CurrentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
             }
             m_SpawnWaves++;
 
