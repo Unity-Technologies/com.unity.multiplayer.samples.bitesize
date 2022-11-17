@@ -1,12 +1,14 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Game
@@ -84,8 +86,11 @@ namespace Game
             }
 
             return value;
+        }
 
-            //return ((IStructuralEquatable)this.GUIDs).GetHashCode(EqualityComparer<int>.Default);
+        public unsafe int GetSizeInBytes()
+        {
+            return sizeof(AddressableGUID) * GUIDs.Length;
         }
     }
     
@@ -115,8 +120,9 @@ namespace Game
         const int k_MaxConnectPayload = 1024;
         ushort m_Port = 7777;
         string m_ConnectAddress = "127.0.0.1";
-        
-        [SerializeField] Button m_StartGameButton;
+
+        [SerializeField] GameObject m_ConnectionUI;
+        [FormerlySerializedAs("m_StartGameButton")] [SerializeField] Button m_SpawnButton;
         [SerializeField] AssetReferenceGameObject m_DynamicPrefabRef;
         [SerializeField] float m_SpawnTimeoutInSeconds;
         [SerializeField] NetworkManager m_NetworkManager;
@@ -130,8 +136,18 @@ namespace Game
         public void StartClient()
         {
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
+            
+            var payload = JsonUtility.ToJson(new ConnectionPayload()
+            {
+                HashOfDynamicPrefabGUIDs = m_HashOfDynamicPrefabGUIDs
+            });
+
+            var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
+
+            m_NetworkManager.NetworkConfig.ConnectionData = payloadBytes;
             m_NetworkManager.StartClient();
             m_NetworkManager.CustomMessagingManager.RegisterNamedMessageHandler(nameof(ReceiveServerToClientSetDisconnectReason_CustomMessage), ReceiveServerToClientSetDisconnectReason_CustomMessage);
+            m_ConnectionUI.SetActive(false);
         }
 
         public void StartHost()
@@ -141,17 +157,18 @@ namespace Game
             transport.SetConnectionData(m_ConnectAddress, m_Port);
             m_NetworkManager.ConnectionApprovalCallback = ConnectionApprovalCallback;
             m_NetworkManager.StartHost();
+            m_ConnectionUI.SetActive(false);
         }
 
         public override void OnNetworkSpawn()
         {
             if (IsServer)
             {
-                m_StartGameButton.onClick.AddListener(OnClickedSpawnButton);
+                m_SpawnButton.onClick.AddListener(OnClickedSpawnButton);
             }
             else
             {
-                m_StartGameButton.gameObject.SetActive(false);
+                m_SpawnButton.gameObject.SetActive(false);
             }
         }
 
@@ -181,7 +198,9 @@ namespace Game
         /// <param name="addressableGUIDCollection"></param>
         private void SendServerToClientSetDisconnectReason(ulong clientID, ConnectStatus status, AddressableGUIDCollection addressableGUIDCollection)
         {
-            var writer = new FastBufferWriter(sizeof(ConnectStatus), Allocator.Temp);
+            int guidCollectionSize = addressableGUIDCollection.GetSizeInBytes();
+            
+            var writer = new FastBufferWriter(sizeof(ConnectStatus) + guidCollectionSize, Allocator.Temp);
             writer.WriteValueSafe(status);
             writer.WriteValueSafe(addressableGUIDCollection);
             
@@ -190,13 +209,13 @@ namespace Game
 
         async void OnClickedSpawnButton()
         {
-            m_StartGameButton.gameObject.SetActive(false);
+            m_SpawnButton.gameObject.SetActive(false);
                 
             bool didManageToSpawn = await TrySpawnDynamicPrefab(m_DynamicPrefabRef.AssetGUID);
 
             if (!didManageToSpawn)
             {
-                m_StartGameButton.gameObject.SetActive(true);
+                m_SpawnButton.gameObject.SetActive(true);
             }
         }
 
@@ -371,7 +390,7 @@ namespace Game
                 return m_LoadedDynamicPrefabs[guid];
             }
             
-            var op = Addressables.LoadAssetAsync<GameObject>(guid.Value);
+            var op = Addressables.LoadAssetAsync<GameObject>(guid.Value.ToString());
             var prefab = await op.Task;
             Addressables.Release(op);
 
