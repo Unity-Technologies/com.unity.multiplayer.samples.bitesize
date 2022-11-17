@@ -59,6 +59,7 @@ public class ClientPlayerMove : NetworkBehaviour
         if (m_ServerPlayerMove.ObjPickedUp.Value)
         {
             m_ServerPlayerMove.DropObjServerRpc();
+            m_ThirdPersonController.Holding = false;
         }
         else
         {
@@ -78,6 +79,7 @@ public class ClientPlayerMove : NetworkBehaviour
                     // will be a delay between the button press and the reparenting.
                     // This delay could be hidden with some animations/sounds/VFX that would be triggered here.
                     m_ServerPlayerMove.PickupObjServerRpc(netObj);
+                    m_ThirdPersonController.Holding = true;
                 }
             }
         }
