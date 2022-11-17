@@ -245,9 +245,7 @@ namespace Game
             void Approve()
             {
                 response.Approved = true;
-                response.CreatePlayerObject = true;
-                response.Position = Vector3.zero;
-                response.Rotation = Quaternion.identity;
+                response.CreatePlayerObject = false; //we're not going to spawn a player object for this sample
             }
             
             void ImmediateDeny()
@@ -373,7 +371,7 @@ namespace Game
                 return m_LoadedDynamicPrefabs[guid];
             }
             
-            var op = Addressables.LoadAssetAsync<GameObject>(guid);
+            var op = Addressables.LoadAssetAsync<GameObject>(guid.Value);
             var prefab = await op.Task;
             Addressables.Release(op);
 
