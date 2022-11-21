@@ -54,9 +54,9 @@ public class ServerPlayerMove : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
         if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
-        objToPickup.GetComponent<Rigidbody>().isKinematic = true;
         if (objToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
         {
+            objToPickup.GetComponent<Rigidbody>().isKinematic = true;
             objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
             objToPickup.transform.localPosition = m_LocalHeldPosition;
             objToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
