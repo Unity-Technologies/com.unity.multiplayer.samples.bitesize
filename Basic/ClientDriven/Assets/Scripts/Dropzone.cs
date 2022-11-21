@@ -14,7 +14,7 @@ public class Dropzone : ServerObjectWithIngredientType
             return;
         }
 
-        if (ingredient.CurrentIngredientType.Value != CurrentIngredientType.Value)
+        if (ingredient.currentIngredientType.Value != currentIngredientType.Value)
         {
             return;
         }

@@ -31,6 +31,13 @@ public class ServerIngredientSpawner : NetworkBehaviour
             enabled = false;
             return;
         }
+
+        m_SpawnWaves = 0;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        m_SpawnWaves = 0;
     }
 
     void FixedUpdate()
@@ -48,7 +55,7 @@ public class ServerIngredientSpawner : NetworkBehaviour
                 newIngredientObject.transform.position = spawnPoint.transform.position;
                 var ingredient = newIngredientObject.GetComponent<ServerIngredient>();
                 ingredient.NetworkObject.Spawn();
-                ingredient.CurrentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
+                ingredient.currentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
             }
             m_SpawnWaves++;
 

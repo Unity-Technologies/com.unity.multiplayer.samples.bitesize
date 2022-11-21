@@ -29,7 +29,7 @@ public class ServerStove : ServerObjectWithIngredientType
             return;
         }
 
-        if (ingredient.CurrentIngredientType.Value == CurrentIngredientType.Value)
+        if (ingredient.currentIngredientType.Value == currentIngredientType.Value)
         {
             return;
         }
@@ -49,7 +49,7 @@ public class ServerStove : ServerObjectWithIngredientType
     {
         yield return new WaitForSeconds(m_CookingTime);
 
-        ingredient.CurrentIngredientType.Value = CurrentIngredientType.Value;
+        ingredient.currentIngredientType.Value = currentIngredientType.Value;
         ingredient.GetComponent<Rigidbody>().isKinematic = false;
     }
 }

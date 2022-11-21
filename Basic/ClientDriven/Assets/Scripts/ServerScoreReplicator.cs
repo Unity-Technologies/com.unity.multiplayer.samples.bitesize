@@ -4,7 +4,7 @@ public class ServerScoreReplicator : NetworkBehaviour
 {
     NetworkVariable<int> m_ReplicatedScore = new NetworkVariable<int>();
 
-    public NetworkVariable<int> replicatedScore => m_ReplicatedScore; 
+    public NetworkVariable<int> ReplicatedScore => m_ReplicatedScore; 
 
     public override void OnNetworkSpawn()
     {

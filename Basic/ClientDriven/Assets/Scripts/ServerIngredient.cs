@@ -16,8 +16,7 @@ public enum IngredientType
 
 public class ServerObjectWithIngredientType : NetworkBehaviour
 {
-    [SerializeField]
-    public NetworkVariable<IngredientType> CurrentIngredientType;
+    public NetworkVariable<IngredientType> currentIngredientType;
 
     public event Action ingredientDespawned;
     

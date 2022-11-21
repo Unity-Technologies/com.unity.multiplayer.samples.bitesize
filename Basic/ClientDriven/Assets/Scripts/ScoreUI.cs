@@ -23,13 +23,13 @@ public class ScoreUI : MonoBehaviour
 
     void Start()
     {
-        OnScoreChanged(0, m_ScoreTracker.replicatedScore.Value);
-        m_ScoreTracker.replicatedScore.OnValueChanged += OnScoreChanged;
+        OnScoreChanged(0, m_ScoreTracker.ReplicatedScore.Value);
+        m_ScoreTracker.ReplicatedScore.OnValueChanged += OnScoreChanged;
     }
 
     void OnDestroy()
     {
-        m_ScoreTracker.replicatedScore.OnValueChanged -= OnScoreChanged;
+        m_ScoreTracker.ReplicatedScore.OnValueChanged -= OnScoreChanged;
     }
 
     void OnScoreChanged(int previousValue, int newValue)

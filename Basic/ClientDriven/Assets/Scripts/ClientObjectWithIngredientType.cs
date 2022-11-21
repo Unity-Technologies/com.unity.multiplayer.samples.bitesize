@@ -31,7 +31,7 @@ namespace Unity.Netcode.Samples
 
         void UpdateMaterial()
         {
-            switch (m_Server.CurrentIngredientType.Value)
+            switch (m_Server.currentIngredientType.Value)
             {
                 case IngredientType.Blue:
                     m_Renderer.material = m_BlueMaterial;
