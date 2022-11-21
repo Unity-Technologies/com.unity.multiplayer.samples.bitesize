@@ -96,6 +96,9 @@ namespace StarterAssets
         private int _animIDGrounded;
         private int _animIDJump;
         private int _animIDFreeFall;
+        // MTT CHANGE START
+        //private int _animIDMotionSpeed;
+        // MTT CHANGE END
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -171,6 +174,9 @@ namespace StarterAssets
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
+            // MTT CHANGE START
+            //_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            // MTT CHANGE END
         }
 
         private void GroundedCheck()
@@ -273,6 +279,9 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
+                // MTT CHANGE START
+                //_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                // MTT CHANGE END
             }
         }
 
@@ -368,10 +377,12 @@ namespace StarterAssets
 
         private void OnFootstep(AnimationEvent animationEvent)
         {
+            // MTT CHANGE START
             if (!enabled)
             {
                 return;
             }
+            // MTT CHANGE END
             
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
@@ -385,10 +396,12 @@ namespace StarterAssets
 
         private void OnLand(AnimationEvent animationEvent)
         {
+            // MTT CHANGE START
             if (!enabled)
             {
                 return;
             }
+            // MTT CHANGE END
             
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
