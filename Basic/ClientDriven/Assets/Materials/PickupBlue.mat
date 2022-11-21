@@ -23,6 +23,7 @@ Material:
   m_Name: PickupBlue
   m_Shader: {fileID: -6465566751694194690, guid: 1f9c3af292997fa4783a3cb60dfc7ee5, type: 3}
   m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
   - _RECEIVE_SHADOWS_OFF
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
@@ -88,7 +89,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Blend: 0
+    - _Blend: 1
     - _BumpScale: 1
     - _CastShadows: 1
     - _Cull: 2
@@ -96,15 +97,15 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _EmissiveGlowSpeed: 3
-    - _EmissiveGlowStrength: 4
+    - _EmissiveGlowStrength: 2
     - _Fresnel_Emissive_Strength: 1.25
-    - _Fresnel_Opacity: 1.37
+    - _Fresnel_Opacity: 2.18
     - _Fresnel_Power: 1.05
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Main_Emissive_Strength: 0.27
-    - _Main_Opacity: 0.39
+    - _Main_Emissive_Strength: 2.04
+    - _Main_Opacity: 0.4
     - _Metallic: 0
     - _Mode: 3
     - _OcclusionStrength: 1
@@ -116,7 +117,7 @@ Material:
     - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _Surface: 1
     - _UVSec: 0
     - _WorkflowMode: 1
@@ -126,6 +127,6 @@ Material:
     m_Colors:
     - _Color: {r: 0, g: 0.5652962, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Fresnel_Color: {r: 0, g: 0.17251682, b: 1, a: 1}
-    - _Main_Pickup_Color: {r: 0, g: 0.7234206, b: 1, a: 1}
+    - _Fresnel_Color: {r: 0, g: 0.07563019, b: 1, a: 1}
+    - _Main_Pickup_Color: {r: 0.02352941, g: 0.25137278, b: 1, a: 1}
   m_BuildTextureStacks: []
