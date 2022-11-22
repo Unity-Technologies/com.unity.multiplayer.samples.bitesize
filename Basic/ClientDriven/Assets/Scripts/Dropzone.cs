@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 
 public class Dropzone : ServerObjectWithIngredientType
@@ -21,5 +22,6 @@ public class Dropzone : ServerObjectWithIngredientType
 
         m_ScoreTracker.Score += 1;
         ingredient.NetworkObject.Despawn(destroy: true);
+        other.GetComponentInParent<ThirdPersonController>().Holding = false;
     }
 }
