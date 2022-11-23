@@ -608,8 +608,8 @@ MonoBehaviour:
   <PanelSettingsOverride>k__BackingField: {fileID: 0}
   <Position>k__BackingField:
     <OverridePosition>k__BackingField: 1
-    m_PositionLeftToRight: 0
-    m_PositionTopToBottom: 0
+    m_PositionLeftToRight: 0.01
+    m_PositionTopToBottom: 0.99
   <Configuration>k__BackingField: {fileID: 11400000, guid: 8f1b4e3792d8446399527749cfb591a2, type: 2}
 --- !u!1 &705507993
 GameObject:
@@ -779,7 +779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -901,7 +901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1967,7 +1967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2407,6 +2407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf0178146f3274418c7d97c8fd17cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btnServer: {fileID: 840271389}
-  btnHost: {fileID: 1705686653}
-  btnClient: {fileID: 767660175}
+  m_ServerButton: {fileID: 840271389}
+  m_HostButton: {fileID: 1705686653}
+  m_ClientButton: {fileID: 767660175}
+  m_HighlightedButtonColor:
+    serializedVersion: 2
+    rgba: 4280537841
+  m_NormalButtonColor:
+    serializedVersion: 2
+    rgba: 4294967295
