@@ -8,9 +8,8 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] Button m_HostButton;
     [SerializeField] Button m_ClientButton;
     [SerializeField] Color32 m_HighlightedButtonColor;
-    [SerializeField] Color32 m_NormalButtonColor;
+    [SerializeField] Color32 m_DisabledButtonColor;
     Button[] m_Buttons;
-
 
     void Awake()
     {
@@ -23,29 +22,30 @@ public class NetworkManagerUI : MonoBehaviour
     void StartServer()
     {
         NetworkManager.Singleton.StartServer();
-        HighlightButton(m_ServerButton);
+        DisableAndHighlightButtons(m_ServerButton);
     }
 
     void StartHost()
     {
         NetworkManager.Singleton.StartHost();
-        HighlightButton(m_HostButton);
+        DisableAndHighlightButtons(m_HostButton);
     }
 
     void StartClient()
     {
         NetworkManager.Singleton.StartClient();
-        HighlightButton(m_ClientButton);
+        DisableAndHighlightButtons(m_ClientButton);
     }
 
-    void HighlightButton(Button buttonToHighlight)
+    void DisableAndHighlightButtons(Button buttonToHighlight)
     {
         foreach (var button in m_Buttons)
         {
             ColorBlock colors = button.colors;
-            colors.normalColor = button == buttonToHighlight ? m_HighlightedButtonColor
-                                                             : m_NormalButtonColor;
+            colors.disabledColor = button == buttonToHighlight ? m_HighlightedButtonColor
+                                                               : m_DisabledButtonColor;
             button.colors = colors;
+            button.interactable = false;
         }
     }
 }
