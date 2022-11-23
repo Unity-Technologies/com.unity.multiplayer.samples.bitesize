@@ -97,12 +97,21 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.learn.iet-framework": {
-      "version": "2.2.2",
-      "depth": 1,
+      "version": "3.1.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.settings-manager": "1.0.3"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.learn.iet-framework.authoring": {
+      "version": "1.2.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.learn.iet-framework": "3.1.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -260,7 +269,7 @@
     },
     "com.unity.settings-manager": {
       "version": "1.0.3",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
