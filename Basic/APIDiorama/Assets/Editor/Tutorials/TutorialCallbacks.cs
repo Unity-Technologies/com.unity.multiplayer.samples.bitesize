@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
+using Unity.Netcode;
 
 /// <summary>
 /// Implement your Tutorial callbacks here.
@@ -33,5 +34,36 @@ public class TutorialCallbacks : ScriptableObject
     public void StartTutorial(Tutorial tutorial)
     {
         TutorialWindow.StartTutorial(tutorial);
+    }
+
+    public void FocusGameView()
+    {
+        /*
+         * todo: this solution is a bit weak, but it's the best we can do without accessing internal APIs.
+         * Check that it works for Unity 2022 and 2023 as well
+         */
+        EditorApplication.ExecuteMenuItem("Window/General/Game");
+    }
+
+    public void FocusSceneView()
+    {
+        EditorApplication.ExecuteMenuItem("Window/General/Scene");
+    }
+
+    public bool IsRunningAsHost()
+    {
+        return NetworkManager.Singleton && NetworkManager.Singleton.IsHost;
+    }
+
+    public bool IsRunningAsServerOnly()
+    {
+        return NetworkManager.Singleton && NetworkManager.Singleton.IsServer 
+                                        && !NetworkManager.Singleton.IsClient;
+    }
+
+    public bool IsRunningAsClientOnly()
+    {
+        return NetworkManager.Singleton && !NetworkManager.Singleton.IsServer 
+                                        && NetworkManager.Singleton.IsClient;
     }
 }
