@@ -66,4 +66,9 @@ public class TutorialCallbacks : ScriptableObject
         return NetworkManager.Singleton && !NetworkManager.Singleton.IsServer 
                                         && NetworkManager.Singleton.IsClient;
     }
+
+    public void OpenURL(string url)
+    {
+        TutorialEditorUtils.OpenUrl(url);
+    }
 }
