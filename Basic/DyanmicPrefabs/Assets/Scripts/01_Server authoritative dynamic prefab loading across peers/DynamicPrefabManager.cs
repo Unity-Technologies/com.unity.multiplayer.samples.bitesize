@@ -218,7 +218,7 @@ namespace Game
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public async Task<bool> TrySpawnDynamicPrefabSynchronously(string guid)
+        public async Task<(bool Success, NetworkObject Obj)> TrySpawnDynamicPrefabSynchronously(string guid)
         {
             if (IsServer)
             {
@@ -230,8 +230,8 @@ namespace Game
                 if (m_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
-                    await Spawn(assetGuid);
-                    return true;
+                    var obj = await Spawn(assetGuid);
+                    return (true, obj);
                 }
                 
                 m_CountOfClientsThatLoadedThePrefab = 0;
@@ -247,8 +247,8 @@ namespace Game
                     if (m_CountOfClientsThatLoadedThePrefab >= requiredAcknowledgementsCount)
                     {
                         Debug.Log($"All clients have loaded the prefab in {m_SpawnTimeoutTimer} seconds, spawning the prefab on the server...");
-                        await Spawn(assetGuid);
-                        return true;
+                        var obj = await Spawn(assetGuid);
+                        return (true, obj);
                     }
                     
                     m_SpawnTimeoutTimer += Time.deltaTime;
@@ -256,17 +256,18 @@ namespace Game
                 }
                 
                 Debug.LogError("Failed to spawn dynamic prefab - timeout");
-                return false;
+                return (false, null);
             }
 
-            return false;
+            return (false, null);
 
-            async Task Spawn(AddressableGUID assetGuid)
+            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
                 var prefab = await LoadDynamicPrefab(assetGuid);
                 var obj = Instantiate(prefab).GetComponent<NetworkObject>();
                 obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
                 Debug.Log("Spawned dynamic prefab");
+                return obj;
             }
         }
 

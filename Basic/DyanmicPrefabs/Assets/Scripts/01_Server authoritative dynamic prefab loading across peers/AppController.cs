@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -34,7 +35,8 @@ namespace Game
         [SerializeField] DynamicPrefabManager m_DynamicPrefabManager;
         [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabRefs;
         [SerializeField] GameObject m_ConnectionUI;
-        [SerializeField] Button m_SpawnButton;
+        
+        [SerializeField] GameObject m_SpawnUI;
 
         void Awake()
         {
@@ -78,32 +80,37 @@ namespace Game
 
         public override void OnNetworkSpawn()
         {
-            if (IsServer)
-            {
-                m_SpawnButton.onClick.AddListener(OnClickedSpawnButton);
-                //todo: start a coroutine that spawns random prefabs every once in a while
-            }
-            else
-            {
-                m_SpawnButton.gameObject.SetActive(false);
-            }
+            m_SpawnUI.SetActive(IsServer);
         }
-        
-        async void OnClickedSpawnButton()
+
+        public async void OnClickedSpawnWithVisibility()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
             var spawnedObject =  await m_DynamicPrefabManager.SpawnWithVisibilitySystem(randomPrefab.AssetGUID);
             spawnedObject.transform.position = Random.insideUnitCircle * 5;
-            return;
-            m_SpawnButton.gameObject.SetActive(false);
-                
-            
-            bool didManageToSpawn = await m_DynamicPrefabManager.TrySpawnDynamicPrefabSynchronously(randomPrefab.AssetGUID);
+        }
 
-            if (!didManageToSpawn)
+        public async void OnClickedTrySpawnSynchronously()
+        {
+            var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
+            var spawnedObject =  await m_DynamicPrefabManager.TrySpawnDynamicPrefabSynchronously(randomPrefab.AssetGUID);
+            
+            if (spawnedObject.Success)
             {
-                m_SpawnButton.gameObject.SetActive(true);
+                spawnedObject.Obj.transform.position = Random.insideUnitCircle * 5;
             }
+        }
+
+        public async void OnClickedPreload()
+        {
+            var tasks = new List<Task>();
+            foreach (var p in m_DynamicPrefabRefs)
+            {
+                tasks.Add(m_DynamicPrefabManager.PreloadDynamicPrefabOnServerAndStartLoadingOnAllClients(p.AssetGUID));
+            }
+
+            await Task.WhenAll(tasks);
+
         }
     }
 }
