@@ -34,7 +34,7 @@ namespace Game
         Dictionary<int, HashSet<ulong>> m_PrefabHashToClientIds = new Dictionary<int, HashSet<ulong>>();
         
         //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
-        Dictionary<int, HashSet<ulong>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<ulong>>();
+        Dictionary<int, HashSet<NetworkObject>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<NetworkObject>>();
         
         public bool HasClientLoadedPrefab(ulong clientId, int prefabHash) => m_PrefabHashToClientIds.TryGetValue(prefabHash, out var clientIds) && clientIds.Contains(clientId);
 
@@ -321,15 +321,14 @@ namespace Game
             {
                 var prefab = await LoadDynamicPrefab(assetGuid);
                 var obj = Instantiate(prefab).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
                 
                 if(m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
                 {
-                    networkObjectIds.Add(obj.NetworkObjectId);
+                    networkObjectIds.Add(obj);
                 }
                 else
                 {
-                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<ulong>() {obj.NetworkObjectId});
+                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() {obj});
                 }
 
                 obj.CheckObjectVisibility = (clientId) => 
@@ -344,6 +343,8 @@ namespace Game
                     return false;
                 };
                 
+                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
+
                 return obj;
             }
         }
@@ -366,21 +367,25 @@ namespace Game
         }
 
         [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int perfabHash, ServerRpcParams rpcParams = default)
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             m_CountOfClientsThatLoadedThePrefab++;
-            Debug.Log("Client acknowledged successful prefab load with hash: " + perfabHash);
-            RecordThatClientHasLoadedAPrefab(perfabHash, rpcParams.Receive.SenderClientId);
-            ShowHiddenObjectsToClient(perfabHash, rpcParams.Receive.SenderClientId);
+            Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
+            RecordThatClientHasLoadedAPrefab(prefabHash, rpcParams.Receive.SenderClientId);
+           
+            //the server has all the objects visible, no need to do anything
+            if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
+            {
+                ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
+            }
         }
 
         void ShowHiddenObjectsToClient(int prefabHash, ulong clientId)
         {
-            if(m_PrefabHashToNetworkObjectId.TryGetValue(prefabHash, out var networkObjectIds))
+            if(m_PrefabHashToNetworkObjectId.TryGetValue(prefabHash, out var networkObjects))
             {
-                foreach (var networkObjectId in networkObjectIds)
+                foreach (var obj in networkObjects)
                 {
-                    var obj = m_NetworkManager.SpawnManager.SpawnedObjects[networkObjectId];
                     if (!obj.IsNetworkVisibleTo(clientId))
                     {
                         obj.NetworkShow(clientId);

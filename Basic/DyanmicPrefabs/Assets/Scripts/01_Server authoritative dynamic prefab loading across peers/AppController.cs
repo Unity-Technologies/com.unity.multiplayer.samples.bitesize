@@ -26,15 +26,13 @@ namespace Game
     ///  - the server waits for a specified amount of time for the clients to acknowledge the load, and if all the clients are successful - it spawns the prefab
     ///  - otherwise the server runs out of time and the spawn is cancelled
     /// </summary>
-    public sealed class SparseLoadingSample : NetworkBehaviour
+    public sealed class AppController : NetworkBehaviour
     {
-        [SerializeField] DynamicPrefabManager m_DynamicPrefabManager;
-
-        [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabRefs;
-        
         ushort m_Port = 7777;
         string m_ConnectAddress = "127.0.0.1";
 
+        [SerializeField] DynamicPrefabManager m_DynamicPrefabManager;
+        [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabRefs;
         [SerializeField] GameObject m_ConnectionUI;
         [SerializeField] Button m_SpawnButton;
 
@@ -43,7 +41,13 @@ namespace Game
             m_DynamicPrefabManager.OnConnectionStatusReceived += OnConnectionStatusReceived;
         }
         
-
+        public override void OnDestroy()
+        {
+            m_DynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();
+            m_DynamicPrefabManager.OnConnectionStatusReceived -= OnConnectionStatusReceived;
+            base.OnDestroy();
+        }
+        
         void OnConnectionStatusReceived(ConnectStatus status, FastBufferReader reader)
         {
             switch (status)
@@ -70,13 +74,6 @@ namespace Game
             Debug.Log(nameof(StartHost));
             m_DynamicPrefabManager.StartHost(m_ConnectAddress, m_Port);
             m_ConnectionUI.SetActive(false);
-        }
-
-        public override void OnDestroy()
-        {
-            m_DynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();
-            m_DynamicPrefabManager.OnConnectionStatusReceived -= OnConnectionStatusReceived;
-            base.OnDestroy();
         }
 
         public override void OnNetworkSpawn()
