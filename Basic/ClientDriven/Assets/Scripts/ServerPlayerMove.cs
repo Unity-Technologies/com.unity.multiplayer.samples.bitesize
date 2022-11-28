@@ -20,9 +20,6 @@ public class ServerPlayerMove : NetworkBehaviour
     [SerializeField]
     Vector3 m_LocalHeldPosition;
 
-    [SerializeField]
-    Vector3 m_LocalDropPosition;
-
     bool m_DropRequested;
 
     // DOC START HERE
@@ -49,7 +46,7 @@ public class ServerPlayerMove : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void PickupObjServerRpc(ulong objToPickupID)
+    public void PickupObjectServerRpc(ulong objToPickupID)
     {        
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
         if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
@@ -80,7 +77,6 @@ public class ServerPlayerMove : NetworkBehaviour
             if (m_PickedUpObject != null)
             {
                 // can be null if enter drop zone while carrying
-                m_PickedUpObject.transform.localPosition = m_LocalDropPosition;
                 m_PickedUpObject.transform.parent = null;
                 m_PickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
                 m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;

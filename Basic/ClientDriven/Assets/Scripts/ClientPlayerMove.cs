@@ -22,6 +22,9 @@ public class ClientPlayerMove : NetworkBehaviour
     ThirdPersonController m_ThirdPersonController;
 
     [SerializeField]
+    CapsuleCollider m_CapsuleCollider;
+
+    [SerializeField]
     Transform m_CameraFollow;
 
     [SerializeField]
@@ -35,6 +38,7 @@ public class ClientPlayerMove : NetworkBehaviour
         Cursor.visible = false;
         
         m_ThirdPersonController.enabled = false;
+        m_CapsuleCollider.enabled = false;
     }
 
     public override void OnNetworkSpawn()
@@ -45,6 +49,8 @@ public class ClientPlayerMove : NetworkBehaviour
         if (!IsOwner)
         {
             enabled = false;
+            m_CharacterController.enabled = false;
+            m_CapsuleCollider.enabled = true;
             return;
         }
 
@@ -81,7 +87,7 @@ public class ClientPlayerMove : NetworkBehaviour
                     // Netcode is a server driven SDK. Shared objects like ingredients need to be interacted with using ServerRPCs. Therefore, there
                     // will be a delay between the button press and the reparenting.
                     // This delay could be hidden with some animations/sounds/VFX that would be triggered here.
-                    m_ServerPlayerMove.PickupObjServerRpc(netObj);
+                    m_ServerPlayerMove.PickupObjectServerRpc(netObj);
                 }
             }
         }

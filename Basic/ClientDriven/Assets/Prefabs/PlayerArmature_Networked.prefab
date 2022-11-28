@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7602079168910818369}
   - component: {fileID: 6758041290174012784}
   - component: {fileID: 7639751301732027371}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: AddForce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,6 +114,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerArmature_Networked
       objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 513
+      objectReference: {fileID: 0}
     - target: {fileID: 4416926081852918493, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_Actions
       value: 
@@ -139,6 +147,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
   m_PrefabInstance: {fileID: 3616664937583670245}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1021551417513153853
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116025501350672692}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.28
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.93, z: 0}
 --- !u!114 &-3062321976565574425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,10 +190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ClientPlayerMove: {fileID: 5667156634780145037}
-  ObjPickedUp:
+  isObjectPickedUp:
     m_InternalValue: 0
-  m_LocalHeldPosition: {x: 0, y: 1, z: 1}
-  m_LocalDropPosition: {x: 0, y: 1, z: 2}
+  m_LocalHeldPosition: {x: 0, y: 2.64, z: 0}
 --- !u!114 &5667156634780145037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +208,7 @@ MonoBehaviour:
   m_ServerPlayerMove: {fileID: -2755784201116707001}
   m_CharacterController: {fileID: 1116025501350672702}
   m_ThirdPersonController: {fileID: 1116025501350672703}
+  m_CapsuleCollider: {fileID: 1021551417513153853}
   m_CameraFollow: {fileID: 4722851531726864488}
   m_PlayerInput: {fileID: 1116025501350672696}
 --- !u!114 &5801232430748397462
