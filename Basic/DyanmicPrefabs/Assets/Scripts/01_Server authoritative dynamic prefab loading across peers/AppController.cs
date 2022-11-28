@@ -4,29 +4,10 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Game
 {
-    //idea for visualization:
-    // - server has a list of prefabs to pick from 
-    // - it dynamically spawns prefabs from time to time
-    
-    /// <summary>
-    /// In this scenario we are spawning prefabs that aren't known to the clients beforehand.
-    ///
-    /// NGO requires us to load the prefab before we spawn it.
-    ///
-    /// The inbuilt delay that is accessible through NetworkManager.NetworkConfig.SpawnTimeout is NOT MEANT to serve
-    /// as a buffering time during which the clients attempt to catch up with the server's spawn command by loading the prefab and hoping that this load won't take more than the timeout.
-    /// Such approach would inevitably lead to desyncs in production.
-    /// 
-    /// To be safe and to respect the NGO requirement of loading the prefab before spawning it, we:
-    ///  - ensure that the clients acknowledge that they have loaded the prefab
-    ///  - the server waits for a specified amount of time for the clients to acknowledge the load, and if all the clients are successful - it spawns the prefab
-    ///  - otherwise the server runs out of time and the spawn is cancelled
-    /// </summary>
     public sealed class AppController : NetworkBehaviour
     {
         ushort m_Port = 7777;
