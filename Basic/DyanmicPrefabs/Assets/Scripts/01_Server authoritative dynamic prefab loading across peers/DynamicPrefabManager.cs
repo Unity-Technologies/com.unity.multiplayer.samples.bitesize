@@ -8,122 +8,13 @@ using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Game
 {
-    public enum ConnectStatus
-    {
-        Undefined,
-        //Success,                  //client successfully connected. This may also be a successful reconnect.
-        ClientNeedsToPreload,     //client needs to preload the dynamic prefabs before connecting
-        // ServerFull,               //can't join, server is already at capacity.
-        // LoggedInAgain,            //logged in on a separate client, causing this one to be kicked out.
-        // UserRequestedDisconnect,  //Intentional Disconnect triggered by the user.
-        // GenericDisconnect,        //server disconnected, but no specific reason given.
-        // Reconnecting,             //client lost connection and is attempting to reconnect.
-        // IncompatibleBuildType,    //client build type is incompatible with server.
-        // HostEndedSession,         //host intentionally ended the session.
-        // StartHostFailed,          // server failed to bind
-        // StartClientFailed         // failed to connect to server and/or invalid network endpoint
-    }
-
-    public struct AddressableGUID : INetworkSerializable
-    {
-        public FixedString128Bytes Value;
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref Value);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
-    }
-
-    public struct AddressableGUIDCollection : INetworkSerializable
-    {
-        public AddressableGUID[] GUIDs;
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            // Length
-            int length = 0;
-            if (!serializer.IsReader)
-            {
-                length = GUIDs.Length;
-            }
-
-            serializer.SerializeValue(ref length);
-
-            // Array
-            if (serializer.IsReader)
-            {
-                GUIDs = new AddressableGUID[length];
-            }
-
-            for (int n = 0; n < length; ++n)
-            {
-                serializer.SerializeValue(ref GUIDs[n]);
-            }
-        }
-        
-        public override int GetHashCode()
-        {
-            int value = 0;
-            for (var i = 0;i< this.GUIDs.Length; i++)
-            {
-                value = HashCode.Combine(this.GUIDs[i],value);
-            }
-
-            return value;
-        }
-
-        public unsafe int GetSizeInBytes()
-        {
-            return sizeof(AddressableGUID) * GUIDs.Length;
-        }
-    }
-    
-            
-    [Serializable]
-    public class ConnectionPayload
-    {
-        public int HashOfDynamicPrefabGUIDs;
-    }
-
-    /// <summary>
-    /// In this scenario we are spawning prefabs that aren't known to the clients beforehand.
-    ///
-    /// NGO requires us to load the prefab before we spawn it.
-    ///
-    /// The inbuilt delay that is accessible through NetworkManager.NetworkConfig.SpawnTimeout is NOT MEANT to serve
-    /// as a buffering time during which the clients attempt to catch up with the server's spawn command by loading the prefab and hoping that this load won't take more than the timeout.
-    /// Such approach would inevitably lead to desyncs in production.
-    /// 
-    /// To be safe and to respect the NGO requirement of loading the prefab before spawning it, we:
-    ///  - ensure that the clients acknowledge that they have loaded the prefab
-    ///  - the server waits for a specified amount of time for the clients to acknowledge the load, and if all the clients are successful - it spawns the prefab
-    ///  - otherwise the server runs out of time and the spawn is cancelled
-    /// </summary>
-    public sealed class SparseLoadingSample : NetworkBehaviour
+    public sealed class DynamicPrefabManager : NetworkBehaviour
     {
         const int k_MaxConnectPayload = 1024;
         const int k_EmptyDynamicPrefabHash = -1;
-        ushort m_Port = 7777;
-        string m_ConnectAddress = "127.0.0.1";
-
-        [SerializeField] GameObject m_ConnectionUI;
-        [FormerlySerializedAs("m_StartGameButton")] [SerializeField] Button m_SpawnButton;
-        [SerializeField] AssetReferenceGameObject m_DynamicPrefabRef;
         [SerializeField] float m_SpawnTimeoutInSeconds;
         [SerializeField] NetworkManager m_NetworkManager;
         
@@ -133,10 +24,37 @@ namespace Game
         int m_HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
         Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> m_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>();
         List<AddressableGUID> m_DynamicPrefabGUIDs = new List<AddressableGUID>(); //cached list to avoid GC
+
+        public event Action<ConnectStatus, FastBufferReader> OnConnectionStatusReceived;
+
+        string m_ConnectAddress;
+        ushort m_Port;
         
-        public void StartClient()
+        //A storage where we keep the association between the dynamic prefab (hash of it's GUID) and the clients that have it loaded
+        Dictionary<int, HashSet<ulong>> m_PrefabHashToClientIds = new Dictionary<int, HashSet<ulong>>();
+        
+        //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
+        Dictionary<int, HashSet<ulong>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<ulong>>();
+        
+        public bool HasClientLoadedPrefab(ulong clientId, int prefabHash) => m_PrefabHashToClientIds.TryGetValue(prefabHash, out var clientIds) && clientIds.Contains(clientId);
+
+        void RecordThatClientHasLoadedAPrefab(int assetGuidHash, ulong clientId)
+        {
+            if (m_PrefabHashToClientIds.TryGetValue(assetGuidHash, out var clientIds))
+            {
+                clientIds.Add(clientId);
+            }
+            else
+            {
+                m_PrefabHashToClientIds.Add(assetGuidHash, new HashSet<ulong>() {clientId});
+            }
+        }
+        
+        public void StartClient(string connectAddress, ushort port)
         {
             Debug.Log(nameof(StartClient));
+            m_ConnectAddress = connectAddress;
+            m_Port = port;
             
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
             
@@ -144,43 +62,32 @@ namespace Game
             {
                 HashOfDynamicPrefabGUIDs = m_HashOfDynamicPrefabGUIDs
             });
-
+            var transport = m_NetworkManager.GetComponent<UnityTransport>();
+            transport.SetConnectionData(connectAddress, port);
+            
             var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
 
             m_NetworkManager.NetworkConfig.ConnectionData = payloadBytes;
             m_NetworkManager.StartClient();
             m_NetworkManager.CustomMessagingManager.RegisterNamedMessageHandler(nameof(ReceiveServerToClientSetDisconnectReason_CustomMessage), ReceiveServerToClientSetDisconnectReason_CustomMessage);
-            m_ConnectionUI.SetActive(false);
         }
 
-        public void StartHost()
+        public void StartHost(string connectAddress, ushort port)
         {
             Debug.Log(nameof(StartHost));
-            
+            m_ConnectAddress = connectAddress;
+            m_Port = port;
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
             var transport = m_NetworkManager.GetComponent<UnityTransport>();
-            transport.SetConnectionData(m_ConnectAddress, m_Port);
+            transport.SetConnectionData(connectAddress, port);
             m_NetworkManager.ConnectionApprovalCallback = ConnectionApprovalCallback;
             m_NetworkManager.StartHost();
-            m_ConnectionUI.SetActive(false);
         }
 
         public override void OnDestroy()
         {
             UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
-        }
-
-        public override void OnNetworkSpawn()
-        {
-            if (IsServer)
-            {
-                m_SpawnButton.onClick.AddListener(OnClickedSpawnButton);
-            }
-            else
-            {
-                m_SpawnButton.gameObject.SetActive(false);
-            }
         }
 
         async void ReceiveServerToClientSetDisconnectReason_CustomMessage(ulong clientID, FastBufferReader reader)
@@ -192,7 +99,6 @@ namespace Game
                 case ConnectStatus.Undefined:
                     Debug.Log("Undefined");
                     m_NetworkManager.Shutdown();
-                    m_ConnectionUI.SetActive(true);
                     break;
                 case ConnectStatus.ClientNeedsToPreload:
                 {
@@ -201,12 +107,14 @@ namespace Game
                     reader.ReadValueSafe(out AddressableGUIDCollection addressableGUIDCollection);
                     await LoadDynamicPrefabs(addressableGUIDCollection);
                     Debug.Log("Restarting client");
-                    StartClient();
+                    StartClient(m_ConnectAddress, m_Port);
                 }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            OnConnectionStatusReceived?.Invoke(status, reader);
         }
         
         /// <summary>
@@ -225,19 +133,7 @@ namespace Game
             
             m_NetworkManager.CustomMessagingManager.SendNamedMessage(nameof(ReceiveServerToClientSetDisconnectReason_CustomMessage), clientID, writer);
         }
-
-        async void OnClickedSpawnButton()
-        {
-            m_SpawnButton.gameObject.SetActive(false);
-                
-            bool didManageToSpawn = await TrySpawnDynamicPrefab(m_DynamicPrefabRef.AssetGUID);
-
-            if (!didManageToSpawn)
-            {
-                m_SpawnButton.gameObject.SetActive(true);
-            }
-        }
-
+        
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             Debug.Log("Client is trying to connect " + request.ClientNetworkId);
@@ -272,10 +168,16 @@ namespace Game
             int clientPrefabHash = connectionPayload.HashOfDynamicPrefabGUIDs;
             int serverPrefabHash = m_HashOfDynamicPrefabGUIDs;
             
+            //if the client has the same prefabs as the server - approve the connection
             if (clientPrefabHash == serverPrefabHash)
             {
-                //if the client has the same prefabs as the server - approve the connection
                 Approve();
+                
+                foreach (var dynamicPrefabGUID in m_DynamicPrefabGUIDs)
+                {
+                    RecordThatClientHasLoadedAPrefab(dynamicPrefabGUID.GetHashCode(), clientId);
+                }
+                
                 return;
             }
 
@@ -309,24 +211,14 @@ namespace Game
                 response.Pending = false; // connection approval process can be finished.
             }
         }
-
-        //todo: return the reason for failure, not just a true/false
-        //and write up some ideas on how to deal with different kinds of failures (user timeout - to maybe disconnect the client?)
-        //
-        //we can try and use network visibility to prevent the client that failed to load a prefab from seeing it
-        //
-        //we probably should disconnect the user that fails to load the prefab - that's the simplest scenario, however a retry is also possible 
-        //
-        //user can ask for more time to load, or respond with I'm dead, kick me message
         
-        //todo: add a sammple that shows stand-ins (a prefab that is loaded somehow (dynamically or otherwise) and then it's internal graphics are replaced with a lioaded addressable - but it's fully functional from the code perspective)
-        
-        
-        //right now if player C if failing to load - all the players are stalled, this is not ideal
-        
-        //todo: store a dict of native strings to prefabs vs c# strings
-        
-        async Task<bool> TrySpawnDynamicPrefab(string guid)
+        /// <summary>
+        /// This call attempts to spawn a prefab by it's addressable guid - it ensures that all the clients have loaded the prefab before spawning it,
+        /// and if the clients fail to acknowledge that they've loaded a prefab - the spawn will fail.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public async Task<bool> TrySpawnDynamicPrefabSynchronously(string guid)
         {
             if (IsServer)
             {
@@ -378,6 +270,84 @@ namespace Game
             }
         }
 
+        /// <summary>
+        /// This call preloads the dynamic prefab on the server and sends a client rpc to all the clients to do the same.
+        /// </summary>
+        /// <param name="guid"></param>
+        public async Task PreloadDynamicPrefabOnServerAndStartLoadingOnAllClients(string guid)
+        {
+            if (IsServer)
+            {
+                var assetGuid = new AddressableGUID()
+                {
+                    Value = guid
+                };
+                
+                if (m_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid))
+                {
+                    Debug.Log("Prefab is already loaded by all peers");
+                    return;
+                }
+                
+                Debug.Log("Loading dynamic prefab on the clients...");
+                LoadAddressableClientRpc(assetGuid);
+                await LoadDynamicPrefab(assetGuid);
+            }
+        }
+        
+        /// <summary>
+        /// This call spawns an addressable prefab by it's guid. It does not ensure that all the clients have loaded the prefab before spawning it.
+        /// All spawned objects are invisible to clients that don't have the prefab loaded.
+        /// The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've loaded it,
+        /// and then the server makes the object visible to that client.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public async Task<NetworkObject> SpawnWithVisibilitySystem(string guid)
+        {
+            if (IsServer)
+            {
+                var assetGuid = new AddressableGUID()
+                {
+                    Value = guid
+                };
+                
+                return await Spawn(assetGuid);
+            }
+
+            return null;
+
+            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
+            {
+                var prefab = await LoadDynamicPrefab(assetGuid);
+                var obj = Instantiate(prefab).GetComponent<NetworkObject>();
+                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
+                
+                if(m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
+                {
+                    networkObjectIds.Add(obj.NetworkObjectId);
+                }
+                else
+                {
+                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<ulong>() {obj.NetworkObjectId});
+                }
+
+                obj.CheckObjectVisibility = (clientId) => 
+                {
+                    //if the client has already loaded the prefab - we can make the object visible to them
+                    if (HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
+                    {
+                        return true;
+                    }
+                    //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
+                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams(){Send = new ClientRpcSendParams(){TargetClientIds = new ulong[]{clientId}}});
+                    return false;
+                };
+                
+                return obj;
+            }
+        }
+
         [ClientRpc]
         void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
         {
@@ -391,15 +361,32 @@ namespace Game
                 Debug.Log("Loading dynamic prefab on the client...");
                 await LoadDynamicPrefab(assetGuid);
                 Debug.Log("Client loaded dynamic prefab");
-                AcknowledgeSuccessfulPrefabLoadServerRpc();
+                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
         }
-        
+
         [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(ServerRpcParams rpcParams = default)
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(int perfabHash, ServerRpcParams rpcParams = default)
         {
             m_CountOfClientsThatLoadedThePrefab++;
-            Debug.Log("Client acknowledged successful prefab load");
+            Debug.Log("Client acknowledged successful prefab load with hash: " + perfabHash);
+            RecordThatClientHasLoadedAPrefab(perfabHash, rpcParams.Receive.SenderClientId);
+            ShowHiddenObjectsToClient(perfabHash, rpcParams.Receive.SenderClientId);
+        }
+
+        void ShowHiddenObjectsToClient(int prefabHash, ulong clientId)
+        {
+            if(m_PrefabHashToNetworkObjectId.TryGetValue(prefabHash, out var networkObjectIds))
+            {
+                foreach (var networkObjectId in networkObjectIds)
+                {
+                    var obj = m_NetworkManager.SpawnManager.SpawnedObjects[networkObjectId];
+                    if (!obj.IsNetworkVisibleTo(clientId))
+                    {
+                        obj.NetworkShow(clientId);
+                    }
+                }
+            }
         }
 
         async Task<IList<GameObject>> LoadDynamicPrefabs(AddressableGUIDCollection addressableGUIDCollection)
