@@ -755,6 +755,7 @@ GameObject:
   - component: {fileID: 989424451}
   - component: {fileID: 989424452}
   - component: {fileID: 989424453}
+  - component: {fileID: 989424454}
   m_Layer: 0
   m_Name: AppController
   m_TagString: Untagged
@@ -805,14 +806,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5dd989004df436d9e1f8777007d25a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ConnectionUI: {fileID: 346372779}
-  m_SpawnButton: {fileID: 1684107770}
-  m_DynamicPrefabRef:
-    m_AssetGUID: 05ea0814e604c4acf8ae3b7e0a5dfb07
+  m_DynamicPrefabManager: {fileID: 989424454}
+  m_DynamicPrefabRefs:
+  - m_AssetGUID: 05ea0814e604c4acf8ae3b7e0a5dfb07
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  m_SpawnTimeoutInSeconds: 5
+  - m_AssetGUID: 75a53913d13db4777b0d97d1c009b6b2
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 86d863718b86d4ae69be9e4e22feceb6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  m_ConnectionUI: {fileID: 346372779}
+  m_SpawnButton: {fileID: 1684107770}
+--- !u!114 &989424454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989424449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da934f3c1a34d55951e92710428a53b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpawnTimeoutInSeconds: 3
   m_NetworkManager: {fileID: 2054638265}
 --- !u!1 &1157890485
 GameObject:

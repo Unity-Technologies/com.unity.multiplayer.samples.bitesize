@@ -95,7 +95,8 @@ namespace Game
         async void OnClickedSpawnButton()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
-            var spawnedObject =  await m_DynamicPrefabManager.SpawnWithVisibilitySystem(randomPrefab.AssetGUID); 
+            var spawnedObject =  await m_DynamicPrefabManager.SpawnWithVisibilitySystem(randomPrefab.AssetGUID);
+            spawnedObject.transform.position = Random.insideUnitCircle * 5;
             return;
             m_SpawnButton.gameObject.SetActive(false);
                 
