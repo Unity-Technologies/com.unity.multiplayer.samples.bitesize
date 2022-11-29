@@ -20,8 +20,6 @@ public class ServerPlayerMove : NetworkBehaviour
     [SerializeField]
     Vector3 m_LocalHeldPosition;
 
-    bool m_DropRequested;
-
     // DOC START HERE
     public override void OnNetworkSpawn()
     {
@@ -67,30 +65,20 @@ public class ServerPlayerMove : NetworkBehaviour
         m_PickedUpObject = null;
         isObjectPickedUp.Value = false;
     }
-
-    void FixedUpdate()
-    {
-        if (m_DropRequested)
-        {
-            m_DropRequested = false;
-
-            if (m_PickedUpObject != null)
-            {
-                // can be null if enter drop zone while carrying
-                m_PickedUpObject.transform.parent = null;
-                m_PickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
-                m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
-                m_PickedUpObject = null;
-            }
-            
-            isObjectPickedUp.Value = false;
-        }
-    }
-
+    
     [ServerRpc]
     public void DropObjServerRpc()
     {
-        m_DropRequested = true;
+        if (m_PickedUpObject != null)
+        {
+            // can be null if enter drop zone while carrying
+            m_PickedUpObject.transform.parent = null;
+            m_PickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
+            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
+            m_PickedUpObject = null;
+        }
+
+        isObjectPickedUp.Value = false;
     }
     // DOC END HERE
 }
