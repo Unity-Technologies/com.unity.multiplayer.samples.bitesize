@@ -65,7 +65,7 @@ public class ClientPlayerMove : NetworkBehaviour
     {
         if (m_ServerPlayerMove.isObjectPickedUp.Value)
         {
-            m_ServerPlayerMove.DropObjServerRpc();
+            m_ServerPlayerMove.DropObjectServerRpc();
         }
         else
         {

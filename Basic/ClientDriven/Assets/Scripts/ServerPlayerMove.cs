@@ -67,7 +67,7 @@ public class ServerPlayerMove : NetworkBehaviour
     }
     
     [ServerRpc]
-    public void DropObjServerRpc()
+    public void DropObjectServerRpc()
     {
         if (m_PickedUpObject != null)
         {
