@@ -31,14 +31,14 @@ namespace Game
             base.OnDestroy();
         }
         
-        void OnConnectionStatusReceived(ConnectStatus status, FastBufferReader reader)
+        void OnConnectionStatusReceived(DisconnectReason status, FastBufferReader reader)
         {
             switch (status)
             {
-                case ConnectStatus.Undefined:
+                case DisconnectReason.Undefined:
                     m_ConnectionUI.SetActive(true);
                     break;
-                case ConnectStatus.ClientNeedsToPreload:
+                case DisconnectReason.ClientNeedsToPreload:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(status), status, null);
@@ -67,7 +67,7 @@ namespace Game
         public async void OnClickedSpawnWithVisibility()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
-            var spawnedObject =  await m_DynamicPrefabManager.SpawnWithVisibilitySystem(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
+            var spawnedObject =  await m_DynamicPrefabManager.SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
         }
 
         public async void OnClickedTrySpawnSynchronously()

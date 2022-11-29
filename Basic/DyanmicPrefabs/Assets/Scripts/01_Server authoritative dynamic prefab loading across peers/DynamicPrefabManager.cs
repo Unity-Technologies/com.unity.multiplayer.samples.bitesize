@@ -18,14 +18,14 @@ namespace Game
         [SerializeField] float m_SpawnTimeoutInSeconds;
         [SerializeField] NetworkManager m_NetworkManager;
         
-        int m_CountOfClientsThatLoadedThePrefab = 0;
-        float m_SpawnTimeoutTimer = 0;
+        int m_SynchronousSpawnAckCount = 0;
+        float m_SynchronousSpawnTimeoutTimer = 0;
         
         int m_HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
         Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> m_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>();
         List<AddressableGUID> m_DynamicPrefabGUIDs = new List<AddressableGUID>(); //cached list to avoid GC
 
-        public event Action<ConnectStatus, FastBufferReader> OnConnectionStatusReceived;
+        public event Action<DisconnectReason, FastBufferReader> OnConnectionStatusReceived;
 
         string m_ConnectAddress;
         ushort m_Port;
@@ -92,15 +92,15 @@ namespace Game
 
         async void ReceiveServerToClientSetDisconnectReason_CustomMessage(ulong clientID, FastBufferReader reader)
         {
-            reader.ReadValueSafe(out ConnectStatus status);
+            reader.ReadValueSafe(out DisconnectReason status);
 
             switch (status)
             {
-                case ConnectStatus.Undefined:
+                case DisconnectReason.Undefined:
                     Debug.Log("Undefined");
                     m_NetworkManager.Shutdown();
                     break;
-                case ConnectStatus.ClientNeedsToPreload:
+                case DisconnectReason.ClientNeedsToPreload:
                 {
                     m_NetworkManager.Shutdown();
                     Debug.Log("Client needs to preload");
@@ -121,14 +121,14 @@ namespace Game
         /// Sends a DisconnectReason to the indicated client. This should only be done on the server, prior to disconnecting the client.
         /// </summary>
         /// <param name="clientID"> id of the client to send to </param>
-        /// <param name="status"> The reason for the upcoming disconnect.</param>
+        /// <param name="disconnectReason"> The reason for the upcoming disconnect.</param>
         /// <param name="addressableGUIDCollection"></param>
-        void SendServerToClientSetDisconnectReason(ulong clientID, ConnectStatus status, AddressableGUIDCollection addressableGUIDCollection)
+        void SendServerToClientDisconnectReason(ulong clientID, DisconnectReason disconnectReason, AddressableGUIDCollection addressableGUIDCollection)
         {
             int guidCollectionSize = addressableGUIDCollection.GetSizeInBytes();
             
-            var writer = new FastBufferWriter(sizeof(ConnectStatus) + guidCollectionSize, Allocator.Temp);
-            writer.WriteValueSafe(status);
+            var writer = new FastBufferWriter(sizeof(DisconnectReason) + guidCollectionSize, Allocator.Temp);
+            writer.WriteValueSafe(disconnectReason);
             writer.WriteValueSafe(addressableGUIDCollection);
             
             m_NetworkManager.CustomMessagingManager.SendNamedMessage(nameof(ReceiveServerToClientSetDisconnectReason_CustomMessage), clientID, writer);
@@ -181,7 +181,7 @@ namespace Game
                 return;
             }
 
-            StartCoroutine(WaitToDenyApproval(clientId, ConnectStatus.ClientNeedsToPreload, m_LoadedDynamicPrefabResourceHandles.Keys));
+            StartCoroutine(WaitToDenyApproval(clientId, DisconnectReason.ClientNeedsToPreload, m_LoadedDynamicPrefabResourceHandles.Keys));
             
             void Approve()
             {
@@ -199,14 +199,14 @@ namespace Game
             // This could happen after an auth check on a service or because of gameplay reasons (server full, wrong build version, etc)
             // Since network objects haven't synced yet (still in the approval process), we need to send a custom message to clients, wait for
             // UTP to update a frame and flush that message, then give our response to NetworkManager's connection approval process, with a denied approval.
-            IEnumerator WaitToDenyApproval(ulong clientID, ConnectStatus status, ICollection<AddressableGUID> addressableGUIDs)
+            IEnumerator WaitToDenyApproval(ulong clientID, DisconnectReason status, ICollection<AddressableGUID> addressableGUIDs)
             {
                 response.Pending = true; // give some time for server to send connection status message to clients
                 response.Approved = false;
                 
                 m_DynamicPrefabGUIDs.Clear();
                 m_DynamicPrefabGUIDs.AddRange(m_LoadedDynamicPrefabResourceHandles.Keys);
-                SendServerToClientSetDisconnectReason(clientID, status, new AddressableGUIDCollection(){GUIDs = m_DynamicPrefabGUIDs.ToArray()});
+                SendServerToClientDisconnectReason(clientID, status, new AddressableGUIDCollection(){GUIDs = m_DynamicPrefabGUIDs.ToArray()});
                 yield return null; // wait a frame so UTP can flush it's messages on next update
                 response.Pending = false; // connection approval process can be finished.
             }
@@ -234,24 +234,24 @@ namespace Game
                     return (true, obj);
                 }
                 
-                m_CountOfClientsThatLoadedThePrefab = 0;
-                m_SpawnTimeoutTimer = 0;
+                m_SynchronousSpawnAckCount = 0;
+                m_SynchronousSpawnTimeoutTimer = 0;
                 
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
 
                 int requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : m_NetworkManager.ConnectedClients.Count;
                 
-                while (m_SpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
+                while (m_SynchronousSpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
                 {
-                    if (m_CountOfClientsThatLoadedThePrefab >= requiredAcknowledgementsCount)
+                    if (m_SynchronousSpawnAckCount >= requiredAcknowledgementsCount)
                     {
-                        Debug.Log($"All clients have loaded the prefab in {m_SpawnTimeoutTimer} seconds, spawning the prefab on the server...");
+                        Debug.Log($"All clients have loaded the prefab in {m_SynchronousSpawnTimeoutTimer} seconds, spawning the prefab on the server...");
                         var obj = await Spawn(assetGuid);
                         return (true, obj);
                     }
                     
-                    m_SpawnTimeoutTimer += Time.deltaTime;
+                    m_SynchronousSpawnTimeoutTimer += Time.deltaTime;
                     await Task.Yield();
                 }
                 
@@ -304,7 +304,7 @@ namespace Game
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public async Task<NetworkObject> SpawnWithVisibilitySystem(string guid, Vector3 position, Quaternion rotation)
+        public async Task<NetworkObject> SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(string guid, Vector3 position, Quaternion rotation)
         {
             if (IsServer)
             {
@@ -370,7 +370,7 @@ namespace Game
         [ServerRpc(RequireOwnership = false)]
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
-            m_CountOfClientsThatLoadedThePrefab++;
+            m_SynchronousSpawnAckCount++;
             Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
             RecordThatClientHasLoadedAPrefab(prefabHash, rpcParams.Receive.SenderClientId);
            
