@@ -218,7 +218,7 @@ namespace Game
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public async Task<(bool Success, NetworkObject Obj)> TrySpawnDynamicPrefabSynchronously(string guid)
+        public async Task<(bool Success, NetworkObject Obj)> TrySpawnDynamicPrefabSynchronously(string guid, Vector3 position, Quaternion rotation)
         {
             if (IsServer)
             {
@@ -264,7 +264,7 @@ namespace Game
             async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
                 var prefab = await LoadDynamicPrefab(assetGuid);
-                var obj = Instantiate(prefab).GetComponent<NetworkObject>();
+                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
@@ -304,7 +304,7 @@ namespace Game
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public async Task<NetworkObject> SpawnWithVisibilitySystem(string guid)
+        public async Task<NetworkObject> SpawnWithVisibilitySystem(string guid, Vector3 position, Quaternion rotation)
         {
             if (IsServer)
             {
@@ -321,7 +321,7 @@ namespace Game
             async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
                 var prefab = await LoadDynamicPrefab(assetGuid);
-                var obj = Instantiate(prefab).GetComponent<NetworkObject>();
+                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 
                 if(m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
                 {

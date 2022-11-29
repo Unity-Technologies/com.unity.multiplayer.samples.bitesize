@@ -67,19 +67,13 @@ namespace Game
         public async void OnClickedSpawnWithVisibility()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
-            var spawnedObject =  await m_DynamicPrefabManager.SpawnWithVisibilitySystem(randomPrefab.AssetGUID);
-            spawnedObject.transform.position = Random.insideUnitCircle * 5;
+            var spawnedObject =  await m_DynamicPrefabManager.SpawnWithVisibilitySystem(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
         }
 
         public async void OnClickedTrySpawnSynchronously()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
-            var spawnedObject =  await m_DynamicPrefabManager.TrySpawnDynamicPrefabSynchronously(randomPrefab.AssetGUID);
-            
-            if (spawnedObject.Success)
-            {
-                spawnedObject.Obj.transform.position = Random.insideUnitCircle * 5;
-            }
+            var spawnedObject =  await m_DynamicPrefabManager.TrySpawnDynamicPrefabSynchronously(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
         }
 
         public async void OnClickedPreload()
