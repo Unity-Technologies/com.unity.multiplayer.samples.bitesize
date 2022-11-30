@@ -96,13 +96,7 @@ namespace StarterAssets
         private int _animIDGrounded;
         private int _animIDJump;
         private int _animIDFreeFall;
-        // MTT CHANGE START
-        // Reason: the Third Person Controller Animator uses a speed multiplier on the player's walk/run blend tree 
-        // state, to apply speed based on a player's input. On ghost clients, this component is disabled on ghost
-        // clients, meaning this parameter is at it's default value, and the walk/run blend tree will appear stuck.  
-        // To circumvent that, the walk/run blend tree state is not multiplied by any game-side code.
-        //private int _animIDMotionSpeed;
-        // MTT CHANGE END
+        private int _animIDMotionSpeed;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -178,9 +172,7 @@ namespace StarterAssets
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
-            // MTT CHANGE START (reasoning described above)
-            //_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
-            // MTT CHANGE END
+            _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
 
         private void GroundedCheck()
@@ -283,9 +275,7 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
-                // MTT CHANGE START (reasoning described above)
-                //_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-                // MTT CHANGE END
+                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
         }
 
