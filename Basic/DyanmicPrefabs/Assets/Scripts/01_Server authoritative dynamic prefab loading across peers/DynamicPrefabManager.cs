@@ -11,6 +11,22 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game
 {
+    //Assumption: addressables are loadable, ie when the client tries to load it - it will not fail.
+
+    //todo: improvement ideas:
+    // - a state machine for the client to handle the different states of trying to connect, beingrejected for not having prefabs, loading them, trying again etc.
+    // - it's possile to have more advanced logic that would for intance kick players that are consistently failing to load an addressable
+    // - addressable guid list could be compressed before being sent
+    // - instead of addressable guids the peers could exchange a `short` index that would refer to addressables in some kind of a list stored in a scriptable object. That would reduce the amount of data that's being exchanged quite drastically.
+    
+    //todo: split this large sample into several smaller scenes that show loading strategies in isolation
+
+    //todo: if/when there is a sample that shows how to load addressable scenes
+    //- we probably should add some logic to NetworkSceneManager that would allow us to use Addressables scene loading
+    
+    //this sample does not cover the case of addressable usage when the client is loading custom visual prefabs and swapping out the rendering object for essentially non-dynami prefabs
+
+
     public sealed class DynamicPrefabManager : NetworkBehaviour
     {
         const int k_MaxConnectPayload = 1024;
