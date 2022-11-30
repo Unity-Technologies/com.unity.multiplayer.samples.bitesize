@@ -50,17 +50,14 @@ namespace Unity.Netcode.Samples
             {
                 if (GUILayout.Button("Host"))
                 {
-
                     CreateHostRelay();
-
                 }
 
                 if (GUILayout.Button("Client"))
                 {
-                    var utp = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
+                    var utp = NetworkManager.Singleton.NetworkConfig.NetworkTransport as UnityTransport;
                     utp.UseWebSockets = true;
-                    utp.UseEncryption = false;
-                    networkManager.StartClient();
+                    NetworkManager.Singleton.StartClient();
                 }
 
                 if (GUILayout.Button("Server"))
