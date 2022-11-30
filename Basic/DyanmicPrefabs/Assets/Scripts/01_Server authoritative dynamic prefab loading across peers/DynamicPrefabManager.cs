@@ -239,7 +239,8 @@ namespace Game
                 
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
-
+                //load the prefab on the server, so that any late-joiner will need to load that prefab also
+                await LoadDynamicPrefab(assetGuid);
                 int requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : m_NetworkManager.ConnectedClients.Count;
                 
                 while (m_SynchronousSpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
@@ -422,6 +423,13 @@ namespace Game
             Debug.Log($"Loading dynamic prefab {guid.Value}");
             var op = Addressables.LoadAssetAsync<GameObject>(guid.ToString());
             var prefab = await op.Task;
+
+            #if DEBUG
+            //this delay here is to make it obvious how different loading strategies differ
+            //atificial latency would also highlight the difference
+            await Task.Delay(1000);
+            #endif
+
             m_NetworkManager.AddNetworkPrefab(prefab);
             m_LoadedDynamicPrefabResourceHandles.Add(guid, op);
             
