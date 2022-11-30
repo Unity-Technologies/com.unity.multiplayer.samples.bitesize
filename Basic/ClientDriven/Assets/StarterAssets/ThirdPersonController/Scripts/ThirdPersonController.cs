@@ -97,6 +97,10 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         // MTT CHANGE START
+        // Reason: the Third Person Controller Animator uses a speed multiplier on the player's walk/run blend tree 
+        // state, to apply speed based on a player's input. On ghost clients, this component is disabled on ghost
+        // clients, meaning this parameter is at it's default value, and the walk/run blend tree will appear stuck.  
+        // To circumvent that, the walk/run blend tree state is not multiplied by any game-side code.
         //private int _animIDMotionSpeed;
         // MTT CHANGE END
 
@@ -174,7 +178,7 @@ namespace StarterAssets
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
-            // MTT CHANGE START
+            // MTT CHANGE START (reasoning described above)
             //_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             // MTT CHANGE END
         }
@@ -279,7 +283,7 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
-                // MTT CHANGE START
+                // MTT CHANGE START (reasoning described above)
                 //_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
                 // MTT CHANGE END
             }
@@ -377,35 +381,25 @@ namespace StarterAssets
 
         private void OnFootstep(AnimationEvent animationEvent)
         {
-            // MTT CHANGE START
-            if (!enabled)
-            {
-                return;
-            }
-            // MTT CHANGE END
-            
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 if (FootstepAudioClips.Length > 0)
                 {
                     var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                    // MTT CHANGE START (for simplicity's sake, playing at the transform's position suffices)
+                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.position, FootstepAudioVolume);
+                    // MTT CHANGE END
                 }
             }
         }
 
         private void OnLand(AnimationEvent animationEvent)
         {
-            // MTT CHANGE START
-            if (!enabled)
-            {
-                return;
-            }
-            // MTT CHANGE END
-            
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                // MTT CHANGE START (for simplicity's sake, playing at the transform's position suffices)
+                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.position, FootstepAudioVolume);
+                // MTT CHANGE END
             }
         }
     }

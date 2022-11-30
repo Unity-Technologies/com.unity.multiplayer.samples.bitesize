@@ -22,6 +22,9 @@ public class ClientPlayerMove : NetworkBehaviour
     ThirdPersonController m_ThirdPersonController;
 
     [SerializeField]
+    CapsuleCollider m_CapsuleCollider;
+
+    [SerializeField]
     Transform m_CameraFollow;
 
     [SerializeField]
@@ -34,7 +37,14 @@ public class ClientPlayerMove : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
+        // ThirdPersonController & CharacterController are enabled only on owning clients. Ghost clients have these two 
+        // components disabled, and will enable a CapsuleCollider. Per the CharacterController documentation: 
+        // https://docs.unity3d.com/Manual/CharacterControllers.html, a Character controller can push rigidbody
+        // objects aside while moving but will not be accelerated by incoming collisions. This means that a primitive
+        // CapusleCollider must instead be used for ghost clients to simulate collisions between owning players and 
+        // ghost clients.
         m_ThirdPersonController.enabled = false;
+        m_CapsuleCollider.enabled = false;
     }
 
     public override void OnNetworkSpawn()
@@ -45,9 +55,12 @@ public class ClientPlayerMove : NetworkBehaviour
         if (!IsOwner)
         {
             enabled = false;
+            m_CharacterController.enabled = false;
+            m_CapsuleCollider.enabled = true;
             return;
         }
 
+        // player input is only enabled on owning players
         m_PlayerInput.enabled = true;
         m_ThirdPersonController.enabled = true;
 
@@ -59,7 +72,7 @@ public class ClientPlayerMove : NetworkBehaviour
     {
         if (m_ServerPlayerMove.isObjectPickedUp.Value)
         {
-            m_ServerPlayerMove.DropObjServerRpc();
+            m_ServerPlayerMove.DropObjectServerRpc();
         }
         else
         {
@@ -81,7 +94,7 @@ public class ClientPlayerMove : NetworkBehaviour
                     // Netcode is a server driven SDK. Shared objects like ingredients need to be interacted with using ServerRPCs. Therefore, there
                     // will be a delay between the button press and the reparenting.
                     // This delay could be hidden with some animations/sounds/VFX that would be triggered here.
-                    m_ServerPlayerMove.PickupObjServerRpc(netObj);
+                    m_ServerPlayerMove.PickupObjectServerRpc(netObj);
                 }
             }
         }
