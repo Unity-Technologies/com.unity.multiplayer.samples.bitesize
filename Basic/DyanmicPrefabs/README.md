@@ -5,7 +5,7 @@ This sample showcases the available use-cases for the dynamic prefab system, whi
 ## Sample feature
 
 Dynamic prefabs feature allows the developer to add a new prefab to the network prefab list in runtime.
-For simplicity, this sample uses Addressables to load the dynamic prefab, however any GameObject with a NetworkObject component can be used, regardless of it's source.
+For simplicity, this sample uses Addressables to load the dynamic prefab, however any GameObject with a NetworkObject component can be used, regardless of it's source (think User Generated Content (UGC)).
 
 There are several limitations to this API:
 - If you have NetworkConfig.ForceSamePrefabs enabled, you can only modify your prefab lists before starting
