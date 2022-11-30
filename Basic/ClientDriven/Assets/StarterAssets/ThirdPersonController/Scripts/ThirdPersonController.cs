@@ -99,6 +99,9 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDHolding;
+        // MTT CHANGE START
+        //private int _animIDMotionSpeed;
+        // MTT CHANGE END
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -176,6 +179,9 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDHolding = Animator.StringToHash("Holding");
+            // MTT CHANGE START
+            //_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            // MTT CHANGE END
         }
 
         private void GroundedCheck()
@@ -278,6 +284,9 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
+                // MTT CHANGE START
+                //_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                // MTT CHANGE END
             }
         }
 
@@ -386,31 +395,25 @@ namespace StarterAssets
 
         private void OnFootstep(AnimationEvent animationEvent)
         {
-            if (!enabled)
-            {
-                return;
-            }
-            
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 if (FootstepAudioClips.Length > 0)
                 {
                     var index = Random.Range(0, FootstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                    // MTT CHANGE START
+                    AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.position, FootstepAudioVolume);
+                    // MTT CHANGE END
                 }
             }
         }
 
         private void OnLand(AnimationEvent animationEvent)
         {
-            if (!enabled)
-            {
-                return;
-            }
-            
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
-                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+                // MTT CHANGE START
+                AudioSource.PlayClipAtPoint(LandingAudioClip, transform.position, FootstepAudioVolume);
+                // MTT CHANGE END
             }
         }
     }

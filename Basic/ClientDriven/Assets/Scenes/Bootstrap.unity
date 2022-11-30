@@ -512,7 +512,7 @@ GameObject:
   - component: {fileID: 436869924}
   - component: {fileID: 436869923}
   - component: {fileID: 436869922}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -737,7 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1772278923
+  GlobalObjectIdHash: 3403489127
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -766,7 +766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b7be589cd61419ca00249e2c87d8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentIngredientType:
+  currentIngredientType:
     m_InternalValue: 1
   m_ScoreTracker: {fileID: 1834706022}
 --- !u!23 &670300247
@@ -1133,7 +1133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1820041414
+  GlobalObjectIdHash: 3211675649
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -1591,7 +1591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3742353017
+  GlobalObjectIdHash: 3374891827
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -1607,7 +1607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc801949a9a7a43eda0b39744dd74696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentIngredientType:
+  currentIngredientType:
     m_InternalValue: 1
   m_CookingTime: 1
   m_IngredientCookingLocation: {fileID: 720634596}
@@ -1622,8 +1622,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 6, z: 1.5}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!23 &1190347908
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2029,7 +2029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1107175321
+  GlobalObjectIdHash: 1077522220
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -2058,7 +2058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b7be589cd61419ca00249e2c87d8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentIngredientType:
+  currentIngredientType:
     m_InternalValue: 0
   m_ScoreTracker: {fileID: 1834706022}
 --- !u!23 &1731955919
@@ -2275,7 +2275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1639984971
+  GlobalObjectIdHash: 119131187
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -2515,7 +2515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1351995905
+  GlobalObjectIdHash: 4086474066
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -2531,7 +2531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc801949a9a7a43eda0b39744dd74696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentIngredientType:
+  currentIngredientType:
     m_InternalValue: 0
   m_CookingTime: 1
   m_IngredientCookingLocation: {fileID: 1930131465}
@@ -2546,8 +2546,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 6, z: 1.5}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!23 &1928952508
 MeshRenderer:
   m_ObjectHideFlags: 0

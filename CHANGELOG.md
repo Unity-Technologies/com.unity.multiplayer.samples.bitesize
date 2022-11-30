@@ -1,5 +1,15 @@
 # Change log
 
+## [1.1.0] - 2022-11-21
+
+### Client Driven
+
+#### Changed
+- Updated to Netcode for GameObjects 1.1.0
+- The sample has been refactored to feature a PlayerPrefab inside NetworkManager that is a networked variant of a prefab from [Unity's Starter Assets](https://assetstore.unity.com/packages/essentials/starter-assets-third-person-character-controller-196526). Other improvements include:
+  - Input polling via the new Input System
+  - Connection UI utilizes UI Toolkit
+
 ## [1.0.0] - 2021-10-20
 
 ### Client Driven
