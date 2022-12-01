@@ -5,22 +5,16 @@ using UnityEngine;
 
 namespace Unity.Netcode.Samples.APIDiorama
 {
+    /// <summary>
+    /// Shows text in the form of a speech bubble
+    /// </summary>
     public class SpeechBubble : MonoBehaviour
     {
-        [SerializeField]
-        SpriteRenderer m_BackgroundSprite;
-
-        [SerializeField]
-        TMP_Text m_MessageLabel;
-
-        [SerializeField]
-        Vector2 m_Padding;
-
-        [SerializeField]
-        int m_MaxCharactersPerLine = 20;
-
-        [SerializeField]
-        string m_DefaultMessage;
+        [SerializeField] SpriteRenderer m_BackgroundSprite;
+        [SerializeField] TMP_Text m_MessageLabel;
+        [SerializeField] Vector2 m_Padding;
+        [SerializeField] int m_MaxCharactersPerLine = 20;
+        [SerializeField] string m_DefaultMessage;
 
         void Start()
         {

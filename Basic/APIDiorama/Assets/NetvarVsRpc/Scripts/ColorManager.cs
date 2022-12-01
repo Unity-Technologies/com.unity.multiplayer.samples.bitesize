@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Unity.Netcode.Samples.APIDiorama
 {
+    /// <summary>
+    /// Manages the color of a Networked object
+    /// </summary>
     public class ColorManager : NetworkBehaviour
     {
         [SerializeField]

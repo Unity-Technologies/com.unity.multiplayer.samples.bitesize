@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Unity.Netcode.Samples.APIDiorama
 {
+    /// <summary>
+    /// Manages the UI of the "NetworkVariable vs RPCs" scene
+    /// </summary>
     public class GameUI : MonoBehaviour
     {
         [SerializeField] TMP_Text startupLabel;
