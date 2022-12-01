@@ -10,6 +10,7 @@ namespace Unity.Netcode.Samples.APIDiorama
     {
         [SerializeField] internal SceneReference Scene;
         [SerializeField] internal string DisplayName;
+        [SerializeField] internal Texture2D Image;
     }
 
     /// <summary>
