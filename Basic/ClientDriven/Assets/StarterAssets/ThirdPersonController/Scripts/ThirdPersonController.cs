@@ -98,6 +98,7 @@ namespace StarterAssets
         private int _animIDGrounded;
         private int _animIDJump;
         private int _animIDFreeFall;
+        private int _animIDMotionSpeed;
         private int _animIDHolding;
         // MTT CHANGE START
         // Reason: the Third Person Controller Animator uses a speed multiplier on the player's walk/run blend tree 
@@ -182,6 +183,7 @@ namespace StarterAssets
             _animIDGrounded = Animator.StringToHash("Grounded");
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
+            _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             _animIDHolding = Animator.StringToHash("Holding");
             // MTT CHANGE START (reasoning described above)
             //_animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
@@ -288,9 +290,7 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
-                // MTT CHANGE START (reasoning described above)
-                //_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-                // MTT CHANGE END
+                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
         }
 
