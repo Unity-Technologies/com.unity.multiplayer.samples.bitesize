@@ -2,6 +2,7 @@
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
 using Unity.Netcode;
+using DevLocker.Utils;
 
 /// <summary>
 /// Implement your Tutorial callbacks here.
@@ -9,6 +10,8 @@ using Unity.Netcode;
 [CreateAssetMenu(fileName = DefaultFileName, menuName = "Tutorials/" + DefaultFileName + " Instance")]
 public class TutorialCallbacks : ScriptableObject
 {
+    [SerializeField] SceneReference m_DioramaSelectionScene;
+
     /// <summary>
     /// The default file name used to create asset of this class type.
     /// </summary>
@@ -70,5 +73,10 @@ public class TutorialCallbacks : ScriptableObject
     public void OpenURL(string url)
     {
         TutorialEditorUtils.OpenUrl(url);
+    }
+
+    public void LoadDioramaSelectionScene()
+    {
+        UnityEditor.SceneManagement.EditorSceneManager.OpenScene(m_DioramaSelectionScene.ScenePath);
     }
 }
