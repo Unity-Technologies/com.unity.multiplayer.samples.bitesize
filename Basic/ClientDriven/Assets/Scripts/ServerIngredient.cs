@@ -16,6 +16,10 @@ public enum IngredientType
 
 public class ServerObjectWithIngredientType : NetworkBehaviour
 {
+    // NOTE: this is a workaround on an issue NGO-side. NetworkVariables should be able to be set pre-spawn.
+    [SerializeField]
+    IngredientType m_StartingIngredientType;
+    
     public NetworkVariable<IngredientType> currentIngredientType;
 
     public event Action ingredientDespawned;
@@ -28,6 +32,8 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
             enabled = false;
             return;
         }
+
+        currentIngredientType.Value = m_StartingIngredientType;
     }
 
     public override void OnNetworkDespawn()
