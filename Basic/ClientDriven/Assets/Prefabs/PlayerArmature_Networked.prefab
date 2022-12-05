@@ -119,6 +119,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: GroundLayers.m_Bits
       value: 640
       objectReference: {fileID: 0}
@@ -132,7 +136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4416926081852918493, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_DefaultControlScheme
-      value: KeyboardMouse
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918493, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5885216827943657505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
@@ -192,7 +200,7 @@ MonoBehaviour:
   m_ClientPlayerMove: {fileID: 5667156634780145037}
   isObjectPickedUp:
     m_InternalValue: 0
-  m_LocalHeldPosition: {x: 0, y: 2.64, z: 0}
+  m_LocalHeldPosition: {x: 0, y: 2.85, z: 0}
 --- !u!114 &5667156634780145037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +281,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 3616664937583670245}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116025501350672692}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 

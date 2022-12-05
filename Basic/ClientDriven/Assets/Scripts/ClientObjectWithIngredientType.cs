@@ -15,12 +15,12 @@ namespace Unity.Netcode.Samples
 
         ServerObjectWithIngredientType m_Server;
         
-        Renderer m_Renderer;
+        [SerializeField]
+        Renderer m_ColorMesh;
 
         void Awake()
         {
             m_Server = GetComponent<ServerObjectWithIngredientType>();
-            m_Renderer = GetComponent<Renderer>();
         }
 
         public override void OnNetworkSpawn()
@@ -34,13 +34,13 @@ namespace Unity.Netcode.Samples
             switch (m_Server.currentIngredientType.Value)
             {
                 case IngredientType.Blue:
-                    m_Renderer.material = m_BlueMaterial;
+                    m_ColorMesh.material = m_BlueMaterial;
                     break;
                 case IngredientType.Red:
-                    m_Renderer.material = m_RedMaterial;
+                    m_ColorMesh.material = m_RedMaterial;
                     break;
                 case IngredientType.Purple:
-                    m_Renderer.material = m_PurpleMaterial;
+                    m_ColorMesh.material = m_PurpleMaterial;
                     break;
             }
         }
