@@ -36,7 +36,12 @@ public class PlayerBullet : MonoBehaviour
         {
             owner.IncreasePlayerScore(hitEnemy.score);
 
-            Destroy(hitEnemy.gameObject);
+            if (NetworkManager.Singleton.IsServer)
+            {
+                // Only the server can despawn a NetworkObject
+                hitEnemy.NetworkObject.Despawn();
+            }
+            
             Destroy(gameObject);
             
             // this instantiates at the position of the bullet, there is an offset in the Y axis on the 
