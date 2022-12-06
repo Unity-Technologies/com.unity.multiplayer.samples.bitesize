@@ -69,7 +69,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 3
 --- !u!114 &8268979759230423690
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97f98a2ea6414eaabd6045c397688f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentIngredientType:
+  currentIngredientType:
     m_InternalValue: 0
 --- !u!114 &2014424453305718345
 MonoBehaviour:
@@ -104,9 +104,9 @@ MonoBehaviour:
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0
   RotAngleThreshold: 0
   ScaleThreshold: 0
