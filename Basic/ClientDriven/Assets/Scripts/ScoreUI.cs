@@ -1,20 +1,39 @@
+using System;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ScoreUI : MonoBehaviour
 {
     [SerializeField]
-    private ServerScoreReplicator m_ScoreTracker;
+    ServerScoreReplicator m_ScoreTracker;
 
-    private Text m_Text;
+    [SerializeField]
+    UIDocument m_InGameUIDocument;
+    
+    VisualElement m_InGameRootVisualElement;
+    
+    TextElement m_ScoreText;
+
+    void Awake()
+    {
+        m_InGameRootVisualElement = m_InGameUIDocument.rootVisualElement;
+        
+        m_ScoreText = m_InGameRootVisualElement.Query<TextElement>("ScoreText");
+    }
 
     void Start()
     {
-        m_Text = GetComponent<Text>();
+        OnScoreChanged(0, m_ScoreTracker.ReplicatedScore.Value);
+        m_ScoreTracker.ReplicatedScore.OnValueChanged += OnScoreChanged;
     }
 
-    void Update()
+    void OnDestroy()
     {
-        m_Text.text = $"{m_ScoreTracker.Score}"; // ouch my perf
+        m_ScoreTracker.ReplicatedScore.OnValueChanged -= OnScoreChanged;
+    }
+
+    void OnScoreChanged(int previousValue, int newValue)
+    {
+        m_ScoreText.text = $"{m_ScoreTracker.Score}";
     }
 }

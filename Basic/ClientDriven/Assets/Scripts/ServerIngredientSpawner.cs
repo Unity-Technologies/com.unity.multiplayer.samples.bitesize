@@ -6,16 +6,22 @@ using Random = System.Random;
 public class ServerIngredientSpawner : NetworkBehaviour
 {
     [SerializeField]
-    private List<GameObject> m_SpawnPoints;
+    List<GameObject> m_SpawnPoints;
 
     [SerializeField]
-    private float m_SpawnRatePerSecond;
+    float m_SpawnRatePerSecond;
 
     [SerializeField]
-    private GameObject m_IngredientPrefab;
+    GameObject m_IngredientPrefab;
 
-    private float m_LastSpawnTime;
-    private Random r = new Random();
+    [SerializeField]
+    int m_MaxSpawnWaves;
+
+    int m_SpawnWaves;
+
+    float m_LastSpawnTime;
+
+    Random m_RandomGenerator = new Random();
 
     public override void OnNetworkSpawn()
     {
@@ -25,21 +31,33 @@ public class ServerIngredientSpawner : NetworkBehaviour
             enabled = false;
             return;
         }
+
+        m_SpawnWaves = 0;
     }
 
-    private void FixedUpdate()
+    public override void OnNetworkDespawn()
     {
-        if (NetworkManager != null && !IsServer) return;
-        if (Time.time - m_LastSpawnTime > m_SpawnRatePerSecond)
+        m_SpawnWaves = 0;
+    }
+
+    void FixedUpdate()
+    {
+        if (NetworkManager != null && !IsServer)
+        {
+            return;
+        }
+
+        if (m_SpawnWaves < m_MaxSpawnWaves && Time.time - m_LastSpawnTime > m_SpawnRatePerSecond)
         {
             foreach (var spawnPoint in m_SpawnPoints)
             {
                 var newIngredientObject = Instantiate(m_IngredientPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
                 newIngredientObject.transform.position = spawnPoint.transform.position;
                 var ingredient = newIngredientObject.GetComponent<ServerIngredient>();
-                ingredient.CurrentIngredientType.Value = (IngredientType) r.Next((int)IngredientType.max);
                 ingredient.NetworkObject.Spawn();
+                ingredient.currentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
             }
+            m_SpawnWaves++;
 
             m_LastSpawnTime = Time.time;
         }
