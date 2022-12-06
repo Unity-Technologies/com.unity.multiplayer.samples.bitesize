@@ -66,6 +66,9 @@
             "m_Id": "1d5a005c1aef4f03bf0f7f5feb9c4d28"
         },
         {
+            "m_Id": "a7562e87cca44e5783c7017b5659fa20"
+        },
+        {
             "m_Id": "3286c9ad2c1048b5b5eda56face6e5db"
         },
         {
@@ -963,7 +966,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "00e090bda4e94883babe520822414fe6",
     "m_Id": 0,
-    "m_DisplayName": "Emissive Map",
+    "m_DisplayName": "Color Emissive Map",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1620,10 +1623,10 @@
     "m_Guid": {
         "m_GuidSerialized": "f456e222-7d2a-4f19-824e-d7157e4aeb46"
     },
-    "m_Name": "Emissive Map",
+    "m_Name": "Color Emissive Map",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Emissive Map",
-    "m_DefaultReferenceName": "_Emissive_Map",
+    "m_RefNameGeneratedByDisplayName": "Color Emissive Map",
+    "m_DefaultReferenceName": "_Color_Emissive_Map",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1691,21 +1694,6 @@
         },
         {
             "m_Id": "8bba611088e34b15af9cea2ee18e3cbd"
-        },
-        {
-            "m_Id": "d63e2acee1b8444d8250c21c11a607e5"
-        },
-        {
-            "m_Id": "51ff7f7297314e968b6a3182420e6056"
-        },
-        {
-            "m_Id": "1b9be0db9a5444a2b12f8c01cae125bb"
-        },
-        {
-            "m_Id": "73fe8f2efec04de59e1871e61b793daa"
-        },
-        {
-            "m_Id": "b23f3fca4c544f869a935a778470d658"
         }
     ]
 }
@@ -2225,7 +2213,7 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "3286c9ad2c1048b5b5eda56face6e5db",
-    "m_Name": "PlayerColors",
+    "m_Name": "Player Colors",
     "m_ChildObjectList": [
         {
             "m_Id": "4a075797654f4ebca539b07a3c4a02a1"
@@ -2815,7 +2803,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "4a02e3494bf44e86aa28acc742a77fa4",
     "m_Id": 0,
-    "m_DisplayName": "Emissive Strength",
+    "m_DisplayName": "Color Emissive Strength",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2876,7 +2864,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "PlayerIndex",
+    "m_Name": "Color Index",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -2938,7 +2926,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "PlayerIndex",
+    "m_Name": "Color Index",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -3725,10 +3713,10 @@
     "m_Guid": {
         "m_GuidSerialized": "1c0277d5-d6a8-4d22-8095-a17c4bf3ca3f"
     },
-    "m_Name": "Emissive Strength",
+    "m_Name": "Color Emissive Strength",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Emissive Strength",
-    "m_DefaultReferenceName": "_Emissive_Strength",
+    "m_RefNameGeneratedByDisplayName": "Color Emissive Strength",
+    "m_DefaultReferenceName": "_Color_Emissive_Strength",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -4633,6 +4621,30 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "a7562e87cca44e5783c7017b5659fa20",
+    "m_Name": "Player Color Options",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "d63e2acee1b8444d8250c21c11a607e5"
+        },
+        {
+            "m_Id": "51ff7f7297314e968b6a3182420e6056"
+        },
+        {
+            "m_Id": "1b9be0db9a5444a2b12f8c01cae125bb"
+        },
+        {
+            "m_Id": "73fe8f2efec04de59e1871e61b793daa"
+        },
+        {
+            "m_Id": "b23f3fca4c544f869a935a778470d658"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BlockNode",
     "m_ObjectId": "a757eaca15cc4c3c8be21e5e3a27cdc1",
     "m_Group": {
@@ -4825,10 +4837,10 @@
     "m_Guid": {
         "m_GuidSerialized": "3c063e81-9b6c-465c-8a1d-818824ede850"
     },
-    "m_Name": "PlayerIndex",
+    "m_Name": "Color Index",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "PlayerIndex",
-    "m_DefaultReferenceName": "_PLAYERINDEX",
+    "m_RefNameGeneratedByDisplayName": "Color Index",
+    "m_DefaultReferenceName": "_COLOR_INDEX",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -5468,7 +5480,7 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "c786e73f87fd4eb1a7445f005e8f7a6f",
-    "m_Name": "PlayerEmissiveColors",
+    "m_Name": "Player Emissive Colors",
     "m_ChildObjectList": [
         {
             "m_Id": "6972e5647c5c433cb6f8913926a97a90"
