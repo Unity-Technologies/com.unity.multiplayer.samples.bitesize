@@ -46,17 +46,19 @@ public class ServerPlayerMove : NetworkBehaviour
     [ServerRpc]
     public void PickupObjectServerRpc(ulong objToPickupID)
     {        
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
-        if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
+        if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
-        if (objToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
+        if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
         {
-            objToPickup.GetComponent<Rigidbody>().isKinematic = true;
-            objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
-            objToPickup.transform.localPosition = m_LocalHeldPosition;
-            objToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
+            var pickUpObjectRigidbody = objectToPickup.GetComponent<Rigidbody>();
+            pickUpObjectRigidbody.isKinematic = true;
+            pickUpObjectRigidbody.interpolation = RigidbodyInterpolation.None;
+            objectToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
+            objectToPickup.transform.localPosition = m_LocalHeldPosition;
+            objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
             isObjectPickedUp.Value = true;
-            m_PickedUpObject = objToPickup;
+            m_PickedUpObject = objectToPickup;
         }
     }
 
@@ -73,7 +75,9 @@ public class ServerPlayerMove : NetworkBehaviour
         {
             // can be null if enter drop zone while carrying
             m_PickedUpObject.transform.parent = null;
-            m_PickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
+            var pickedUpObjectRigidbody = m_PickedUpObject.GetComponent<Rigidbody>();
+            pickedUpObjectRigidbody.isKinematic = false;
+            pickedUpObjectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
             m_PickedUpObject = null;
         }
