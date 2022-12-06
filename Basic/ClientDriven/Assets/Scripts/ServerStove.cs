@@ -4,10 +4,10 @@ using UnityEngine;
 public class ServerStove : ServerObjectWithIngredientType
 {
     [SerializeField]
-    private int m_CookingTime = 1;
+    int m_CookingTime = 1;
 
     [SerializeField]
-    private Transform m_IngredientCookingLocation;
+    Transform m_IngredientCookingLocation;
 
     public override void OnNetworkSpawn()
     {
@@ -19,7 +19,7 @@ public class ServerStove : ServerObjectWithIngredientType
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (!IsServer) return;
 
@@ -29,7 +29,7 @@ public class ServerStove : ServerObjectWithIngredientType
             return;
         }
 
-        if (ingredient.CurrentIngredientType.Value == CurrentIngredientType.Value)
+        if (ingredient.currentIngredientType.Value == currentIngredientType.Value)
         {
             return;
         }
@@ -45,11 +45,11 @@ public class ServerStove : ServerObjectWithIngredientType
         StartCoroutine(StartCooking(ingredient));
     }
 
-    private IEnumerator StartCooking(ServerIngredient ingredient)
+    IEnumerator StartCooking(ServerIngredient ingredient)
     {
         yield return new WaitForSeconds(m_CookingTime);
 
-        ingredient.CurrentIngredientType.Value = CurrentIngredientType.Value;
+        ingredient.currentIngredientType.Value = currentIngredientType.Value;
         ingredient.GetComponent<Rigidbody>().isKinematic = false;
     }
 }
