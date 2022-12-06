@@ -3,9 +3,9 @@ using UnityEngine;
 public class AddForce : MonoBehaviour
 {
     [SerializeField]
-    private float m_ForceToAdd = 100;
+    float m_ForceToAdd = 100;
 
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (!enabled) return;
         if (other.gameObject.GetComponentInParent<ServerIngredient>() != null)

@@ -5,20 +5,20 @@ namespace Unity.Netcode.Samples
     public class ClientObjectWithIngredientType : NetworkBehaviour
     {
         [SerializeField]
-        private Material m_PurpleMaterial;
+        Material m_PurpleMaterial;
 
         [SerializeField]
-        private Material m_BlueMaterial;
+        Material m_BlueMaterial;
 
         [SerializeField]
-        private Material m_RedMaterial;
+        Material m_RedMaterial;
 
-        private ServerObjectWithIngredientType m_Server;
+        ServerObjectWithIngredientType m_Server;
         
         [SerializeField]
-        private Renderer m_ColorMesh;
+        Renderer m_ColorMesh;
 
-        private void Awake()
+        void Awake()
         {
             m_Server = GetComponent<ServerObjectWithIngredientType>();
         }
@@ -31,15 +31,15 @@ namespace Unity.Netcode.Samples
 
         void UpdateMaterial()
         {
-            switch (m_Server.CurrentIngredientType.Value)
+            switch (m_Server.currentIngredientType.Value)
             {
-                case IngredientType.blue:
+                case IngredientType.Blue:
                     m_ColorMesh.material = m_BlueMaterial;
                     break;
-                case IngredientType.red:
+                case IngredientType.Red:
                     m_ColorMesh.material = m_RedMaterial;
                     break;
-                case IngredientType.purple:
+                case IngredientType.Purple:
                     m_ColorMesh.material = m_PurpleMaterial;
                     break;
             }
