@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/2DSpaceShooterUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#2DSpaceShooterUIStyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: space-between; align-items: flex-start; height: 100%; width: 100%; opacity: 1; flex-direction: row;">
+        <ui:Label text="Grab ingredients by pressing E, convert them to the right color and destroy them in their respective zone." display-tooltip-when-elided="true" name="HowToPlayText" style="flex-grow: 1; height: 25px; width: 50px; -unity-text-align: middle-left; white-space: normal; margin-top: 60px;" />
+        <ui:Label text="Score" display-tooltip-when-elided="true" name="ScoreDisplay" style="flex-grow: 1; height: 25px; width: 50px; -unity-text-align: middle-right;" />
+        <ui:Label text="0" display-tooltip-when-elided="true" name="ScoreText" style="flex-grow: 1; height: 25px; width: 50px; -unity-text-align: middle-left; padding-left: 128px;" />
+    </ui:VisualElement>
+</ui:UXML>
