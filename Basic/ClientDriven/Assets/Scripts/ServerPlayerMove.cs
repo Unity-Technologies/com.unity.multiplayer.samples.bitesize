@@ -20,9 +20,6 @@ public class ServerPlayerMove : NetworkBehaviour
     NetworkObject m_PickedUpObject;
 
     [SerializeField]
-    Vector3 m_LocalHeldPosition;
-
-    [SerializeField]
     Transform m_IngredientSocketTransform;
 
     // DOC START HERE
