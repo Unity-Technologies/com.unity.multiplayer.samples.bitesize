@@ -34,6 +34,6 @@ public class Dropzone : ServerObjectWithIngredientType
 
         m_ScoreTracker.Score += 1;
         ingredient.NetworkObject.Despawn(destroy: true);
-        other.GetComponentInParent<ThirdPersonController>().Holding = false;
+        other.GetComponentInParent<ClientPlayerMove>().DropIngredientClientRPC();
     }
 }

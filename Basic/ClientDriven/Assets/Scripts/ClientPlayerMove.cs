@@ -110,4 +110,10 @@ public class ClientPlayerMove : NetworkBehaviour
         m_CharacterController.enabled = true;
         gameObject.SetActive(true);
     }
+    
+    [ClientRpc]
+    public void DropIngredientClientRPC(ClientRpcParams clientRpcParams = default)
+    {
+        m_ThirdPersonController.Holding = false;
+    }
 }
