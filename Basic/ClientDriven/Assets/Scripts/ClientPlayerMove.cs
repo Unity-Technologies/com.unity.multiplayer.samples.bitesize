@@ -112,7 +112,7 @@ public class ClientPlayerMove : NetworkBehaviour
     }
     
     [ClientRpc]
-    public void DropIngredientClientRPC(ClientRpcParams clientRpcParams = default)
+    public void DropIngredientClientRpc(ClientRpcParams clientRpcParams = default)
     {
         m_ThirdPersonController.Holding = false;
     }
