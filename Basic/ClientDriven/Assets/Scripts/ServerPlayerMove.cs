@@ -1,7 +1,9 @@
 using System;
+using StarterAssets;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using UnityEngine.Animations;
 
 /// <summary>
 /// Server side script to do some movements that can only be done server side with Netcode. In charge of spawning (which happens server side in Netcode)
@@ -19,6 +21,9 @@ public class ServerPlayerMove : NetworkBehaviour
 
     [SerializeField]
     Vector3 m_LocalHeldPosition;
+
+    [SerializeField]
+    Transform m_IngredientSocketTransform;
 
     // DOC START HERE
     public override void OnNetworkSpawn()
@@ -55,15 +60,22 @@ public class ServerPlayerMove : NetworkBehaviour
             pickUpObjectRigidbody.isKinematic = true;
             pickUpObjectRigidbody.interpolation = RigidbodyInterpolation.None;
             objectToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
-            objectToPickup.transform.localPosition = m_LocalHeldPosition;
             objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
             isObjectPickedUp.Value = true;
             m_PickedUpObject = objectToPickup;
+            var positionConstraint = objectToPickup.GetComponent<PositionConstraint>();
+            positionConstraint.AddSource(new ConstraintSource()
+            {
+                sourceTransform = m_IngredientSocketTransform,
+                weight = 1
+            });
+            positionConstraint.constraintActive = true;
         }
     }
 
     void IngredientDespawned()
     {
+        DropIngredient(m_PickedUpObject.gameObject);
         m_PickedUpObject = null;
         isObjectPickedUp.Value = false;
     }
@@ -79,10 +91,19 @@ public class ServerPlayerMove : NetworkBehaviour
             pickedUpObjectRigidbody.isKinematic = false;
             pickedUpObjectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
+            DropIngredient(m_PickedUpObject.gameObject);
             m_PickedUpObject = null;
         }
 
         isObjectPickedUp.Value = false;
+    }
+
+    void DropIngredient(GameObject ingredientToDrop)
+    {
+        var positionConstraint = ingredientToDrop.GetComponent<PositionConstraint>();
+        positionConstraint.RemoveSource(0);
+        positionConstraint.constraintActive = false;
+        GetComponent<ThirdPersonController>().Holding = false;
     }
     // DOC END HERE
 }
