@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.62097013, g: 0.5374908, b: 0.9638476, a: 1}
+  m_IndirectSpecularColor: {r: 0.21890283, g: 0.16790575, b: 0.67034173, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -184,6 +184,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8268979759230423690, guid: a6b33b41508134c09957e076f4d53415, type: 3}
       propertyPath: CurrentIngredientType.m_InternalValue
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979759230423690, guid: a6b33b41508134c09957e076f4d53415, type: 3}
+      propertyPath: currentIngredientType.m_InternalValue
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8321201880322001125, guid: a6b33b41508134c09957e076f4d53415, type: 3}
@@ -620,6 +624,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8268979759230423690, guid: a6b33b41508134c09957e076f4d53415, type: 3}
       propertyPath: CurrentIngredientType.m_InternalValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979759230423690, guid: a6b33b41508134c09957e076f4d53415, type: 3}
+      propertyPath: currentIngredientType.m_InternalValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8321201880322001125, guid: a6b33b41508134c09957e076f4d53415, type: 3}
@@ -1246,6 +1254,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8268979759230423690, guid: a6b33b41508134c09957e076f4d53415, type: 3}
       propertyPath: CurrentIngredientType.m_InternalValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979759230423690, guid: a6b33b41508134c09957e076f4d53415, type: 3}
+      propertyPath: currentIngredientType.m_InternalValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8321201880322001125, guid: a6b33b41508134c09957e076f4d53415, type: 3}
@@ -1928,6 +1940,10 @@ PrefabInstance:
       propertyPath: m_StartingIngredientType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2422379464697062703, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
+      propertyPath: currentIngredientType.m_InternalValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2560790651037395570, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2634250759
@@ -1938,6 +1954,10 @@ PrefabInstance:
       objectReference: {fileID: 1299635455}
     - target: {fileID: 2695509083640791865, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
       propertyPath: m_StartingIngredientType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2695509083640791865, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
+      propertyPath: currentIngredientType.m_InternalValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3270690903589593812, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
