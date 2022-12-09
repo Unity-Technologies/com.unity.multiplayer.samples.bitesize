@@ -21,6 +21,8 @@
 - UI Art (#69)
 - Readme added (#76)
 - Upgrade to Netcode for GameObjects v1.2.0 & cleaned up in-scene NetworkVariables (#78)
+- Ingredient spawn position offset (#81)
+- In-game UI backgrounds (#82)
 
 ### 2DSpaceShooter
 
