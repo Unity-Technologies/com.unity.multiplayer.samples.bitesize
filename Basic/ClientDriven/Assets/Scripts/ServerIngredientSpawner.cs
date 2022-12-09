@@ -52,7 +52,8 @@ public class ServerIngredientSpawner : NetworkBehaviour
             foreach (var spawnPoint in m_SpawnPoints)
             {
                 var newIngredientObject = Instantiate(m_IngredientPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-                newIngredientObject.transform.position = spawnPoint.transform.position;
+                newIngredientObject.transform.position = spawnPoint.transform.position +
+                    new Vector3(UnityEngine.Random.Range(-0.25f, 0.25f), 0, UnityEngine.Random.Range(-0.25f, 0.25f));
                 var ingredient = newIngredientObject.GetComponent<ServerIngredient>();
                 ingredient.NetworkObject.Spawn();
                 ingredient.currentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
