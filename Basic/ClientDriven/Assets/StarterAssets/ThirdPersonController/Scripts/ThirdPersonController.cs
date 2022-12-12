@@ -74,6 +74,10 @@ namespace StarterAssets
 
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
+        
+        // MTT CHANGE START (A bool for whether or not the player is holding an orb)       
+        public bool Holding = false;
+        // MTT CHANGE END
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -97,6 +101,9 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
+        // MTT CHANGE START (Creating an anim ID for the holding bool)
+        private int _animIDHolding;
+        // METT CHANGE END
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -159,6 +166,9 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            // MTT CHANGE START (Checking on update to set animations for whether or not the player is holding an orb)
+            Pickup();
+            // MTT CHANGE END
         }
 
         private void LateUpdate()
@@ -173,6 +183,9 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            // MTT CHANGE START (Setting the holding anim ID)
+            _animIDHolding = Animator.StringToHash("Holding");
+            // MTT CHANGE END
         }
 
         private void GroundedCheck()
@@ -347,6 +360,22 @@ namespace StarterAssets
                 _verticalVelocity += Gravity * Time.deltaTime;
             }
         }
+        
+        
+        // MTT CHANGE START (A method to handle the logic for toggling the holding animation)
+        private void Pickup()
+        {
+            if (Holding)
+            {
+                _animator.SetBool(_animIDHolding, true);
+            }
+
+            else
+            {
+                _animator.SetBool(_animIDHolding, false);
+            }
+        }
+        // MTT CHANGE END
 
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
