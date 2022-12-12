@@ -30,6 +30,7 @@
 - UI Pass using UI Toolkit (#55)
 - Uniformize gitignore files (#65)
 - 2DSpaceShooter & Invaders 2021.3.15f1 LTS update & Readmes (#77)
+- Updating Invaders and 2DSpaceShooter to Netcode for GameObjects v1.2.0 (#84)
 
 ### Invaders
 
@@ -40,6 +41,7 @@
 #### Changed
 - Updated to Unity 2021.3.15f1 LTS
 - 2DSpaceShooter & Invaders 2021.3.15f1 LTS update & Readmes (#77)
+- Updating Invaders and 2DSpaceShooter to Netcode for GameObjects v1.2.0 (#84)
 
 ## [1.0.0] - 2021-10-20
 
