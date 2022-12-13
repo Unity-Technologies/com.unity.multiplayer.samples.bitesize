@@ -10,9 +10,6 @@ using UnityEngine;
 [DefaultExecutionOrder(0)] // before client component
 public class ServerPlayerMove : NetworkBehaviour
 {
-    [SerializeField]
-    ClientPlayerMove m_ClientPlayerMove;
-
     public NetworkVariable<bool> isObjectPickedUp = new NetworkVariable<bool>();
     
     NetworkObject m_PickedUpObject;
@@ -23,7 +20,6 @@ public class ServerPlayerMove : NetworkBehaviour
     // DOC START HERE
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
         if (!IsServer)
         {
             enabled = false;
@@ -31,6 +27,8 @@ public class ServerPlayerMove : NetworkBehaviour
         }
 
         OnServerSpawnPlayer();
+        
+        base.OnNetworkSpawn();
     }
 
     void OnServerSpawnPlayer()
@@ -38,9 +36,7 @@ public class ServerPlayerMove : NetworkBehaviour
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
-        // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
-        m_ClientPlayerMove.SetSpawnClientRpc(spawnPosition, 
-            new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
+        transform.position = spawnPosition;
     }
 
     [ServerRpc]

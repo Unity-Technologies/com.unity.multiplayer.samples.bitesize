@@ -45,6 +45,7 @@ public class ClientPlayerMove : NetworkBehaviour
         // ghost clients.
         m_ThirdPersonController.enabled = false;
         m_CapsuleCollider.enabled = false;
+        m_CharacterController.enabled = false;
     }
 
     public override void OnNetworkSpawn()
@@ -63,6 +64,7 @@ public class ClientPlayerMove : NetworkBehaviour
         // player input is only enabled on owning players
         m_PlayerInput.enabled = true;
         m_ThirdPersonController.enabled = true;
+        m_CharacterController.enabled = true;
 
         var cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         cinemachineVirtualCamera.Follow = m_CameraFollow;
@@ -98,14 +100,5 @@ public class ClientPlayerMove : NetworkBehaviour
                 }
             }
         }
-    }
-
-    [ClientRpc]
-    public void SetSpawnClientRpc(Vector3 position, ClientRpcParams clientRpcParams = default)
-    {
-        m_CharacterController.enabled = false;
-        transform.position = position;
-        m_CharacterController.enabled = true;
-        gameObject.SetActive(true);
     }
 }
