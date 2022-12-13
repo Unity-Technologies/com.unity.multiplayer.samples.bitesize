@@ -2,7 +2,7 @@
 
 ## [unreleased] - yyyy-mm-dd
 
-## [1.1.0] - 2022-12-09
+## [1.1.0] - 2022-12-13
 
 ### Client Driven
 
