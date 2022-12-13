@@ -1,9 +1,10 @@
 using Unity.Netcode;
-using Unity.Netcode.Samples;
 
 public class ServerScoreReplicator : NetworkBehaviour
 {
-    private NetworkVariable<int> m_ReplicatedScore = new NetworkVariable<int>();
+    NetworkVariable<int> m_ReplicatedScore = new NetworkVariable<int>();
+
+    public NetworkVariable<int> ReplicatedScore => m_ReplicatedScore; 
 
     public override void OnNetworkSpawn()
     {

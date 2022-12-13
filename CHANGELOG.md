@@ -1,5 +1,49 @@
 # Change log
 
+## [unreleased] - yyyy-mm-dd
+
+## [1.1.0] - 2022-12-13
+
+### Client Driven
+
+#### Changed
+- Changed connection UI to use UI buttons and events instead of OnGUI [MTT-4201] (#60)
+- ThirdPersonController starter assets added (#62)
+- Uniformize gitignore files (#65)
+- Art Pass (#68)
+- Anti Aliasing (#72)
+- Third Person Character Controller integration with custom IP UI (#66) The sample has been refactored to feature a PlayerPrefab inside NetworkManager that is a networked variant of a prefab from [Unity's Starter Assets](https://assetstore.unity.com/packages/essentials/starter-assets-third-person-character-controller-196526). Other improvements include:
+  - Input polling via the new Input System
+  - Connection UI utilizes UI Toolkit
+  - Updated to Unity 2021.3.15f1 LTS
+- Change URP grading mode to HDR (#73)
+- Player Colors (#75)
+- UI Art (#69)
+- Readme added (#76)
+- Upgrade to Netcode for GameObjects v1.2.0 & cleaned up in-scene NetworkVariables (#78)
+- Ingredient spawn position offset (#81)
+- In-game UI backgrounds (#82)
+- Initial position sync fix on owning clients (#85)
+
+### 2DSpaceShooter
+
+#### Changed
+- UI Pass using UI Toolkit (#55)
+- Uniformize gitignore files (#65)
+- 2DSpaceShooter & Invaders 2021.3.15f1 LTS update & Readmes (#77)
+- Updating Invaders and 2DSpaceShooter to Netcode for GameObjects v1.2.0 (#84)
+
+### Invaders
+
+### Fixed
+- Fixing NotServerException [MTT-4029] (#59)
+- Despawning enemies instead of destroying them (#74)
+
+#### Changed
+- Updated to Unity 2021.3.15f1 LTS
+- 2DSpaceShooter & Invaders 2021.3.15f1 LTS update & Readmes (#77)
+- Updating Invaders and 2DSpaceShooter to Netcode for GameObjects v1.2.0 (#84)
+
 ## [1.0.0] - 2021-10-20
 
 ### Client Driven

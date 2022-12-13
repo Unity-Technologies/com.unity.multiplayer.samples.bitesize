@@ -452,7 +452,7 @@ public class InvadersGame : NetworkBehaviour
     [ClientRpc]
     public void BroadcastGameOverClientRpc(GameOverReason reason)
     {
-        var localPlayerObject = NetworkManager.Singleton.ConnectedClients[NetworkManager.Singleton.LocalClientId].PlayerObject;
+        var localPlayerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
         Assert.IsNotNull(localPlayerObject);
 
         if (localPlayerObject.TryGetComponent<PlayerControl>(out var playerControl))

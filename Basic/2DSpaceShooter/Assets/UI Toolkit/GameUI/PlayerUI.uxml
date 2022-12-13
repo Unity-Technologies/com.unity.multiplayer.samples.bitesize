@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/2DSpaceShooterUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#2DSpaceShooterUIStyleSheet" />
+    <ui:VisualElement name="PlayerUIWrapper" style="align-items: center; width: 100px; height: 299px; justify-content: space-around; left: -50px; top: -106px;">
+        <ui:Label text="PLAYER #" display-tooltip-when-elided="true" name="PlayerName" style="color: rgb(255, 255, 255); -unity-text-outline-width: 0.5px; -unity-text-outline-color: rgb(0, 0, 0); align-items: auto; -unity-text-align: middle-center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; font-size: 20px;" />
+        <ui:VisualElement name="ResourceBarWrapper" style="justify-content: center; flex-direction: column; width: 503px; height: 168px; align-items: stretch; left: auto; top: auto; position: relative; flex-grow: 0; scale: 0.25 0.25; flex-wrap: nowrap; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+            <ui:ProgressBar name="HealthBar" style="height: 20px;" />
+            <ui:ProgressBar name="EnergyBar" style="height: 20px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
