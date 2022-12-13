@@ -64,6 +64,9 @@ public class ClientPlayerMove : NetworkBehaviour
         // player input is only enabled on owning players
         m_PlayerInput.enabled = true;
         m_ThirdPersonController.enabled = true;
+        
+        // see the note inside ServerPlayerMove why this step is also necessary for synchronizing initial player
+        // position on owning clients
         m_CharacterController.enabled = true;
 
         var cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();

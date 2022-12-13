@@ -37,6 +37,15 @@ public class ServerPlayerMove : NetworkBehaviour
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
         transform.position = spawnPosition;
+        
+        // A note specific to owner authority:
+        // Side Note:  Specific to Owner Authoritative
+        // Setting the position works as and can be set in OnNetworkSpawn server-side unless there is a
+        // CharacterController that is enabled by default on the authoritative side. With CharacterController, it
+        // needs to be disabled by default (i.e. in Awake), the server applies the position (OnNetworkSpawn), and then
+        // the owner of the NetworkObject should enable CharacterController during OnNetworkSpawn. Otherwise,
+        // CharacterController will initialize itself with the initial position (before synchronization) and updates the
+        // transform after synchronization with the initial position, thus overwriting the synchronized position.
     }
 
     [ServerRpc]
