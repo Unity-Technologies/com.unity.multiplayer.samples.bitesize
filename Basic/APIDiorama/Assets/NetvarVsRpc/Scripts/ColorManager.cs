@@ -65,7 +65,7 @@ namespace Unity.Netcode.Samples.APIDiorama
             OnServerChangeColorServerRpc();
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         void OnServerChangeColorServerRpc()
         {
             Color32 newColor = GetRandomColor();
