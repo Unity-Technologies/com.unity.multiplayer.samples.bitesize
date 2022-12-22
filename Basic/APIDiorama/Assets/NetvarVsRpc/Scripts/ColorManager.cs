@@ -50,13 +50,9 @@ namespace Unity.Netcode.Samples.APIDiorama
                 return;
             }
 
-            bool playerIsCloseEnough = true; //todo: implement behaviour
-            if (playerIsCloseEnough)
+            if (Input.GetKeyUp(KeyCode.E))
             {
-                if (Input.GetKeyUp(KeyCode.E))
-                {
-                    OnClientRequestColorChange();
-                }
+                OnClientRequestColorChange();
             }
         }
 

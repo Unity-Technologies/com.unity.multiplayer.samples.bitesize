@@ -22,16 +22,16 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void Update()
         {
-            objectToToggle.SetActive(PlayerIsCloseEnough());
+            objectToToggle.SetActive(LocalPlayerIsCloseEnough(m_Transform.position, m_ActivationRadius));
         }
 
-        bool PlayerIsCloseEnough()
+        internal static bool LocalPlayerIsCloseEnough(Vector3 point, float range)
         {
             if (!PlayerManager.s_LocalPlayer)
             {
                 return false;
             }
-            return Vector3.Distance(m_Transform.position, PlayerManager.s_LocalPlayer.transform.position) < m_ActivationRadius;
+            return Vector3.Distance(point, PlayerManager.s_LocalPlayer.transform.position) < range;
         }
     }
 }
