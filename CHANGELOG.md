@@ -2,6 +2,11 @@
 
 ## [unreleased] - yyyy-mm-dd
 
+### 2DSpaceShooter
+
+### Fixed
+- Removing warning when spawning powerups (#90). Fixed the order in which powerups were spawned and when their NetworkVariable value was initialized. Now they are spawned beforehand.
+
 ## [1.1.0] - 2022-12-13
 
 ### Client Driven
