@@ -64,7 +64,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         [ServerRpc(RequireOwnership = false)]
         void OnServerChangeColorServerRpc()
         {
-            Color32 newColor = GetRandomColor();
+            Color32 newColor = DioramaUtilities.GetRandomColor();
             if (m_UseNetworkVariableForColor)
             {
                 m_NetworkedColor.Value = newColor;
@@ -84,6 +84,5 @@ namespace Unity.Netcode.Samples.APIDiorama
             m_Material.color = newColor;
         }
 
-        Color32 GetRandomColor() => new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
     }
 }
