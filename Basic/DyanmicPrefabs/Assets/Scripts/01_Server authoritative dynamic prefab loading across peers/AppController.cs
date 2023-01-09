@@ -31,7 +31,7 @@ namespace Game
             base.OnDestroy();
         }
         
-        void OnConnectionStatusReceived(DisconnectReason status, FastBufferReader reader)
+        void OnConnectionStatusReceived(DisconnectReason status)
         {
             switch (status)
             {

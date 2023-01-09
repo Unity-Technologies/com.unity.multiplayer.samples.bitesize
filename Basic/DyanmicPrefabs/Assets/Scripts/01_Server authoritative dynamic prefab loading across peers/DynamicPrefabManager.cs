@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
@@ -41,7 +40,7 @@ namespace Game
         Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> m_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>();
         List<AddressableGUID> m_DynamicPrefabGUIDs = new List<AddressableGUID>(); //cached list to avoid GC
 
-        public event Action<DisconnectReason, FastBufferReader> OnConnectionStatusReceived;
+        public event Action<DisconnectReason> OnConnectionStatusReceived;
 
         string m_ConnectAddress;
         ushort m_Port;
@@ -85,7 +84,22 @@ namespace Game
 
             m_NetworkManager.NetworkConfig.ConnectionData = payloadBytes;
             m_NetworkManager.StartClient();
-            m_NetworkManager.CustomMessagingManager.RegisterNamedMessageHandler(nameof(ReceiveServerToClientSetDisconnectReason_CustomMessage), ReceiveServerToClientSetDisconnectReason_CustomMessage);
+            m_NetworkManager.OnClientDisconnectCallback += ClientDisconnected;
+        }
+
+        async void ClientDisconnected(ulong client)
+        {
+            m_NetworkManager.OnClientDisconnectCallback -= ClientDisconnected;
+
+            if (string.IsNullOrEmpty(m_NetworkManager.DisconnectReason))
+            {
+                return;
+            }
+
+            var rejectionPayload = JsonUtility.FromJson<DisconnectionPayload>(m_NetworkManager.DisconnectReason);
+            var addressableGuidCollection = new AddressableGUIDCollection() { GUIDs = rejectionPayload.guids.Select(item => new AddressableGUID() { Value = item }).ToArray() };
+
+            ReceiveDisconnectReason(rejectionPayload.reason, addressableGuidCollection);
         }
 
         public void StartHost(string connectAddress, ushort port)
@@ -106,10 +120,8 @@ namespace Game
             base.OnDestroy();
         }
 
-        async void ReceiveServerToClientSetDisconnectReason_CustomMessage(ulong clientID, FastBufferReader reader)
+        async void ReceiveDisconnectReason(DisconnectReason status, AddressableGUIDCollection addressableGuidCollection)
         {
-            reader.ReadValueSafe(out DisconnectReason status);
-
             switch (status)
             {
                 case DisconnectReason.Undefined:
@@ -120,8 +132,7 @@ namespace Game
                 {
                     m_NetworkManager.Shutdown();
                     Debug.Log("Client needs to preload");
-                    reader.ReadValueSafe(out AddressableGUIDCollection addressableGUIDCollection);
-                    await LoadDynamicPrefabs(addressableGUIDCollection);
+                    await LoadDynamicPrefabs(addressableGuidCollection);
                     Debug.Log("Restarting client");
                     StartClient(m_ConnectAddress, m_Port);
                 }
@@ -130,24 +141,7 @@ namespace Game
                     throw new ArgumentOutOfRangeException();
             }
 
-            OnConnectionStatusReceived?.Invoke(status, reader);
-        }
-        
-        /// <summary>
-        /// Sends a DisconnectReason to the indicated client. This should only be done on the server, prior to disconnecting the client.
-        /// </summary>
-        /// <param name="clientID"> id of the client to send to </param>
-        /// <param name="disconnectReason"> The reason for the upcoming disconnect.</param>
-        /// <param name="addressableGUIDCollection"></param>
-        void SendServerToClientDisconnectReason(ulong clientID, DisconnectReason disconnectReason, AddressableGUIDCollection addressableGUIDCollection)
-        {
-            int guidCollectionSize = addressableGUIDCollection.GetSizeInBytes();
-            
-            var writer = new FastBufferWriter(sizeof(DisconnectReason) + guidCollectionSize, Allocator.Temp);
-            writer.WriteValueSafe(disconnectReason);
-            writer.WriteValueSafe(addressableGUIDCollection);
-            
-            m_NetworkManager.CustomMessagingManager.SendNamedMessage(nameof(ReceiveServerToClientSetDisconnectReason_CustomMessage), clientID, writer);
+            OnConnectionStatusReceived?.Invoke(status);
         }
         
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
@@ -196,9 +190,29 @@ namespace Game
                 
                 return;
             }
-
-            StartCoroutine(WaitToDenyApproval(clientId, DisconnectReason.ClientNeedsToPreload, m_LoadedDynamicPrefabResourceHandles.Keys));
             
+            // In order for clients to not just get disconnected with no feedback, the server needs to tell the client
+            // why it disconnected it. This could happen after an auth check on a service or because of gameplay
+            // reasons (server full, wrong build version, etc).
+            // The server can do so via the DisconnectReason in the ConnectionApprovalResponse. The guids of the prefabs
+            // the client will need to load will be sent, such that the client loads the needed prefabs, and reconnects.
+            
+            // A note: DisconnectReason will not be written to if the string is too large in size. This should be used
+            // only to tell the client "why" it failed -- the client should instead use services like UGS to fetch the
+            // relevant data it needs to fetch & download.
+            
+            m_DynamicPrefabGUIDs.Clear();
+            m_DynamicPrefabGUIDs.AddRange(m_LoadedDynamicPrefabResourceHandles.Keys);
+            
+            var rejectionPayload = new DisconnectionPayload()
+            {
+                reason = DisconnectReason.ClientNeedsToPreload,
+                guids = m_DynamicPrefabGUIDs.Select(item => item.ToString()).ToList()
+            };
+
+            response.Reason = JsonUtility.ToJson(rejectionPayload);
+            ImmediateDeny();
+
             void Approve()
             {
                 response.Approved = true;
@@ -209,22 +223,6 @@ namespace Game
             {
                 response.Approved = false;
                 response.CreatePlayerObject = false;
-            }
-            
-            // In order for clients to not just get disconnected with no feedback, the server needs to tell the client why it disconnected it.
-            // This could happen after an auth check on a service or because of gameplay reasons (server full, wrong build version, etc)
-            // Since network objects haven't synced yet (still in the approval process), we need to send a custom message to clients, wait for
-            // UTP to update a frame and flush that message, then give our response to NetworkManager's connection approval process, with a denied approval.
-            IEnumerator WaitToDenyApproval(ulong clientID, DisconnectReason status, ICollection<AddressableGUID> addressableGUIDs)
-            {
-                response.Pending = true; // give some time for server to send connection status message to clients
-                response.Approved = false;
-                
-                m_DynamicPrefabGUIDs.Clear();
-                m_DynamicPrefabGUIDs.AddRange(m_LoadedDynamicPrefabResourceHandles.Keys);
-                SendServerToClientDisconnectReason(clientID, status, new AddressableGUIDCollection(){GUIDs = m_DynamicPrefabGUIDs.ToArray()});
-                yield return null; // wait a frame so UTP can flush it's messages on next update
-                response.Pending = false; // connection approval process can be finished.
             }
         }
         
