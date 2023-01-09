@@ -1,25 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2524440291040570054
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 641211c85919e4aceb79a0d364004d75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Completed:
-    m_PersistentCalls:
-      m_Calls: []
-  Invalidated:
-    m_PersistentCalls:
-      m_Calls: []
-  isTesting: 0
-  m_RequiredPlayModeState: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,42 +30,6 @@ MonoBehaviour:
       m_MaskingSettings:
         m_MaskingEnabled: 1
         m_UnmaskedViews:
-        - m_SelectorType: 0
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls:
-          - m_SelectorMode: 5
-            m_SelectorMatchType: 0
-            m_GUIContent:
-              m_Text: 
-              m_Image: {fileID: 0}
-              m_Tooltip: 
-            m_ControlName: ToolbarPlayModePlayButton
-            m_PropertyPath: 
-            m_TargetType:
-              m_TypeName: 
-            m_GUIStyleName: 
-            m_ObjectReference:
-              m_SceneObjectReference:
-                m_SceneGuid: 
-                m_GameObjectGuid: 
-                m_SerializedComponentType:
-                  m_TypeName: 
-                m_ComponentIndex: 0
-                m_AssetObject: {fileID: 0}
-                m_Prefab: {fileID: 0}
-              m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: unity-editor-toolbar__button-strip-element--left
-            m_VisualElementName: Play
-            m_VisualElementTypeName: UnityEditor.Toolbars.EditorToolbarToggle
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
@@ -107,12 +51,13 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Follow the instructions in the game''s  UI to navigate the
-          scene and learn more about NetworkVariables.
+        m_Untranslated: 'In this scene, every player will say a random sentence every
+          few seconds. All other players will receive the sentence and will see who
+          has said it.
 
 
-          Once you finish
-          trying the game out, exit play mode to have a look at the scene''s setup'
+          All this is possible thanks to a network functionality
+          called "RPC".'
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
@@ -129,20 +74,15 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Exit play mode
+        m_Untranslated: 
       Text:
-        m_Untranslated: When you're done, select <b>Play</b> again to exit <b>Play
-          Mode</b>
+        m_Untranslated: When you're done, select <b>Next</b> to continue
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
-        m_Items:
-        - Type:
-            m_TypeName: Unity.Tutorials.Core.Editor.PlayModeStateCriterion, Unity.Tutorials.Core.Editor,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: -2524440291040570054}
+        m_Items: []
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -172,7 +112,7 @@ MonoBehaviour:
   DoneButton:
     m_Untranslated: Done
   m_CompletedSound: {fileID: 0}
-  m_AutoAdvance: 1
+  m_AutoAdvance: 0
   Showing:
     m_PersistentCalls:
       m_Calls: []

@@ -70,6 +70,11 @@ public class TutorialCallbacks : ScriptableObject
                                         && NetworkManager.Singleton.IsClient;
     }
 
+    public bool IsPlayerSelectedInRPCScene()
+    {
+        return Selection.activeObject && Selection.activeObject.name == "Player(Clone)";
+    }
+
     public void OpenURL(string url)
     {
         TutorialEditorUtils.OpenUrl(url);

@@ -87,24 +87,22 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Now that you know how to synchronize data across the network
-          using NetworkVariables, you should test it in practice.
+        m_Untranslated: 'Now that you know how to synchronize events across the network
+          using RPCs, you should test it in practice.
 
 
-          You
-          can do so by creating a build of this project or a <a href="https://docs-multiplayer.unity3d.com/netcode/current/tutorials/testing/testing_locally/index.html">ParrelSync
-          clone</a>, and run it as a Host. Be sure to wait until the color, health
-          and username of the objects change before connecting another client.
+          You can do so by
+          creating a build of this project or a <a href="https://docs-multiplayer.unity3d.com/netcode/current/tutorials/testing/testing_locally/index.html">ParrelSync
+          clone</a>, and run it as a Host
 
 
-          Once
-          the data changed at least once, enter PlayMode and connect to your build
-          as a Client from the editor to see how the objects react to subseuent data
-          updates.
+          Enter PlayMode and connect
+          to your build as a Client from the editor to see how incoming messages
+          pop up on top of each player.
 
 
-          Once you''re done, press <b>Done</b> to complete this
-          tutorial.'
+          Once you''re done, press <b>Done</b>
+          to complete this tutorial.'
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}

@@ -21,8 +21,7 @@ MonoBehaviour:
   m_Title:
     m_Untranslated: Congratulations!
   m_Description:
-    m_Untranslated: Now that you know about NetworkVariables, how would you like
-      to continue?
+    m_Untranslated: Now that you know about RPCs, how would you like to continue?
   m_Buttons:
   - Text:
       m_Untranslated: I'll explore on my own
@@ -51,19 +50,6 @@ MonoBehaviour:
     OnClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000}
-          m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
-            Unity.Tutorials.Core.Editor
-          m_MethodName: CloseCurrentModalDialog
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
         - m_Target: {fileID: 11400000, guid: a801694c599b91149aecf05212674c82, type: 2}
           m_TargetAssemblyTypeName: TutorialCallbacks, Assembly-CSharp-Editor
           m_MethodName: OpenURL
@@ -83,19 +69,6 @@ MonoBehaviour:
     OnClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000}
-          m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
-            Unity.Tutorials.Core.Editor
-          m_MethodName: CloseCurrentModalDialog
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 1
         - m_Target: {fileID: 11400000, guid: a801694c599b91149aecf05212674c82, type: 2}
           m_TargetAssemblyTypeName: TutorialCallbacks, Assembly-CSharp-Editor
           m_MethodName: OpenURL

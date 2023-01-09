@@ -50,11 +50,12 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "You can understand more about the syntax of NetworkVariables
-          by having a look at the CharacterManager. \n\nThe script also includes
-          code to manage common use cases such as initialization, so be sure to use
-          it as a reference when architecturing your own code.\n\nOnce you're done,
-          press <b>Next</b> to continue"
+        m_Untranslated: "You can understand more about the syntax of RPCs by having
+          a look at the <b>ChatManager</b>. \n\nThe script also includes code to
+          manage common use cases such as performing operations on the data sent
+          by the clients (I.E: filtering out bad words), so be sure to use it as
+          a reference when architecturing your own code.\n\nOnce you're done, press
+          <b>Next</b> to continue."
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
@@ -123,7 +124,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Assets/UseCaseSamples/NetworkVariables/Scripts/CharacterManager.cs
+          m_StringArgument: Assets/UseCaseSamples/RPCs/Scripts/ChatManager.cs
           m_BoolArgument: 0
         m_CallState: 1
   Shown:

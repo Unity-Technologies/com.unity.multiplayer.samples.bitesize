@@ -1,5 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4231172243666121202
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7231e8df50e16c74c979c4a2affab91b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Completed:
+    m_PersistentCalls:
+      m_Calls: []
+  Invalidated:
+    m_PersistentCalls:
+      m_Calls: []
+  isTesting: 0
+  m_Callback:
+    _target: {fileID: 11400000, guid: a801694c599b91149aecf05212674c82, type: 2}
+    _methodName: IsPlayerSelectedInRPCScene
+    _args: []
+    _dynamic: 0
+    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
+  m_AutoCompleteCallback:
+    _target: {fileID: 0}
+    _methodName: 
+    _args: []
+    _dynamic: 0
+    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,7 +48,7 @@ MonoBehaviour:
   m_Name: 25-InspectCube
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cube
+    m_Untranslated: Inspect the Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -45,7 +80,7 @@ MonoBehaviour:
           - m_SelectorMode: 0
             m_SelectorMatchType: 1
             m_GUIContent:
-              m_Text: ColoredCube
+              m_Text: Player(Clone)
               m_Image: {fileID: 0}
               m_Tooltip: 
             m_ControlName: 
@@ -75,8 +110,12 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The data of some of the objects of this scene is synchronized
-          over the network. \n\nSelect the ColoredCube to see how it works."
+        m_Untranslated: 'The Players send the messages, the server reviews them filtering
+          out any kind of bad word in them, and sends them back to all the players
+          connected.
+
+
+          Select the Player to see how it works.'
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
@@ -93,7 +132,7 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Select the ColoredCube
+        m_Untranslated: Select the Player
       Text:
         m_Untranslated: 
       m_Tutorial: {fileID: 0}
@@ -103,9 +142,9 @@ MonoBehaviour:
       m_Criteria:
         m_Items:
         - Type:
-            m_TypeName: Unity.Tutorials.Core.Editor.RequiredSelectionCriterion, Unity.Tutorials.Core.Editor,
+            m_TypeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion, Unity.Tutorials.Core.Editor,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: 4722472266157362047}
+          Criterion: {fileID: -4231172243666121202}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -168,33 +207,3 @@ MonoBehaviour:
       m_Calls: []
   m_NextButton: Next
   m_DoneButton: Done
---- !u!114 &4722472266157362047
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255ef86cb95f04796b8e3b3f5b23efe7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Completed:
-    m_PersistentCalls:
-      m_Calls: []
-  Invalidated:
-    m_PersistentCalls:
-      m_Calls: []
-  isTesting: 0
-  m_ObjectReferences:
-    m_Items:
-    - m_SceneObjectReference:
-        m_SceneGuid: 942590126152bde479e4100a4c3a7da8
-        m_GameObjectGuid: 27d82ecd-c197-47cf-bc9c-f7191fe95d24
-        m_SerializedComponentType:
-          m_TypeName: 
-        m_ComponentIndex: 0
-        m_AssetObject: {fileID: 0}
-        m_Prefab: {fileID: 0}
-      m_FutureObjectReference: {fileID: 0}

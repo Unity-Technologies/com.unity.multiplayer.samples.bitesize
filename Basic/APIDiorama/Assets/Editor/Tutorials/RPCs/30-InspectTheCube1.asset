@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 30-InspectTheCube1
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cube
+    m_Untranslated: Inspect Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -40,32 +40,18 @@ MonoBehaviour:
             m_Items: []
           m_MaskType: 0
           m_MaskSizeModifier: 0
-          m_UnmaskedControls:
-          - m_SelectorMode: 5
-            m_SelectorMatchType: 0
-            m_GUIContent:
-              m_Text: ColorManager
-              m_Image: {fileID: 0}
-              m_Tooltip: 
-            m_ControlName: 
-            m_PropertyPath: 
-            m_TargetType:
-              m_TypeName: 
-            m_GUIStyleName: 
-            m_ObjectReference:
-              m_SceneObjectReference:
-                m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
-                m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
-                m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.APIDiorama.ColorManager, com.unity.samples.api-diorama.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-                m_ComponentIndex: 0
-                m_AssetObject: {fileID: 0}
-                m_Prefab: {fileID: 0}
-              m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: 
-            m_VisualElementName: Color Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+          m_UnmaskedControls: []
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: 
+          m_EditorWindowType:
+            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -75,9 +61,21 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The ColorManager script manages the color of the cube. \n\nFor
-          this GameObject, the color is managed by a <b>NetworkVariable</b>. \n\nYou
-          can read more about NetworkVariables <a href=\"https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/index.html\">here</a>"
+        m_Untranslated: 'The <b>ChatManager</b> script manages how messages aree
+          sent and received.
+
+
+          Scroll the inspector until you see the ChatManager
+          script at the bottom, and use the slider to change the rate at which messages
+          are sent.
+
+
+          The messages are sent using <b>RPCs</b> , which can
+          be either sent from a Client to the Server, or from the Server to one or
+          more Clients.
+
+
+          You can read more about RPCs <a href="https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/messaging-system">here</a>.'
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
