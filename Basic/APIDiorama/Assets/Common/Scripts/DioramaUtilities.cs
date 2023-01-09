@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Unity.Netcode.Samples.APIDiorama
@@ -13,7 +16,20 @@ namespace Unity.Netcode.Samples.APIDiorama
         /// Generates a random color
         /// </summary>
         /// <returns>A random RGBA color</returns>
-        public static Color32 GetRandomColor() => new Color32((byte)Random.Range(0, 256), (byte)Random.Range(0, 256), (byte)Random.Range(0, 256), 255);
-        public static string GetRandomUsername() => s_Usernames[Random.Range(0, s_Usernames.Length)];
+        public static Color32 GetRandomColor() => new Color32((byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), 255);
+        public static string GetRandomUsername() => s_Usernames[UnityEngine.Random.Range(0, s_Usernames.Length)];
+
+        public static string FilterBadWords(string input)
+        {
+            Regex regex = new Regex(@"\b(\w+)\b", RegexOptions.Compiled);
+            var replacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                {"idiot", "*****"},
+                {"fuck", "@%!$"},
+                {"stupid", "$*%*!"}
+            };
+            return regex.Replace(input, match => replacements.ContainsKey(match.Groups[1].Value) ? replacements[match.Groups[1].Value]
+                                                                                              : match.Groups[1].Value);
+        }
     }
 }

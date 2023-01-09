@@ -15,14 +15,23 @@ namespace Unity.Netcode.Samples.APIDiorama
         [SerializeField] Vector2 m_Padding;
         [SerializeField] int m_MaxCharactersPerLine = 20;
         [SerializeField] string m_DefaultMessage;
+        [SerializeField] bool m_SetupOnStart;
 
         void Start()
         {
-            Setup(m_DefaultMessage);
+            if (m_SetupOnStart)
+            {
+                Setup(m_DefaultMessage);
+            }
         }
 
-        void Setup(string text)
+        /// <summary>
+        /// Shows some text in the bubble
+        /// </summary>
+        /// <param name="text"></param>
+        public void Setup(string text)
         {
+            gameObject.SetActive(true);
             m_MessageLabel.SetText(WordWrap(text, m_MaxCharactersPerLine));
             m_MessageLabel.ForceMeshUpdate();
             Vector2 textSize = m_MessageLabel.GetRenderedValues(false);
@@ -120,6 +129,11 @@ namespace Unity.Netcode.Samples.APIDiorama
 
             // Return length of text before whitespace
             return i + 1;
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

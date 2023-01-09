@@ -2173,6 +2173,10 @@ PrefabInstance:
       value: SpeechBubble
       objectReference: {fileID: 0}
     - target: {fileID: 5662706726876634699, guid: 772aad713d5048540849cf113a18e9b6, type: 3}
+      propertyPath: m_SetupOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662706726876634699, guid: 772aad713d5048540849cf113a18e9b6, type: 3}
       propertyPath: m_DefaultMessage
       value: My health and username are managed by a single NetworkVariable
       objectReference: {fileID: 0}
@@ -3309,7 +3313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 116228442
+  GlobalObjectIdHash: 3905549718
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -3609,3 +3613,4 @@ MonoBehaviour:
   m_MaxCharactersPerLine: 20
   m_DefaultMessage: My color is changed through a Network Variable, so it will be
     synchronized when a new client joins
+  m_SetupOnStart: 1
