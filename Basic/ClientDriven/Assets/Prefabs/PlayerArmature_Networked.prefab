@@ -201,10 +201,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c521a646e08a84279a7bcf9c775080a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ClientPlayerMove: {fileID: 5667156634780145037}
   isObjectPickedUp:
     m_InternalValue: 0
   m_LocalHeldPosition: {x: 0, y: 2.85, z: 0}
+--- !u!114 &1465562511556424027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116025501350672692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d35d5308cbb1fcd479dbf0c516db2aa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StartRecordingWhenEnabled: 0
+  m_RecordFrames: 1
+  m_ReplayOnNewDevices: 1
+  m_SimulateOriginalTimingOnReplay: 0
+  m_RecordStateEventsOnly: 0
+  m_CaptureMemoryDefaultSize: 2097152
+  m_CaptureMemoryMaxSize: 10485760
+  m_DevicePath: 
+  m_RecordButtonPath: <Keyboard>/r
+  m_PlayButtonPath: <Keyboard>/p
+  m_ChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5667156634780145037
 MonoBehaviour:
   m_ObjectHideFlags: 0
