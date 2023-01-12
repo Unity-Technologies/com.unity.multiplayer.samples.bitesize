@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3439633038736912635}
   - component: {fileID: 3439633038736912634}
   - component: {fileID: 2776227185612554462}
-  - component: {fileID: 6046305264893698362}
+  - component: {fileID: 9022549373121671846}
   m_Layer: 0
   m_Name: BootstrapPlayer
   m_TagString: Untagged
@@ -32,6 +32,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,6 +56,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -93,9 +95,17 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3439633038736912633}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3439633038736912634
@@ -140,8 +150,7 @@ MonoBehaviour:
   ScaleThreshold: 0
   InLocalSpace: 0
   Interpolate: 1
-  FixedSendsPerSecond: 30
---- !u!114 &6046305264893698362
+--- !u!114 &9022549373121671846
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,6 +159,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3439633038736912633}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aaab5fe31dc3423e89747f088d7bcaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 960b9ad25b4f2409eb27980212d0e996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

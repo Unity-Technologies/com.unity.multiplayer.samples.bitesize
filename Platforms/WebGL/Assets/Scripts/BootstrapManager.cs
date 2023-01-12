@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
@@ -17,7 +18,27 @@ namespace Unity.Netcode.Samples
     public class BootstrapManager : MonoBehaviour
     {
         const int k_MaxPlayers = 4;
+        const string k_DefaultRelayCode = "Not listening";
+        string m_HostRelayCode = k_DefaultRelayCode;
+        string m_ClientRelayCodeForJoin = "";
         async void CreateHostRelay()
+        {
+            var networkManager = await InitForRelay();
+
+            var utp = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
+            utp.UseWebSockets = true;
+
+            Allocation hostAllocation = await RelayService.Instance.CreateAllocationAsync(k_MaxPlayers, region: "northamerica-northeast1"); //null should select us-central automatically?
+            var joinCode = await RelayService.Instance.GetJoinCodeAsync(hostAllocation.AllocationId);
+            m_HostRelayCode = joinCode;
+            Debug.Log($"join code: {joinCode}, region: {hostAllocation.Region}");
+
+            utp.SetRelayServerData(new RelayServerData(hostAllocation, "wss")); // TODO edu here, what's the connection type for secure websocket
+
+            networkManager.StartHost();
+        }
+
+        static async Task<NetworkManager> InitForRelay()
         {
             Application.SetStackTraceLogType(LogType.Error, StackTraceLogType.Full);
             await UnityServices.InitializeAsync();
@@ -27,27 +48,31 @@ namespace Unity.Netcode.Samples
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
 
-            var networkManager = NetworkManager.Singleton;
+            return NetworkManager.Singleton;
+        }
+
+        async void ClientJoinAsync()
+        {
+            var networkManager = await InitForRelay();
 
             var utp = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
             utp.UseWebSockets = true;
-
-            Allocation hostAllocation = await RelayService.Instance.CreateAllocationAsync(k_MaxPlayers, region: "northamerica-northeast1"); //null should select us-central automatically?
-            var joinCode = await RelayService.Instance.GetJoinCodeAsync(hostAllocation.AllocationId);
-            Debug.Log($"join code: {joinCode}, region: {hostAllocation.Region}");
-
-            // utp.SetRelayServerData(new RelayServerData(hostAllocation, UnityTransport.RelayConnectionTypes.WSS)); // TODO edu here, what's the connection type for secure websocket
-            utp.SetRelayServerData(new RelayServerData(hostAllocation, "wss")); // TODO edu here, what's the connection type for secure websocket
-
-            networkManager.StartHost();
+            var joinedAllocation = await RelayService.Instance.JoinAllocationAsync(m_ClientRelayCodeForJoin);
+            utp.SetRelayServerData(new RelayServerData(joinedAllocation, "wss"));
+            networkManager.StartClient();
         }
         private void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10, 10, 300, 300));
 
+            GUILayout.Label("Relay join code:");
+            GUILayout.TextArea(m_HostRelayCode);
+
             var networkManager = NetworkManager.Singleton;
             if (!networkManager.IsClient && !networkManager.IsServer)
             {
+                m_ClientRelayCodeForJoin = GUILayout.TextField(m_ClientRelayCodeForJoin);
+
                 if (GUILayout.Button("Host"))
                 {
                     CreateHostRelay();
@@ -55,18 +80,16 @@ namespace Unity.Netcode.Samples
 
                 if (GUILayout.Button("Client"))
                 {
-                    var utp = NetworkManager.Singleton.NetworkConfig.NetworkTransport as UnityTransport;
-                    utp.UseWebSockets = true;
-                    NetworkManager.Singleton.StartClient();
+                    ClientJoinAsync();
                 }
 
-                if (GUILayout.Button("Server"))
-                {
-                    var utp = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
-                    utp.UseWebSockets = true;
-                    utp.UseEncryption = false;
-                    networkManager.StartServer();
-                }
+                // if (GUILayout.Button("Server"))
+                // {
+                //     var utp = networkManager.NetworkConfig.NetworkTransport as UnityTransport;
+                //     utp.UseWebSockets = true;
+                //     utp.UseEncryption = false;
+                //     networkManager.StartServer();
+                // }
             }
             else
             {
