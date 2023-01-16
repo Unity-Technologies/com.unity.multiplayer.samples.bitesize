@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS_MainMenu.uss?fileID=7433441132597879392&amp;guid=12fce4e1adf96c343aee6693e68ba2f6&amp;type=3#USS_MainMenu" />
+    <Style src="project://database/Assets/UI/USS_StyleSheet.uss?fileID=7433441132597879392&amp;guid=7e6bbc510a24f5d4c934e0953d561e01&amp;type=3#USS_StyleSheet" />
+    <Style src="project://database/Assets/UI/USS_Clients.uss?fileID=7433441132597879392&amp;guid=239f145be199f844fbf6e50d479855f7&amp;type=3#USS_Clients" />
+    <ui:VisualElement style="align-items: flex-end; justify-content: flex-end; flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="SceneControlsHolder" style="align-items: flex-end; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <ui:VisualElement name="LabelHolder" class="background" style="bottom: -10px;">
+                <ui:Label text="Scene Controls" display-tooltip-when-elided="true" name="Title" class="labelText" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ButtonHolder" class="background">
+                <ui:VisualElement name="Buttons" style="margin-top: 0; justify-content: space-between; margin-left: 0; margin-right: 0; margin-bottom: 0;">
+                    <ui:Button text="Reset Current Scene" name="ResetScene" focusable="false" class="button" />
+                    <ui:Button text="Return to Main Menu" name="MainMenu" focusable="false" class="button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="APIControlsHolder" style="align-items: flex-end; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <ui:VisualElement name="LabelHolder" class="background" style="bottom: -10px;">
+                <ui:Label text="API Calls" display-tooltip-when-elided="true" name="Title" class="labelText" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ButtonHolder" class="background">
+                <ui:VisualElement name="Buttons" style="margin-top: 0; justify-content: space-between; flex-grow: 0; margin-left: 0; margin-right: 0; margin-bottom: 0;">
+                    <ui:Button text="Load All Prefabs Async" name="LoadAsync" focusable="false" class="button" />
+                    <ui:Button text="Try Spawn Synchronously" name="SpawnSync" focusable="false" class="button" />
+                    <ui:Button text="Spawn using Visibility" name="SpawnInvisible" focusable="false" class="button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

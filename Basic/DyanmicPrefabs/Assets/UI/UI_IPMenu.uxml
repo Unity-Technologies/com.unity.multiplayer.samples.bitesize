@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS_Clients.uss?fileID=7433441132597879392&amp;guid=239f145be199f844fbf6e50d479855f7&amp;type=3#USS_Clients" />
+    <Style src="project://database/Assets/UI/USS_StyleSheet.uss?fileID=7433441132597879392&amp;guid=7e6bbc510a24f5d4c934e0953d561e01&amp;type=3#USS_StyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: center; align-items: center;">
+        <ui:VisualElement name="Background" class="background">
+            <ui:VisualElement name="MainMenuUIWrapper">
+                <ui:VisualElement name="ButtonsLayout">
+                    <ui:VisualElement name="InputFieldWrapper" style="padding-bottom: 15px; height: 186px;">
+                        <ui:Label text="IP Address" display-tooltip-when-elided="true" name="IPLabel" class="labelText" style="-unity-text-align: middle-center; padding-top: 5px;" />
+                        <ui:TextField picking-mode="Ignore" text="127.0.0.1" name="IPAddressField" focusable="true" is-delayed="true" password="false" class="button" style="flex-grow: 0;" />
+                        <ui:Label text="Port" display-tooltip-when-elided="true" name="PortLabel" class="labelText" style="-unity-text-align: middle-center; padding-top: 15px;" />
+                        <ui:TextField picking-mode="Ignore" text="9998" name="PortField" focusable="true" is-delayed="true" class="button" style="flex-grow: 0;" />
+                    </ui:VisualElement>
+                    <ui:Button text="Host (Client + Server)" display-tooltip-when-elided="true" name="HostButton" tabindex="1" focusable="false" class="button" style="flex-grow: 0;" />
+                    <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+                        <ui:Button text="Server" display-tooltip-when-elided="true" name="ServerButton" tabindex="3" focusable="false" class="button" style="flex-grow: 0; width: 50%; flex-shrink: 1; margin-right: 2px;" />
+                        <ui:Button text="Client" display-tooltip-when-elided="true" name="ClientButton" tabindex="2" focusable="false" class="button" style="flex-grow: 0; width: 50%; flex-shrink: 1; margin-left: 2px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

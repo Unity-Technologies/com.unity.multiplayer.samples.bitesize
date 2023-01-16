@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="Template_NetObj" src="project://database/Assets/UI/Template_NetObj.uxml?fileID=9197481963319205126&amp;guid=e61c0a6ba4a28444da358d17a074172f&amp;type=3#Template_NetObj" />
+    <Style src="project://database/Assets/UI/USS_Clients.uss?fileID=7433441132597879392&amp;guid=239f145be199f844fbf6e50d479855f7&amp;type=3#USS_Clients" />
+    <Style src="project://database/Assets/UI/USS_StyleSheet.uss?fileID=7433441132597879392&amp;guid=7e6bbc510a24f5d4c934e0953d561e01&amp;type=3#USS_StyleSheet" />
+    <ui:VisualElement name="Client" class="client" style="flex-shrink: 0; align-items: flex-start;">
+        <ui:VisualElement name="LabelBackground" class="background">
+            <ui:VisualElement name="ClientLabel" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+                <ui:Label text="CLIENT" display-tooltip-when-elided="true" name="Text" class="labelText" style="margin-right: 5px; font-size: 18px; margin-left: 0;" />
+                <ui:Label text="0" display-tooltip-when-elided="true" name="Number" binding-path="clientNumber" class="labelText" style="font-size: 18px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ArrayBackground" class="background" style="width: 368px; top: -10px;">
+            <ui:VisualElement name="PrefabsArray">
+                <ui:Instance template="Template_NetObj" name="0" />
+                <ui:Instance template="Template_NetObj" name="1" />
+                <ui:Instance template="Template_NetObj" name="2" />
+                <ui:Instance template="Template_NetObj" name="3" />
+                <ui:Instance template="Template_NetObj" name="4" />
+                <ui:Instance template="Template_NetObj" name="5" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
