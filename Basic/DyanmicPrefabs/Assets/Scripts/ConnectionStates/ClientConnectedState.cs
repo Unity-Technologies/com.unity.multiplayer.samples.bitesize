@@ -3,8 +3,8 @@ using UnityEngine;
 namespace Game
 {
     /// <summary>
-    /// Connection state corresponding to a connected client. When being disconnected, transitions to the
-    /// ClientReconnecting state if no reason is given, or to the Offline state.
+    /// Connection state corresponding to a connected client. When being disconnected, it transitions to the Offline
+    /// state.
     /// </summary>
     class ClientConnectedState : ConnectionState
     {
