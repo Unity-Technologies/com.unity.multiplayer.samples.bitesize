@@ -21,5 +21,10 @@ namespace Game
         {
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
         }
+
+        public override void OnClientDisconnect(ulong clientId)
+        {
+            m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
+        }
     }
 }

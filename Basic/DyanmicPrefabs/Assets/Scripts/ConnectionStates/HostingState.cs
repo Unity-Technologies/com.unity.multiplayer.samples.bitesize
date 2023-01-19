@@ -27,5 +27,18 @@ namespace Game
         {
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
         }
+
+        public override void OnClientConnected(ulong clientId)
+        {
+            Debug.Log($"Client {clientId} connected");
+        }
+        
+        public override void OnClientDisconnect(ulong clientId)
+        {
+            if (clientId == m_ConnectionManager.networkManager.LocalClientId)
+            {
+                m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
+            }
+        }
     }
 }
