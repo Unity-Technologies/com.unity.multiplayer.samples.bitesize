@@ -9,21 +9,17 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game
 {
-    //Assumption: addressables are loadable, ie when the client tries to load it - it will not fail.
+    //Assumption: Addressables are loadable, ie when the client tries to load it - it will not fail.
 
     //todo: improvement ideas:
-    // - a state machine for the client to handle the different states of trying to connect, beingrejected for not having prefabs, loading them, trying again etc.
-    // - it's possile to have more advanced logic that would for intance kick players that are consistently failing to load an addressable
+    // - it's possible to have more advanced logic that would for instance kick players that are consistently failing to load an addressable
     // - addressable guid list could be compressed before being sent
-    // - instead of addressable guids the peers could exchange a `short` index that would refer to addressables in some kind of a list stored in a scriptable object. That would reduce the amount of data that's being exchanged quite drastically.
+    // - instead of addressable guids the peers could exchange a `short` index that would refer to Addressables in some kind of a list stored in a scriptable object. That would reduce the amount of data that's being exchanged quite drastically.
     
-    //todo: split this large sample into several smaller scenes that show loading strategies in isolation
-
     //todo: if/when there is a sample that shows how to load addressable scenes
     //- we probably should add some logic to NetworkSceneManager that would allow us to use Addressables scene loading
     
-    //this sample does not cover the case of addressable usage when the client is loading custom visual prefabs and swapping out the rendering object for essentially non-dynami prefabs
-
+    //this sample does not cover the case of addressable usage when the client is loading custom visual prefabs and swapping out the rendering object for essentially non-dynamic prefabs
 
     public sealed class DynamicPrefabManager : NetworkBehaviour
     {
@@ -152,6 +148,11 @@ namespace Game
 
             response.Reason = JsonUtility.ToJson(rejectionPayload);
             ImmediateDeny();
+            
+            // A note: sending large strings through Netcode is not ideal -- you'd usually want to use REST services to
+            // accomplish this instead. UGS services like Lobby can be a useful alternative. Another route may be to
+            // set ConnectionApprovalResponse's Pending flag to true, and send a CustomMessage containing the array of 
+            // GUIDs to a client, which the client would load and reattempt a reconnection.
 
             void Approve()
             {
