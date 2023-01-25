@@ -69,5 +69,12 @@ namespace Unity.Netcode.Samples.APIDiorama
             yield return new WaitForSeconds(1);
             m_SpeechBubble.Hide();
         }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            m_SpeechBubble.Hide();
+            Destroy(m_SpeechBubble.gameObject);
+        }
     }
 }

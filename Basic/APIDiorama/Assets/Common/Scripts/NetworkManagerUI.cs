@@ -7,6 +7,7 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] Button m_ServerButton;
     [SerializeField] Button m_HostButton;
     [SerializeField] Button m_ClientButton;
+    [SerializeField] Button m_DisconnectButton;
     [SerializeField] Color32 m_HighlightedButtonColor;
     [SerializeField] Color32 m_DisabledButtonColor;
     Button[] m_Buttons;
@@ -16,36 +17,57 @@ public class NetworkManagerUI : MonoBehaviour
         m_ServerButton.onClick.AddListener(StartServer);
         m_HostButton.onClick.AddListener(StartHost);
         m_ClientButton.onClick.AddListener(StartClient);
+        m_DisconnectButton.onClick.AddListener(GoOffline);
         m_Buttons = new Button[] { m_ServerButton, m_HostButton, m_ClientButton };
+    }
+
+    void Start()
+    {
+        SetButtonStateAndColor(m_DisconnectButton, false, false);
     }
 
     void StartServer()
     {
         NetworkManager.Singleton.StartServer();
-        DisableAndHighlightButtons(m_ServerButton);
+        EnableAndHighlightButtons(m_ServerButton, false);
+        SetButtonStateAndColor(m_DisconnectButton, false, true);
     }
 
     void StartHost()
     {
         NetworkManager.Singleton.StartHost();
-        DisableAndHighlightButtons(m_HostButton);
+        EnableAndHighlightButtons(m_HostButton, false);
+        SetButtonStateAndColor(m_DisconnectButton, false, true);
     }
 
     void StartClient()
     {
         NetworkManager.Singleton.StartClient();
-        DisableAndHighlightButtons(m_ClientButton);
+        EnableAndHighlightButtons(m_ClientButton, false);
+        SetButtonStateAndColor(m_DisconnectButton, false, true);
     }
 
-    void DisableAndHighlightButtons(Button buttonToHighlight)
+    void GoOffline()
+    {
+        NetworkManager.Singleton.Shutdown();
+        EnableAndHighlightButtons(null, true);
+        SetButtonStateAndColor(m_DisconnectButton, false, false);
+    }
+
+    void EnableAndHighlightButtons(Button buttonToHighlight, bool enable)
     {
         foreach (var button in m_Buttons)
         {
-            ColorBlock colors = button.colors;
-            colors.disabledColor = button == buttonToHighlight ? m_HighlightedButtonColor
-                                                               : m_DisabledButtonColor;
-            button.colors = colors;
-            button.interactable = false;
+            SetButtonStateAndColor(button, button == buttonToHighlight, enable);
         }
+    }
+
+    void SetButtonStateAndColor(Button button, bool highlight, bool enable)
+    {
+        ColorBlock colors = button.colors;
+        colors.disabledColor = highlight ? m_HighlightedButtonColor
+                                         : m_DisabledButtonColor;
+        button.colors = colors;
+        button.interactable = enable;
     }
 }
