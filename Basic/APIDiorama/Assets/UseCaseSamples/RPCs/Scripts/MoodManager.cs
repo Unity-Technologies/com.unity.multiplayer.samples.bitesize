@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Unity.Netcode.Samples.APIDiorama
 {
     /// <summary>
-    /// Manages the chat behaviour of a specific player
+    /// Manages the mood of a player or NPC
     /// </summary>
-    public class ChatManager : NetworkBehaviour
+    public class MoodManager : NetworkBehaviour
     {
         [SerializeField] SpeechBubble m_SpeechBubblePrefab;
         SpeechBubble m_SpeechBubble;
@@ -19,7 +19,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             "Have a lovely day",
             "Are you pineapple? Duck you, potato!",
-            "This is the 3rd time I call you, pineapple!",
+            "Today I feel like pineapple!",
             "Wow you're awesome!"
         };
 
@@ -35,15 +35,15 @@ namespace Unity.Netcode.Samples.APIDiorama
             if (m_ElapsedSecondsSinceLastChange >= m_SecondsBetweenDataChanges)
             {
                 m_ElapsedSecondsSinceLastChange = 0;
-                OnServerChatMessageReceivedServerRpc(s_ChatMessages[Random.Range(0, s_ChatMessages.Length)]);
+                OnServerMoodMessageReceivedServerRpc(s_ChatMessages[Random.Range(0, s_ChatMessages.Length)]);
             }
         }
 
         [ServerRpc(RequireOwnership = true)]
-        void OnServerChatMessageReceivedServerRpc(string message)
+        void OnServerMoodMessageReceivedServerRpc(string message)
         {
             string redactedMessage = OnServerFilterBadWords(message);
-            OnClientChatMessageReceivedClientRpc(redactedMessage);
+            OnClientMoodMessageReceivedClientRpc(redactedMessage);
         }
 
         string OnServerFilterBadWords(string message)
@@ -52,7 +52,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         }
 
         [ClientRpc]
-        void OnClientChatMessageReceivedClientRpc(string message)
+        void OnClientMoodMessageReceivedClientRpc(string message)
         {
             if (!m_SpeechBubble)
             {

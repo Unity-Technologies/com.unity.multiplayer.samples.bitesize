@@ -19,6 +19,11 @@ namespace Unity.Netcode.Samples.APIDiorama
         public static Color32 GetRandomColor() => new Color32((byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), (byte)UnityEngine.Random.Range(0, 256), 255);
         public static string GetRandomUsername() => s_Usernames[UnityEngine.Random.Range(0, s_Usernames.Length)];
 
+        /// <summary>
+        /// Filders some 'bad words' from a string. In a production environment, consider using an external service for complex tasks like this.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string FilterBadWords(string input)
         {
             Regex regex = new Regex(@"\b(\w+)\b", RegexOptions.Compiled);
