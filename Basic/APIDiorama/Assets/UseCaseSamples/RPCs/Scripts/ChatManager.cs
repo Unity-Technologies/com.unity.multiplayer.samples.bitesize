@@ -18,8 +18,8 @@ namespace Unity.Netcode.Samples.APIDiorama
         readonly string[] s_ChatMessages = new string[]
         {
             "Have a lovely day",
-            "Are you stupid? Fuck you, idiot!",
-            "This is the 3rd time I call you, stupid!",
+            "Are you pineapple? Duck you, potato!",
+            "This is the 3rd time I call you, pineapple!",
             "Wow you're awesome!"
         };
 

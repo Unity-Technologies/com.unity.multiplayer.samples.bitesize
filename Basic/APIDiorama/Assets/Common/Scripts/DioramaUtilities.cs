@@ -10,7 +10,7 @@ namespace Unity.Netcode.Samples.APIDiorama
     /// </summary>
     public static class DioramaUtilities
     {
-        static readonly string[] s_Usernames = new string[] { "MorwennaDaBest", "SamTheBell", "FranklyJil", "FernandoCutter", "LP Morgan" };
+        static readonly string[] s_Usernames = new string[] { "MaryDaBest", "BobTheBell", "FranklyVal", "Georgie96", "OP Morgan" };
 
         /// <summary>
         /// Generates a random color
@@ -24,12 +24,12 @@ namespace Unity.Netcode.Samples.APIDiorama
             Regex regex = new Regex(@"\b(\w+)\b", RegexOptions.Compiled);
             var replacements = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                {"idiot", "*****"},
-                {"fuck", "@%!$"},
-                {"stupid", "$*%*!"}
+                {"potato", "*****"},
+                {"duck", "@%!$"},
+                {"pineapple", "$*%*!"}
             };
             return regex.Replace(input, match => replacements.ContainsKey(match.Groups[1].Value) ? replacements[match.Groups[1].Value]
-                                                                                              : match.Groups[1].Value);
+                                                                                                 : match.Groups[1].Value);
         }
     }
 }
