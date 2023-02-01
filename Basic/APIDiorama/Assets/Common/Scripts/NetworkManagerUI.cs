@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ public class NetworkManagerUI : MonoBehaviour
         m_ServerButton.onClick.AddListener(StartServer);
         m_HostButton.onClick.AddListener(StartHost);
         m_ClientButton.onClick.AddListener(StartClient);
-        m_DisconnectButton.onClick.AddListener(GoOffline);
+        m_DisconnectButton.onClick.AddListener(Disconnect);
         m_Buttons = new Button[] { m_ServerButton, m_HostButton, m_ClientButton };
     }
 
@@ -47,8 +48,15 @@ public class NetworkManagerUI : MonoBehaviour
         SetButtonStateAndColor(m_DisconnectButton, false, true);
     }
 
-    void GoOffline()
+    void Disconnect()
     {
+        if (NetworkManager.Singleton.IsServer)
+        {
+            foreach (var item in NetworkManager.Singleton.SpawnManager.SpawnedObjectsList.ToList())
+            {
+                item.Despawn(false);
+            }
+        }
         NetworkManager.Singleton.Shutdown();
         EnableAndHighlightButtons(null, true);
         SetButtonStateAndColor(m_DisconnectButton, false, false);

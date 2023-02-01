@@ -14,7 +14,7 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void OnEnable()
         {
-            Refreshlabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
+            RefreshLabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
             StartCoroutine(SubscribeToNetworkManagerEvents());
         }
 
@@ -55,7 +55,7 @@ namespace Unity.Netcode.Samples.APIDiorama
             OnNetworkedSessionEnded();
         }
 
-        void Refreshlabels(bool isConnected)
+        void RefreshLabels(bool isConnected)
         {
             startupLabel.gameObject.SetActive(!isConnected);
             controlsLabel.gameObject.SetActive(isConnected);
@@ -63,12 +63,12 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void OnNetworkedSessionStarted()
         {
-            Refreshlabels(true);
+            RefreshLabels(true);
         }
 
         void OnNetworkedSessionEnded()
         {
-            Refreshlabels(false);
+            RefreshLabels(false);
         }
     }
 }
