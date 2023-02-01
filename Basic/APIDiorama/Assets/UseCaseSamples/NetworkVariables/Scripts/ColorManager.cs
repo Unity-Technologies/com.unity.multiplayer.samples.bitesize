@@ -47,8 +47,7 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void Update()
         {
-            if (!NetworkManager.Singleton.IsClient
-            && !NetworkManager.Singleton.IsServer)
+            if (!IsSpawned)
             {
                 //the player disconnected
                 return;

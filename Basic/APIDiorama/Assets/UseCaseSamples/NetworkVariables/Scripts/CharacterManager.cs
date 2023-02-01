@@ -62,14 +62,13 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void Update()
         {
-            if (!NetworkManager.Singleton.IsClient 
-            && !NetworkManager.Singleton.IsServer)
+            if (!IsSpawned)
             {
                 //the player disconnected
                 return;
             }
 
-            if (!IsOwner)
+            if (!IsServer)
             {
                 /*
                  * By default, only the server is allowed to change the value of NetworkVariables. 
