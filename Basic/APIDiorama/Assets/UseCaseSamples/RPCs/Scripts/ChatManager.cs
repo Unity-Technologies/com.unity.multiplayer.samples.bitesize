@@ -73,8 +73,11 @@ namespace Unity.Netcode.Samples.APIDiorama
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-            m_SpeechBubble.Hide();
-            Destroy(m_SpeechBubble.gameObject);
+            if (m_SpeechBubble)
+            {
+                m_SpeechBubble.Hide();
+                Destroy(m_SpeechBubble.gameObject);
+            }
         }
     }
 }
