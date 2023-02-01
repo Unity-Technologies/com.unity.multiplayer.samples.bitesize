@@ -73,7 +73,20 @@ namespace Unity.Netcode.Samples.APIDiorama
         void QuitScene()
         {
             Disconnect();
+            SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene(m_SelectionScreenScene.SceneName, LoadSceneMode.Single);
+        }
+
+        void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            if (loadedScene.name == m_SelectionScreenScene.SceneName)
+            {
+                if (NetworkManager.Singleton)
+                {
+                    Destroy(NetworkManager.Singleton.gameObject);
+                }
+            }
         }
 
         void EnableAndHighlightButtons(Button buttonToHighlight, bool enable)
