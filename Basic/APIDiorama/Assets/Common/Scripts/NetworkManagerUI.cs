@@ -18,6 +18,8 @@ namespace Unity.Netcode.Samples.APIDiorama
         [SerializeField] Color32 m_HighlightedButtonColor;
         [SerializeField] Color32 m_DisabledButtonColor;
         [SerializeField] SceneReference m_SelectionScreenScene;
+        [SerializeField] GameObject m_ServerOnlyOverlay;
+        Camera m_MainCamera;
         Button[] m_Buttons;
 
         void Awake()
@@ -33,6 +35,8 @@ namespace Unity.Netcode.Samples.APIDiorama
         void Start()
         {
             SetButtonStateAndColor(m_DisconnectButton, false, false);
+            m_ServerOnlyOverlay.gameObject.SetActive(false);
+            //m_MainCamera = Camera.main;
         }
 
         void StartServer()
@@ -40,6 +44,8 @@ namespace Unity.Netcode.Samples.APIDiorama
             NetworkManager.Singleton.StartServer();
             EnableAndHighlightButtons(m_ServerButton, false);
             SetButtonStateAndColor(m_DisconnectButton, false, true);
+            m_ServerOnlyOverlay.gameObject.SetActive(true);
+            //m_MainCamera.enabled = false;
         }
 
         void StartHost()
@@ -68,6 +74,8 @@ namespace Unity.Netcode.Samples.APIDiorama
             NetworkManager.Singleton.Shutdown();
             EnableAndHighlightButtons(null, true);
             SetButtonStateAndColor(m_DisconnectButton, false, false);
+            m_ServerOnlyOverlay.gameObject.SetActive(false);
+            //m_MainCamera.enabled = true;
         }
 
         void QuitScene()
