@@ -21,7 +21,7 @@ namespace Game
     
     //this sample does not cover the case of addressable usage when the client is loading custom visual prefabs and swapping out the rendering object for essentially non-dynamic prefabs
 
-    public sealed class DynamicPrefabManager : NetworkBehaviour
+    public partial class DynamicPrefabManager : NetworkBehaviour
     {
         const int k_MaxConnectPayload = 1024;
         
@@ -166,145 +166,6 @@ namespace Game
                 response.CreatePlayerObject = false;
             }
         }
-        
-        /// <summary>
-        /// This call attempts to spawn a prefab by it's addressable guid - it ensures that all the clients have loaded the prefab before spawning it,
-        /// and if the clients fail to acknowledge that they've loaded a prefab - the spawn will fail.
-        /// </summary>
-        /// <param name="guid"></param>
-        /// <returns></returns>
-        public async Task<(bool Success, NetworkObject Obj)> TrySpawnDynamicPrefabSynchronously(string guid, Vector3 position, Quaternion rotation)
-        {
-            if (IsServer)
-            {
-                var assetGuid = new AddressableGUID()
-                {
-                    Value = guid
-                };
-                
-                if (m_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid))
-                {
-                    Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
-                    var obj = await Spawn(assetGuid);
-                    return (true, obj);
-                }
-                
-                m_SynchronousSpawnAckCount = 0;
-                m_SynchronousSpawnTimeoutTimer = 0;
-                
-                Debug.Log("Loading dynamic prefab on the clients...");
-                LoadAddressableClientRpc(assetGuid);
-                //load the prefab on the server, so that any late-joiner will need to load that prefab also
-                await LoadDynamicPrefab(assetGuid);
-                int requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : m_NetworkManager.ConnectedClients.Count;
-                
-                while (m_SynchronousSpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
-                {
-                    if (m_SynchronousSpawnAckCount >= requiredAcknowledgementsCount)
-                    {
-                        Debug.Log($"All clients have loaded the prefab in {m_SynchronousSpawnTimeoutTimer} seconds, spawning the prefab on the server...");
-                        var obj = await Spawn(assetGuid);
-                        return (true, obj);
-                    }
-                    
-                    m_SynchronousSpawnTimeoutTimer += Time.deltaTime;
-                    await Task.Yield();
-                }
-                
-                Debug.LogError("Failed to spawn dynamic prefab - timeout");
-                return (false, null);
-            }
-
-            return (false, null);
-
-            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
-            {
-                var prefab = await LoadDynamicPrefab(assetGuid);
-                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
-                Debug.Log("Spawned dynamic prefab");
-                return obj;
-            }
-        }
-
-        /// <summary>
-        /// This call preloads the dynamic prefab on the server and sends a client rpc to all the clients to do the same.
-        /// </summary>
-        /// <param name="guid"></param>
-        public async Task PreloadDynamicPrefabOnServerAndStartLoadingOnAllClients(string guid)
-        {
-            if (IsServer)
-            {
-                var assetGuid = new AddressableGUID()
-                {
-                    Value = guid
-                };
-                
-                if (m_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid))
-                {
-                    Debug.Log("Prefab is already loaded by all peers");
-                    return;
-                }
-                
-                Debug.Log("Loading dynamic prefab on the clients...");
-                LoadAddressableClientRpc(assetGuid);
-                await LoadDynamicPrefab(assetGuid);
-            }
-        }
-        
-        /// <summary>
-        /// This call spawns an addressable prefab by it's guid. It does not ensure that all the clients have loaded the prefab before spawning it.
-        /// All spawned objects are invisible to clients that don't have the prefab loaded.
-        /// The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've loaded it,
-        /// and then the server makes the object visible to that client.
-        /// </summary>
-        /// <param name="guid"></param>
-        /// <returns></returns>
-        public async Task<NetworkObject> SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(string guid, Vector3 position, Quaternion rotation)
-        {
-            if (IsServer)
-            {
-                var assetGuid = new AddressableGUID()
-                {
-                    Value = guid
-                };
-                
-                return await Spawn(assetGuid);
-            }
-
-            return null;
-
-            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
-            {
-                var prefab = await LoadDynamicPrefab(assetGuid);
-                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
-                
-                if(m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
-                {
-                    networkObjectIds.Add(obj);
-                }
-                else
-                {
-                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() {obj});
-                }
-
-                obj.CheckObjectVisibility = (clientId) => 
-                {
-                    //if the client has already loaded the prefab - we can make the object visible to them
-                    if (HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
-                    {
-                        return true;
-                    }
-                    //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
-                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams(){Send = new ClientRpcSendParams(){TargetClientIds = new ulong[]{clientId}}});
-                    return false;
-                };
-                
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
-
-                return obj;
-            }
-        }
 
         [ClientRpc]
         void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
@@ -366,7 +227,6 @@ namespace Game
             return prefabs;
         }
 
-        
         async Task<GameObject> LoadDynamicPrefab(AddressableGUID guid, bool recomputeHash = true)
         {
             if (m_LoadedDynamicPrefabResourceHandles.ContainsKey(guid))
@@ -395,7 +255,6 @@ namespace Game
 
             return prefab;
         }
-
 
         void CalculateDynamicPrefabArrayHash()
         {

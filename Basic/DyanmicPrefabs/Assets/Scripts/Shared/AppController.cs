@@ -27,7 +27,6 @@ namespace Game
         [SerializeField]
         ConnectionManager m_ConnectionManager;
 
-
         public override void OnDestroy()
         {
             m_DynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();
