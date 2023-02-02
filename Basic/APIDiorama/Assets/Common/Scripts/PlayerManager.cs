@@ -10,9 +10,6 @@ namespace Unity.Netcode.Samples.APIDiorama
         [SerializeField]
         PlayerInput inputManager;
 
-        [SerializeField]
-        float moveSpeed = 1;
-
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
