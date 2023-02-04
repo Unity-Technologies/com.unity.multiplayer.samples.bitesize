@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="SpawnTimeoutSliderHolder" style="align-items: auto;">
+        <ui:VisualElement name="LabelBackground" class="background" style="justify-content: space-between; align-items: stretch; flex-direction: column;">
+            <ui:Label text="Slider Label" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 20px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="SliderBackground" class="background" style="justify-content: space-between; align-items: stretch; flex-direction: column; top: -10px; flex-grow: 1; width: 100%;">
+            <ui:Slider focusable="false" value="20" high-value="100" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

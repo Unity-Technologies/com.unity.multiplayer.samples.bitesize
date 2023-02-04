@@ -1,10 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="Template_Client" src="project://database/Assets/UI/Template_Client.uxml?fileID=9197481963319205126&amp;guid=559dc6bda8f869d4b828b29a963e1e89&amp;type=3#Template_Client" />
     <Style src="project://database/Assets/UI/USS_StyleSheet.uss?fileID=7433441132597879392&amp;guid=7e6bbc510a24f5d4c934e0953d561e01&amp;type=3#USS_StyleSheet" />
     <Style src="project://database/Assets/UI/USS_Clients.uss?fileID=7433441132597879392&amp;guid=239f145be199f844fbf6e50d479855f7&amp;type=3#USS_Clients" />
-    <ui:VisualElement style="flex-grow: 1; align-items: flex-start;">
-        <ui:VisualElement name="ClientsHolder" style="align-items: flex-start; flex-direction: column; margin-left: 5px; margin-top: 5px;">
-            <ui:Instance template="Template_Client" name="Client0" style="flex-shrink: 0;" />
-        </ui:VisualElement>
+    <ui:VisualElement picking-mode="Ignore" style="flex-grow: 1; align-items: flex-start;">
+        <ui:VisualElement name="ConnectionsHolder" style="align-items: flex-start; flex-direction: column; margin-left: 5px; margin-top: 5px;" />
     </ui:VisualElement>
 </ui:UXML>
