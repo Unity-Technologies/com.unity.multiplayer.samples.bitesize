@@ -38,6 +38,26 @@ public class Bullet : NetworkBehaviour
         NetworkObject.Despawn(true);
     }
 
+    public void SetVelocity(Vector2 velocity)
+    {
+        if (IsServer)
+        {
+            var bulletRb = GetComponent<Rigidbody2D>();
+            bulletRb.velocity = velocity;
+            SetVelocityClientRpc(velocity);
+        }
+    }
+
+    [ClientRpc]
+    void SetVelocityClientRpc(Vector2 velocity)
+    {
+        if (!IsHost)
+        {
+            var bulletRb = GetComponent<Rigidbody2D>();
+            bulletRb.velocity = velocity;
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D other)
     {
         var otherObject = other.gameObject;

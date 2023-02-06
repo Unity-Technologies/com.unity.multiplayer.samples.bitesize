@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -9,64 +10,84 @@ using UnityEngine;
 [DefaultExecutionOrder(0)] // before client component
 public class ServerPlayerMove : NetworkBehaviour
 {
-    private ClientPlayerMove m_Client;
+    public NetworkVariable<bool> isObjectPickedUp = new NetworkVariable<bool>();
+    
+    NetworkObject m_PickedUpObject;
 
     [SerializeField]
-    private Camera m_Camera;
-
-    public NetworkVariable<bool> ObjPickedUp = new NetworkVariable<bool>();
-
-    private void Awake()
-    {
-        m_Client = GetComponent<ClientPlayerMove>();
-    }
+    Vector3 m_LocalHeldPosition;
 
     // DOC START HERE
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
         if (!IsServer)
         {
             enabled = false;
             return;
         }
 
+        OnServerSpawnPlayer();
+        
+        base.OnNetworkSpawn();
+    }
+
+    void OnServerSpawnPlayer()
+    {
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
-        // using client RPC since ClientNetworkTransform can only be modified by owner (which is client side)
-        m_Client.SetSpawnClientRpc(spawnPoint.transform.position, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new []{OwnerClientId}}});
-    }
-
-    private NetworkObject m_PickedUpObj;
-
-    [ServerRpc]
-    public void PickupObjServerRpc(ulong objToPickupID)
-    {
-        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objToPickup);
-        if (objToPickup == null || objToPickup.transform.parent != null) return; // object already picked up, server authority says no
-
-        objToPickup.GetComponent<Rigidbody>().isKinematic = true;
-        objToPickup.transform.parent = transform;
-        objToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
-        objToPickup.transform.localPosition = Vector3.up;
-        ObjPickedUp.Value = true;
-        m_PickedUpObj = objToPickup;
+        var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
+        transform.position = spawnPosition;
+        
+        // A note specific to owner authority:
+        // Side Note:  Specific to Owner Authoritative
+        // Setting the position works as and can be set in OnNetworkSpawn server-side unless there is a
+        // CharacterController that is enabled by default on the authoritative side. With CharacterController, it
+        // needs to be disabled by default (i.e. in Awake), the server applies the position (OnNetworkSpawn), and then
+        // the owner of the NetworkObject should enable CharacterController during OnNetworkSpawn. Otherwise,
+        // CharacterController will initialize itself with the initial position (before synchronization) and updates the
+        // transform after synchronization with the initial position, thus overwriting the synchronized position.
     }
 
     [ServerRpc]
-    public void DropObjServerRpc()
-    {
-        if (m_PickedUpObj != null)
+    public void PickupObjectServerRpc(ulong objToPickupID)
+    {        
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
+        if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
+
+        if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
         {
-            // can be null if enter drop zone while carying
-            m_PickedUpObj.transform.localPosition = new Vector3(0, 0, 2);
-            m_PickedUpObj.transform.parent = null;
-            m_PickedUpObj.GetComponent<Rigidbody>().isKinematic = false;
-            m_PickedUpObj.GetComponent<NetworkTransform>().InLocalSpace = false;
-            m_PickedUpObj = null;
+            var pickUpObjectRigidbody = objectToPickup.GetComponent<Rigidbody>();
+            pickUpObjectRigidbody.isKinematic = true;
+            pickUpObjectRigidbody.interpolation = RigidbodyInterpolation.None;
+            objectToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
+            objectToPickup.transform.localPosition = m_LocalHeldPosition;
+            objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
+            isObjectPickedUp.Value = true;
+            m_PickedUpObject = objectToPickup;
+        }
+    }
+
+    void IngredientDespawned()
+    {
+        m_PickedUpObject = null;
+        isObjectPickedUp.Value = false;
+    }
+    
+    [ServerRpc]
+    public void DropObjectServerRpc()
+    {
+        if (m_PickedUpObject != null)
+        {
+            // can be null if enter drop zone while carrying
+            m_PickedUpObject.transform.parent = null;
+            var pickedUpObjectRigidbody = m_PickedUpObject.GetComponent<Rigidbody>();
+            pickedUpObjectRigidbody.isKinematic = false;
+            pickedUpObjectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
+            m_PickedUpObject = null;
         }
 
-        ObjPickedUp.Value = false;
+        isObjectPickedUp.Value = false;
     }
     // DOC END HERE
 }

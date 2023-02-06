@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/ClientDrivenUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#ClientDrivenUIStyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: space-between; align-items: stretch; height: 100%; width: 100%; opacity: 1; flex-direction: column;">
+        <ui:VisualElement name="ScoreHolder" style="flex-grow: 1; height: auto; flex-direction: row; justify-content: flex-end; align-items: flex-start; padding-top: 20px; padding-right: 20px; padding-left: 20px; padding-bottom: 20px;">
+            <ui:VisualElement class="background" style="width: 192px; height: 61px;">
+                <ui:VisualElement name="ScoreHolder" style="flex-direction: row; justify-content: space-between; width: auto; align-items: center; margin-left: 16px; margin-right: 16px; margin-top: 16px; margin-bottom: 16px;">
+                    <ui:Label text="Score:" display-tooltip-when-elided="true" name="ScoreDisplay" style="flex-grow: 1; font-size: 30px; -unity-text-align: middle-left;" />
+                    <ui:Label text="0" display-tooltip-when-elided="true" name="ScoreText" style="flex-grow: 1; flex-direction: row-reverse; justify-content: flex-end; align-items: auto; -unity-text-align: middle-right; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 30px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="TextHolder" style="flex-grow: 1; height: auto; flex-direction: row; justify-content: flex-start; align-items: flex-end; padding-top: 20px; padding-right: 20px; padding-left: 20px; padding-bottom: 20px;">
+            <ui:VisualElement class="background" style="height: 127px; width: 727px;">
+                <ui:Label text="Pick up orbs by pressing E. Change orb color with the converters in the middle of the level. Score points by dropping orbs in matching drop zones." display-tooltip-when-elided="true" name="HowToPlayText" style="font-size: 24px; white-space: normal; -unity-text-align: middle-left; padding-left: 18px; padding-right: 18px; padding-top: 18px; padding-bottom: 18px; flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
