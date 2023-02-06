@@ -3,48 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game
 {
-    //Assumption: addressables are loadable, ie when the client tries to load it - it will not fail.
+    //Assumption: Addressables are loadable, ie when the client tries to load it - it will not fail.
 
     //todo: improvement ideas:
-    // - a state machine for the client to handle the different states of trying to connect, beingrejected for not having prefabs, loading them, trying again etc.
-    // - it's possile to have more advanced logic that would for intance kick players that are consistently failing to load an addressable
+    // - it's possible to have more advanced logic that would for instance kick players that are consistently failing to load an addressable
     // - addressable guid list could be compressed before being sent
-    // - instead of addressable guids the peers could exchange a `short` index that would refer to addressables in some kind of a list stored in a scriptable object. That would reduce the amount of data that's being exchanged quite drastically.
+    // - instead of addressable guids the peers could exchange a `short` index that would refer to Addressables in some kind of a list stored in a scriptable object. That would reduce the amount of data that's being exchanged quite drastically.
     
-    //todo: split this large sample into several smaller scenes that show loading strategies in isolation
-
     //todo: if/when there is a sample that shows how to load addressable scenes
     //- we probably should add some logic to NetworkSceneManager that would allow us to use Addressables scene loading
     
-    //this sample does not cover the case of addressable usage when the client is loading custom visual prefabs and swapping out the rendering object for essentially non-dynami prefabs
-
+    //this sample does not cover the case of addressable usage when the client is loading custom visual prefabs and swapping out the rendering object for essentially non-dynamic prefabs
 
     public sealed class DynamicPrefabManager : NetworkBehaviour
     {
         const int k_MaxConnectPayload = 1024;
+        
         const int k_EmptyDynamicPrefabHash = -1;
+        
         [SerializeField] float m_SpawnTimeoutInSeconds;
+        
         [SerializeField] NetworkManager m_NetworkManager;
+
+        [SerializeField]
+        int m_ArtificialDelayMilliseconds = 1000;
         
         int m_SynchronousSpawnAckCount = 0;
+        
         float m_SynchronousSpawnTimeoutTimer = 0;
         
         int m_HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
+        
         Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> m_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>();
+        
         List<AddressableGUID> m_DynamicPrefabGUIDs = new List<AddressableGUID>(); //cached list to avoid GC
 
-        public event Action<DisconnectReason> OnConnectionStatusReceived;
-
-        string m_ConnectAddress;
-        ushort m_Port;
-        
         //A storage where we keep the association between the dynamic prefab (hash of it's GUID) and the clients that have it loaded
         Dictionary<int, HashSet<ulong>> m_PrefabHashToClientIds = new Dictionary<int, HashSet<ulong>>();
         
@@ -64,54 +63,15 @@ namespace Game
                 m_PrefabHashToClientIds.Add(assetGuidHash, new HashSet<ulong>() {clientId});
             }
         }
-        
-        public void StartClient(string connectAddress, ushort port)
+
+        public byte[] GenerateRequestPayload()
         {
-            Debug.Log(nameof(StartClient));
-            m_ConnectAddress = connectAddress;
-            m_Port = port;
-            
-            m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
-            
             var payload = JsonUtility.ToJson(new ConnectionPayload()
             {
                 HashOfDynamicPrefabGUIDs = m_HashOfDynamicPrefabGUIDs
             });
-            var transport = m_NetworkManager.GetComponent<UnityTransport>();
-            transport.SetConnectionData(connectAddress, port);
             
-            var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
-
-            m_NetworkManager.NetworkConfig.ConnectionData = payloadBytes;
-            m_NetworkManager.StartClient();
-            m_NetworkManager.OnClientDisconnectCallback += ClientDisconnected;
-        }
-
-        async void ClientDisconnected(ulong client)
-        {
-            m_NetworkManager.OnClientDisconnectCallback -= ClientDisconnected;
-
-            if (string.IsNullOrEmpty(m_NetworkManager.DisconnectReason))
-            {
-                return;
-            }
-
-            var rejectionPayload = JsonUtility.FromJson<DisconnectionPayload>(m_NetworkManager.DisconnectReason);
-            var addressableGuidCollection = new AddressableGUIDCollection() { GUIDs = rejectionPayload.guids.Select(item => new AddressableGUID() { Value = item }).ToArray() };
-
-            ReceiveDisconnectReason(rejectionPayload.reason, addressableGuidCollection);
-        }
-
-        public void StartHost(string connectAddress, ushort port)
-        {
-            Debug.Log(nameof(StartHost));
-            m_ConnectAddress = connectAddress;
-            m_Port = port;
-            m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
-            var transport = m_NetworkManager.GetComponent<UnityTransport>();
-            transport.SetConnectionData(connectAddress, port);
-            m_NetworkManager.ConnectionApprovalCallback = ConnectionApprovalCallback;
-            m_NetworkManager.StartHost();
+            return System.Text.Encoding.UTF8.GetBytes(payload);
         }
 
         public override void OnDestroy()
@@ -119,32 +79,8 @@ namespace Game
             UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
-
-        async void ReceiveDisconnectReason(DisconnectReason status, AddressableGUIDCollection addressableGuidCollection)
-        {
-            switch (status)
-            {
-                case DisconnectReason.Undefined:
-                    Debug.Log("Undefined");
-                    m_NetworkManager.Shutdown();
-                    break;
-                case DisconnectReason.ClientNeedsToPreload:
-                {
-                    m_NetworkManager.Shutdown();
-                    Debug.Log("Client needs to preload");
-                    await LoadDynamicPrefabs(addressableGuidCollection);
-                    Debug.Log("Restarting client");
-                    StartClient(m_ConnectAddress, m_Port);
-                }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            OnConnectionStatusReceived?.Invoke(status);
-        }
         
-        void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+        public void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             Debug.Log("Client is trying to connect " + request.ClientNetworkId);
             var connectionData = request.Payload;
@@ -212,6 +148,11 @@ namespace Game
 
             response.Reason = JsonUtility.ToJson(rejectionPayload);
             ImmediateDeny();
+            
+            // A note: sending large strings through Netcode is not ideal -- you'd usually want to use REST services to
+            // accomplish this instead. UGS services like Lobby can be a useful alternative. Another route may be to
+            // set ConnectionApprovalResponse's Pending flag to true, and send a CustomMessage containing the array of 
+            // GUIDs to a client, which the client would load and reattempt a reconnection.
 
             void Approve()
             {
@@ -410,7 +351,7 @@ namespace Game
             }
         }
 
-        async Task<IList<GameObject>> LoadDynamicPrefabs(AddressableGUIDCollection addressableGUIDCollection)
+        public async Task<IList<GameObject>> LoadDynamicPrefabs(AddressableGUIDCollection addressableGUIDCollection)
         {
             var tasks = new List<Task<GameObject>>();
 
@@ -428,7 +369,7 @@ namespace Game
         
         async Task<GameObject> LoadDynamicPrefab(AddressableGUID guid, bool recomputeHash = true)
         {
-            if(m_LoadedDynamicPrefabResourceHandles.ContainsKey(guid))
+            if (m_LoadedDynamicPrefabResourceHandles.ContainsKey(guid))
             {
                 Debug.Log($"Prefab has already been loaded, skipping loading this time | {guid}");
                 return m_LoadedDynamicPrefabResourceHandles[guid].Result;
@@ -440,8 +381,8 @@ namespace Game
 
             #if DEBUG
             //this delay here is to make it obvious how different loading strategies differ
-            //atificial latency would also highlight the difference
-            await Task.Delay(1000);
+            //artificial latency would also highlight the difference
+            await Task.Delay(m_ArtificialDelayMilliseconds);
             #endif
 
             m_NetworkManager.AddNetworkPrefab(prefab);

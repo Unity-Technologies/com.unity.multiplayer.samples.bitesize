@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/ClientDrivenUIStyleSheet.uss?fileID=7433441132597879392&amp;guid=bcbf16fef3f0e5a40887d466edf9c406&amp;type=3#ClientDrivenUIStyleSheet" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 1; justify-content: center; align-items: center; height: 100%; width: 100%; background-color: rgba(237, 143, 198, 0.21);">
+        <ui:VisualElement name="Background" class="background" style="align-items: center; justify-content: center; width: 655px; height: 364px;">
+            <ui:VisualElement name="MainMenuUIWrapper" style="height: 326px; width: 569px; align-items: center; justify-content: flex-start; visibility: visible; display: flex; opacity: 1; flex-shrink: 0;">
+                <ui:VisualElement name="ButtonsLayout" style="height: 266px; width: 560px; justify-content: space-around; align-items: stretch; margin-left: 0; margin-right: 0; margin-top: 31px; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 0;">
+                    <ui:VisualElement name="InputFieldLabelWrapper" class="layout-buttons" style="height: 120px; justify-content: space-around; align-items: stretch; margin-bottom: 8px;">
+                        <ui:Label text="IP Address" display-tooltip-when-elided="true" style="flex-grow: 1; height: 25px; width: 178px;" />
+                        <ui:Label text="Port" display-tooltip-when-elided="true" style="flex-grow: 1; height: 25px; width: 50px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="InputFieldWrapper" class="layout-buttons" style="margin-bottom: 14px; justify-content: space-between;">
+                        <ui:TextField picking-mode="Ignore" text="127.0.0.1" name="IPAddressField" focusable="true" is-delayed="true" password="false" class="input-field" style="width: 230px; height: 60px;" />
+                        <ui:TextField picking-mode="Ignore" text="9998" name="PortField" focusable="true" is-delayed="true" class="input-field" style="width: 100px; height: 60px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="HostButtonWrapper" class="layout-buttons" style="margin-bottom: 6px;">
+                        <ui:Button text="Host (Client + Server)" display-tooltip-when-elided="true" name="HostButton" tabindex="1" focusable="false" class="button-style" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ClientServerButtonsWrapper" class="layout-buttons">
+                        <ui:Button text="Server" display-tooltip-when-elided="true" name="ServerButton" tabindex="3" focusable="false" class="button-style" />
+                        <ui:Button text="Client" display-tooltip-when-elided="true" name="ClientButton" tabindex="2" focusable="false" class="button-style" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
