@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game
+namespace Game.Preloading
 {
     public sealed class PreloadingSample : MonoBehaviour
     {

@@ -29,8 +29,9 @@ namespace Game
             m_ConnectionManager.networkManager.NetworkConfig.ForceSamePrefabs = false;
             var transport = m_ConnectionManager.networkManager.GetComponent<UnityTransport>();
             transport.SetConnectionData(m_ConnectionManager.m_ConnectAddress, m_ConnectionManager.m_Port);
-            m_ConnectionManager.networkManager.NetworkConfig.ConnectionData = 
-                m_ConnectionManager.dynamicPrefabManager.GenerateRequestPayload();
+            // TODO gather request payload
+            /*m_ConnectionManager.networkManager.NetworkConfig.ConnectionData = 
+                m_ConnectionManager.dynamicPrefabManager.GenerateRequestPayload();*/
             m_ConnectionManager.networkManager.StartClient();
         }
         

@@ -15,10 +15,8 @@ namespace Game
         
         // placeholder until this is fetched from UI
         ushort m_Port = 7777;
-
-        [SerializeField] DynamicPrefabManager m_DynamicPrefabManager;
         
-        [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabRefs;
+        /*[SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabRefs;*/
         
         [SerializeField] GameObject m_ConnectionUI;
         
@@ -29,7 +27,8 @@ namespace Game
 
         public override void OnDestroy()
         {
-            m_DynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();
+            // TODO see if you need this
+            /*m_DynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();*/
             base.OnDestroy();
         }
 
@@ -58,19 +57,22 @@ namespace Game
             m_SpawnUI.SetActive(true);
         }
 
-        public async void OnClickedSpawnWithVisibility()
+        // done inside the spawn invisible example
+        /*public async void OnClickedSpawnWithVisibility()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
             var spawnedObject =  await m_DynamicPrefabManager.SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
-        }
+        }*/
 
-        public async void OnClickedTrySpawnSynchronously()
+        // done inside the synchronous scene example
+        /*public async void OnClickedTrySpawnSynchronously()
         {
             var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
             var spawnedObject =  await m_DynamicPrefabManager.TrySpawnDynamicPrefabSynchronously(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
-        }
+        }*/
 
-        public async void OnClickedPreload()
+        // done inside the preload all prefabs example
+        /*public async void OnClickedPreload()
         {
             var tasks = new List<Task>();
             foreach (var p in m_DynamicPrefabRefs)
@@ -80,7 +82,7 @@ namespace Game
 
             await Task.WhenAll(tasks);
 
-        }
+        }*/
 
         // placeholder until this is triggered by UI
         [ContextMenu(nameof(OnClickedShutdown))]

@@ -1,0 +1,146 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using Random = UnityEngine.Random;
+
+namespace Game.SpawnPrefabInvisibleWhileIsLoading
+{
+    public class SpawnPrefabInvisibleWhileIsLoading : NetworkBehaviour
+    {
+        [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabReferences;
+        
+        [SerializeField]
+        int m_ArtificialDelayMilliseconds = 1000;
+        
+        //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
+        Dictionary<int, HashSet<NetworkObject>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<NetworkObject>>();
+        
+        DynamicPrefabLoadingUtilities m_DynamicPrefabLoadingUtilities;
+
+        void Start()
+        {
+            m_DynamicPrefabLoadingUtilities = new DynamicPrefabLoadingUtilities(NetworkManager.Singleton);
+        }
+        
+        public override void OnDestroy()
+        {
+            m_DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
+            base.OnDestroy();
+        }
+        
+        // invoked by UI
+        public void OnClickedTrySpawnInvisible()
+        {
+            TrySpawnInvisible();
+        }
+
+        async void TrySpawnInvisible()
+        {
+            var randomPrefab = m_DynamicPrefabReferences[Random.Range(0, m_DynamicPrefabReferences.Count)];
+            await SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
+        }
+        
+        /// <summary>
+        /// This call spawns an addressable prefab by it's guid. It does not ensure that all the clients have loaded the
+        /// prefab before spawning it. All spawned objects are invisible to clients that don't have the prefab loaded.
+        /// The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've loaded
+        /// it, and then the server makes the object visible to that client.
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        async Task<NetworkObject> SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(string guid, Vector3 position, Quaternion rotation)
+        {
+            if (IsServer)
+            {
+                var assetGuid = new AddressableGUID()
+                {
+                    Value = guid
+                };
+                
+                return await Spawn(assetGuid);
+            }
+
+            return null;
+
+            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
+            {
+                var prefab = await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, 
+                    m_ArtificialDelayMilliseconds);
+                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
+                
+                if (m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
+                {
+                    networkObjectIds.Add(obj);
+                }
+                else
+                {
+                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() {obj});
+                }
+
+                obj.CheckObjectVisibility = (clientId) => 
+                {
+                    //if the client has already loaded the prefab - we can make the object visible to them
+                    if (m_DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
+                    {
+                        return true;
+                    }
+                    //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
+                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams(){Send = new ClientRpcSendParams(){TargetClientIds = new ulong[]{clientId}}});
+                    return false;
+                };
+                
+                obj.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
+
+                return obj;
+            }
+        }
+        
+        void ShowHiddenObjectsToClient(int prefabHash, ulong clientId)
+        {
+            if (m_PrefabHashToNetworkObjectId.TryGetValue(prefabHash, out var networkObjects))
+            {
+                foreach (var obj in networkObjects)
+                {
+                    if (!obj.IsNetworkVisibleTo(clientId))
+                    {
+                        obj.NetworkShow(clientId);
+                    }
+                }
+            }
+        }
+        
+        [ClientRpc]
+        void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
+        {
+            if (!IsHost)
+            {
+                Load(guid);
+            }
+
+            async void Load(AddressableGUID assetGuid)
+            {
+                Debug.Log("Loading dynamic prefab on the client...");
+                await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                Debug.Log("Client loaded dynamic prefab");
+                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
+            }
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
+        {
+            Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
+            m_DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
+                rpcParams.Receive.SenderClientId);
+           
+            //the server has all the objects visible, no need to do anything
+            if (rpcParams.Receive.SenderClientId != NetworkManager.Singleton.LocalClientId)
+            {
+                ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
+            }
+        }
+    }
+}

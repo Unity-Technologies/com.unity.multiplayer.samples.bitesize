@@ -9,8 +9,6 @@ namespace Game
     /// </summary>
     public class ConnectionManager : MonoBehaviour
     {
-        public DynamicPrefabManager dynamicPrefabManager;
-        
         public NetworkManager networkManager;
         
         ConnectionState m_CurrentState;

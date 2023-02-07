@@ -20,7 +20,8 @@ namespace Game
         
         public override void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            m_ConnectionManager.dynamicPrefabManager.ConnectionApprovalCallback(request, response);
+            // TODO: hookup connection approval from the connection approval use case
+            /*m_ConnectionManager.dynamicPrefabManager.ConnectionApprovalCallback(request, response);*/
         }
 
         public override void OnUserRequestedShutdown()
