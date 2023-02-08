@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Random = UnityEngine.Random;
 
 namespace Game
 {
@@ -16,21 +12,12 @@ namespace Game
         // placeholder until this is fetched from UI
         ushort m_Port = 7777;
         
-        /*[SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabRefs;*/
-        
         [SerializeField] GameObject m_ConnectionUI;
         
         [SerializeField] GameObject m_SpawnUI;
 
         [SerializeField]
         ConnectionManager m_ConnectionManager;
-
-        public override void OnDestroy()
-        {
-            // TODO see if you need this
-            /*m_DynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();*/
-            base.OnDestroy();
-        }
 
         public void StartClient()
         {
@@ -56,33 +43,6 @@ namespace Game
             m_ConnectionUI.SetActive(true);
             m_SpawnUI.SetActive(true);
         }
-
-        // done inside the spawn invisible example
-        /*public async void OnClickedSpawnWithVisibility()
-        {
-            var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
-            var spawnedObject =  await m_DynamicPrefabManager.SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
-        }*/
-
-        // done inside the synchronous scene example
-        /*public async void OnClickedTrySpawnSynchronously()
-        {
-            var randomPrefab = m_DynamicPrefabRefs[Random.Range(0, m_DynamicPrefabRefs.Count)];
-            var spawnedObject =  await m_DynamicPrefabManager.TrySpawnDynamicPrefabSynchronously(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
-        }*/
-
-        // done inside the preload all prefabs example
-        /*public async void OnClickedPreload()
-        {
-            var tasks = new List<Task>();
-            foreach (var p in m_DynamicPrefabRefs)
-            {
-                tasks.Add(m_DynamicPrefabManager.PreloadDynamicPrefabOnServerAndStartLoadingOnAllClients(p.AssetGUID));
-            }
-
-            await Task.WhenAll(tasks);
-
-        }*/
 
         // placeholder until this is triggered by UI
         [ContextMenu(nameof(OnClickedShutdown))]

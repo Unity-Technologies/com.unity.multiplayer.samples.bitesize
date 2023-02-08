@@ -10,6 +10,9 @@ namespace Game.SynchronousDynamicPrefabSpawn
 {
     public class SynchronousDynamicPrefabSpawn : NetworkBehaviour
     {
+        [SerializeField]
+        NetworkManager m_NetworkManager;
+        
         [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabReferences;
         
         [SerializeField]
@@ -20,17 +23,15 @@ namespace Game.SynchronousDynamicPrefabSpawn
         float m_SynchronousSpawnTimeoutTimer;
         
         int m_SynchronousSpawnAckCount = 0;
-
-        DynamicPrefabLoadingUtilities m_DynamicPrefabLoadingUtilities;
         
         void Start()
         {
-            m_DynamicPrefabLoadingUtilities = new DynamicPrefabLoadingUtilities(NetworkManager.Singleton);
+            DynamicPrefabLoadingUtilities.Init(m_NetworkManager);
         }
         
         public override void OnDestroy()
         {
-            m_DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
+            DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
         
@@ -61,7 +62,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                     Value = guid
                 };
                 
-                if (m_DynamicPrefabLoadingUtilities.IsPrefabLoadedLocally(assetGuid))
+                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedLocally(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
                     var obj = await Spawn(assetGuid);
@@ -74,7 +75,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
                 //load the prefab on the server, so that any late-joiner will need to load that prefab also
-                await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
                 var requiredAcknowledgementsCount = IsHost ? NetworkManager.Singleton.ConnectedClients.Count - 1 : 
                     NetworkManager.Singleton.ConnectedClients.Count;
                 
@@ -99,7 +100,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
 
             async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
-                var prefab = await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
+                var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
                     m_ArtificialDelayMilliseconds);
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 obj.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
@@ -119,7 +120,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
             async void Load(AddressableGUID assetGuid)
             {
                 Debug.Log("Loading dynamic prefab on the client...");
-                await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
                 Debug.Log("Client loaded dynamic prefab");
                 AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
@@ -130,7 +131,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
         {
             m_SynchronousSpawnAckCount++;
             Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
-            m_DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
+            DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
         }
     }

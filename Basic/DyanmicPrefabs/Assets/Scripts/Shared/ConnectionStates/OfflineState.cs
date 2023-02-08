@@ -16,8 +16,7 @@ namespace Game
         
         public override void Enter()
         {
-            // TODO: clear this from here
-            //m_ConnectionManager.dynamicPrefabManager.UnloadAndReleaseAllDynamicPrefabs();
+            DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             m_ConnectionManager.networkManager.Shutdown();
         }
 

@@ -40,6 +40,10 @@ namespace Game
             {
                 m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
             }
+            else
+            {
+                Debug.Log($"Client {clientId} disconnected");
+            }
         }
     }
 }

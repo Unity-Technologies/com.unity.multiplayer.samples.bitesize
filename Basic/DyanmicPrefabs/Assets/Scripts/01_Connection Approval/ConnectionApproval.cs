@@ -5,18 +5,22 @@ namespace Game.ConnectionApproval
 {
     public class ConnectionApproval : NetworkBehaviour
     {
-        const int k_MaxConnectPayload = 1024;
+        [SerializeField]
+        NetworkManager m_NetworkManager;
         
-        DynamicPrefabLoadingUtilities m_DynamicPrefabLoadingUtilities;
+        const int k_MaxConnectPayload = 1024;
         
         void Start()
         {
-            m_DynamicPrefabLoadingUtilities = new DynamicPrefabLoadingUtilities(NetworkManager.Singleton);
+            DynamicPrefabLoadingUtilities.Init(m_NetworkManager);
+
+            m_NetworkManager.ConnectionApprovalCallback += ConnectionApprovalCallback;
         }
         
         public override void OnDestroy()
         {
-            m_DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
+            m_NetworkManager.ConnectionApprovalCallback -= ConnectionApprovalCallback;
+            DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
     
@@ -41,7 +45,7 @@ namespace Game.ConnectionApproval
                 return;
             }
     
-            if (m_DynamicPrefabLoadingUtilities.LoadedPrefabCount == 0)
+            if (DynamicPrefabLoadingUtilities.LoadedPrefabCount == 0)
             {
                 //immediately approve the connection if we haven't loaded any prefabs yet
                 Approve();
@@ -52,14 +56,14 @@ namespace Game.ConnectionApproval
             var connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload); // https://docs.unity3d.com/2020.2/Documentation/Manual/JSONSerialization.html
     
             int clientPrefabHash = connectionPayload.HashOfDynamicPrefabGUIDs;
-            int serverPrefabHash = m_DynamicPrefabLoadingUtilities.ServerPrefabHash;
+            int serverPrefabHash = DynamicPrefabLoadingUtilities.ServerPrefabHash;
             
             //if the client has the same prefabs as the server - approve the connection
             if (clientPrefabHash == serverPrefabHash)
             {
                 Approve();
 
-                m_DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAllPrefabs(clientId);
+                DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAllPrefabs(clientId);
                 
                 return;
             }
@@ -74,9 +78,9 @@ namespace Game.ConnectionApproval
             // only to tell the client "why" it failed -- the client should instead use services like UGS to fetch the
             // relevant data it needs to fetch & download.
 
-            m_DynamicPrefabLoadingUtilities.RefreshLoadedPrefabGuids();
+            DynamicPrefabLoadingUtilities.RefreshLoadedPrefabGuids();
 
-            response.Reason = m_DynamicPrefabLoadingUtilities.GenerateDisconnectionPayload();
+            response.Reason = DynamicPrefabLoadingUtilities.GenerateDisconnectionPayload();
             
             ImmediateDeny();
             

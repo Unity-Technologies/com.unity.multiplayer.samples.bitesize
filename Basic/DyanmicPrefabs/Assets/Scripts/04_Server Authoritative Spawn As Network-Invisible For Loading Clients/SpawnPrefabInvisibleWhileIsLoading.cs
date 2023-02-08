@@ -10,6 +10,9 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
 {
     public class SpawnPrefabInvisibleWhileIsLoading : NetworkBehaviour
     {
+        [SerializeField]
+        NetworkManager m_NetworkManager;
+        
         [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabReferences;
         
         [SerializeField]
@@ -17,17 +20,15 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
         
         //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
         Dictionary<int, HashSet<NetworkObject>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<NetworkObject>>();
-        
-        DynamicPrefabLoadingUtilities m_DynamicPrefabLoadingUtilities;
 
         void Start()
         {
-            m_DynamicPrefabLoadingUtilities = new DynamicPrefabLoadingUtilities(NetworkManager.Singleton);
+            DynamicPrefabLoadingUtilities.Init(m_NetworkManager);
         }
         
         public override void OnDestroy()
         {
-            m_DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
+            DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
         
@@ -67,7 +68,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
 
             async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
-                var prefab = await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, 
+                var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, 
                     m_ArtificialDelayMilliseconds);
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 
@@ -83,7 +84,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
                 obj.CheckObjectVisibility = (clientId) => 
                 {
                     //if the client has already loaded the prefab - we can make the object visible to them
-                    if (m_DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
+                    if (DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
                     {
                         return true;
                     }
@@ -123,7 +124,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
             async void Load(AddressableGUID assetGuid)
             {
                 Debug.Log("Loading dynamic prefab on the client...");
-                await m_DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
                 Debug.Log("Client loaded dynamic prefab");
                 AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
@@ -133,7 +134,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
-            m_DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
+            DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
            
             //the server has all the objects visible, no need to do anything

@@ -32,23 +32,23 @@ namespace Game
         void Awake()
         {
             DontDestroyOnLoad(this);
-            
+        }
+
+        void Start()
+        {
             m_Offline = new OfflineState(this);
             m_ClientConnecting = new ClientConnectingState(this);
             m_ClientConnected = new ClientConnectedState(this);
             m_ClientPreloading = new ClientPreloadingState(this);
             m_StartingHost = new StartingHostState(this);
             m_Hosting = new HostingState(this);
-        }
-
-        void Start()
-        {
+            
             m_CurrentState = m_Offline;
 
             networkManager.OnClientConnectedCallback += OnClientConnectedCallback;
             networkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
             networkManager.OnServerStarted += OnServerStarted;
-            networkManager.ConnectionApprovalCallback += ApprovalCheck;
+            //networkManager.ConnectionApprovalCallback += ApprovalCheck;
             networkManager.OnTransportFailure += OnTransportFailure;
         }
         
@@ -57,7 +57,7 @@ namespace Game
             networkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
             networkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
             networkManager.OnServerStarted -= OnServerStarted;
-            networkManager.ConnectionApprovalCallback -= ApprovalCheck;
+            //networkManager.ConnectionApprovalCallback -= ApprovalCheck;
             networkManager.OnTransportFailure -= OnTransportFailure;
         }
         
