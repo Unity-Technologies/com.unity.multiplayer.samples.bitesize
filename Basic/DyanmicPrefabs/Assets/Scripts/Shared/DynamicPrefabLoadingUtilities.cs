@@ -35,6 +35,11 @@ namespace Game
         public static bool IsPrefabLoadedOnAllClients(AddressableGUID assetGuid) => 
             s_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid);
 
+        public static bool TryGetLoadedGameObjectFromGuid(AddressableGUID assetGuid, out AsyncOperationHandle<GameObject> loadedGameObject)
+        {
+            return s_LoadedDynamicPrefabResourceHandles.TryGetValue(assetGuid, out loadedGameObject);
+        }
+
         public static int LoadedPrefabCount => s_LoadedDynamicPrefabResourceHandles.Count;
 
         public static int ServerPrefabHash => s_HashOfDynamicPrefabGUIDs;

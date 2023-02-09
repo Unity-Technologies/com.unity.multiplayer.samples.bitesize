@@ -72,7 +72,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                 if (DynamicPrefabLoadingUtilities.IsPrefabLoadedOnAllClients(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
-                    var obj = await Spawn(assetGuid);
+                    var obj = Spawn(assetGuid);
                     return (true, obj);
                 }
                 
@@ -91,7 +91,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                     if (m_SynchronousSpawnAckCount >= requiredAcknowledgementsCount)
                     {
                         Debug.Log($"All clients have loaded the prefab in {m_SynchronousSpawnTimeoutTimer} seconds, spawning the prefab on the server...");
-                        var obj = await Spawn(assetGuid);
+                        var obj = Spawn(assetGuid);
                         return (true, obj);
                     }
                     
@@ -105,11 +105,14 @@ namespace Game.SynchronousDynamicPrefabSpawn
 
             return (false, null);
 
-            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
+            NetworkObject Spawn(AddressableGUID assetGuid)
             {
-                var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
-                    m_ArtificialDelayMilliseconds);
-                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
+                if (!DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var prefab))
+                {
+                    Debug.LogWarning($"GUID {assetGuid} is not a GUID of a previously loaded prefab. Failed to spawn a prefab.");
+                    return null;
+                }
+                var obj = Instantiate(prefab.Result, position, rotation).GetComponent<NetworkObject>();
                 obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
