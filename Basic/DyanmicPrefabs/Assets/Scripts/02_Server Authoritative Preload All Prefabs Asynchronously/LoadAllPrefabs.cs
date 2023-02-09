@@ -7,7 +7,11 @@ using UnityEngine.AddressableAssets;
 
 namespace Game.LoadAllPrefabs
 {
-    public class LoadAllPrefabs : NetworkBehaviour
+    /// <summary>
+    /// A simple use case where the server notifies all clients to preload a collection of network prefabs. The server
+    /// will not invoke a spawn in this use case, and will incrementally load each dynamic prefab, one prefab at a time.
+    /// </summary>
+    public sealed class LoadAllPrefabs : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -51,14 +55,14 @@ namespace Game.LoadAllPrefabs
         /// <param name="guid"></param>
         async Task PreloadDynamicPrefabOnServerAndStartLoadingOnAllClients(string guid)
         {
-            if (NetworkManager.Singleton.IsServer)
+            if (m_NetworkManager.IsServer)
             {
                 var assetGuid = new AddressableGUID()
                 {
                     Value = guid
                 };
                 
-                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedLocally(assetGuid))
+                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedOnAllClients(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers");
                     return;
@@ -90,7 +94,7 @@ namespace Game.LoadAllPrefabs
         [ServerRpc(RequireOwnership = false)]
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
-            Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
+            Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, rpcParams.Receive.SenderClientId);
         }
     }

@@ -17,7 +17,7 @@ namespace Game
         [SerializeField] GameObject m_SpawnUI;
 
         [SerializeField]
-        ConnectionManager m_ConnectionManager;
+        OptionalConnectionManager m_ConnectionManager;
 
         public void StartClient()
         {

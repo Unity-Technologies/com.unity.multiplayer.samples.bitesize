@@ -9,7 +9,7 @@ namespace Game
     /// </summary>
     class OfflineState : ConnectionState
     {
-        public OfflineState(ConnectionManager connectionManager)
+        public OfflineState(OptionalConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
         }
@@ -17,7 +17,7 @@ namespace Game
         public override void Enter()
         {
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
-            m_ConnectionManager.networkManager.Shutdown();
+            m_ConnectionManager.m_NetworkManager.Shutdown();
         }
 
         public override void Exit() { }

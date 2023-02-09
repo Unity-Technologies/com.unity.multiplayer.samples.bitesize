@@ -16,14 +16,14 @@ namespace Game
     {
         public DisconnectionPayload disconnectionPayload;
 
-        public ClientPreloadingState(ConnectionManager connectionManager)
+        public ClientPreloadingState(OptionalConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
         }
 
         public override void Enter()
         {
-            m_ConnectionManager.networkManager.Shutdown();
+            m_ConnectionManager.m_NetworkManager.Shutdown();
             HandleDisconnectReason(); 
         }
 

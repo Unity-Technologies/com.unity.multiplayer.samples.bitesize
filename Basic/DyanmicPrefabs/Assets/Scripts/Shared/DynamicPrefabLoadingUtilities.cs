@@ -8,6 +8,14 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game
 {
+    /// <summary>
+    /// A utilities class to handle the loading, tracking, and disposing of loaded network prefabs. Connection and
+    /// disconnection payloads can be easily accessed from this class as well.
+    /// </summary>
+    /// <remarks>
+    /// Artificial delay to the loading of a network prefab is disabled by default. To enable it, make sure to add
+    /// ENABLE_ARTIFICIAL_DELAY as a scripting define symbol to your project's Player settings.
+    /// </remarks>
     public static class DynamicPrefabLoadingUtilities
     {
         const int k_EmptyDynamicPrefabHash = -1;
@@ -24,7 +32,7 @@ namespace Game
         public static bool HasClientLoadedPrefab(ulong clientId, int prefabHash) => 
             s_PrefabHashToClientIds.TryGetValue(prefabHash, out var clientIds) && clientIds.Contains(clientId);
 
-        public static bool IsPrefabLoadedLocally(AddressableGUID assetGuid) => 
+        public static bool IsPrefabLoadedOnAllClients(AddressableGUID assetGuid) => 
             s_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid);
 
         public static int LoadedPrefabCount => s_LoadedDynamicPrefabResourceHandles.Count;

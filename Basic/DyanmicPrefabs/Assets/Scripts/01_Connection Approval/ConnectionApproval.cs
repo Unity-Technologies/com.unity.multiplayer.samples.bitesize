@@ -1,12 +1,24 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Game.ConnectionApproval
 {
-    public class ConnectionApproval : NetworkBehaviour
+    /// <summary>
+    /// A class that walks through what a server would need to validate from a client when dynamically loading network
+    /// prefabs. This is another simple use case scenario, as this is just the implementation of the connection approval
+    /// callback, which is an optional feature from Netcode for GameObjects. To enable it, make sure the "Connection
+    /// Approval" toggle is enabled on the NetworkManager in your scene. Other use cases don't allow for connection
+    /// after the server has loaded a prefab dynamically, whereas this one enables that functionality. To see it all in
+    /// harmony, see <see cref="APIPlayground"/>, where all post-connection techniques are showcased in one scene.
+    /// </summary>
+    public sealed class ConnectionApproval : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
+
+        [SerializeField]
+        AssetReferenceGameObject m_AssetReferenceGameObject;
         
         const int k_MaxConnectPayload = 1024;
         
@@ -15,22 +27,36 @@ namespace Game.ConnectionApproval
             DynamicPrefabLoadingUtilities.Init(m_NetworkManager);
 
             m_NetworkManager.ConnectionApprovalCallback += ConnectionApprovalCallback;
+
+            // to force a simple connection approval on all joining clients, the server will load a dynamic prefab as
+            // soon as the server is started
+            // for more complex use cases where the server must wait for all connected clients to load the same network
+            // prefab, see the other use cases inside this sample
+            m_NetworkManager.OnServerStarted += LoadAPrefab;
         }
-        
+
+        async void LoadAPrefab()
+        {
+            await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(
+                new AddressableGUID() { Value = m_AssetReferenceGameObject.AssetGUID}, 
+                0);
+        }
+
         public override void OnDestroy()
         {
             m_NetworkManager.ConnectionApprovalCallback -= ConnectionApprovalCallback;
+            m_NetworkManager.OnServerStarted -= LoadAPrefab;
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
     
-        public void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+        void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            Debug.Log("Client is trying to connect " + request.ClientNetworkId);
+            Debug.Log($"Client {request.ClientNetworkId} is trying to connect ");
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
             
-            if (clientId == NetworkManager.Singleton.LocalClientId)
+            if (clientId == m_NetworkManager.LocalClientId)
             {
                 //allow the host to connect
                 Approve();
@@ -91,12 +117,14 @@ namespace Game.ConnectionApproval
     
             void Approve()
             {
+                Debug.Log($"Client {clientId} approved");
                 response.Approved = true;
                 response.CreatePlayerObject = false; //we're not going to spawn a player object for this sample
             }
             
             void ImmediateDeny()
             {
+                Debug.Log($"Client {clientId} denied connection");
                 response.Approved = false;
                 response.CreatePlayerObject = false;
             }

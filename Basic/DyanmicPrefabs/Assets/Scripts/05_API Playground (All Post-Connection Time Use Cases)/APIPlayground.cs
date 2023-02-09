@@ -8,7 +8,27 @@ using Random = UnityEngine.Random;
 
 namespace Game.APIPlayground
 {
-    public class APIPlayground : NetworkBehaviour
+    /// <summary>
+    /// This class serves as the playground of the dynamic prefab loading use cases. It integrates API from this sample
+    /// to use at post-connection time such as: connection approval for syncing late-joining clients, dynamically
+    /// loading a collection of network prefabs on the host and all connected clients, synchronously spawning a
+    /// dynamically loaded network prefab across connected clients, and spawning a dynamically loaded network prefab as
+    /// network-invisible for all clients until they load the prefab locally (in which case it becomes visible to the
+    /// client).
+    /// <remarks>
+    /// Assumption: Addressables are loadable, ie when the client tries to load it - it will not fail.
+    /// Improvement ideas:
+    /// - it's possible to have more advanced logic that would for instance kick players that are consistently failing
+    /// to load an addressable
+    /// - Addressable guid list could be compressed before being sent
+    /// - Instead of Addressable guids the peers could exchange a `short` index that would refer to Addressables in some
+    /// kind of a list stored in a ScriptableObject. That would reduce the amount of data that's being exchanged quite
+    /// drastically.
+    /// Last note: this sample does not cover the case of addressable usage when the client is loading custom visual
+    /// prefabs and swapping out the rendering object for essentially non-dynamic prefabs
+    /// </remarks>
+    /// </summary>
+    public sealed class APIPlayground : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -48,7 +68,7 @@ namespace Game.APIPlayground
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
             
-            if (clientId == NetworkManager.Singleton.LocalClientId)
+            if (clientId == m_NetworkManager.LocalClientId)
             {
                 //allow the host to connect
                 Approve();
@@ -109,12 +129,14 @@ namespace Game.APIPlayground
     
             void Approve()
             {
+                Debug.Log($"Client {clientId} approved");
                 response.Approved = true;
                 response.CreatePlayerObject = false; //we're not going to spawn a player object for this sample
             }
             
             void ImmediateDeny()
             {
+                Debug.Log($"Client {clientId} denied connection");
                 response.Approved = false;
                 response.CreatePlayerObject = false;
             }
@@ -155,14 +177,14 @@ namespace Game.APIPlayground
         /// <param name="guid"></param>
         async Task PreloadDynamicPrefabOnServerAndStartLoadingOnAllClients(string guid)
         {
-            if (NetworkManager.Singleton.IsServer)
+            if (m_NetworkManager.IsServer)
             {
                 var assetGuid = new AddressableGUID()
                 {
                     Value = guid
                 };
                 
-                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedLocally(assetGuid))
+                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedOnAllClients(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers");
                     return;
@@ -195,7 +217,7 @@ namespace Game.APIPlayground
                     Value = guid
                 };
                 
-                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedLocally(assetGuid))
+                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedOnAllClients(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
                     var obj = await Spawn(assetGuid);
@@ -209,8 +231,8 @@ namespace Game.APIPlayground
                 LoadAddressableClientRpc(assetGuid);
                 //load the prefab on the server, so that any late-joiner will need to load that prefab also
                 await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
-                var requiredAcknowledgementsCount = IsHost ? NetworkManager.Singleton.ConnectedClients.Count - 1 : 
-                    NetworkManager.Singleton.ConnectedClients.Count;
+                var requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : 
+                    m_NetworkManager.ConnectedClients.Count;
                 
                 while (m_SynchronousSpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
                 {
@@ -236,7 +258,7 @@ namespace Game.APIPlayground
                 var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
                     m_ArtificialDelayMilliseconds);
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
+                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
             }
@@ -297,7 +319,7 @@ namespace Game.APIPlayground
                     return false;
                 };
                 
-                obj.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
+                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
 
                 return obj;
             }
@@ -338,12 +360,12 @@ namespace Game.APIPlayground
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             m_SynchronousSpawnAckCount++;
-            Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
+            Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
            
             //the server has all the objects visible, no need to do anything
-            if (rpcParams.Receive.SenderClientId != NetworkManager.Singleton.LocalClientId)
+            if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }

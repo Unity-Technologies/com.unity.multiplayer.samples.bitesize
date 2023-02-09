@@ -8,7 +8,14 @@ using Random = UnityEngine.Random;
 
 namespace Game.SpawnPrefabInvisibleWhileIsLoading
 {
-    public class SpawnPrefabInvisibleWhileIsLoading : NetworkBehaviour
+    /// <summary>
+    /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab via a
+    /// ClientRpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible
+    /// only to clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it
+    /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as visible to that
+    /// client.
+    /// </summary>
+    public sealed class SpawnPrefabInvisibleWhileIsLoading : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -93,7 +100,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
                     return false;
                 };
                 
-                obj.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
+                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
 
                 return obj;
             }
@@ -133,12 +140,12 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
         [ServerRpc(RequireOwnership = false)]
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
-            Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
+            Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
            
             //the server has all the objects visible, no need to do anything
-            if (rpcParams.Receive.SenderClientId != NetworkManager.Singleton.LocalClientId)
+            if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }

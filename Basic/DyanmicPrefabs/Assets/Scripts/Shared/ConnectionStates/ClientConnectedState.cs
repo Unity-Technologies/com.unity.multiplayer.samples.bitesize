@@ -8,7 +8,7 @@ namespace Game
     /// </summary>
     class ClientConnectedState : ConnectionState
     {
-        public ClientConnectedState(ConnectionManager connectionManager)
+        public ClientConnectedState(OptionalConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
         }

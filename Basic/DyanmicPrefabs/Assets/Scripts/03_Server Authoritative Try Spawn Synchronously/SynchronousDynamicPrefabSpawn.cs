@@ -8,7 +8,14 @@ using Random = UnityEngine.Random;
 
 namespace Game.SynchronousDynamicPrefabSpawn
 {
-    public class SynchronousDynamicPrefabSpawn : NetworkBehaviour
+    /// <summary>
+    /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab, and
+    /// will only invoke a spawn once all clients have successfully completed their respective loads of said prefab. The
+    /// server will initially send a ClientRpc to all clients, begin loading the prefab on the server, will await
+    /// acknowledgement of a load via ServerRpcs from each client, and will only spawn the prefab over the network once
+    /// it has received an acknowledgement from every client, within m_SynchronousSpawnTimeoutTimer seconds.
+    /// </summary>
+    public sealed class SynchronousDynamicPrefabSpawn : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -62,7 +69,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                     Value = guid
                 };
                 
-                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedLocally(assetGuid))
+                if (DynamicPrefabLoadingUtilities.IsPrefabLoadedOnAllClients(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
                     var obj = await Spawn(assetGuid);
@@ -76,8 +83,8 @@ namespace Game.SynchronousDynamicPrefabSpawn
                 LoadAddressableClientRpc(assetGuid);
                 //load the prefab on the server, so that any late-joiner will need to load that prefab also
                 await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
-                var requiredAcknowledgementsCount = IsHost ? NetworkManager.Singleton.ConnectedClients.Count - 1 : 
-                    NetworkManager.Singleton.ConnectedClients.Count;
+                var requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : 
+                    m_NetworkManager.ConnectedClients.Count;
                 
                 while (m_SynchronousSpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
                 {
@@ -103,7 +110,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                 var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
                     m_ArtificialDelayMilliseconds);
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(NetworkManager.Singleton.LocalClientId);
+                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
             }
@@ -130,7 +137,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             m_SynchronousSpawnAckCount++;
-            Debug.Log("Client acknowledged successful prefab load with hash: " + prefabHash);
+            Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
         }
