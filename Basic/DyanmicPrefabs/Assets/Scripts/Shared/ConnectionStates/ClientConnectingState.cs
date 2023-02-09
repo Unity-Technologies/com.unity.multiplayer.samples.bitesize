@@ -10,7 +10,7 @@ namespace Game
     /// </summary>
     class ClientConnectingState : ConnectionState
     {
-        public ClientConnectingState(ConnectionManager connectionManager)
+        public ClientConnectingState(OptionalConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
         }
@@ -24,14 +24,12 @@ namespace Game
         
         void StartClient()
         {
-            Debug.Log(nameof(StartClient));
-            
-            m_ConnectionManager.networkManager.NetworkConfig.ForceSamePrefabs = false;
-            var transport = m_ConnectionManager.networkManager.GetComponent<UnityTransport>();
+            m_ConnectionManager.m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
+            var transport = m_ConnectionManager.m_NetworkManager.GetComponent<UnityTransport>();
             transport.SetConnectionData(m_ConnectionManager.m_ConnectAddress, m_ConnectionManager.m_Port);
-            m_ConnectionManager.networkManager.NetworkConfig.ConnectionData = 
-                m_ConnectionManager.dynamicPrefabManager.GenerateRequestPayload();
-            m_ConnectionManager.networkManager.StartClient();
+            m_ConnectionManager.m_NetworkManager.NetworkConfig.ConnectionData = 
+                DynamicPrefabLoadingUtilities.GenerateRequestPayload();
+            m_ConnectionManager.m_NetworkManager.StartClient();
         }
         
         public override void OnClientConnected(ulong _)
@@ -42,7 +40,7 @@ namespace Game
         public override void OnClientDisconnect(ulong _)
         {
             // client ID is for sure ours here
-            var disconnectReason = m_ConnectionManager.networkManager.DisconnectReason;
+            var disconnectReason = m_ConnectionManager.m_NetworkManager.DisconnectReason;
             if (string.IsNullOrEmpty(disconnectReason))
             {
                 m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);

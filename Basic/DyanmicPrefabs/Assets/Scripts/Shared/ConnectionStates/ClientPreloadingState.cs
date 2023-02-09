@@ -16,14 +16,14 @@ namespace Game
     {
         public DisconnectionPayload disconnectionPayload;
 
-        public ClientPreloadingState(ConnectionManager connectionManager)
+        public ClientPreloadingState(OptionalConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
         }
 
         public override void Enter()
         {
-            m_ConnectionManager.networkManager.Shutdown();
+            m_ConnectionManager.m_NetworkManager.Shutdown();
             HandleDisconnectReason(); 
         }
 
@@ -34,7 +34,7 @@ namespace Game
                 GUIDs = disconnectionPayload.guids.Select(item => new AddressableGUID() { Value = item }).ToArray()
             };
 
-            await m_ConnectionManager.dynamicPrefabManager.LoadDynamicPrefabs(addressableGuidCollection);
+            await DynamicPrefabLoadingUtilities.LoadDynamicPrefabs(addressableGuidCollection);
             Debug.Log("Restarting client");
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientConnecting);
         }
