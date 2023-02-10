@@ -58,8 +58,9 @@ public class HostJoinUI : MonoBehaviour
 
     void SingletonOnOnClientDisconnectCallback(ulong obj)
     {
-        SetUIElementVisibility(m_IPMenuUIRoot, false);
-        SetUIElementVisibility(m_ConnectionTypeUIRoot, true);
+        // todo: add logic for server to not do it when a different client disconnects
+        SetUIElementVisibility(m_IPMenuUIRoot, true);
+        SetUIElementVisibility(m_ConnectionTypeUIRoot, false);
     }
 
     void StartHost()
