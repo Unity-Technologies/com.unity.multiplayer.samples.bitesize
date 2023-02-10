@@ -150,6 +150,10 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
             //the server has all the objects visible, no need to do anything
             if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
+                // Note: there's a potential security risk here if this technique is tied with gameplay that uses
+                // a NetworkObject's Show() and Hide() methods. For example, a malicious player could invoke a similar
+                // ServerRpc with the guids of enemy players, and it would make those enemies visible to that player,
+                // giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
         }
