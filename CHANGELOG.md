@@ -4,7 +4,26 @@
 
 ### 2DSpaceShooter
 
-### Fixed
+#### Fixed
+- Resolved issue where the colour of powerups was not displayed correctly (#91)
+
+#### Changed
+- Upgraded sample to 2021.3.18f1 LTS (#91)
+
+### Client Driven
+
+#### Changed
+- Upgraded sample to 2021.3.18f1 LTS (#91)
+
+### Invaders
+
+#### Changed
+- Upgraded sample to 2021.3.18f1 LTS (#91)
+
+
+### 2DSpaceShooter
+
+#### Fixed
 - Removing warning when spawning powerups (#90). Fixed the order in which powerups were spawned and when their NetworkVariable value was initialized. Now they are spawned beforehand.
 - Fixing bullet explosion desync (#89). Bullet explosion vfx were happening too early on clients because of NetworkTransform's interpolation. Bullets are now no longer synchronised by NetworkTransforms and instead only have their velocity set through client rpcs when they are spawned. Since they are no longer interpolated, they are not lagging behind the server and are at the correct position when they receive the despawn message from the server.
 
@@ -41,7 +60,7 @@
 
 ### Invaders
 
-### Fixed
+#### Fixed
 - Fixing NotServerException [MTT-4029] (#59)
 - Despawning enemies instead of destroying them (#74)
 

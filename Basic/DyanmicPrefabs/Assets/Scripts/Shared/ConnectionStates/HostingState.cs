@@ -1,4 +1,3 @@
-using Unity.Netcode;
 using UnityEngine;
 
 namespace Game
@@ -9,7 +8,7 @@ namespace Game
     /// </summary>
     class HostingState : ConnectionState
     {
-        public HostingState(ConnectionManager connectionManager)
+        public HostingState(OptionalConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
         }
@@ -17,11 +16,6 @@ namespace Game
         public override void Enter() { }
 
         public override void Exit() { }
-        
-        public override void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
-        {
-            m_ConnectionManager.dynamicPrefabManager.ConnectionApprovalCallback(request, response);
-        }
 
         public override void OnUserRequestedShutdown()
         {
@@ -35,9 +29,13 @@ namespace Game
         
         public override void OnClientDisconnect(ulong clientId)
         {
-            if (clientId == m_ConnectionManager.networkManager.LocalClientId)
+            if (clientId == m_ConnectionManager.m_NetworkManager.LocalClientId)
             {
                 m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
+            }
+            else
+            {
+                Debug.Log($"Client {clientId} disconnected");
             }
         }
     }

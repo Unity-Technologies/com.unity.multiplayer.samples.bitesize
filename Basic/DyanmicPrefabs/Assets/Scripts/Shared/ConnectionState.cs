@@ -1,5 +1,4 @@
 using System;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace Game
@@ -9,7 +8,7 @@ namespace Game
     /// </summary>
     abstract class ConnectionState
     {
-        protected ConnectionManager m_ConnectionManager;
+        protected OptionalConnectionManager m_ConnectionManager;
 
         public abstract void Enter();
 
@@ -26,8 +25,6 @@ namespace Game
         public virtual void StartHostIP(string ipaddress, ushort port) { }
 
         public virtual void OnUserRequestedShutdown() { }
-
-        public virtual void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response) { }
 
         public virtual void OnTransportFailure() { }
     }

@@ -6,12 +6,13 @@ namespace Game
 {
     /// <summary>
     /// A state machine to track a client's connection state.
+    /// Note: this class is not absolutely necessary for dynamic prefab loading. It is simply added to for simpler
+    /// navigation of code through the different states of connection, particularly client reconnection.
     /// </summary>
-    public class ConnectionManager : MonoBehaviour
+    public class OptionalConnectionManager : MonoBehaviour
     {
-        public DynamicPrefabManager dynamicPrefabManager;
-        
-        public NetworkManager networkManager;
+        [SerializeField]
+        internal NetworkManager m_NetworkManager;
         
         ConnectionState m_CurrentState;
         
@@ -34,33 +35,31 @@ namespace Game
         void Awake()
         {
             DontDestroyOnLoad(this);
-            
+        }
+
+        void Start()
+        {
             m_Offline = new OfflineState(this);
             m_ClientConnecting = new ClientConnectingState(this);
             m_ClientConnected = new ClientConnectedState(this);
             m_ClientPreloading = new ClientPreloadingState(this);
             m_StartingHost = new StartingHostState(this);
             m_Hosting = new HostingState(this);
-        }
-
-        void Start()
-        {
+            
             m_CurrentState = m_Offline;
 
-            networkManager.OnClientConnectedCallback += OnClientConnectedCallback;
-            networkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
-            networkManager.OnServerStarted += OnServerStarted;
-            networkManager.ConnectionApprovalCallback += ApprovalCheck;
-            networkManager.OnTransportFailure += OnTransportFailure;
+            m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
+            m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
+            m_NetworkManager.OnServerStarted += OnServerStarted;
+            m_NetworkManager.OnTransportFailure += OnTransportFailure;
         }
         
         void OnDestroy()
         {
-            networkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
-            networkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
-            networkManager.OnServerStarted -= OnServerStarted;
-            networkManager.ConnectionApprovalCallback -= ApprovalCheck;
-            networkManager.OnTransportFailure -= OnTransportFailure;
+            m_NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
+            m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+            m_NetworkManager.OnServerStarted -= OnServerStarted;
+            m_NetworkManager.OnTransportFailure -= OnTransportFailure;
         }
         
         void OnClientConnectedCallback(ulong clientId)
@@ -76,11 +75,6 @@ namespace Game
         void OnServerStarted()
         {
             m_CurrentState.OnServerStarted();
-        }
-        
-        void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
-        {
-            m_CurrentState.ApprovalCheck(request, response);
         }
         
         void OnTransportFailure()
