@@ -1,5 +1,5 @@
 
-![Banner](resources/readme-banner.png)
+![Banner](Resources/readme-banner.png)
 # Netcode for GameObjects Bitesize Samples
 
 |Unity Version|Netcode Version|Latest Release|
