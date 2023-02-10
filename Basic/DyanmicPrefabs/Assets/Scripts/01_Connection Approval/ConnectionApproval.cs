@@ -81,8 +81,8 @@ namespace Game.ConnectionApproval
             var payload = System.Text.Encoding.UTF8.GetString(connectionData);
             var connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload); // https://docs.unity3d.com/2020.2/Documentation/Manual/JSONSerialization.html
     
-            int clientPrefabHash = connectionPayload.HashOfDynamicPrefabGUIDs;
-            int serverPrefabHash = DynamicPrefabLoadingUtilities.ServerPrefabHash;
+            int clientPrefabHash = connectionPayload.hashOfDynamicPrefabGUIDs;
+            int serverPrefabHash = DynamicPrefabLoadingUtilities.HashOfDynamicPrefabGUIDs;
             
             //if the client has the same prefabs as the server - approve the connection
             if (clientPrefabHash == serverPrefabHash)

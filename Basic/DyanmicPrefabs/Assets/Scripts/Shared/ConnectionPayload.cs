@@ -7,7 +7,7 @@ namespace Game
     [Serializable]
     public class ConnectionPayload
     {
-        public int HashOfDynamicPrefabGUIDs;
+        public int hashOfDynamicPrefabGUIDs;
     }
     
     [Serializable]

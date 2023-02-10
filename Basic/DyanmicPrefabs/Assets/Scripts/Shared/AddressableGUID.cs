@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
 
@@ -22,6 +23,19 @@ namespace Game
         public override string ToString()
         {
             return Value.ToString();
+        }
+    }
+    
+    public class AddressableGUIDEqualityComparer : IEqualityComparer<AddressableGUID>
+    {
+        public int GetHashCode(AddressableGUID addressableGUID)
+        {
+            return addressableGUID.GetHashCode();
+        }
+
+        public bool Equals(AddressableGUID x, AddressableGUID y)
+        {
+            return x.GetHashCode().Equals(y.GetHashCode());
         }
     }
 }

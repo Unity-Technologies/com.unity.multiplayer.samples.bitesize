@@ -20,9 +20,9 @@ namespace Game
     {
         const int k_EmptyDynamicPrefabHash = -1;
 
-        static int s_HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
+        public static int HashOfDynamicPrefabGUIDs { get; private set; } = k_EmptyDynamicPrefabHash;
 
-        static Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> s_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>();
+        static Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> s_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>(new AddressableGUIDEqualityComparer());
         
         static List<AddressableGUID> s_DynamicPrefabGUIDs = new List<AddressableGUID>(); //cached list to avoid GC
 
@@ -41,8 +41,6 @@ namespace Game
         }
 
         public static int LoadedPrefabCount => s_LoadedDynamicPrefabResourceHandles.Count;
-
-        public static int ServerPrefabHash => s_HashOfDynamicPrefabGUIDs;
 
         static NetworkManager s_NetworkManager;
 
@@ -77,7 +75,7 @@ namespace Game
         {
             var payload = JsonUtility.ToJson(new ConnectionPayload()
             {
-                HashOfDynamicPrefabGUIDs = s_HashOfDynamicPrefabGUIDs
+                hashOfDynamicPrefabGUIDs = HashOfDynamicPrefabGUIDs
             });
 
             return System.Text.Encoding.UTF8.GetBytes(payload);
@@ -152,7 +150,7 @@ namespace Game
             //it's possible to use an order-independent hashing algorithm for some potential performance gains
             RefreshLoadedPrefabGuids();
             s_DynamicPrefabGUIDs.Sort((a, b) => a.Value.CompareTo(b.Value));
-            s_HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
+            HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
             
             //a simple hash combination algorithm suggested by Jon Skeet,
             //found here: https://stackoverflow.com/questions/1646807/quick-and-simple-hash-code-combinations
@@ -165,15 +163,15 @@ namespace Game
                     hash = hash * 31 + s_DynamicPrefabGUIDs[i].GetHashCode();
                 }
 
-                s_HashOfDynamicPrefabGUIDs = hash;
+                HashOfDynamicPrefabGUIDs = hash;
             }
 
-            Debug.Log($"Calculated hash of dynamic prefabs: {s_HashOfDynamicPrefabGUIDs}");
+            Debug.Log($"Calculated hash of dynamic prefabs: {HashOfDynamicPrefabGUIDs}");
         }
         
         public static void UnloadAndReleaseAllDynamicPrefabs()
         {
-            s_HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
+            HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
             
             foreach (var handle in s_LoadedDynamicPrefabResourceHandles.Values)
             {
