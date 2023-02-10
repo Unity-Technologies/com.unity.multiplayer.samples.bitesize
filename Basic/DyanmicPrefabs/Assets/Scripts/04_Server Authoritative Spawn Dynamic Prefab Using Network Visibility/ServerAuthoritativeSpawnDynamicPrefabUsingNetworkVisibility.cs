@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
-namespace Game.SpawnPrefabInvisibleWhileIsLoading
+namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
 {
     /// <summary>
     /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab via a
@@ -15,7 +15,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
     /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as visible to that
     /// client.
     /// </summary>
-    public sealed class SpawnPrefabInvisibleWhileIsLoading : NetworkBehaviour
+    public sealed class ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -100,7 +100,7 @@ namespace Game.SpawnPrefabInvisibleWhileIsLoading
                     return false;
                 };
                 
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
+                obj.Spawn();
 
                 return obj;
             }

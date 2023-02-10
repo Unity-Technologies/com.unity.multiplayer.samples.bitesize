@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game.ConnectionApproval
+namespace Game.ConnectionApprovalRequiredForLateJoining
 {
     /// <summary>
     /// A class that walks through what a server would need to validate from a client when dynamically loading network
@@ -12,7 +12,7 @@ namespace Game.ConnectionApproval
     /// after the server has loaded a prefab dynamically, whereas this one enables that functionality. To see it all in
     /// harmony, see <see cref="APIPlayground"/>, where all post-connection techniques are showcased in one scene.
     /// </summary>
-    public sealed class ConnectionApproval : NetworkBehaviour
+    public sealed class ConnectionApprovalRequiredForLateJoining : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;

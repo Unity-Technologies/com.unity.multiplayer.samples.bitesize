@@ -4,14 +4,14 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game.Preloading
+namespace Game.PreloadingDynamicPrefabs
 {
     /// <summary>
     /// This is the simplest case of a dynamic prefab - we just add it to the list of prefabs before we start the server
     /// at this point we can also easily change the PlayerPrefab. What's important is that it doesn't really matter
     /// where the prefab comes from, it could be a simple prefab or it could be an Addressable - it's all the same. 
     /// </summary>
-    public sealed class PreloadingSample : MonoBehaviour
+    public sealed class PreloadingDynamicPrefabs : MonoBehaviour
     {
         [SerializeField] AssetReferenceGameObject m_DynamicPrefabReference;
         

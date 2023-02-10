@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
-namespace Game.SynchronousDynamicPrefabSpawn
+namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
 {
     /// <summary>
     /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab, and
@@ -15,7 +15,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
     /// acknowledgement of a load via ServerRpcs from each client, and will only spawn the prefab over the network once
     /// it has received an acknowledgement from every client, within m_SynchronousSpawnTimeoutTimer seconds.
     /// </summary>
-    public sealed class SynchronousDynamicPrefabSpawn : NetworkBehaviour
+    public sealed class ServerAuthoritativeSynchronousDynamicPrefabSpawn : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -113,7 +113,7 @@ namespace Game.SynchronousDynamicPrefabSpawn
                     return null;
                 }
                 var obj = Instantiate(prefab.Result, position, rotation).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
+                obj.Spawn();
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
             }

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
-namespace Game.APIPlayground
+namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
 {
     /// <summary>
     /// This class serves as the playground of the dynamic prefab loading use cases. It integrates API from this sample
@@ -28,7 +28,7 @@ namespace Game.APIPlayground
     /// prefabs and swapping out the rendering object for essentially non-dynamic prefabs
     /// </remarks>
     /// </summary>
-    public sealed class APIPlayground : NetworkBehaviour
+    public sealed class APIPlaygroundShowcasingAllPostConnectionUseCases : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -258,7 +258,7 @@ namespace Game.APIPlayground
                 var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
                     m_ArtificialDelayMilliseconds);
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
+                obj.Spawn();
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
             }
@@ -319,7 +319,7 @@ namespace Game.APIPlayground
                     return false;
                 };
                 
-                obj.SpawnWithOwnership(m_NetworkManager.LocalClientId);
+                obj.Spawn();
 
                 return obj;
             }
