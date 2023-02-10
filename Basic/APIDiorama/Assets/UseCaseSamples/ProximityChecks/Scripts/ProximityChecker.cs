@@ -10,6 +10,9 @@ namespace Unity.Netcode.Samples.APIDiorama
     {
         [SerializeField, Tooltip("At which distance will the player be considered 'close'?")]
         float m_ActivationRadius = 1;
+
+        [SerializeField, Tooltip("A visual representation of the radius?")]
+        Transform m_RadiusRepresentation;
         Transform m_Transform;
 
         event Action<bool> OnLocalPlayerProximityStatusChanged;
@@ -17,6 +20,11 @@ namespace Unity.Netcode.Samples.APIDiorama
         void Awake()
         {
             m_Transform = transform;
+            if (m_RadiusRepresentation)
+            {
+                const float k_OffsetFromGround = 0.01f;
+                m_RadiusRepresentation.transform.localPosition = new Vector3(0, (m_Transform.lossyScale.y / -2) + k_OffsetFromGround, 0);
+            }
         }
 
         internal void AddListener(Action<bool> callback)
@@ -31,6 +39,10 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void Update()
         {
+            if (m_RadiusRepresentation)
+            {
+                m_RadiusRepresentation.localScale = new Vector3(m_ActivationRadius * 2, m_RadiusRepresentation.localScale.y, m_ActivationRadius * 2);
+            }
             bool oldValue = LocalPlayerIsClose;
             LocalPlayerIsClose = LocalPlayerIsCloseEnough(m_Transform.position, m_ActivationRadius);
             if (oldValue != LocalPlayerIsClose)
