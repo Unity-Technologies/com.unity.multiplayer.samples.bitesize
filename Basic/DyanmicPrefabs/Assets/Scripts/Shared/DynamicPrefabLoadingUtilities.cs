@@ -51,6 +51,11 @@ namespace Game
             s_NetworkManager = networkManager;
         }
 
+        /// <remarks>
+        /// This is not the most optimal algorithm for big quantities of Addressables, but easy enough to maintain for a
+        /// small number like in this sample. One could use a "client dirty" algorithm to mark clients needing loading
+        /// or not instead, but that would require more complex dirty management.
+        /// </remarks>
         public static void RecordThatClientHasLoadedAllPrefabs(ulong clientId)
         {
             foreach (var dynamicPrefabGUID in s_DynamicPrefabGUIDs)
@@ -81,6 +86,15 @@ namespace Game
             return System.Text.Encoding.UTF8.GetBytes(payload);
         }
 
+        /// <remarks>
+        /// Testing showed that with the current implementation, Netcode for GameObjects will send the DisconnectReason
+        /// message as a non-fragmented message, meaning that the upper limit of this message in bytes is exactly
+        /// NON_FRAGMENTED_MESSAGE_MAX_SIZE bytes (1300 at the time of writing), defined inside of
+        /// <see cref="MessagingSystem"/>.
+        /// For this reason, DisconnectReason should only be used to instruct the user "why" a connection failed, and
+        /// "where" to fetch the relevant connection data. We recommend using services like UGS to fetch larger batches
+        /// of data.
+        /// </remarks>
         public static string GenerateDisconnectionPayload()
         {
             var rejectionPayload = new DisconnectionPayload()
@@ -106,8 +120,7 @@ namespace Game
             var prefab = await op.Task;
 
 #if ENABLE_ARTIFICIAL_DELAY
-            //this delay here is to make it obvious how different loading strategies differ
-            //artificial latency would also highlight the difference
+            // THIS IS FOR EDUCATIONAL PURPOSES AND SHOULDN'T BE INCLUDED IN YOUR PROJECT
             await Task.Delay(artificialDelayMilliseconds);
 #endif
 

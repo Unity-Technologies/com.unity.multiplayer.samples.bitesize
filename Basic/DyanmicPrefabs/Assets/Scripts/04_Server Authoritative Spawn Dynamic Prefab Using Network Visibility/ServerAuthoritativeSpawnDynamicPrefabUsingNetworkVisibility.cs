@@ -88,6 +88,9 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
                     m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() {obj});
                 }
 
+                // This gets called on spawn and makes sure clients currently syncing and receiving spawns have the
+                // appropriate visibility settings automatically. This can happen on late join, on spawn, on scene
+                // switch, etc.
                 obj.CheckObjectVisibility = (clientId) => 
                 {
                     //if the client has already loaded the prefab - we can make the object visible to them

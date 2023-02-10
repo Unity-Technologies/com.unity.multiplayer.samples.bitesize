@@ -52,7 +52,7 @@ namespace Game
                 switch (disconnectionPayload.reason)
                 {
                     case DisconnectReason.Undefined:
-                        Debug.Log("Undefined");
+                        Debug.Log("Disconnect reason is undefined");
                         m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
                         break;
                     case DisconnectReason.ClientNeedsToPreload:
