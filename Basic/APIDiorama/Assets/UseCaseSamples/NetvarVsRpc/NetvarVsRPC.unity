@@ -181,12 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Move with WASD
-
-    - Change cubes'' color with E
-
-    - Approach cubes
-    to learn more'
+  m_text: '- Change cubes'' color with E'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -855,7 +850,8 @@ PrefabInstance:
       value: My color is changed through an RPC, so it won't be synchronized when
         a new client joins
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5998969495343583803, guid: bd21e0b3431ce674b8646bd84701b818, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bd21e0b3431ce674b8646bd84701b818, type: 3}
 --- !u!1 &983269508 stripped
 GameObject:
@@ -1015,23 +1011,8 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1242368264}
-    PlayerPrefab: {fileID: 4416926081852918481, guid: b4f4d10f529a9064487c55fc530813b2, type: 3}
+    PlayerPrefab: {fileID: 0}
     NetworkPrefabs:
-    - Override: 0
-      Prefab: {fileID: 4416926081852918481, guid: b4f4d10f529a9064487c55fc530813b2, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 1821519764381351181, guid: 491ce734bb1ed714da80050d807de589, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 8678006533216092845, guid: f0aa449fae43c4145a228b6040e435a9, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
     - Override: 0
       Prefab: {fileID: 7079470771712663481, guid: bd21e0b3431ce674b8646bd84701b818, type: 3}
       SourcePrefabToOverride: {fileID: 0}
@@ -1142,7 +1123,8 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5998969495343583803, guid: bd21e0b3431ce674b8646bd84701b818, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bd21e0b3431ce674b8646bd84701b818, type: 3}
 --- !u!1 &1347145842 stripped
 GameObject:
