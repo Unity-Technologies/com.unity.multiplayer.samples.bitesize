@@ -20,7 +20,9 @@ namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
     /// connected clients. Since the server will wait until all clients have loaded the same dynamic prefab, the spawn
     /// of said dynamic prefab will be synchronous. Thus, we recommend using this technique for spawning game-changing
     /// gameplay elements, assuming you'd want all clients to be able to interact with said gameplay elements from the
-    /// same point forward.
+    /// same point forward. For example, you wouldn't want to have an enemy only be visible (network side and/or
+    /// visually) to some clients and not others -- you'd want to delay the enemy's spawn until all clients have
+    /// dynamically loaded it and are able to see it before spawning it server side.
     /// </remarks>
     public sealed class ServerAuthoritativeSynchronousDynamicPrefabSpawn : NetworkBehaviour
     {

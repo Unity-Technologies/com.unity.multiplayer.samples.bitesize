@@ -12,17 +12,17 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
     /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab via a
     /// ClientRpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible
     /// only to clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it
-    /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as visible to that
-    /// client.
+    /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as network-visible to
+    /// that client.
     /// </summary>
     /// <remarks>
     /// An important implementation detail to note about this technique: the server will not wait until all clients have
     /// loaded a dynamic prefab before spawning the corresponding NetworkObject. Thus, this means that a NetworkObject
-    /// will become visible for a connected client as soon as it has loaded it as well -- a client is not blocked by the
-    /// loading operation of another client (which may be loading the asset slower or may have failed to load it at
-    /// all). A consequence of this asynchronous loading technique is that clients may experience differing world
-    /// versions momentarily. Therefore, we don't recommend using this technique for spawning game-changing gameplay
-    /// elements (like a boss fight for example) assuming you'd want all clients to interact with the spawned
+    /// will become network-visible for a connected client as soon as it has loaded it as well -- a client is not
+    /// blocked by the loading operation of another client (which may be loading the asset slower or may have failed to
+    /// load it at all). A consequence of this asynchronous loading technique is that clients may experience differing
+    /// world versions momentarily. Therefore, we don't recommend using this technique for spawning game-changing
+    /// gameplay elements (like a boss fight for example) assuming you'd want all clients to interact with the spawned
     /// NetworkObject as soon as it is spawned on the server.
     /// </remarks>
     public sealed class ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility : NetworkBehaviour
@@ -68,9 +68,9 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
         
         /// <summary>
         /// This call spawns an addressable prefab by it's guid. It does not ensure that all the clients have loaded the
-        /// prefab before spawning it. All spawned objects are invisible to clients that don't have the prefab loaded.
-        /// The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've loaded
-        /// it, and then the server makes the object visible to that client.
+        /// prefab before spawning it. All spawned objects are network-invisible to clients that don't have the prefab
+        /// loaded. The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've
+        /// loaded it, and then the server makes the object network-visible to that client.
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
@@ -104,11 +104,11 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
                 }
 
                 // This gets called on spawn and makes sure clients currently syncing and receiving spawns have the
-                // appropriate visibility settings automatically. This can happen on late join, on spawn, on scene
-                // switch, etc.
+                // appropriate network visibility settings automatically. This can happen on late join, on spawn, on
+                // scene switch, etc.
                 obj.CheckObjectVisibility = (clientId) => 
                 {
-                    //if the client has already loaded the prefab - we can make the object visible to them
+                    //if the client has already loaded the prefab - we can make the object network-visible to them
                     if (DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
                     {
                         return true;
@@ -162,13 +162,13 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
            
-            //the server has all the objects visible, no need to do anything
+            //the server has all the objects network-visible, no need to do anything
             if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
                 // Note: there's a potential security risk here if this technique is tied with gameplay that uses
                 // a NetworkObject's Show() and Hide() methods. For example, a malicious player could invoke a similar
-                // ServerRpc with the guids of enemy players, and it would make those enemies visible to that player,
-                // giving them a potential advantage.
+                // ServerRpc with the guids of enemy players, and it would make those enemies visible (network side
+                // and/or visually) to that player, giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
         }

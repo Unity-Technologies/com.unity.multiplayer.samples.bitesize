@@ -13,8 +13,8 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
     /// to use at post-connection time such as: connection approval for syncing late-joining clients, dynamically
     /// loading a collection of network prefabs on the host and all connected clients, synchronously spawning a
     /// dynamically loaded network prefab across connected clients, and spawning a dynamically loaded network prefab as
-    /// network-invisible for all clients until they load the prefab locally (in which case it becomes visible to the
-    /// client).
+    /// network-invisible for all clients until they load the prefab locally (in which case it becomes network-visible
+    /// to the client).
     /// </summary>
     /// <remarks>
     /// For more details on the API usage, see the in-project readme (which includes links to further resources,
@@ -279,9 +279,9 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
         
         /// <summary>
         /// This call spawns an addressable prefab by it's guid. It does not ensure that all the clients have loaded the
-        /// prefab before spawning it. All spawned objects are invisible to clients that don't have the prefab loaded.
-        /// The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've loaded
-        /// it, and then the server makes the object visible to that client.
+        /// prefab before spawning it. All spawned objects are network-invisible to clients that don't have the prefab
+        /// loaded. The server tells the clients that lack the preloaded prefab to load it and acknowledge that they've
+        /// loaded it, and then the server makes the object network-visible to that client.
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
@@ -316,7 +316,7 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
 
                 obj.CheckObjectVisibility = (clientId) => 
                 {
-                    //if the client has already loaded the prefab - we can make the object visible to them
+                    //if the client has already loaded the prefab - we can make the object network-visible to them
                     if (DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
                     {
                         return true;
@@ -371,7 +371,7 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
                 rpcParams.Receive.SenderClientId);
            
-            //the server has all the objects visible, no need to do anything
+            //the server has all the objects network-visible, no need to do anything
             if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
