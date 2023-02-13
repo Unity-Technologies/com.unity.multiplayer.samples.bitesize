@@ -102,8 +102,6 @@ namespace Game.UI
             SetupConnectionsUI();
 
             // register buttons to methods using callbacks for when they're clicked 
-            m_ButtonResetScene.clickable.clicked += ResetScene;
-
             if (m_ShowLoadAllAsyncButton)
             {
                 m_ButtonLoadAllAsync.clickable.clicked += LoadAllPrefabsAsync;
@@ -132,7 +130,6 @@ namespace Game.UI
         void OnDestroy()
         {
             // un-register buttons from methods using callbacks for when they're clicked 
-            m_ButtonResetScene.clickable.clicked -= ResetScene;
             m_ButtonLoadAllAsync.clickable.clicked -= LoadAllPrefabsAsync;
             m_ButtonSpawnSynchronously.clickable.clicked -= TrySpawnSynchronously;
             m_ButtonSpawnWithVisibility.clickable.clicked -= SpawnInvisible;
