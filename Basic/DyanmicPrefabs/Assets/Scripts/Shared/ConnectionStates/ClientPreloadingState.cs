@@ -29,12 +29,9 @@ namespace Game
 
         async void HandleDisconnectReason()
         {
-            var addressableGuidCollection = new AddressableGUIDCollection()
-            {
-                GUIDs = disconnectionPayload.guids.Select(item => new AddressableGUID() { Value = item }).ToArray()
-            };
+            var guids = disconnectionPayload.guids.Select(item => new AddressableGUID() { Value = item }).ToArray();
 
-            await DynamicPrefabLoadingUtilities.LoadDynamicPrefabs(addressableGuidCollection);
+            await DynamicPrefabLoadingUtilities.LoadDynamicPrefabs(guids);
             Debug.Log("Restarting client");
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientConnecting);
         }

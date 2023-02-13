@@ -6,9 +6,9 @@ namespace Game.ConnectionApprovalRequiredForLateJoining
 {
     /// <summary>
     /// A class that walks through what a server would need to validate from a client when dynamically loading network
-    /// prefabs. This is another simple use case scenario, as this is just the implementation of the connection approval
+    /// prefabs. This is another simple use-case scenario, as this is just the implementation of the connection approval
     /// callback, which is an optional feature from Netcode for GameObjects. To enable it, make sure the "Connection
-    /// Approval" toggle is enabled on the NetworkManager in your scene. Other use cases don't allow for connection
+    /// Approval" toggle is enabled on the NetworkManager in your scene. Other use-cases don't allow for connection
     /// after the server has loaded a prefab dynamically, whereas this one enables that functionality. To see it all in
     /// harmony, see <see cref="APIPlayground"/>, where all post-connection techniques are showcased in one scene.
     /// </summary>
@@ -30,8 +30,8 @@ namespace Game.ConnectionApprovalRequiredForLateJoining
 
             // to force a simple connection approval on all joining clients, the server will load a dynamic prefab as
             // soon as the server is started
-            // for more complex use cases where the server must wait for all connected clients to load the same network
-            // prefab, see the other use cases inside this sample
+            // for more complex use-cases where the server must wait for all connected clients to load the same network
+            // prefab, see the other use-cases inside this sample
             m_NetworkManager.OnServerStarted += LoadAPrefab;
         }
 

@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
 {
     /// <summary>
-    /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab, and
+    /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab, and
     /// will only invoke a spawn once all clients have successfully completed their respective loads of said prefab. The
     /// server will initially send a ClientRpc to all clients, begin loading the prefab on the server, will await
     /// acknowledgement of a load via ServerRpcs from each client, and will only spawn the prefab over the network once
@@ -45,6 +45,11 @@ namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
         // invoked by UI
         public void OnClickedTrySpawnSynchronously()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             TrySpawnSynchronously();
         }
         

@@ -4,13 +4,21 @@ using UnityEngine;
 
 namespace Game
 {
-    public sealed class AppController : NetworkBehaviour
+    /// <summary>
+    /// A class to bind UI events to invocations from <see cref="OptionalConnectionManager"/>, where client and host
+    /// connection requests are initiated. This class also listens for status updates from Netcode for GameObjects to
+    /// then display the appropriate UI elements.
+    /// </summary>
+    public sealed class AppController : MonoBehaviour
     {
         // placeholder until this is fetched from UI
         string m_ConnectAddress = "127.0.0.1";
         
         // placeholder until this is fetched from UI
         ushort m_Port = 7777;
+
+        [SerializeField]
+        NetworkManager m_NetworkManager;
         
         [SerializeField] GameObject m_ConnectionUI;
         
@@ -19,6 +27,38 @@ namespace Game
         [SerializeField]
         OptionalConnectionManager m_ConnectionManager;
 
+        void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
+
+        void Start()
+        {
+            m_SpawnUI.SetActive(true);
+            m_ConnectionUI.SetActive(true);
+            
+            m_NetworkManager.OnClientConnectedCallback += OnClientConnected;
+            m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnect;
+        }
+
+        void OnDestroy()
+        {
+            m_NetworkManager.OnClientConnectedCallback -= OnClientConnected;
+            m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnect;
+        }
+
+        void OnClientConnected(ulong clientId)
+        {
+            m_SpawnUI.SetActive(m_NetworkManager.IsServer);
+            m_ConnectionUI.SetActive(false);
+        }
+        
+        void OnClientDisconnect(ulong clientId)
+        {
+            m_ConnectionUI.SetActive(clientId == m_NetworkManager.LocalClientId);
+            m_SpawnUI.SetActive(true);
+        }
+        
         public void StartClient()
         {
             Debug.Log(nameof(StartClient));
@@ -33,23 +73,14 @@ namespace Game
             m_ConnectionUI.SetActive(false);
         }
 
-        public override void OnNetworkSpawn()
-        {
-            m_SpawnUI.SetActive(IsServer);
-        }
-        
-        public override void OnNetworkDespawn()
-        {
-            m_ConnectionUI.SetActive(true);
-            m_SpawnUI.SetActive(true);
-        }
-
         // placeholder until this is triggered by UI
         [ContextMenu(nameof(OnClickedShutdown))]
         public void OnClickedShutdown()
         {
             Debug.Log(nameof(OnClickedShutdown));
             m_ConnectionManager.RequestShutdown();
+            m_SpawnUI.SetActive(true);
+            m_ConnectionUI.SetActive(true);
         }
     }
 }

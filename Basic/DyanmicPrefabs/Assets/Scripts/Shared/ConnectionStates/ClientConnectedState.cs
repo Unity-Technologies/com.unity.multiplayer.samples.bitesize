@@ -19,6 +19,7 @@ namespace Game
         
         public override void OnUserRequestedShutdown()
         {
+            m_ConnectionManager.m_NetworkManager.Shutdown();
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
         }
 

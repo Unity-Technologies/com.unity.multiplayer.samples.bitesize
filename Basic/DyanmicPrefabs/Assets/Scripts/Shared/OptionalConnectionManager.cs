@@ -7,7 +7,8 @@ namespace Game
     /// <summary>
     /// A state machine to track a client's connection state.
     /// Note: this class is not absolutely necessary for dynamic prefab loading. It is simply added to for simpler
-    /// navigation of code through the different states of connection, particularly client reconnection.
+    /// navigation of code through the different states of connection, particularly client reconnection and late join.
+    /// support. For more details, see the <see cref="ConnectionApprovalRequiredForLateJoining"/> use-case.
     /// </summary>
     public class OptionalConnectionManager : MonoBehaviour
     {

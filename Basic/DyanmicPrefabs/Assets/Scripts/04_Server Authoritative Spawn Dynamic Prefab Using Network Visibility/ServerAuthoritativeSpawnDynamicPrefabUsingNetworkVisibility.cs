@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
 {
     /// <summary>
-    /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab via a
+    /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab via a
     /// ClientRpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible
     /// only to clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it
     /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as visible to that
@@ -42,6 +42,11 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
         // invoked by UI
         public void OnClickedTrySpawnInvisible()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             TrySpawnInvisible();
         }
 
@@ -88,6 +93,9 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
                     m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() {obj});
                 }
 
+                // This gets called on spawn and makes sure clients currently syncing and receiving spawns have the
+                // appropriate visibility settings automatically. This can happen on late join, on spawn, on scene
+                // switch, etc.
                 obj.CheckObjectVisibility = (clientId) => 
                 {
                     //if the client has already loaded the prefab - we can make the object visible to them
@@ -147,6 +155,10 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
             //the server has all the objects visible, no need to do anything
             if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
+                // Note: there's a potential security risk here if this technique is tied with gameplay that uses
+                // a NetworkObject's Show() and Hide() methods. For example, a malicious player could invoke a similar
+                // ServerRpc with the guids of enemy players, and it would make those enemies visible to that player,
+                // giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
         }
