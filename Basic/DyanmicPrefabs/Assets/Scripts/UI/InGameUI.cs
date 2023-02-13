@@ -41,8 +41,8 @@ namespace Game.UI
         [SerializeField]
         bool m_ShowSpawnUsingVisibilityButton;
 
-        float m_ArtificialLatency;
-        float m_NetworkSpawnTimeout;
+        public float ArtificialLatency { get; private set; }
+        public float NetworkSpawnTimeout { get; private set; }
 
         Dictionary<ulong, ClientUI> m_Clients = new Dictionary<ulong, ClientUI>();
 
@@ -137,12 +137,12 @@ namespace Game.UI
 
         void Start()
         {
-            m_ArtificialLatency = 1000;
-            m_NetworkSpawnTimeout = 3000;
-            m_SliderArtificialLatency.value = m_ArtificialLatency;
-            m_SliderNetworkSpawnTimeout.value = m_NetworkSpawnTimeout;
-            m_TextFieldArtificialLatency.value = m_ArtificialLatency.ToString();
-            m_TextFieldLabelNetworkSpawnTimeout.value = m_NetworkSpawnTimeout.ToString();
+            ArtificialLatency = 1000;
+            NetworkSpawnTimeout = 3000;
+            m_SliderArtificialLatency.value = ArtificialLatency;
+            m_SliderNetworkSpawnTimeout.value = NetworkSpawnTimeout;
+            m_TextFieldArtificialLatency.value = ArtificialLatency.ToString();
+            m_TextFieldLabelNetworkSpawnTimeout.value = NetworkSpawnTimeout.ToString();
             SetUIElementVisibility(m_InGameUIRoot, false);
         }
 
@@ -218,28 +218,28 @@ namespace Game.UI
 
         void OnArtificialLatencySliderChanged(ChangeEvent<float> changeEvent)
         {
-            m_ArtificialLatency = changeEvent.newValue;
-            m_TextFieldArtificialLatency.value = m_ArtificialLatency.ToString();
+            ArtificialLatency = changeEvent.newValue;
+            m_TextFieldArtificialLatency.value = ArtificialLatency.ToString();
         }
 
         void OnNetworkSpawnTimeoutSliderChanged(ChangeEvent<float> changeEvent)
         {
-            m_NetworkSpawnTimeout = changeEvent.newValue;
-            m_TextFieldLabelNetworkSpawnTimeout.value = m_NetworkSpawnTimeout.ToString();
+            NetworkSpawnTimeout = changeEvent.newValue;
+            m_TextFieldLabelNetworkSpawnTimeout.value = NetworkSpawnTimeout.ToString();
         }
 
         void OnArtificialLatencyInputChanged(ChangeEvent<string> changeEvent)
         {
-            m_ArtificialLatency = int.Parse(changeEvent.newValue);
-            Math.Clamp(m_ArtificialLatency, 0, 9999);
-            m_SliderArtificialLatency.value = m_ArtificialLatency;
+            ArtificialLatency = int.Parse(changeEvent.newValue);
+            Math.Clamp(ArtificialLatency, 0, 9999);
+            m_SliderArtificialLatency.value = ArtificialLatency;
         }
 
         void OnNetworkSpawnTimeoutInputChanged(ChangeEvent<string> changeEvent)
         {
-            m_NetworkSpawnTimeout = int.Parse(changeEvent.newValue);
-            Math.Clamp(m_NetworkSpawnTimeout, 0, 99999);
-            m_SliderNetworkSpawnTimeout.value = m_NetworkSpawnTimeout;
+            NetworkSpawnTimeout = int.Parse(changeEvent.newValue);
+            Math.Clamp(NetworkSpawnTimeout, 0, 99999);
+            m_SliderNetworkSpawnTimeout.value = NetworkSpawnTimeout;
         }
 
         void SetUIElementVisibility(VisualElement visualElement, bool isVisible)
