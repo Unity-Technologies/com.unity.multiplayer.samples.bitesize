@@ -16,6 +16,10 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
     /// network-invisible for all clients until they load the prefab locally (in which case it becomes visible to the
     /// client).
     /// </summary>
+    /// <remarks>
+    /// For more details on the API usage, see the in-project readme (which includes links to further resources,
+    /// including the project's technical document).
+    /// </remarks>
     public sealed class APIPlaygroundShowcasingAllPostConnectionUseCases : NetworkBehaviour
     {
         [SerializeField]

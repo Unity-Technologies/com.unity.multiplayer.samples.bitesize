@@ -15,6 +15,13 @@ namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
     /// acknowledgement of a load via ServerRpcs from each client, and will only spawn the prefab over the network once
     /// it has received an acknowledgement from every client, within m_SynchronousSpawnTimeoutTimer seconds.
     /// </summary>
+    /// <remarks>
+    /// This use-case is recommended for scenarios where you'd want to guarantee the same world version across all
+    /// connected clients. Since the server will wait until all clients have loaded the same dynamic prefab, the spawn
+    /// of said dynamic prefab will be synchronous. Thus, we recommend using this technique for spawning game-changing
+    /// gameplay elements, assuming you'd want all clients to be able to interact with said gameplay elements from the
+    /// same point forward.
+    /// </remarks>
     public sealed class ServerAuthoritativeSynchronousDynamicPrefabSpawn : NetworkBehaviour
     {
         [SerializeField]
