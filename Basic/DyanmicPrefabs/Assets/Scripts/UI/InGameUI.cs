@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Game.UI
 {
-    public class ConnectionsUI : MonoBehaviour
+    public class InGameUI : MonoBehaviour
     {
         // UI Documents
         [SerializeField]

@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Game.UI
 {
-    public class HostJoinUI : MonoBehaviour
+    public class IPMenuUI : MonoBehaviour
     {
         // UI Documents
         [SerializeField]
