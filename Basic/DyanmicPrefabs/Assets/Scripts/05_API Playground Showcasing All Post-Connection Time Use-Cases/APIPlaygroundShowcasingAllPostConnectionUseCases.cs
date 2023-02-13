@@ -15,18 +15,6 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
     /// dynamically loaded network prefab across connected clients, and spawning a dynamically loaded network prefab as
     /// network-invisible for all clients until they load the prefab locally (in which case it becomes visible to the
     /// client).
-    /// <remarks>
-    /// Assumption: Addressables are loadable, ie when the client tries to load it - it will not fail.
-    /// Improvement ideas:
-    /// - it's possible to have more advanced logic that would for instance kick players that are consistently failing
-    /// to load an addressable
-    /// - Addressable guid list could be compressed before being sent
-    /// - Instead of Addressable guids the peers could exchange a `short` index that would refer to Addressables in some
-    /// kind of a list stored in a ScriptableObject. That would reduce the amount of data that's being exchanged quite
-    /// drastically.
-    /// Last note: this sample does not cover the case of addressable usage when the client is loading custom visual
-    /// prefabs and swapping out the rendering object for essentially non-dynamic prefabs
-    /// </remarks>
     /// </summary>
     public sealed class APIPlaygroundShowcasingAllPostConnectionUseCases : NetworkBehaviour
     {
