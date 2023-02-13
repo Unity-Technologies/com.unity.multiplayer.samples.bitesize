@@ -122,7 +122,6 @@ namespace Game.UI
 
             var utp = (UnityTransport) NetworkManager.Singleton.NetworkConfig.NetworkTransport;
             utp.SetConnectionData(sanitizedIPText, port);
-            Debug.Log($"IP: {sanitizedIPText} Port: {sanitizedPortText}");
         }
 
         /// <summary>
