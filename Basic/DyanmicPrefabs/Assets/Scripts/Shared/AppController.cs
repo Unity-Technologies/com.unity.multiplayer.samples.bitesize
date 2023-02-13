@@ -47,15 +47,15 @@ namespace Game
             m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnect;
         }
 
-        void OnClientConnected(ulong obj)
+        void OnClientConnected(ulong clientId)
         {
             m_SpawnUI.SetActive(m_NetworkManager.IsServer);
             m_ConnectionUI.SetActive(false);
         }
         
-        void OnClientDisconnect(ulong obj)
+        void OnClientDisconnect(ulong clientId)
         {
-            m_ConnectionUI.SetActive(true);
+            m_ConnectionUI.SetActive(clientId == m_NetworkManager.LocalClientId);
             m_SpawnUI.SetActive(true);
         }
         

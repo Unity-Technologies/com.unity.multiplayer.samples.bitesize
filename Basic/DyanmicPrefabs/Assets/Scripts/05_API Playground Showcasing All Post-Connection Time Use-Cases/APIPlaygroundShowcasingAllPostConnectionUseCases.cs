@@ -62,6 +62,12 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
             base.OnDestroy();
         }
 
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            Debug.Log("Despawned???");
+        }
+
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             Debug.Log("Client is trying to connect " + request.ClientNetworkId);
@@ -145,18 +151,33 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
         // invoked by UI
         public void OnClickedPreload()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             PreloadPrefabs();
         }
         
         // invoked by UI
         public void OnClickedTrySpawnSynchronously()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             TrySpawnSynchronously();
         }
         
         // invoked by UI
         public void OnClickedTrySpawnInvisible()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             TrySpawnInvisible();
         }
 

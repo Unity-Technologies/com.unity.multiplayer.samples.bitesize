@@ -42,6 +42,11 @@ namespace Game.ServerAuthoritativeLoadAllPrefabsAsynchronously
         // invoked by UI
         public void OnClickedPreload()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             PreloadPrefabs();
         }
 

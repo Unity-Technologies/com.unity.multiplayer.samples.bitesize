@@ -42,6 +42,11 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
         // invoked by UI
         public void OnClickedTrySpawnInvisible()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             TrySpawnInvisible();
         }
 

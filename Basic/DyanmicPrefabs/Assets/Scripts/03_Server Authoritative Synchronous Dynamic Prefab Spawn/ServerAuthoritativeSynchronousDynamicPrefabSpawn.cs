@@ -45,6 +45,11 @@ namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
         // invoked by UI
         public void OnClickedTrySpawnSynchronously()
         {
+            if (!m_NetworkManager.IsServer)
+            {
+                return;
+            }
+            
             TrySpawnSynchronously();
         }
         
