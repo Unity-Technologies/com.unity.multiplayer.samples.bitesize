@@ -15,6 +15,16 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
     /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as visible to that
     /// client.
     /// </summary>
+    /// <remarks>
+    /// An important implementation detail to note about this technique: the server will not wait until all clients have
+    /// loaded a dynamic prefab before spawning the corresponding NetworkObject. Thus, this means that a NetworkObject
+    /// will become visible for a connected client as soon as it has loaded it as well -- a client is not blocked by the
+    /// loading operation of another client (which may be loading the asset slower or may have failed to load it at
+    /// all). A consequence of this asynchronous loading technique is that clients may experience differing world
+    /// versions momentarily. Therefore, we don't recommend using this technique for spawning game-changing gameplay
+    /// elements (like a boss fight for example) assuming you'd want all clients to interact with the spawned
+    /// NetworkObject as soon as it is spawned on the server.
+    /// </remarks>
     public sealed class ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility : NetworkBehaviour
     {
         [SerializeField]
