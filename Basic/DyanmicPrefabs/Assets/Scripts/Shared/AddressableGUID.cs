@@ -32,7 +32,7 @@ namespace Game
     
     /// <summary>
     /// A class that implements IEqualityComparer, for AddressableGUID comparisons that don't allocate memory since it
-    /// since compares integer values instead of strings.
+    /// compares integer values instead of strings.
     /// </summary>
     public class AddressableGUIDEqualityComparer : IEqualityComparer<AddressableGUID>
     {
