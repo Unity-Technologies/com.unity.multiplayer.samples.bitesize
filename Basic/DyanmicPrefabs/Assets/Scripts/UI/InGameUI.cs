@@ -95,11 +95,6 @@ namespace Game.UI
             {
                 clientHolder.Remove(m_ClientInstance);
             }
-
-            internal TemplateContainer GetClientTemplateInstance()
-            {
-                return m_ClientInstance;
-            }
         }
 
         void Awake()
@@ -206,12 +201,6 @@ namespace Game.UI
             }
         }
 
-        void ResetScene()
-        {
-            // scene reset logic can be hooked up here
-            Debug.Log("Reset scene button clicked");
-        }
-
         void LoadAllPrefabsAsync()
         {
             // load all prefabs logic can be hooked up here
@@ -230,28 +219,28 @@ namespace Game.UI
             Debug.Log("Spawn using server visibility button clicked");
         }
 
-        void OnArtificialLatencySliderChanged(ChangeEvent<float> evt)
+        void OnArtificialLatencySliderChanged(ChangeEvent<float> changeEvent)
         {
-            m_ArtificialLatency = evt.newValue;
+            m_ArtificialLatency = changeEvent.newValue;
             m_TextFieldArtificialLatency.value = m_ArtificialLatency.ToString();
         }
 
-        void OnNetworkSpawnTimeoutSliderChanged(ChangeEvent<float> evt)
+        void OnNetworkSpawnTimeoutSliderChanged(ChangeEvent<float> changeEvent)
         {
-            m_NetworkSpawnTimeout = evt.newValue;
+            m_NetworkSpawnTimeout = changeEvent.newValue;
             m_TextFieldLabelNetworkSpawnTimeout.value = m_NetworkSpawnTimeout.ToString();
         }
 
-        void OnArtificialLatencyInputChanged(ChangeEvent<string> evt)
+        void OnArtificialLatencyInputChanged(ChangeEvent<string> changeEvent)
         {
-            m_ArtificialLatency = int.Parse(evt.newValue);
+            m_ArtificialLatency = int.Parse(changeEvent.newValue);
             Math.Clamp(m_ArtificialLatency, 0, 9999);
             m_SliderArtificialLatency.value = m_ArtificialLatency;
         }
 
-        void OnNetworkSpawnTimeoutInputChanged(ChangeEvent<string> evt)
+        void OnNetworkSpawnTimeoutInputChanged(ChangeEvent<string> changeEvent)
         {
-            m_NetworkSpawnTimeout = int.Parse(evt.newValue);
+            m_NetworkSpawnTimeout = int.Parse(changeEvent.newValue);
             Math.Clamp(m_NetworkSpawnTimeout, 0, 99999);
             m_SliderNetworkSpawnTimeout.value = m_NetworkSpawnTimeout;
         }
@@ -274,55 +263,6 @@ namespace Game.UI
             m_SliderNetworkSpawnTimeout = m_InGameUIRoot.Q<Slider>("SliderSpawnTimeout");
             m_TextFieldArtificialLatency = m_InGameUIRoot.Q<TextField>("ArtificialLatencyValue");
             m_TextFieldLabelNetworkSpawnTimeout = m_InGameUIRoot.Q<TextField>("NetworkTimeoutValue");
-        }
-
-        // test methods
-        [ContextMenu("TurnOnInGameUI")]
-        void TestVisibilityOn()
-        {
-            SetUIElementVisibility(m_InGameUIRoot, true);
-        }
-
-        [ContextMenu("TurnOffInGameUI")]
-        void TestVisibilityOff()
-        {
-            SetUIElementVisibility(m_InGameUIRoot, false);
-        }
-
-        [ContextMenu("Add Client 1234")]
-        void TestAddClient()
-        {
-            AddConnectionUIInstance(1234, new int[] {0, 1, 2, 3}, new String[] {"prefab 0", "prefab 1", "prefab 2", "prefab 3"});
-        }
-
-        [ContextMenu("Add Client 5678")]
-        void TestAddClient2()
-        {
-            AddConnectionUIInstance(5678, new int[] {0, 1, 2, 3}, new String[] {"prefab 0", "prefab 1", "prefab 2", "prefab 3"});
-        }
-
-        [ContextMenu("Add Client 9101112")]
-        void TestAddClient3()
-        {
-            AddConnectionUIInstance(9101112, new int[] {0, 1, 2, 3}, new String[] {"prefab 0", "prefab 1", "prefab 2", "prefab 3"});
-        }
-
-        [ContextMenu("Remove Client 5678")]
-        void TestRemoveClient2()
-        {
-            RemoveConnectionUIInstance(5678);
-        }
-
-        [ContextMenu("Remove Row 2 from Client 5678")]
-        void TestRemoveRow()
-        {
-            RemoveConnectionUIRow(5678, 2);
-        }
-
-        [ContextMenu("Add Row to Client 5678")]
-        void TestAddRow()
-        {
-            ModifyConnectionsUIRow(5678, 10, "added prefab", LoadStatus.Loading);
         }
     }
 }

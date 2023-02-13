@@ -20,7 +20,7 @@
                     <ui:VisualElement name="SpawnTimeoutSliderHolder">
                         <ui:VisualElement name="Slider">
                             <ui:VisualElement style="flex-direction: row; justify-content: space-between; flex-grow: 1; align-items: center;">
-                                <ui:Label text="Network Spawn Timeout:" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                                <ui:Label text="Network Spawn Timeout:" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px; margin-left: 0; margin-right: 10px; margin-top: 0; margin-bottom: 0;" />
                                 <ui:VisualElement style="flex-direction: row; align-items: center;">
                                     <ui:TextField value="99999" text="99999" max-length="5" name="NetworkTimeoutValue" class="button" style="font-size: 16px; height: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1; width: 70px;" />
                                     <ui:Label text="ms" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px;" />
@@ -30,18 +30,12 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="ButtonHolder" class="background" style="flex-grow: 1; justify-content: space-between; margin-bottom: 10px;">
+                <ui:VisualElement name="ButtonHolder" class="background" style="flex-grow: 1; justify-content: space-between;">
                     <ui:VisualElement name="APIButtons" style="margin-top: 0; justify-content: space-between; flex-grow: 0; margin-left: 0; margin-right: 0; margin-bottom: 0;">
                         <ui:Label text="API Calls" display-tooltip-when-elided="true" name="Title" class="labelText" style="font-size: 20px; -unity-text-align: upper-center;" />
                         <ui:Button text="Load All Prefabs Async" name="LoadAsync" focusable="false" class="button" />
                         <ui:Button text="Try Spawn Synchronously" name="SpawnSync" focusable="false" class="button" />
                         <ui:Button text="Spawn using Visibility" name="SpawnInvisible" focusable="false" class="button" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-                <ui:VisualElement name="ButtonHolder" class="background" style="flex-grow: 1; justify-content: space-between;">
-                    <ui:VisualElement name="SceneButton" style="margin-top: 0; justify-content: space-between; flex-grow: 0; margin-left: 0; margin-right: 0; margin-bottom: 0;">
-                        <ui:Label text="Scene Controls" display-tooltip-when-elided="true" name="Title" class="labelText" style="font-size: 20px; -unity-text-align: upper-center;" />
-                        <ui:Button text="Reset Current Scene" name="ResetScene" focusable="false" class="button" style="flex-grow: 0;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
