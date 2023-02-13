@@ -62,12 +62,6 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
             base.OnDestroy();
         }
 
-        public override void OnNetworkDespawn()
-        {
-            base.OnNetworkDespawn();
-            Debug.Log("Despawned???");
-        }
-
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             Debug.Log("Client is trying to connect " + request.ClientNetworkId);
