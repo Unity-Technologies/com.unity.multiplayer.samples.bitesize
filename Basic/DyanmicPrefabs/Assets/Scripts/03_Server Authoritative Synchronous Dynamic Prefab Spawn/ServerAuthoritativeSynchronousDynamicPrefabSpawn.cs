@@ -113,6 +113,8 @@ namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
                     await Task.Yield();
                 }
                 
+                // left to the reader: this you'll need to be reactive to -- you should either have the offending client
+                // try again or disconnect it after a predetermined amount of failed attempts
                 Debug.LogError("Failed to spawn dynamic prefab - timeout");
                 return (false, null);
             }
