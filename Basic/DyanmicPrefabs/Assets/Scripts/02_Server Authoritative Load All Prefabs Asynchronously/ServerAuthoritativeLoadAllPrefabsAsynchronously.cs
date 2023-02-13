@@ -8,9 +8,16 @@ using UnityEngine.AddressableAssets;
 namespace Game.ServerAuthoritativeLoadAllPrefabsAsynchronously
 {
     /// <summary>
-    /// A simple use case where the server notifies all clients to preload a collection of network prefabs. The server
-    /// will not invoke a spawn in this use case, and will incrementally load each dynamic prefab, one prefab at a time.
+    /// A simple use-case where the server notifies all clients to preload a collection of network prefabs. The server
+    /// will not invoke a spawn in this use-case, and will incrementally load each dynamic prefab, one prefab at a time.
     /// </summary>
+    /// <remarks>
+    /// A gameplay scenario where this technique would be useful: clients and host are connected, the host arrives at a
+    /// point in the game where they know some prefabs will be needed soon, and so the server instructs all clients to
+    /// preemptively load those prefabs. Some time later in the same session, the server needs to perform a spawn, and
+    /// can do so without making sure all clients have loaded said dynamic prefab, since it already did so preemptively.
+    /// This allows for simple spawn management.
+    /// </remarks>
     public sealed class ServerAuthoritativeLoadAllPrefabsAsynchronously : NetworkBehaviour
     {
         [SerializeField]

@@ -135,12 +135,12 @@ namespace Game
             return prefab;
         }
         
-        public static async Task<IList<GameObject>> LoadDynamicPrefabs(AddressableGUIDCollection addressableGUIDCollection,
+        public static async Task<IList<GameObject>> LoadDynamicPrefabs(AddressableGUID[] guids,
             int artificialDelaySeconds = 0)
         {
             var tasks = new List<Task<GameObject>>();
 
-            foreach (var guid in addressableGUIDCollection.GUIDs)
+            foreach (var guid in guids)
             {
                 tasks.Add( LoadDynamicPrefab(guid, artificialDelaySeconds, recomputeHash:false));
             }

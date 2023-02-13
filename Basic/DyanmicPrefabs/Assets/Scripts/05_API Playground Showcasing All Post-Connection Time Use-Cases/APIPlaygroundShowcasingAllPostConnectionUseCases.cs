@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
 {
     /// <summary>
-    /// This class serves as the playground of the dynamic prefab loading use cases. It integrates API from this sample
+    /// This class serves as the playground of the dynamic prefab loading use-cases. It integrates API from this sample
     /// to use at post-connection time such as: connection approval for syncing late-joining clients, dynamically
     /// loading a collection of network prefabs on the host and all connected clients, synchronously spawning a
     /// dynamically loaded network prefab across connected clients, and spawning a dynamically loaded network prefab as

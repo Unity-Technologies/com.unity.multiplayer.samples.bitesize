@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
 {
     /// <summary>
-    /// A dynamic prefab loading use case where the server instructs all clients to load a single network prefab via a
+    /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab via a
     /// ClientRpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible
     /// only to clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it
     /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as visible to that

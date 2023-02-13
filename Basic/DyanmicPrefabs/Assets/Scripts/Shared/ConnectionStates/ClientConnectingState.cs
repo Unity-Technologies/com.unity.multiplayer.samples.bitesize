@@ -24,6 +24,13 @@ namespace Game
         
         void StartClient()
         {
+            // For this sample, connection management is used in all use-cases where dynamic prefabs are loaded after
+            // the server establishes a connection. We choose to keep ForceSamePrefabs as false, so that a joining
+            // client is able to send a connection request payload to the server. In the use-cases where connection
+            // approval is implemented, the server can begin to validate a user's connection payload, and either approve
+            // or deny connection to the joining client. In the use-cases where connection approval is not implemented,
+            // a client will either join if the server has not loaded any dynamic prefabs, or will be denied if the 
+            // server has loaded any dynamic prefabs since the NetworkConfig of the client and the server mismatch.
             m_ConnectionManager.m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
             var transport = m_ConnectionManager.m_NetworkManager.GetComponent<UnityTransport>();
             transport.SetConnectionData(m_ConnectionManager.m_ConnectAddress, m_ConnectionManager.m_Port);
