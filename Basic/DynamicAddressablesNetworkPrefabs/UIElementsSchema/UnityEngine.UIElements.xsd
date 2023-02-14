@@ -595,6 +595,7 @@
         <xs:attribute default="" name="binding-path" type="xs:string" use="optional" />
         <xs:attribute default="0" name="low-value" type="xs:float" use="optional" />
         <xs:attribute default="100" name="high-value" type="xs:float" use="optional" />
+        <xs:attribute default="0" name="value" type="xs:float" use="optional" />
         <xs:attribute default="" name="title" type="xs:string" use="optional" />
         <xs:anyAttribute processContents="lax" />
       </xs:restriction>
