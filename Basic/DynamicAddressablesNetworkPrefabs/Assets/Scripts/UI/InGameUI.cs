@@ -94,6 +94,12 @@ namespace Game.UI
             {
                 clientHolder.Remove(m_ClientInstance);
             }
+
+            internal void DeleteAllRows()
+            {
+                m_RowHolder.Clear();
+                m_RowInstances.Clear();
+            }
         }
 
         void Awake()
@@ -246,6 +252,16 @@ namespace Game.UI
         void SetUIElementVisibility(VisualElement visualElement, bool isVisible)
         {
             visualElement.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        void ResetInGameUI()
+        {
+            foreach (var client in m_Clients)
+            {
+                client.Value.DeleteAllRows();
+            }
+            m_ConnectionsTemplatesHolder.Clear();
+            m_Clients.Clear();
         }
 
         void SetupConnectionsUI()
