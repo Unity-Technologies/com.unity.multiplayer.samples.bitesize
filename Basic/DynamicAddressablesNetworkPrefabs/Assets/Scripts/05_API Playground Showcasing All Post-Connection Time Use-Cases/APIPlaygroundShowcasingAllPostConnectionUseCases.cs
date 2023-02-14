@@ -45,6 +45,12 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
         {
             DynamicPrefabLoadingUtilities.Init(m_NetworkManager);
             
+            // In the use-cases where connection approval is implemented, the server can begin to validate a user's
+            // connection payload, and either approve or deny connection to the joining client.
+            m_NetworkManager.NetworkConfig.ConnectionApproval = true;
+            
+            // Here, we keep ForceSamePrefabs disabled. This will allow us to dynamically add network prefabs to Netcode
+            // for GameObject after establishing a connection.
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
             m_NetworkManager.ConnectionApprovalCallback += ConnectionApprovalCallback;
         }
