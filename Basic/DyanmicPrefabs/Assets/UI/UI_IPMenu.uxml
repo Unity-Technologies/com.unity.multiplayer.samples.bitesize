@@ -7,9 +7,9 @@
                 <ui:VisualElement name="ButtonsLayout">
                     <ui:VisualElement name="InputFieldWrapper" style="padding-bottom: 15px; height: 186px;">
                         <ui:Label text="IP Address" display-tooltip-when-elided="true" name="IPLabel" class="labelText" style="-unity-text-align: middle-center; padding-top: 5px;" />
-                        <ui:TextField text="127.0.0.1" name="IPAddressField" focusable="true" is-delayed="true" password="false" class="button" style="flex-grow: 0;" />
+                        <ui:TextField text="0.0.0.0" name="IPAddressField" focusable="true" is-delayed="true" password="false" class="button" style="flex-grow: 0;" />
                         <ui:Label text="Port" display-tooltip-when-elided="true" name="PortLabel" class="labelText" style="-unity-text-align: middle-center; padding-top: 15px;" />
-                        <ui:TextField text="9998" name="PortField" focusable="true" is-delayed="true" class="button" style="flex-grow: 0;" />
+                        <ui:TextField text="0000" name="PortField" focusable="true" is-delayed="true" class="button" style="flex-grow: 0;" />
                     </ui:VisualElement>
                     <ui:Button text="Host (Client + Server)" display-tooltip-when-elided="true" name="HostButton" tabindex="1" focusable="false" class="button" style="flex-grow: 0;" />
                     <ui:VisualElement style="flex-direction: row; justify-content: space-between;">

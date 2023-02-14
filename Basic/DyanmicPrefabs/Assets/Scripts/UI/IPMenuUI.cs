@@ -1,7 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,110 +26,120 @@ namespace Game.UI
         Button m_ButtonDisconnect;
         Label m_ConnectionTypeLabel;
 
+        public string IpAddress { get; private set; } = "127.0.0.1";
+        public ushort Port { get; private set; } = 9998;
+
         void Awake()
         {
             SetupIPInputUI();
 
-            // register buttons to methods using callbacks for when they're clicked 
-            m_ButtonHost.clickable.clicked += StartHost;
-            m_ButtonServer.clickable.clicked += StartServer;
-            m_ButtonClient.clickable.clicked += StartClient;
-            m_ButtonDisconnect.clickable.clicked += Disconnect;
+            // register UI elements to methods using callbacks for when they're clicked 
+            m_ButtonHost.clickable.clicked += HostStarted;
+            m_ButtonServer.clickable.clicked += ServerStarted;
+            m_ButtonClient.clickable.clicked += ClientStarted;
+            m_ButtonDisconnect.clickable.clicked += OnShutdownRequested;
+            m_IPInputField.RegisterValueChangedCallback(OnIpAddressChanged);
+            m_PortInputField.RegisterValueChangedCallback(OnPortChanged);
         }
 
         void OnDestroy()
         {
-            // un-register buttons from methods using callbacks for when they're clicked 
-            m_ButtonHost.clickable.clicked -= StartHost;
-            m_ButtonServer.clickable.clicked -= StartServer;
-            m_ButtonClient.clickable.clicked -= StartClient;
-            m_ButtonDisconnect.clickable.clicked -= Disconnect;
-
-            NetworkManager.Singleton.OnClientDisconnectCallback -= SingletonOnOnClientDisconnectCallback;
+            // un-register UI elements from methods using callbacks for when they're clicked 
+            m_ButtonHost.clickable.clicked -= HostStarted;
+            m_ButtonServer.clickable.clicked -= ServerStarted;
+            m_ButtonClient.clickable.clicked -= ClientStarted;
+            m_ButtonDisconnect.clickable.clicked -= OnShutdownRequested;
+            m_IPInputField.UnregisterValueChangedCallback(OnIpAddressChanged);
+            m_PortInputField.UnregisterValueChangedCallback(OnPortChanged);
         }
 
         void Start()
         {
-            SetUIElementVisibility(m_IPMenuUIRoot, true);
-            SetUIElementVisibility(m_ConnectionTypeUIRoot, false);
-
-            NetworkManager.Singleton.OnClientDisconnectCallback += SingletonOnOnClientDisconnectCallback;
+            ResetUI();
+            m_IPInputField.value = IpAddress;
+            m_PortInputField.value = Port.ToString();
         }
 
-        void SingletonOnOnClientDisconnectCallback(ulong obj)
+        void HostStarted()
         {
-            // todo: add logic for server to not do it when a different client disconnects
-            SetUIElementVisibility(m_IPMenuUIRoot, true);
-            SetUIElementVisibility(m_ConnectionTypeUIRoot, false);
+            SwitchToInGameUI("Host");
         }
 
-        void StartHost()
+        void ClientStarted()
         {
-            SetUtpConnectionData();
-            var result = NetworkManager.Singleton.StartHost();
-            if (result)
-            {
-                SetUIElementVisibility(m_IPMenuUIRoot, false);
-                SetUIElementVisibility(m_ConnectionTypeUIRoot, true);
-                m_ConnectionTypeLabel.text = "Host";
-            }
+            SwitchToInGameUI("Client");
         }
 
-        void StartClient()
+        void ServerStarted()
         {
-            SetUtpConnectionData();
-            var result = NetworkManager.Singleton.StartClient();
-            if (result)
-            {
-                SetUIElementVisibility(m_IPMenuUIRoot, false);
-                SetUIElementVisibility(m_ConnectionTypeUIRoot, true);
-                m_ConnectionTypeLabel.text = "Client";
-            }
+            SwitchToInGameUI("Server");
         }
 
-        void StartServer()
+        void SwitchToInGameUI(string connectionType)
         {
-            SetUtpConnectionData();
-            var result = NetworkManager.Singleton.StartServer();
-            if (result)
-            {
-                SetUIElementVisibility(m_IPMenuUIRoot, false);
-                SetUIElementVisibility(m_ConnectionTypeUIRoot, true);
-                m_ConnectionTypeLabel.text = "Server";
-            }
+            SetUIElementVisibility(m_IPMenuUIRoot, false);
+            SetUIElementVisibility(m_ConnectionTypeUIRoot, true);
+            m_ConnectionTypeLabel.text = connectionType;
         }
 
-        void Disconnect()
+        void OnShutdownRequested()
         {
-            NetworkManager.Singleton.Shutdown();
+            ResetUI();
+        }
+
+        void OnClientDisconnect(ulong clientId)
+        {
+            ResetUI();
+        }
+
+        void ResetUI()
+        {
             SetUIElementVisibility(m_IPMenuUIRoot, true);
             SetUIElementVisibility(m_ConnectionTypeUIRoot, false);
         }
 
-        void SetUIElementVisibility(VisualElement element, bool isVisible)
+        void OnIpAddressChanged(ChangeEvent<string> ipAddress)
         {
-            element.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
+            SanitizeAndSetIpAddress(ipAddress.newValue);
         }
 
-        void SetUtpConnectionData()
+        void OnPortChanged(ChangeEvent<string> port)
         {
-            var sanitizedIPText = Sanitize(m_IPInputField.text);
-            var sanitizedPortText = Sanitize(m_PortInputField.text);
+            SanitizeAndSetPort(port.newValue);
+        }
 
-            ushort.TryParse(sanitizedPortText, out var port);
+        void SanitizeAndSetPort(string portToSanitize)
+        {
+            var sanitizedPort = Sanitize(portToSanitize);
+            m_PortInputField.value = sanitizedPort;
+            Debug.Log($"sanitized port = {sanitizedPort}");
+            ushort.TryParse(sanitizedPort, out var parsedPort);
+            Port = parsedPort;
+            Debug.Log($"parsed port = {parsedPort}");
+            m_PortInputField.value = Port.ToString();
+            Debug.Log(Port.ToString());
+        }
 
-            var utp = (UnityTransport) NetworkManager.Singleton.NetworkConfig.NetworkTransport;
-            utp.SetConnectionData(sanitizedIPText, port);
+        void SanitizeAndSetIpAddress(string ipAddressToSanitize)
+        {
+            IpAddress = Sanitize(ipAddressToSanitize);
+            Debug.Log(IpAddress);
+            m_IPInputField.value = IpAddress;
         }
 
         /// <summary>
         /// Sanitize user port InputField box allowing only alphanumerics and '.'
         /// </summary>
-        /// <param name="dirtyString"> string to sanitize. </param>
+        /// <param name="stringToBeSanitized"> string to sanitize. </param>
         /// <returns> Sanitized text string. </returns>
-        static string Sanitize(string dirtyString)
+        string Sanitize(string stringToBeSanitized)
         {
-            return Regex.Replace(dirtyString, "[^A-Za-z0-9.]", "");
+            return Regex.Replace(stringToBeSanitized, "[^A-Za-z0-9.]", "");
+        }
+
+        void SetUIElementVisibility(VisualElement element, bool isVisible)
+        {
+            element.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         void SetupIPInputUI()

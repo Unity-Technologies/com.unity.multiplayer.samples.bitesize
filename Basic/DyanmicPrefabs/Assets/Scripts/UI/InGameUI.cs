@@ -27,7 +27,6 @@ namespace Game.UI
         Button m_ButtonLoadAllAsync;
         Button m_ButtonSpawnSynchronously;
         Button m_ButtonSpawnWithVisibility;
-        Button m_ButtonResetScene;
         Slider m_SliderArtificialLatency;
         Slider m_SliderNetworkSpawnTimeout;
         TextField m_TextFieldArtificialLatency;
@@ -41,8 +40,8 @@ namespace Game.UI
         [SerializeField]
         bool m_ShowSpawnUsingVisibilityButton;
 
-        public float ArtificialLatency { get; private set; }
-        public float NetworkSpawnTimeout { get; private set; }
+        public float ArtificialLatency { get; private set; } = 1000;
+        public float NetworkSpawnTimeout { get; private set; } = 3000;
 
         Dictionary<ulong, ClientUI> m_Clients = new Dictionary<ulong, ClientUI>();
 
@@ -101,7 +100,7 @@ namespace Game.UI
         {
             SetupConnectionsUI();
 
-            // register buttons to methods using callbacks for when they're clicked 
+            // register UI elements to methods using callbacks for when they're clicked 
             if (m_ShowLoadAllAsyncButton)
             {
                 m_ButtonLoadAllAsync.clickable.clicked += LoadAllPrefabsAsync;
@@ -129,16 +128,18 @@ namespace Game.UI
 
         void OnDestroy()
         {
-            // un-register buttons from methods using callbacks for when they're clicked 
+            // un-register UI elements from methods using callbacks for when they're clicked 
             m_ButtonLoadAllAsync.clickable.clicked -= LoadAllPrefabsAsync;
             m_ButtonSpawnSynchronously.clickable.clicked -= TrySpawnSynchronously;
             m_ButtonSpawnWithVisibility.clickable.clicked -= SpawnInvisible;
+            m_SliderArtificialLatency.UnregisterValueChangedCallback(OnArtificialLatencySliderChanged);
+            m_SliderNetworkSpawnTimeout.UnregisterValueChangedCallback(OnNetworkSpawnTimeoutSliderChanged);
+            m_TextFieldArtificialLatency.UnregisterValueChangedCallback(OnArtificialLatencyInputChanged);
+            m_TextFieldLabelNetworkSpawnTimeout.UnregisterValueChangedCallback(OnNetworkSpawnTimeoutInputChanged);
         }
 
         void Start()
         {
-            ArtificialLatency = 1000;
-            NetworkSpawnTimeout = 3000;
             m_SliderArtificialLatency.value = ArtificialLatency;
             m_SliderNetworkSpawnTimeout.value = NetworkSpawnTimeout;
             m_TextFieldArtificialLatency.value = ArtificialLatency.ToString();
@@ -183,7 +184,7 @@ namespace Game.UI
             }
         }
 
-        void ModifyConnectionsUIRow(ulong clientID, int prefabHashes, string prefabName, LoadStatus loadStatus)
+        void AddOrModifyConnectionsUIRow(ulong clientID, int prefabHashes, string prefabName, LoadStatus loadStatus)
         {
             var clientUI = GetClientUI(clientID);
             clientUI.SetRow(prefabHashes, prefabName, loadStatus);
@@ -255,7 +256,6 @@ namespace Game.UI
             m_ButtonLoadAllAsync = m_InGameUIRoot.Q<Button>("LoadAsync");
             m_ButtonSpawnSynchronously = m_InGameUIRoot.Q<Button>("SpawnSync");
             m_ButtonSpawnWithVisibility = m_InGameUIRoot.Q<Button>("SpawnInvisible");
-            m_ButtonResetScene = m_InGameUIRoot.Q<Button>("ResetScene");
             m_SliderArtificialLatency = m_InGameUIRoot.Q<Slider>("SliderArtificialLatency");
             m_SliderNetworkSpawnTimeout = m_InGameUIRoot.Q<Slider>("SliderSpawnTimeout");
             m_TextFieldArtificialLatency = m_InGameUIRoot.Q<TextField>("ArtificialLatencyValue");
