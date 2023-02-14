@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game.ServerAuthoritativeLoadAllPrefabsAsynchronously
+namespace Game.ServerAuthoritativeLoadAllAsync
 {
     /// <summary>
     /// A simple use-case where the server notifies all clients to preload a collection of network prefabs. The server
@@ -18,7 +18,7 @@ namespace Game.ServerAuthoritativeLoadAllPrefabsAsynchronously
     /// can do so without making sure all clients have loaded said dynamic prefab, since it already did so preemptively.
     /// This allows for simple spawn management.
     /// </remarks>
-    public sealed class ServerAuthoritativeLoadAllPrefabsAsynchronously : NetworkBehaviour
+    public sealed class ServerAuthoritativeLoadAllAsync : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;

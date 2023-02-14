@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game.PreloadingDynamicPrefabs
+namespace Game.Preloading
 {
     /// <summary>
     /// This is the simplest case of a dynamic prefab - we instruct all game instances to load a network prefab (it can
@@ -18,7 +18,7 @@ namespace Game.PreloadingDynamicPrefabs
     /// Config). It should also be noted that this is a technique that could serve to decrease the install size of your
     /// application, since you'd be streaming in networked game assets dynamically.
     /// </remarks>
-    public sealed class PreloadingDynamicPrefabs : MonoBehaviour
+    public sealed class Preloading : MonoBehaviour
     {
         [SerializeField] AssetReferenceGameObject m_DynamicPrefabReference;
         

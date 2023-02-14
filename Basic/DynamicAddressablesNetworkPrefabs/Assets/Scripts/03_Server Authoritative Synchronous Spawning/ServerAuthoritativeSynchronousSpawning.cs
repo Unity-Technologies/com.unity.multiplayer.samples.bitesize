@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
-namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
+namespace Game.ServerAuthoritativeSynchronousSpawning
 {
     /// <summary>
     /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab, and
@@ -24,7 +24,7 @@ namespace Game.ServerAuthoritativeSynchronousDynamicPrefabSpawn
     /// visually) to some clients and not others -- you'd want to delay the enemy's spawn until all clients have
     /// dynamically loaded it and are able to see it before spawning it server side.
     /// </remarks>
-    public sealed class ServerAuthoritativeSynchronousDynamicPrefabSpawn : NetworkBehaviour
+    public sealed class ServerAuthoritativeSynchronousSpawning : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
-namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
+namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
 {
     /// <summary>
     /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab via a
@@ -25,7 +25,7 @@ namespace Game.ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility
     /// gameplay elements (like a boss fight for example) assuming you'd want all clients to interact with the spawned
     /// NetworkObject as soon as it is spawned on the server.
     /// </remarks>
-    public sealed class ServerAuthoritativeSpawnDynamicPrefabUsingNetworkVisibility : NetworkBehaviour
+    public sealed class ServerAuthoritativeNetworkVisibilitySpawning : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;

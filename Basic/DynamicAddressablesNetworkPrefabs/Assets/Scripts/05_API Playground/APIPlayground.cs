@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
-namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
+namespace Game.APIPlayground
 {
     /// <summary>
     /// This class serves as the playground of the dynamic prefab loading use-cases. It integrates API from this sample
@@ -20,7 +20,7 @@ namespace Game.APIPlaygroundShowcasingAllPostConnectionUseCases
     /// For more details on the API usage, see the in-project readme (which includes links to further resources,
     /// including the project's technical document).
     /// </remarks>
-    public sealed class APIPlaygroundShowcasingAllPostConnectionUseCases : NetworkBehaviour
+    public sealed class APIPlayground : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;

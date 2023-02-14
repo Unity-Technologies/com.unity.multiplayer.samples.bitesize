@@ -2,17 +2,17 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game.ConnectionApprovalRequiredForLateJoining
+namespace Game.ConnectionApproval
 {
     /// <summary>
     /// A class that walks through what a server would need to validate from a client when dynamically loading network
     /// prefabs. This is another simple use-case scenario, as this is just the implementation of the connection approval
     /// callback, which is an optional feature from Netcode for GameObjects. To enable it, make sure the "Connection
-    /// Approval" toggle is enabled on the NetworkManager in your scene. Other use-cases don't allow for connection
+    /// Approval" toggle is enabled on the NetworkManager in your scene. Other use-cases don't allow for reconciliation
     /// after the server has loaded a prefab dynamically, whereas this one enables that functionality. To see it all in
     /// harmony, see <see cref="APIPlayground"/>, where all post-connection techniques are showcased in one scene.
     /// </summary>
-    public sealed class ConnectionApprovalRequiredForLateJoining : NetworkBehaviour
+    public sealed class ConnectionApproval : NetworkBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
