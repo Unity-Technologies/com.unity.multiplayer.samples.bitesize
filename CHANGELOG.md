@@ -7,7 +7,7 @@ N/A
 
 ### Dynamic Prefabs
 
-Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. (#63) (#93) (#94)
+Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. (#63) (#94) (#96)
 
 ### 2DSpaceShooter
 
@@ -18,19 +18,19 @@ Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the
 
 #### Changed
 - Upgraded sample to 2021.3.18f1 LTS (#91)
-- Readme was updated (#93)
+- Readme was updated (#96)
 
 ### Client Driven
 
 #### Changed
 - Upgraded sample to 2021.3.18f1 LTS (#91)
-- Readme was updated (#93)
+- Readme was updated (#96)
 
 ### Invaders
 
 #### Changed
 - Upgraded sample to 2021.3.18f1 LTS (#91)
-- Readme was updated (#93)
+- Readme was updated (#96)
 
 
 ## [1.1.0] - 2022-12-13
