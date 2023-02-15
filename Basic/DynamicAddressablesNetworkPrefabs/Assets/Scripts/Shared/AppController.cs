@@ -101,17 +101,20 @@ namespace Game
         
         void OnClientDisconnect(ulong clientId)
         {
-            // show connection UI only when the local client disconnects
-            if (m_NetworkManager.IsClient && clientId == NetworkManager.ServerClientId)
-            {
-                m_IPMenuUI.ResetUI();
-            }
+            Debug.Log($"{nameof(OnClientDisconnect)} {clientId}");
 
             // when a connected client disconnects, remove their UI
             if (m_NetworkManager.IsServer && clientId != NetworkManager.ServerClientId)
             {
                 // if a connected client disconnects on the host
                 m_InGameUI.RemoveConnectionUIInstance(clientId);
+            }
+            else
+            {
+                // show connection UI only when the local client disconnects
+                m_IPMenuUI.ResetUI();
+                m_InGameUI.RemoveConnectionUIInstance(m_NetworkManager.LocalClientId);
+                m_InGameUI.Hide();
             }
         }
         
@@ -133,6 +136,11 @@ namespace Game
             m_ConnectionManager.RequestShutdown();
             m_InGameUI.DisconnectRequested();
             m_IPMenuUI.DisconnectRequested();
+        }
+
+        void OnApplicationQuit()
+        {
+            Disconnect();
         }
     }
 }

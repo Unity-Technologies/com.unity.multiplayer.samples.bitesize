@@ -182,6 +182,7 @@ namespace Game.UI
         public void DisconnectRequested()
         {
             ResetInGameUI();
+            Hide();
         }
 
         ClientUI GetClientUI(ulong clientId)
