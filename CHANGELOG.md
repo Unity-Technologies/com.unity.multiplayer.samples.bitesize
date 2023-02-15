@@ -32,6 +32,10 @@ Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the
 - Upgraded sample to 2021.3.18f1 LTS (#91)
 - Readme was updated (#96)
 
+### Global
+#### Changed
+- Readme was updated (#96)
+
 
 ## [1.1.0] - 2022-12-13
 
