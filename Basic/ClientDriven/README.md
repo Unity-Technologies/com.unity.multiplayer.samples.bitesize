@@ -1,12 +1,26 @@
 # Client Driven
 
-This is a sample project oriented to Client Driven behaviour using Netcode for GameObjects. In this sample you will learn more about Client driven movements, networked physics, spawning vs statically placed objects, object reparenting
+![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)
+![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)
+[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0)
+<br><br>
 
-## Sample feature
+The ClientDriven sample is a sample project made with Netcode for GameObjects designed to demonstrate responsive 3rd-person WASD character movements even under unfavourable network conditions.
+<br><br>
 
-Making movements feel responsive while staying consistent over multiple game executables is a challenge for many networked games. ClientDriven's aim is to create a quick sample to show responsive character movements that don't feel sluggish, even under bad network conditions.
-It also provides a client side object detection with server side pickup, showing client driven patterns and networked object reparenting.
-These physics objects are spawned server side at regular intervals and can be pushed around by client driven players.
+# Sample Overview
+
+In this sample, learn more about:
+
+- Client driven movements
+- Networked physics
+- Spawning vs in-scene placed `NetworkObjects`
+- `NetworkObject` parenting (client side object detection with server side pickup)
+<br><br>
+
+## Exploring the Sample
+The entry scene for this game is the Bootstrap scene. From there a game can be hosted or an existing game can be joined.
+<br><br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
 [![Forums](https://img.shields.io/badge/Unity-multiplayer--forum-57b9d3.svg?logo=unity&color=2196F3)](https://forum.unity.com/forums/multiplayer.26/)

@@ -47,7 +47,7 @@ Check out the new [Dynamic Addressables Network Prefabs Sample]() to learn more 
 - ### [Community](#community)
 - ### [Feedback Form](#feedback-form)
 - ### [Other Samples](#other-samples)
-    - [Boss Room](#boss-room-sample)
+  - [Boss Room](#boss-room-sample)
 
 </details>
 
