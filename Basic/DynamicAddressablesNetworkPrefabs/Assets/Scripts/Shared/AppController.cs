@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Game.UI;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -19,13 +21,15 @@ namespace Game
 
         [SerializeField]
         NetworkManager m_NetworkManager;
-        
-        [SerializeField] GameObject m_ConnectionUI;
-        
-        [SerializeField] GameObject m_SpawnUI;
 
         [SerializeField]
         OptionalConnectionManager m_ConnectionManager;
+        
+        [SerializeField]
+        IPMenuUI m_IPMenuUI;
+        
+        [SerializeField]
+        InGameUI m_InGameUI;
 
         void Awake()
         {
@@ -34,54 +38,101 @@ namespace Game
 
         void Start()
         {
-            m_SpawnUI.SetActive(true);
-            m_ConnectionUI.SetActive(true);
+            m_IPMenuUI.ResetUI();
+            m_InGameUI.Hide();
             
             m_NetworkManager.OnClientConnectedCallback += OnClientConnected;
             m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnect;
+            
+            m_IPMenuUI.HostButtonPressed += StartHost;
+            m_IPMenuUI.ClientButtonPressed += StartClient;
+            m_IPMenuUI.DisconnectButtonPressed += Disconnect;
         }
 
         void OnDestroy()
         {
             m_NetworkManager.OnClientConnectedCallback -= OnClientConnected;
             m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnect;
+
+            if (m_IPMenuUI)
+            {
+                m_IPMenuUI.HostButtonPressed -= StartHost;
+                m_IPMenuUI.ClientButtonPressed -= StartClient;
+                m_IPMenuUI.DisconnectButtonPressed -= Disconnect;
+            }
         }
 
         void OnClientConnected(ulong clientId)
         {
-            m_SpawnUI.SetActive(m_NetworkManager.IsServer);
-            m_ConnectionUI.SetActive(false);
+            m_IPMenuUI.HideIPConnectionMenu();
+            
+            // for host
+            if (m_NetworkManager.IsHost)
+            {
+                if (clientId == m_NetworkManager.LocalClientId)
+                {
+                    m_IPMenuUI.HostStarted();
+                    m_InGameUI.Show(InGameUI.ButtonVisibility.Server);
+                    m_InGameUI.AddConnectionUIInstance(clientId, new int[] { }, new string[] { });
+                }
+                else
+                {
+                    // grab all loaded prefabs and represent that on the newly joined client
+                    var loadedHashes = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Keys.Select(value => value.GetHashCode()).ToArray();
+                    var loadedNames = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Values.Select(value => value.Result.name).ToArray();
+                    m_InGameUI.AddConnectionUIInstance(clientId, loadedHashes, loadedNames);
+                }
+            }
+            else if (m_NetworkManager.IsClient)
+            {
+                // for clients that are not host
+                if (m_NetworkManager.IsClient && clientId == m_NetworkManager.LocalClientId)
+                {
+                    m_IPMenuUI.ClientStarted();
+                    m_InGameUI.Show(InGameUI.ButtonVisibility.Client);
+                    
+                    // grab all locally loaded prefabs and represent that on local client
+                    var loadedHashes = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Keys.Select(value => value.GetHashCode()).ToArray();
+                    var loadedNames = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Values.Select(value => value.Result.name).ToArray();
+                    m_InGameUI.AddConnectionUIInstance(clientId, loadedHashes, loadedNames);
+                }
+            }
         }
         
         void OnClientDisconnect(ulong clientId)
         {
             // show connection UI only when the local client disconnects
-            m_ConnectionUI.SetActive(m_NetworkManager.IsClient && clientId == NetworkManager.ServerClientId);
-            m_SpawnUI.SetActive(true);
+            if (m_NetworkManager.IsClient && clientId == NetworkManager.ServerClientId)
+            {
+                m_IPMenuUI.ResetUI();
+            }
+
+            // when a connected client disconnects, remove their UI
+            if (m_NetworkManager.IsServer && clientId != NetworkManager.ServerClientId)
+            {
+                // if a connected client disconnects on the host
+                m_InGameUI.RemoveConnectionUIInstance(clientId);
+            }
         }
         
         public void StartClient()
         {
             Debug.Log(nameof(StartClient));
             m_ConnectionManager.StartClientIp(m_ConnectAddress, m_Port);
-            m_ConnectionUI.SetActive(false);
         }
 
         public void StartHost()
         {
             Debug.Log(nameof(StartHost));
             m_ConnectionManager.StartHostIp(m_ConnectAddress, m_Port);
-            m_ConnectionUI.SetActive(false);
         }
 
-        // placeholder until this is triggered by UI
-        [ContextMenu(nameof(OnClickedShutdown))]
-        public void OnClickedShutdown()
+        public void Disconnect()
         {
-            Debug.Log(nameof(OnClickedShutdown));
+            Debug.Log(nameof(Disconnect));
             m_ConnectionManager.RequestShutdown();
-            m_SpawnUI.SetActive(true);
-            m_ConnectionUI.SetActive(true);
+            m_InGameUI.DisconnectRequested();
+            m_IPMenuUI.DisconnectRequested();
         }
     }
 }

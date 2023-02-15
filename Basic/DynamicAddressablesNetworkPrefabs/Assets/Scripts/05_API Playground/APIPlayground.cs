@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Game.UI;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -27,12 +28,9 @@ namespace Game.APIPlayground
         
         [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabReferences;
         
+        [SerializeField] InGameUI m_InGameUI;
+        
         const int k_MaxConnectPayload = 1024;
-        
-        [SerializeField]
-        int m_ArtificialDelayMilliseconds = 1000;
-        
-        [SerializeField] float m_SpawnTimeoutInSeconds;
         
         //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
         Dictionary<int, HashSet<NetworkObject>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<NetworkObject>>();
@@ -53,6 +51,11 @@ namespace Game.APIPlayground
             // for GameObject after establishing a connection.
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
             m_NetworkManager.ConnectionApprovalCallback += ConnectionApprovalCallback;
+            
+            // hooking up UI callbacks
+            m_InGameUI.LoadAllAsyncButtonPressed += OnClickedPreload;
+            m_InGameUI.TrySpawnSynchronouslyButtonPressed += OnClickedTrySpawnSynchronously;
+            m_InGameUI.SpawnUsingVisibilityButtonPressed += OnClickedTrySpawnInvisible;
         }
         
         public override void OnDestroy()
@@ -73,6 +76,12 @@ namespace Game.APIPlayground
                 //allow the host to connect
                 Approve();
                 return;
+            }
+            
+            // A sample-specific denial on clients when 3 clients have been connected
+            if (m_NetworkManager.ConnectedClientsList.Count >= 3)
+            {
+                ImmediateDeny();
             }
             
             if (connectionData.Length > k_MaxConnectPayload)
@@ -143,7 +152,7 @@ namespace Game.APIPlayground
         }
 
         // invoked by UI
-        public void OnClickedPreload()
+        void OnClickedPreload()
         {
             if (!m_NetworkManager.IsServer)
             {
@@ -154,7 +163,7 @@ namespace Game.APIPlayground
         }
         
         // invoked by UI
-        public void OnClickedTrySpawnSynchronously()
+        void OnClickedTrySpawnSynchronously()
         {
             if (!m_NetworkManager.IsServer)
             {
@@ -165,7 +174,7 @@ namespace Game.APIPlayground
         }
         
         // invoked by UI
-        public void OnClickedTrySpawnInvisible()
+        void OnClickedTrySpawnInvisible()
         {
             if (!m_NetworkManager.IsServer)
             {
@@ -205,9 +214,23 @@ namespace Game.APIPlayground
                     return;
                 }
                 
+                // update UI for each client that is requested to load a certain prefab
+                foreach (var client in m_NetworkManager.ConnectedClients.Keys)
+                {
+                    m_InGameUI.ClientLoadedPrefabStatusChanged(client, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+                }
+                
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
-                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                
+                // server is starting to load a prefab, update UI
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
+                
+                // server loaded a prefab, update UI with the loaded asset's name
+                DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
             }
         }
         
@@ -244,12 +267,21 @@ namespace Game.APIPlayground
                 
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
+                
+                // server is starting to load a prefab, update UI
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+
                 //load the prefab on the server, so that any late-joiner will need to load that prefab also
-                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
+                
+                // server loaded a prefab, update UI with the loaded asset's name
+                DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
+
                 var requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : 
                     m_NetworkManager.ConnectedClients.Count;
                 
-                while (m_SynchronousSpawnTimeoutTimer < m_SpawnTimeoutInSeconds)
+                while (m_SynchronousSpawnTimeoutTimer < m_InGameUI.NetworkSpawnTimoutSeconds)
                 {
                     if (m_SynchronousSpawnAckCount >= requiredAcknowledgementsCount)
                     {
@@ -271,7 +303,7 @@ namespace Game.APIPlayground
             async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
                 var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
-                    m_ArtificialDelayMilliseconds);
+                    m_InGameUI.ArtificialDelayMilliseconds);
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 obj.Spawn();
                 Debug.Log("Spawned dynamic prefab");
@@ -309,8 +341,16 @@ namespace Game.APIPlayground
 
             async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
             {
+                // server is starting to load a prefab, update UI
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+
                 var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, 
-                    m_ArtificialDelayMilliseconds);
+                    m_InGameUI.ArtificialDelayMilliseconds);
+                
+                // server loaded a prefab, update UI with the loaded asset's name
+                DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
+                
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 
                 if (m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
@@ -329,7 +369,11 @@ namespace Game.APIPlayground
                     {
                         return true;
                     }
-                    //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
+                    
+                    // client is loading a prefab, update UI
+                    m_InGameUI.ClientLoadedPrefabStatusChanged(clientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+
+                    //otherwise the client need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
                     LoadAddressableClientRpc(assetGuid, new ClientRpcParams(){Send = new ClientRpcSendParams(){TargetClientIds = new ulong[]{clientId}}});
                     return false;
                 };
@@ -364,15 +408,22 @@ namespace Game.APIPlayground
 
             async void Load(AddressableGUID assetGuid)
             {
+                // loading prefab as a client, update UI
+                m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+
                 Debug.Log("Loading dynamic prefab on the client...");
-                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
                 Debug.Log("Client loaded dynamic prefab");
-                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
+                
+                DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+                m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
+
+                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode(), loadedGameObject.Result.name);
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, string loadedPrefabName, ServerRpcParams rpcParams = default)
         {
             m_SynchronousSpawnAckCount++;
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
@@ -384,6 +435,10 @@ namespace Game.APIPlayground
             {
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
+            
+            // client has successfully loaded a prefab, update UI
+            m_InGameUI.ClientLoadedPrefabStatusChanged(rpcParams.Receive.SenderClientId, prefabHash, loadedPrefabName, InGameUI.LoadStatus.Loaded);
+
         }
     }
 }

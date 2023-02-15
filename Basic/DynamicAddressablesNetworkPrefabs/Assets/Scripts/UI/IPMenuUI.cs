@@ -28,16 +28,24 @@ namespace Game.UI
 
         public string IpAddress { get; private set; } = "127.0.0.1";
         public ushort Port { get; private set; } = 9998;
+        
+        public event Action ServerButtonPressed;
+        
+        public event Action HostButtonPressed;
+        
+        public event Action ClientButtonPressed;
+        
+        public event Action DisconnectButtonPressed;
 
         void Awake()
         {
             SetupIPInputUI();
 
             // register UI elements to methods using callbacks for when they're clicked 
-            m_ButtonHost.clickable.clicked += HostStarted;
+            m_ButtonHost.clickable.clicked += OnHostButtonPressed;
             m_ButtonServer.clickable.clicked += ServerStarted;
-            m_ButtonClient.clickable.clicked += ClientStarted;
-            m_ButtonDisconnect.clickable.clicked += OnShutdownRequested;
+            m_ButtonClient.clickable.clicked += OnClientButtonPressed;
+            m_ButtonDisconnect.clickable.clicked += OnDisconnectButtonPressed;
             m_IPInputField.RegisterValueChangedCallback(OnIpAddressChanged);
             m_PortInputField.RegisterValueChangedCallback(OnPortChanged);
         }
@@ -45,10 +53,10 @@ namespace Game.UI
         void OnDestroy()
         {
             // un-register UI elements from methods using callbacks for when they're clicked 
-            m_ButtonHost.clickable.clicked -= HostStarted;
+            m_ButtonHost.clickable.clicked -= OnHostButtonPressed;
             m_ButtonServer.clickable.clicked -= ServerStarted;
-            m_ButtonClient.clickable.clicked -= ClientStarted;
-            m_ButtonDisconnect.clickable.clicked -= OnShutdownRequested;
+            m_ButtonClient.clickable.clicked -= OnClientButtonPressed;
+            m_ButtonDisconnect.clickable.clicked -= OnDisconnectButtonPressed;
             m_IPInputField.UnregisterValueChangedCallback(OnIpAddressChanged);
             m_PortInputField.UnregisterValueChangedCallback(OnPortChanged);
         }
@@ -59,15 +67,35 @@ namespace Game.UI
             m_IPInputField.value = IpAddress;
             m_PortInputField.value = Port.ToString();
         }
+        
+        void OnHostButtonPressed()
+        {
+            HostButtonPressed?.Invoke();
+        }
+        
+        void OnClientButtonPressed()
+        {
+            ClientButtonPressed?.Invoke();
+        }
+        
+        void OnDisconnectButtonPressed()
+        {
+            DisconnectButtonPressed?.Invoke();
+        }
 
-        void HostStarted()
+        public void HostStarted()
         {
             SwitchToInGameUI("Host");
         }
 
-        void ClientStarted()
+        public void ClientStarted()
         {
             SwitchToInGameUI("Client");
+        }
+        
+        public void HideIPConnectionMenu()
+        {
+            SetUIElementVisibility(m_IPMenuUIRoot, false);
         }
 
         void ServerStarted()
@@ -82,17 +110,12 @@ namespace Game.UI
             m_ConnectionTypeLabel.text = connectionType;
         }
 
-        void OnShutdownRequested()
+        public void DisconnectRequested()
         {
             ResetUI();
         }
 
-        void OnClientDisconnect(ulong clientId)
-        {
-            ResetUI();
-        }
-
-        void ResetUI()
+        public void ResetUI()
         {
             SetUIElementVisibility(m_IPMenuUIRoot, true);
             SetUIElementVisibility(m_ConnectionTypeUIRoot, false);

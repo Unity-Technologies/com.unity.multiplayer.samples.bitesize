@@ -40,6 +40,8 @@ namespace Game
             return s_LoadedDynamicPrefabResourceHandles.TryGetValue(assetGuid, out loadedGameObject);
         }
 
+        public static Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> LoadedDynamicPrefabResourceHandles => s_LoadedDynamicPrefabResourceHandles;
+
         public static int LoadedPrefabCount => s_LoadedDynamicPrefabResourceHandles.Count;
 
         static NetworkManager s_NetworkManager;
@@ -49,6 +51,8 @@ namespace Game
         public static void Init(NetworkManager networkManager)
         {
             s_NetworkManager = networkManager;
+
+            var values = s_LoadedDynamicPrefabResourceHandles.Values;
         }
 
         /// <remarks>
