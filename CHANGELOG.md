@@ -7,7 +7,7 @@ N/A
 
 ### Dynamic Prefabs
 
-Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. (#63) (#94) (#96)
+Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. (#63) (#94) (#96) (#97)
 
 ### 2DSpaceShooter
 
