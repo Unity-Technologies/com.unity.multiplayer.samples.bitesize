@@ -181,12 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Move with WASD
-
-    - Change cubes'' color with E
-
-    - Approach cubes
-    to learn more'
+  m_text: '- Move with WASD'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -837,6 +832,11 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!1 &1017577773 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7079470771712663481, guid: e0e46513231ac0d4192526820acd436d, type: 3}
+  m_PrefabInstance: {fileID: 1968555145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1242368263
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,16 +907,6 @@ MonoBehaviour:
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 1821519764381351181, guid: 491ce734bb1ed714da80050d807de589, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 8678006533216092845, guid: f0aa449fae43c4145a228b6040e435a9, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
       Prefab: {fileID: 7079470771712663481, guid: bd21e0b3431ce674b8646bd84701b818, type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
@@ -956,6 +946,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1091139708261947860, guid: e0e46513231ac0d4192526820acd436d, type: 3}
   m_PrefabInstance: {fileID: 1968555145}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1542165768
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1017577773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8534e17a0f90604c9afd4f5c73d829f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Id: a38a079e-a495-4ffd-aed3-cf441bea5f57
 --- !u!1 &1892228561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,7 +1128,7 @@ PrefabInstance:
       objectReference: {fileID: 2021246509}
     - target: {fileID: 9128101254753313904, guid: e0e46513231ac0d4192526820acd436d, type: 3}
       propertyPath: m_DefaultMessage
-      value: Press E while you're in my range to my to change my color!
+      value: Press E while you're in my range to change my color!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0e46513231ac0d4192526820acd436d, type: 3}
