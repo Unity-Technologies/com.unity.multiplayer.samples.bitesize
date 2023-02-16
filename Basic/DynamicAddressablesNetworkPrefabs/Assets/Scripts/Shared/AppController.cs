@@ -37,7 +37,7 @@ namespace Game
             
             m_NetworkManager.OnClientConnectedCallback += OnClientConnected;
             m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnect;
-            
+
             m_IPMenuUI.HostButtonPressed += StartHost;
             m_IPMenuUI.ClientButtonPressed += StartClient;
             m_IPMenuUI.DisconnectButtonPressed += Disconnect;
@@ -110,16 +110,16 @@ namespace Game
             }
         }
         
-        public void StartClient()
-        {
-            Debug.Log(nameof(StartClient));
-            m_ConnectionManager.StartClientIp(m_IPMenuUI.IpAddress, m_IPMenuUI.Port);
-        }
-
-        public void StartHost()
+        void StartHost()
         {
             Debug.Log(nameof(StartHost));
             m_ConnectionManager.StartHostIp(m_IPMenuUI.IpAddress, m_IPMenuUI.Port);
+        }
+        
+        void StartClient()
+        {
+            Debug.Log(nameof(StartClient));
+            m_ConnectionManager.StartClientIp(m_IPMenuUI.IpAddress, m_IPMenuUI.Port);
         }
 
         public void Disconnect()

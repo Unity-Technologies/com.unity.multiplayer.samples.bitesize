@@ -12,8 +12,7 @@
                         <ui:TextField text="0000" name="PortField" focusable="true" is-delayed="true" class="button" style="flex-grow: 0;" />
                     </ui:VisualElement>
                     <ui:Button text="Host (Client + Server)" display-tooltip-when-elided="true" name="HostButton" tabindex="1" focusable="false" class="button" style="flex-grow: 0;" />
-                    <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
-                        <ui:Button text="Server" display-tooltip-when-elided="true" name="ServerButton" tabindex="3" focusable="false" class="button" style="flex-grow: 0; width: 50%; flex-shrink: 1; margin-right: 2px;" />
+                    <ui:VisualElement style="flex-direction: row; justify-content: center;">
                         <ui:Button text="Client" display-tooltip-when-elided="true" name="ClientButton" tabindex="2" focusable="false" class="button" style="flex-grow: 0; width: 50%; flex-shrink: 1; margin-left: 2px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>

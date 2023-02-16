@@ -28,9 +28,7 @@ namespace Game.UI
 
         public string IpAddress { get; private set; } = "127.0.0.1";
         public ushort Port { get; private set; } = 9998;
-        
-        public event Action ServerButtonPressed;
-        
+                
         public event Action HostButtonPressed;
         
         public event Action ClientButtonPressed;
@@ -43,7 +41,6 @@ namespace Game.UI
 
             // register UI elements to methods using callbacks for when they're clicked 
             m_ButtonHost.clickable.clicked += OnHostButtonPressed;
-            m_ButtonServer.clickable.clicked += ServerStarted;
             m_ButtonClient.clickable.clicked += OnClientButtonPressed;
             m_ButtonDisconnect.clickable.clicked += OnDisconnectButtonPressed;
             m_IPInputField.RegisterValueChangedCallback(OnIpAddressChanged);
@@ -54,7 +51,6 @@ namespace Game.UI
         {
             // un-register UI elements from methods using callbacks for when they're clicked 
             m_ButtonHost.clickable.clicked -= OnHostButtonPressed;
-            m_ButtonServer.clickable.clicked -= ServerStarted;
             m_ButtonClient.clickable.clicked -= OnClientButtonPressed;
             m_ButtonDisconnect.clickable.clicked -= OnDisconnectButtonPressed;
             m_IPInputField.UnregisterValueChangedCallback(OnIpAddressChanged);
