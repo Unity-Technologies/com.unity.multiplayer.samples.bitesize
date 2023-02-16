@@ -22,9 +22,6 @@ In this sample, learn more about:
 The entry scene for this game is the network scene. From there a game can be hosted or an existing game can be joined. Control the ship using WASD and shoot asteroids (or other players!) using the spacebar. Fly over pickups in the scene to get different temporary buffs for your ship (like increased fly speed or shooting extra bullets).
 <br><br>
 
-## Future Improvement Ideas
-- Add a way to assign a player name to each player.
-<br><br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
 [![Forums](https://img.shields.io/badge/Unity-multiplayer--forum-57b9d3.svg?logo=unity&color=2196F3)](https://forum.unity.com/forums/multiplayer.26/)
