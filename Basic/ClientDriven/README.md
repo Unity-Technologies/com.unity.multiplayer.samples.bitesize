@@ -17,10 +17,23 @@ In this sample, learn more about:
 - Spawning vs in-scene placed `NetworkObjects`
 - `NetworkObject` parenting (client side object detection with server side pickup)
 <br><br>
+---
+### 💡 Documentation
+Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+
+---
+<br>
 
 ## Exploring the Sample
 The entry scene for this game is the Bootstrap scene. From there a game can be hosted or an existing game can be joined. Run around the scene using WASD, and pick up orbs using the spacebar. Convert orbs from one color to another by dropping them in the converters in the middle of the level. Deposit orbs into the drop spots of the same color to earn points. 
 <br><br>
+
+---
+### 💡 Bitesize Readme
+Check out our main [Bitesize Samples GitHub Readme](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize#readme) for more documentation, resources, releases, contribution guidelines, and our feedback form.
+
+---
+<br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
 [![Forums](https://img.shields.io/badge/Unity-multiplayer--forum-57b9d3.svg?logo=unity&color=2196F3)](https://forum.unity.com/forums/multiplayer.26/)

@@ -12,8 +12,15 @@ The Dynamic Prefabs Sample showcases the available use-cases for the dynamic pre
 
 In this sample, learn more about:
 - The dynamic prefabs system
-- Loading prefabs with addressables
+- Loading prefabs with addressables 
 <br><br>
+
+---
+### 💡 Documentation
+Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+
+---
+<br>
 
 ## Exploring the Sample
 
@@ -88,7 +95,6 @@ Each scene in the project showcases a different, isolated feature of the API, al
 - Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_ServerAuthoritativeNetwork-VisibilitySpawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
 
 ### UI
-- Hosting and joining menu UI - [Assets/Scripts/UI/InGameUI.cs](Assets/Scripts/UI/InGameUI.cs)
 - In Game UI - [Assets/Scripts/UI/IPMenuUI.cs](Assets/Scripts/UI/IPMenuUI.cs)
 
 ### Addressables
@@ -98,6 +104,8 @@ Each scene in the project showcases a different, isolated feature of the API, al
 
 
 ## Future Improvement Ideas
+This section describes some next steps a game developer could do to extend the sample code available here. This logic is left to the reader, this sample focuses on dynamic prefab management.
+<br><br>
 - Adding more advanced logic that would kick players that are consistently failing to load required Addressables.
 
 - Compress Addressable GUID list before it is sent, thus reducing the amount of data being exchanged.
@@ -105,6 +113,12 @@ Each scene in the project showcases a different, isolated feature of the API, al
 - Rather than exchanging Addressable GUIDS, the peers exchange a `short` index that would refer to Addressables
 stored (in some sort of list) in a ScriptableObject, thus drastically reducing the amount of data being exchanged.
 <br><br>
+
+---
+### 💡 Bitesize Readme
+Check out our main [Bitesize Samples GitHub Readme](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize#readme) for more documentation, resources, releases, contribution guidelines, and our feedback form.
+
+---
 
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)

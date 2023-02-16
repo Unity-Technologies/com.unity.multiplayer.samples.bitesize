@@ -16,6 +16,12 @@ In this sample, learn more about:
 - Managing health and a list of buffs for your players in a multiplayer game with a `NetworkVariable`
 - How to pool network objects such as bullets and asteroids to improve performance
 <br><br>
+---
+### 💡 Documentation
+Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+
+---
+<br>
 
 ## Exploring the Sample
 
@@ -25,6 +31,13 @@ The entry scene for this game is the network scene. From there a game can be hos
 ## Future Improvement Ideas
 - Add a way to assign a player name to each player.
 <br><br>
+
+---
+### 💡 Bitesize Readme
+Check out our main [Bitesize Samples GitHub Readme](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize#readme) for more documentation, resources, releases, contribution guidelines, and our feedback form.
+
+---
+<br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
 [![Forums](https://img.shields.io/badge/Unity-multiplayer--forum-57b9d3.svg?logo=unity&color=2196F3)](https://forum.unity.com/forums/multiplayer.26/)
