@@ -5,16 +5,16 @@
         <ui:VisualElement name="APIControlsHolder" style="align-items: auto; justify-content: space-between; flex-direction: row-reverse; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
             <ui:VisualElement>
                 <ui:VisualElement name="Sliders" class="background" style="margin-bottom: 10px;">
-                    <ui:VisualElement name="SpawnTimeoutSliderHolder" style="align-items: center; flex-direction: row; justify-content: center; flex-grow: 0; margin-bottom: 10px;">
+                    <ui:VisualElement name="ArtificialDelaySliderHolder" style="align-items: center; flex-direction: row; justify-content: center; flex-grow: 0; margin-bottom: 10px;">
                         <ui:VisualElement name="Slider" style="flex-direction: column; flex-shrink: 1; width: 294px; align-items: stretch; flex-grow: 1; justify-content: space-between;">
                             <ui:VisualElement style="flex-direction: row; justify-content: space-between; flex-grow: 1;">
                                 <ui:Label text="Artificial Latency:" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
                                 <ui:VisualElement style="flex-direction: row; align-items: center;">
-                                    <ui:TextField value="9999" text="9999" max-length="4" name="ArtificialLatencyValue" class="button" style="font-size: 16px; height: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1; width: 70px;" />
+                                    <ui:TextField value="9999" text="9999" max-length="4" name="ArtificialDelayValue" class="button" style="font-size: 16px; height: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1; width: 70px;" />
                                     <ui:Label text="ms" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px;" />
                                 </ui:VisualElement>
                             </ui:VisualElement>
-                            <ui:Slider focusable="false" value="1000" high-value="9999" name="SliderArtificialLatency" style="flex-shrink: 1; justify-content: space-between; flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                            <ui:Slider focusable="false" value="1000" high-value="9999" name="SliderArtificialDelay" style="flex-shrink: 1; justify-content: space-between; flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="SpawnTimeoutSliderHolder">
