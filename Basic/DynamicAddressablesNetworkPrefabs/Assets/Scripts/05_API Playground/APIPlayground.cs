@@ -349,8 +349,7 @@ namespace Game.APIPlayground
                 
                 // server loaded a prefab, update UI with the loaded asset's name
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
-                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
-                
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);                
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 
                 if (m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
@@ -364,6 +363,12 @@ namespace Game.APIPlayground
 
                 obj.CheckObjectVisibility = (clientId) => 
                 {
+                    if (clientId == NetworkManager.ServerClientId)
+                    {
+                        // object is loaded on the server, no need to validate for visibility
+                        return true;
+                    }
+                    
                     //if the client has already loaded the prefab - we can make the object network-visible to them
                     if (DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
                     {
@@ -438,7 +443,6 @@ namespace Game.APIPlayground
             
             // client has successfully loaded a prefab, update UI
             m_InGameUI.ClientLoadedPrefabStatusChanged(rpcParams.Receive.SenderClientId, prefabHash, loadedPrefabName, InGameUI.LoadStatus.Loaded);
-
         }
     }
 }
