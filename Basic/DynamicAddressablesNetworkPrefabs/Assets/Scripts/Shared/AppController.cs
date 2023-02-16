@@ -101,8 +101,6 @@ namespace Game
         
         void OnClientDisconnect(ulong clientId)
         {
-            Debug.Log($"{nameof(OnClientDisconnect)} {clientId}");
-
             // when a connected client disconnects, remove their UI
             if (m_NetworkManager.IsServer && clientId != NetworkManager.ServerClientId)
             {
