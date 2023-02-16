@@ -98,6 +98,7 @@ Each scene in the project showcases a different, isolated feature of the API, al
 
 
 ## Future Improvement Ideas
+This section describes some next steps a game developer could do to extend the sample code available here. This logic is left to the reader, this sample focuses on dynamic prefab management.
 - Adding more advanced logic that would kick players that are consistently failing to load required Addressables.
 
 - Compress Addressable GUID list before it is sent, thus reducing the amount of data being exchanged.
