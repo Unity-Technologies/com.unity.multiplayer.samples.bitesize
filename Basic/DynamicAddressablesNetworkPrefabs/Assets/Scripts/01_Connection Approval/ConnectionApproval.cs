@@ -1,3 +1,4 @@
+using Game.UI;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -19,6 +20,8 @@ namespace Game.ConnectionApproval
 
         [SerializeField]
         AssetReferenceGameObject m_AssetReferenceGameObject;
+        
+        [SerializeField] InGameUI m_InGameUI;
         
         const int k_MaxConnectPayload = 1024;
         
@@ -48,9 +51,19 @@ namespace Game.ConnectionApproval
 
         async void LoadAPrefab()
         {
-            await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(
-                new AddressableGUID() { Value = m_AssetReferenceGameObject.AssetGUID}, 
-                0);
+            var assetGuid = new AddressableGUID() { Value = m_AssetReferenceGameObject.AssetGUID }; 
+            
+            // server is starting to load a prefab, update UI
+            m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, 
+                assetGuid.GetHashCode(), 
+                "Undefined", 
+                InGameUI.LoadStatus.Loading);
+            
+            await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, 0);
+            
+            // server loaded a prefab, update UI with the loaded asset's name
+            DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+            m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
         }
 
         public override void OnDestroy()
