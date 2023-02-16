@@ -34,6 +34,8 @@ namespace Game.ServerAuthoritativeSynchronousSpawning
 
         [SerializeField] InGameUI m_InGameUI;
         
+        const int k_MaxConnectedClientCount = 4;
+        
         const int k_MaxConnectPayload = 1024;
         
         float m_SynchronousSpawnTimeoutTimer;
@@ -89,10 +91,11 @@ namespace Game.ServerAuthoritativeSynchronousSpawning
                 return;
             }
             
-            // A sample-specific denial on clients when 3 clients have been connected
-            if (m_NetworkManager.ConnectedClientsList.Count >= 3)
+            // A sample-specific denial on clients after k_MaxConnectedClientCount clients have been connected
+            if (m_NetworkManager.ConnectedClientsList.Count >= k_MaxConnectedClientCount)
             {
                 ImmediateDeny();
+                return;
             }
             
             if (connectionData.Length > k_MaxConnectPayload)

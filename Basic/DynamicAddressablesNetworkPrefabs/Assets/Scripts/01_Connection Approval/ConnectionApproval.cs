@@ -23,6 +23,8 @@ namespace Game.ConnectionApproval
         
         [SerializeField] InGameUI m_InGameUI;
         
+        const int k_MaxConnectedClientCount = 4;
+        
         const int k_MaxConnectPayload = 1024;
         
         void Start()
@@ -84,6 +86,13 @@ namespace Game.ConnectionApproval
             {
                 //allow the host to connect
                 Approve();
+                return;
+            }
+            
+            // A sample-specific denial on clients after k_MaxConnectedClientCount clients have been connected
+            if (m_NetworkManager.ConnectedClientsList.Count >= k_MaxConnectedClientCount)
+            {
+                ImmediateDeny();
                 return;
             }
             

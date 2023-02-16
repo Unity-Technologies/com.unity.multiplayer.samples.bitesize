@@ -30,6 +30,8 @@ namespace Game.APIPlayground
         
         [SerializeField] InGameUI m_InGameUI;
         
+        const int k_MaxConnectedClientCount = 4;
+        
         const int k_MaxConnectPayload = 1024;
         
         //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
@@ -84,10 +86,11 @@ namespace Game.APIPlayground
                 return;
             }
             
-            // A sample-specific denial on clients when 3 clients have been connected
-            if (m_NetworkManager.ConnectedClientsList.Count >= 3)
+            // A sample-specific denial on clients after k_MaxConnectedClientCount clients have been connected
+            if (m_NetworkManager.ConnectedClientsList.Count >= k_MaxConnectedClientCount)
             {
                 ImmediateDeny();
+                return;
             }
             
             if (connectionData.Length > k_MaxConnectPayload)

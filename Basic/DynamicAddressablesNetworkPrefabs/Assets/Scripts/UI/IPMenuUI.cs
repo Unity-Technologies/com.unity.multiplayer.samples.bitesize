@@ -21,7 +21,6 @@ namespace Game.UI
         TextField m_IPInputField;
         TextField m_PortInputField;
         Button m_ButtonHost;
-        Button m_ButtonServer;
         Button m_ButtonClient;
         Button m_ButtonDisconnect;
         Label m_ConnectionTypeLabel;
@@ -94,11 +93,6 @@ namespace Game.UI
             SetUIElementVisibility(m_IPMenuUIRoot, false);
         }
 
-        void ServerStarted()
-        {
-            SwitchToInGameUI("Server");
-        }
-
         void SwitchToInGameUI(string connectionType)
         {
             SetUIElementVisibility(m_IPMenuUIRoot, false);
@@ -164,7 +158,6 @@ namespace Game.UI
             m_IPInputField = m_IPMenuUIRoot.Q<TextField>("IPAddressField");
             m_PortInputField = m_IPMenuUIRoot.Q<TextField>("PortField");
             m_ButtonHost = m_IPMenuUIRoot.Q<Button>("HostButton");
-            m_ButtonServer = m_IPMenuUIRoot.Q<Button>("ServerButton");
             m_ButtonClient = m_IPMenuUIRoot.Q<Button>("ClientButton");
             m_ButtonDisconnect = m_ConnectionTypeUIRoot.Q<Button>("DisconnectButton");
             m_ConnectionTypeLabel = m_ConnectionTypeUIRoot.Q<Label>("ConnectionType");
