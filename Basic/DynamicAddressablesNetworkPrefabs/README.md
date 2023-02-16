@@ -24,26 +24,40 @@ Each scene in the project showcases a different, isolated feature of the API, al
 
 - Scene 00_Preloading Dynamic Prefabs
   - This is the simplest case of a dynamic prefab - we instruct all game instances to load a network prefab (it can be just one, it could also be a set of network prefabs) and inject them to NetworkManager's NetworkPrefabs list before starting the server.
+  
+  - This is the less intrusive option for your development, as you don't have any additional spawning and addressable management to do later in your game. 
   <br><br>
 
 - Scene 01_Connection Approval Required For Late Joining
-  - An optional use-case scenario that walks through what a server would need to validate from a client when dynamically loading network prefabs. Other use-cases don't allow for reconciliation after the server has loaded a prefab dynamically, whereas this one enables this functionality. 
+  - An optional use-case scenario that walks through what a server would need to validate from a connecting client when dynamically loading network prefabs. Other use-cases don't allow for reconciliation after the server has loaded a prefab dynamically and before a client joined, whereas this one enables this functionality. 
+  
+  - This is to support late join and should be used in combination with the other techniques described below.
   <br><br>
 
 - Scene 02_Server Authoritative Preload All Prefabs Asynchronously
-  - A simple use-case where the server notifies all clients to preload a collection of network prefabs. The server will not invoke a spawn in this use-case, and will incrementally load each dynamic prefab, one prefab at a time.
+  - A simple use-case where the server notifies all clients to preload a collection of network prefabs. The server will not invoke a spawn directly after the addressable loading in this use-case, and will incrementally load each dynamic prefab, one prefab at a time.
+  
+  - This acts as a "warning" notification to clients that they'll soon need this prefab. This allows being less intrusive in the spawning process later as we can assume all clients have loaded the prefab already.
+  
+  - This is different from option 0, as here this is done when clients are connected and already in game. This allows for more flexibility around your gameplay and could load different prefabs depending on where your players are at in the game for example.
   <br><br>
 
 - Scene 03_Server Authoritative Try Spawn Synchronously
-  - A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab, and will only invoke a spawn once all clients have successfully completed their respective loads of said prefab. The server will initially send a ClientRpc to all clients, begin loading the prefab on the server, will await acknowledgement of a load via ServerRpcs from each client, and will only spawn the prefab over the network once it has received an acknowledgement from every client, within `m_SynchronousSpawnTimeoutTimer` seconds.
+  - This is the first technique that loads and spawns sequentially. This is a dynamic prefab loading use-case where the server instructs all clients to load a single network prefab, and will only invoke a spawn once all clients have successfully completed their respective loads of said prefab. The server will initially send a ClientRpc to all clients, begin loading the prefab on the server, will await acknowledgement of a load via ServerRpcs from each client, and will only Spawn() the instantiated prefab over the network once it has received an acknowledgement from every client, within `m_SynchronousSpawnTimeoutTimer` seconds.
+
+  - This and the next technique allow for the most flexibility compared to the previous ones.
+
+  - This technique makes sure all clients have loaded a prefab before spawning and starting gameplay on that prefab. This is useful for game changing objects, like a big boss that could kill everyone. In that case you want to make sure all clients have loaded that prefab before spawning that object. 
   <br><br>
 
 - Scene 04_Server Authoritative Spawn Dynamic Prefab Using Network Visibility
   - A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab via a ClientRpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible only to clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as network-visible to that client.
+
+  - This makes sure that no client can block the spawn of certain objects by making it visible as soon as specific clients have loaded that prefab. This is great for network reactivity, but might create inconsistent world views for each client depending on whether you've loaded that prefab or not. Using that technique for boss loading could create a situation where your player sees its health decreasing rapidly for no visible reason because the boss is loaded server side and hitting you, but you haven't loaded it yet and it's invisible on your client.
   <br><br>
 
 - Scene 05_API Playground Showcasing All Post-Connection Use-Cases
-  - This scene serves as an API playground to test how all of the use-cases in can work tandem.
+  This scene serves as an API playground to test how all of the use-cases can work in tandem.
 <br><br><br>
 
 ## Known Limitations
@@ -61,8 +75,25 @@ Each scene in the project showcases a different, isolated feature of the API, al
   handle unexpected conditions that slow down asset loading (slow disks, slow network, etc). This timeout
   should not be relied upon and code shouldn't be written around it - your code should be written so that
   the asset is expected to be loaded before it's needed.
-  
-- It's currently impossible for clients to late join after a dynamic prefab has been spawned by the server - this is because the initial sync doesn't allow us any time to load prefabs that are aren't yet loaded on the client.
+<br><br>
+
+## Index of Resources
+
+### Dynamic Prefabs System
+
+- Preloading Dynamic Prefabs - [Assets/Scripts/00_Preloading/Preloading.cs](Assets/Scripts/00_Preloading/Preloading.cs)
+- Connection Approval - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_ConnectionApproval/ConnectionApproval.cs)
+- Server Authoritative Preloading All Prefabs Asynchronously - [Assets/Scripts/02_Server Authoritative Load All Async/ServerAuthoritativeLoadAllAsync.cs](Assets/Scripts/02_ServerAuthoritativeLoadAllAsync/ServerAuthoritativeLoadAllAsync.cs)
+- Server Authoritative Try Spawning Synchronously - [Assets/Scripts/03_Server Authoritative Synchronous Spawning/ServerAuthoritativeSynchronousSpawning.cs](Assets/Scripts/03_ServerAuthoritativeSynchronousSpawning/ServerAuthoritativeSynchronousSpawning.cs)
+- Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_ServerAuthoritativeNetwork-VisibilitySpawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
+
+### UI
+- Hosting and joining menu UI - [Assets/Scripts/UI/InGameUI.cs](Assets/Scripts/UI/InGameUI.cs)
+- In Game UI - [Assets/Scripts/UI/IPMenuUI.cs](Assets/Scripts/UI/IPMenuUI.cs)
+
+### Addressables
+- Package version - [Packages/manifest.json](Packages/manifest.json)
+- Docs - https://docs.unity3d.com/Packages/com.unity.addressables@1.19/manual/index.html
 <br><br>
 
 

@@ -93,7 +93,7 @@ If you have tried these samples already, please consider leaving us feedback [he
 
 ## Other samples
 ### Boss Room Sample
-[Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/releases/latest) is a fully functional, small scale co-op multiplayer RPG made with Unity Netcode. It is an educational sample designed to showcase typical netcode patterns that are frequently featured in similar multiplayer games.
+[Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/releases/latest) is a fully functional co-op multiplayer RPG made with Unity Netcode. It is an educational sample designed to showcase typical netcode patterns that are frequently featured in similar multiplayer games.
 <br><br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
