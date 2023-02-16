@@ -203,15 +203,27 @@ namespace Game.ServerAuthoritativeLoadAllAsync
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
                 
-                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode(), loadedGameObject.Result.name);
+                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, string loadedPrefabName, ServerRpcParams rpcParams = default)
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, rpcParams.Receive.SenderClientId);
+            
+            // a quick way to grab a matching prefab reference's name via its prefabHash
+            var loadedPrefabName = prefabHash.ToString();
+            foreach (var prefabReference in m_DynamicPrefabReferences)
+            {
+                var prefabReferenceGuid = new AddressableGUID() { Value = prefabReference.AssetGUID };
+                if (prefabReferenceGuid.GetHashCode() == prefabHash)
+                {
+                    loadedPrefabName = prefabReference.editorAsset.name;
+                    break;
+                }
+            }
             
             // client has successfully loaded a prefab, update UI
             m_InGameUI.ClientLoadedPrefabStatusChanged(rpcParams.Receive.SenderClientId, prefabHash, loadedPrefabName, InGameUI.LoadStatus.Loaded);

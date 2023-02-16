@@ -439,12 +439,12 @@ namespace Game.APIPlayground
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
 
-                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode(), loadedGameObject.Result.name);
+                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
         }
         
         [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, string loadedPrefabName, ServerRpcParams rpcParams = default)
+        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             m_SynchronousSpawnAckCount++;
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
@@ -459,6 +459,18 @@ namespace Game.APIPlayground
                 // ServerRpc with the guids of enemy players, and it would make those enemies visible (network side
                 // and/or visually) to that player, giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
+            }
+
+            // a quick way to grab a matching prefab reference's name via its prefabHash
+            var loadedPrefabName = prefabHash.ToString();
+            foreach (var prefabReference in m_DynamicPrefabReferences)
+            {
+                var prefabReferenceGuid = new AddressableGUID() { Value = prefabReference.AssetGUID };
+                if (prefabReferenceGuid.GetHashCode() == prefabHash)
+                {
+                    loadedPrefabName = prefabReference.editorAsset.name;
+                    break;
+                }
             }
             
             // client has successfully loaded a prefab, update UI
