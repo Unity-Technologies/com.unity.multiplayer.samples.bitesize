@@ -13,12 +13,6 @@ namespace Game
     /// </summary>
     public sealed class AppController : MonoBehaviour
     {
-        // placeholder until this is fetched from UI
-        string m_ConnectAddress = "127.0.0.1";
-        
-        // placeholder until this is fetched from UI
-        ushort m_Port = 7777;
-
         [SerializeField]
         NetworkManager m_NetworkManager;
 
@@ -119,13 +113,13 @@ namespace Game
         public void StartClient()
         {
             Debug.Log(nameof(StartClient));
-            m_ConnectionManager.StartClientIp(m_ConnectAddress, m_Port);
+            m_ConnectionManager.StartClientIp(m_IPMenuUI.IpAddress, m_IPMenuUI.Port);
         }
 
         public void StartHost()
         {
             Debug.Log(nameof(StartHost));
-            m_ConnectionManager.StartHostIp(m_ConnectAddress, m_Port);
+            m_ConnectionManager.StartHostIp(m_IPMenuUI.IpAddress, m_IPMenuUI.Port);
         }
 
         public void Disconnect()
