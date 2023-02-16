@@ -264,7 +264,7 @@ namespace Game.APIPlayground
                 if (DynamicPrefabLoadingUtilities.IsPrefabLoadedOnAllClients(assetGuid))
                 {
                     Debug.Log("Prefab is already loaded by all peers, we can spawn it immediately");
-                    var obj = await Spawn(assetGuid);
+                    var obj = Spawn(assetGuid);
                     return (true, obj);
                 }
                 
@@ -292,7 +292,7 @@ namespace Game.APIPlayground
                     if (m_SynchronousSpawnAckCount >= requiredAcknowledgementsCount)
                     {
                         Debug.Log($"All clients have loaded the prefab in {m_SynchronousSpawnTimeoutTimer} seconds, spawning the prefab on the server...");
-                        var obj = await Spawn(assetGuid);
+                        var obj = Spawn(assetGuid);
                         return (true, obj);
                     }
                     
@@ -300,17 +300,23 @@ namespace Game.APIPlayground
                     await Task.Yield();
                 }
                 
+                // left to the reader: you'll need to be reactive to clients failing to load -- you should either have
+                // the offending client try again or disconnect it after a predetermined amount of failed attempts
                 Debug.LogError("Failed to spawn dynamic prefab - timeout");
                 return (false, null);
             }
 
             return (false, null);
 
-            async Task<NetworkObject> Spawn(AddressableGUID assetGuid)
+            NetworkObject Spawn(AddressableGUID assetGuid)
             {
-                var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
-                    m_InGameUI.ArtificialDelayMilliseconds);
-                var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
+                if (!DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var prefab))
+                {
+                    Debug.LogWarning($"GUID {assetGuid} is not a GUID of a previously loaded prefab. Failed to spawn a prefab.");
+                    return null;
+                }
+                
+                var obj = Instantiate(prefab.Result, position, rotation).GetComponent<NetworkObject>();
                 obj.Spawn();
                 Debug.Log("Spawned dynamic prefab");
                 return obj;
