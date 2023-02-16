@@ -189,7 +189,7 @@ namespace Game.ServerAuthoritativeSynchronousSpawning
                 var requiredAcknowledgementsCount = IsHost ? m_NetworkManager.ConnectedClients.Count - 1 : 
                     m_NetworkManager.ConnectedClients.Count;
                 
-                while (m_SynchronousSpawnTimeoutTimer < m_InGameUI.NetworkSpawnTimoutSeconds)
+                while (m_SynchronousSpawnTimeoutTimer < m_InGameUI.NetworkSpawnTimeoutSeconds)
                 {
                     if (m_SynchronousSpawnAckCount >= requiredAcknowledgementsCount)
                     {

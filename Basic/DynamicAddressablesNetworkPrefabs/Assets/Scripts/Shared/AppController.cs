@@ -80,7 +80,7 @@ namespace Game
             else if (m_NetworkManager.IsClient)
             {
                 // for clients that are not host
-                if (m_NetworkManager.IsClient && clientId == m_NetworkManager.LocalClientId)
+                if (clientId == m_NetworkManager.LocalClientId)
                 {
                     m_IPMenuUI.ClientStarted();
                     m_InGameUI.Show(InGameUI.ButtonVisibility.Client);

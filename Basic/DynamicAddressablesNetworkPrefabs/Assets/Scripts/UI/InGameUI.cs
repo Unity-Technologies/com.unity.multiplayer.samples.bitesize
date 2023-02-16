@@ -50,7 +50,7 @@ namespace Game.UI
         ButtonVisibility m_ShowSpawnUsingVisibilityButton;
 
         public int ArtificialDelayMilliseconds { get; private set; } = 1000;
-        public float NetworkSpawnTimoutSeconds { get; private set; } = 3000;
+        public float NetworkSpawnTimeoutSeconds { get; private set; } = 3000;
 
         Dictionary<ulong, ClientUI> m_Clients = new Dictionary<ulong, ClientUI>();
         
@@ -157,9 +157,9 @@ namespace Game.UI
         void Start()
         {
             m_ArtificialDelaySlider.value = ArtificialDelayMilliseconds;
-            m_NetworkSpawnTimeoutSlider.value = NetworkSpawnTimoutSeconds;
+            m_NetworkSpawnTimeoutSlider.value = NetworkSpawnTimeoutSeconds;
             m_ArtificialLatencyTextField.value = ArtificialDelayMilliseconds.ToString();
-            m_NetworkSpawnTimeoutTextFieldLabel.value = NetworkSpawnTimoutSeconds.ToString();
+            m_NetworkSpawnTimeoutTextFieldLabel.value = NetworkSpawnTimeoutSeconds.ToString();
         }
 
         public void Show(ButtonVisibility visibility)
@@ -257,8 +257,8 @@ namespace Game.UI
 
         void OnNetworkSpawnTimeoutSliderChanged(ChangeEvent<float> changeEvent)
         {
-            NetworkSpawnTimoutSeconds = changeEvent.newValue;
-            m_NetworkSpawnTimeoutTextFieldLabel.value = NetworkSpawnTimoutSeconds.ToString();
+            NetworkSpawnTimeoutSeconds = changeEvent.newValue;
+            m_NetworkSpawnTimeoutTextFieldLabel.value = NetworkSpawnTimeoutSeconds.ToString();
         }
 
         void OnArtificialLatencyInputChanged(ChangeEvent<string> changeEvent)
@@ -270,9 +270,9 @@ namespace Game.UI
 
         void OnNetworkSpawnTimeoutInputChanged(ChangeEvent<string> changeEvent)
         {
-            NetworkSpawnTimoutSeconds = int.Parse(changeEvent.newValue);
-            Math.Clamp(NetworkSpawnTimoutSeconds, 0, 99999);
-            m_NetworkSpawnTimeoutSlider.value = NetworkSpawnTimoutSeconds;
+            NetworkSpawnTimeoutSeconds = int.Parse(changeEvent.newValue);
+            Math.Clamp(NetworkSpawnTimeoutSeconds, 0, 99999);
+            m_NetworkSpawnTimeoutSlider.value = NetworkSpawnTimeoutSeconds;
         }
 
         void SetUIElementVisibility(VisualElement visualElement, bool isVisible)
