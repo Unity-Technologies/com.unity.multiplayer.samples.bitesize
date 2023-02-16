@@ -82,7 +82,7 @@ Each scene in the project showcases a different, isolated feature of the API, al
 ### Dynamic Prefabs System
 
 - Preloading Dynamic Prefabs - [Assets/Scripts/00_Preloading/Preloading.cs](Assets/Scripts/00_Preloading/Preloading.cs)
-- Connection Approval - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_ConnectionApproval/ConnectionApproval.cs)
+- Connection Approval supporting late join - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_ConnectionApproval/ConnectionApproval.cs)
 - Server Authoritative Preloading All Prefabs Asynchronously - [Assets/Scripts/02_Server Authoritative Load All Async/ServerAuthoritativeLoadAllAsync.cs](Assets/Scripts/02_ServerAuthoritativeLoadAllAsync/ServerAuthoritativeLoadAllAsync.cs)
 - Server Authoritative Try Spawning Synchronously - [Assets/Scripts/03_Server Authoritative Synchronous Spawning/ServerAuthoritativeSynchronousSpawning.cs](Assets/Scripts/03_ServerAuthoritativeSynchronousSpawning/ServerAuthoritativeSynchronousSpawning.cs)
 - Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_ServerAuthoritativeNetwork-VisibilitySpawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
