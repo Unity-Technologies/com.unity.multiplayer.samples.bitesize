@@ -61,6 +61,12 @@ namespace Game.APIPlayground
         public override void OnDestroy()
         {
             m_NetworkManager.ConnectionApprovalCallback -= ConnectionApprovalCallback;
+            if (m_InGameUI)
+            {
+                m_InGameUI.LoadAllAsyncButtonPressed -= OnClickedPreload;
+                m_InGameUI.TrySpawnSynchronouslyButtonPressed -= OnClickedTrySpawnSynchronously;
+                m_InGameUI.SpawnUsingVisibilityButtonPressed -= OnClickedTrySpawnInvisible;
+            }
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
@@ -350,6 +356,7 @@ namespace Game.APIPlayground
                 // server loaded a prefab, update UI with the loaded asset's name
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);                
+                
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
                 
                 if (m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
@@ -438,6 +445,10 @@ namespace Game.APIPlayground
             //the server has all the objects network-visible, no need to do anything
             if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
+                // Note: there's a potential security risk here if this technique is tied with gameplay that uses
+                // a NetworkObject's Show() and Hide() methods. For example, a malicious player could invoke a similar
+                // ServerRpc with the guids of enemy players, and it would make those enemies visible (network side
+                // and/or visually) to that player, giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
             

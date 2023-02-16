@@ -170,8 +170,8 @@ namespace Game.UI
             SetUIElementVisibility(m_NetworkSpawnTimeoutSliderHolder, m_ShowNetworkSpawnTimeoutSlider.HasFlag(visibility));
             SetUIElementVisibility(m_ApiControlsHolder, m_ShowApiControls.HasFlag(visibility));
             SetUIElementVisibility(m_LoadAllAsyncButton, m_ShowLoadAllAsyncButton.HasFlag(visibility));
-            SetUIElementVisibility(m_SpawnWithVisibilityButton, m_ShowTrySpawnSynchronouslyButton.HasFlag(visibility));
-            SetUIElementVisibility(m_SpawnSynchronouslyButton, m_ShowSpawnUsingVisibilityButton.HasFlag(visibility));
+            SetUIElementVisibility(m_SpawnSynchronouslyButton, m_ShowTrySpawnSynchronouslyButton.HasFlag(visibility));
+            SetUIElementVisibility(m_SpawnWithVisibilityButton, m_ShowSpawnUsingVisibilityButton.HasFlag(visibility));
         }
         
         public void Hide()

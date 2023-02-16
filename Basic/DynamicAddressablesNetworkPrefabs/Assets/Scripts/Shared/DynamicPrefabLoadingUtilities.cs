@@ -51,8 +51,6 @@ namespace Game
         public static void Init(NetworkManager networkManager)
         {
             s_NetworkManager = networkManager;
-
-            var values = s_LoadedDynamicPrefabResourceHandles.Values;
         }
 
         /// <remarks>
