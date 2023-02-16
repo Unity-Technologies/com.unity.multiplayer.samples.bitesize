@@ -19,7 +19,7 @@ In this sample, learn more about:
 
 ## Exploring the Sample
 
-The entry scene for this game is the network scene. From there a game can be hosted or an existing game can be joined.
+The entry scene for this game is the network scene. From there a game can be hosted or an existing game can be joined. Control the ship using WASD and shoot asteroids (or other players!) using the spacebar. Fly over pickups in the scene to get different temporary buffs for your ship (like increased fly speed or shooting extra bullets).
 <br><br>
 
 ## Future Improvement Ideas

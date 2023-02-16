@@ -19,7 +19,7 @@ In this sample, learn more about:
 <br><br>
 
 ## Exploring the Sample
-The entry scene for this game is the InitBootStrap scene. From there a game can be hosted or an existing game can be joined.
+The entry scene for this game is the InitBootStrap scene. From there a game can be hosted or an existing game can be joined. Move back and forth using the A and D keys, and shoot using the spacebar. Shoot enemies to gain points, and avoid their bullets to avoid losing health (and eventually losing)!
 <br><br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
