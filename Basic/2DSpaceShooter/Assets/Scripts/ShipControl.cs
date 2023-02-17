@@ -196,23 +196,24 @@ public class ShipControl : NetworkBehaviour
     {
         fireSound.Play();
 
-        int damage = 5;
+        var damage = 5;
         if (QuadDamageTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
             damage = 20;
         }
 
-        bool bounce = BounceTimer.Value > NetworkManager.ServerTime.TimeAsFloat;
+        var bounce = BounceTimer.Value > NetworkManager.ServerTime.TimeAsFloat;
 
-        GameObject bullet = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
-        bullet.transform.position = transform.position + direction;
+        var bulletGo = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
+        bulletGo.transform.position = transform.position + direction;
 
-        var bulletRb = bullet.GetComponent<Rigidbody2D>();
         var velocity = m_Rigidbody2D.velocity;
         velocity += (Vector2)(direction) * 10;
-        bulletRb.velocity = velocity;
-        bullet.GetComponent<Bullet>().Config(this, damage, bounce, m_BulletLifetime);
-        bullet.GetComponent<NetworkObject>().Spawn(true);
+        bulletGo.GetComponent<NetworkObject>().Spawn(true);
+        var bullet = bulletGo.GetComponent<Bullet>();
+        bullet.Config(this, damage, bounce, m_BulletLifetime);
+        bullet.SetVelocity(velocity);
+        
     }
 
     void Update()

@@ -1,6 +1,46 @@
 # Change log
 
 ## [unreleased] - yyyy-mm-dd
+N/A
+
+## [1.2.0] - 2023-02-16
+
+### Dynamic Addressables Network Prefabs Sample
+
+Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This would be useful for games trying to use both [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@0.8/manual/index.html) and Netcode for GameObjects (#63) (#94) (#96) (#97) (#98) (#99) (#100) (#101) (#103)
+
+### 2DSpaceShooter
+
+#### Fixed
+- Resolved issue where the colour of powerups was not displayed correctly (#91)
+- Removing warning when spawning powerups (#90). Fixed the order in which powerups were spawned and when their NetworkVariable value was initialized. Now they are spawned beforehand.
+- Fixing bullet explosion desync (#89). Bullet explosion vfx were happening too early on clients because of NetworkTransform's interpolation. Bullets are now no longer synchronised by NetworkTransforms and instead only have their velocity set through client rpcs when they are spawned. Since they are no longer interpolated, they are not lagging behind the server and are at the correct position when they receive the despawn message from the server.
+- Fix: Broken Reference for Underline Character in Font Asset (#87)
+
+#### Changed
+- Upgraded sample to 2021.3.18f1 LTS (#91)
+- Readme was updated (#96)
+- Added readme banner image (#101)
+
+
+### Client Driven
+
+#### Changed
+- Upgraded sample to 2021.3.18f1 LTS (#91)
+- Readme was updated (#96)
+- Added readme banner image (#101)
+
+### Invaders
+
+#### Changed
+- Upgraded sample to 2021.3.18f1 LTS (#91)
+- Readme was updated (#96)
+- Added readme banner image (#101)
+
+### Bitesize Samples Repository
+#### Changed
+- Readme was updated (#96)
+
 
 ## [1.1.0] - 2022-12-13
 
@@ -35,7 +75,7 @@
 
 ### Invaders
 
-### Fixed
+#### Fixed
 - Fixing NotServerException [MTT-4029] (#59)
 - Despawning enemies instead of destroying them (#74)
 
