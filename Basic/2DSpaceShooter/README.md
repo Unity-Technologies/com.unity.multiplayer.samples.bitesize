@@ -1,3 +1,6 @@
+![Banner](Resources/spaceshooter_banner.png)
+<br><br>
+
 # 2D Space Shooter
 
 ![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)
