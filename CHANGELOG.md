@@ -7,7 +7,7 @@ N/A
 
 ### Dynamic Addressables Network Prefabs Sample
 
-Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This would be useful for games trying to use both Addressables and Netcode for GameObjects (#63) (#94) (#96) (#97) (#98) (#99) (#100) (#101)
+Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This would be useful for games trying to use both [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@0.8/manual/index.html) and Netcode for GameObjects (#63) (#94) (#96) (#97) (#98) (#99) (#100) (#101)
 
 ### 2DSpaceShooter
 
@@ -19,18 +19,22 @@ Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the
 #### Changed
 - Upgraded sample to 2021.3.18f1 LTS (#91)
 - Readme was updated (#96)
+- Added readme banner image (#101)
+
 
 ### Client Driven
 
 #### Changed
 - Upgraded sample to 2021.3.18f1 LTS (#91)
 - Readme was updated (#96)
+- Added readme banner image (#101)
 
 ### Invaders
 
 #### Changed
 - Upgraded sample to 2021.3.18f1 LTS (#91)
 - Readme was updated (#96)
+- Added readme banner image (#101)
 
 ### Global
 #### Changed
