@@ -13,7 +13,7 @@ N/A
 ### 2D Space Shooter
 
 #### Changed
-- Readme updated with link to the 2D Space Shooter sample documentation
+- Readme updated with link to the 2D Space Shooter sample documentation (#106)
 
 ### Client Driven
 
