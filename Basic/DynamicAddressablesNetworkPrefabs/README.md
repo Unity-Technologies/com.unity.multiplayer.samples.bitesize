@@ -94,13 +94,14 @@ Each scene in the project showcases a different, isolated feature of the API, al
 ### Dynamic Prefabs System
 
 - Preloading Dynamic Prefabs - [Assets/Scripts/00_Preloading/Preloading.cs](Assets/Scripts/00_Preloading/Preloading.cs)
-- Connection Approval supporting late join - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_ConnectionApproval/ConnectionApproval.cs)
-- Server Authoritative Preloading All Prefabs Asynchronously - [Assets/Scripts/02_Server Authoritative Load All Async/ServerAuthoritativeLoadAllAsync.cs](Assets/Scripts/02_ServerAuthoritativeLoadAllAsync/ServerAuthoritativeLoadAllAsync.cs)
-- Server Authoritative Try Spawning Synchronously - [Assets/Scripts/03_Server Authoritative Synchronous Spawning/ServerAuthoritativeSynchronousSpawning.cs](Assets/Scripts/03_ServerAuthoritativeSynchronousSpawning/ServerAuthoritativeSynchronousSpawning.cs)
-- Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_ServerAuthoritativeNetwork-VisibilitySpawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
+- Connection Approval supporting late join - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_Connection%20Approval/ConnectionApproval.cs)
+- Server Authoritative Preloading All Prefabs Asynchronously - [Assets/Scripts/02_Server Authoritative Load All Async/ServerAuthoritativeLoadAllAsync.cs](Assets/Scripts/02_Server%20Authoritative%20Load%20All%20Async/ServerAuthoritativeLoadAllAsync.cs)
+- Server Authoritative Try Spawning Synchronously - [Assets/Scripts/03_Server Authoritative Synchronous Spawning/ServerAuthoritativeSynchronousSpawning.cs](Assets/Scripts/03_Server%20Authoritative%20Synchronous%20Spawning/ServerAuthoritativeSynchronousSpawning.cs)
+- Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_Server%20Authoritative%20Network-Visibility%20Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
 
 ### UI
-- In Game UI - [Assets/Scripts/UI/IPMenuUI.cs](Assets/Scripts/UI/IPMenuUI.cs)
+- In Game UI [Assets/Scripts/UI/InGameUI.cs](Assets/Scripts/UI/InGameUI.cs)
+- IP Menu UI - [Assets/Scripts/UI/IPMenuUI.cs](Assets/Scripts/UI/IPMenuUI.cs)
 
 ### Addressables
 - Package version - [Packages/manifest.json](Packages/manifest.json)

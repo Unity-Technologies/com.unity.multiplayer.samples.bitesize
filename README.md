@@ -34,19 +34,19 @@ Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.c
 <br><br>
 
 ---
-
+<!--- > added -1 to the links for these table of contents items since they are also headers (and were linking to themselves) </!--->
 ## Readme Contents and Quick Links
 <details open> <summary> Click to expand/collapse contents </summary>
 
-- ### [Getting the Project](#getting-the-project)
-- ### [Requirements](#requirements)
-- ### [Troubleshooting](#troubleshooting)
+- ### [Getting the Project](#getting-the-project-1)
+- ### [Requirements](#requirements-1)
+- ### [Troubleshooting](#troubleshooting-1)
   - [Bugs](#bugs)
   - [Documentation](#documentation)
-- ### [Contributing](#contributing)
-- ### [Community](#community)
-- ### [Feedback Form](#feedback-form)
-- ### [Other Samples](#other-samples)
+- ### [Contributing](#contributing-1)
+- ### [Community](#community-1)
+- ### [Feedback Form](#feedback)
+- ### [Other Samples](#other-samples-1)
   - [Boss Room](#boss-room-sample)
 
 </details>
@@ -57,7 +57,7 @@ Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.c
 ## Getting the project
 ### Direct download
 
- - You can download the latest versions of these samples from our [Releases](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0) page
+ - You can download the latest versions of these samples from our [Releases](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.1) page
 
  - __Alternatively:__ select `Code` and select the 'Download Zip' option.  Please note that this will download the branch you're currently viewing on Github
 <br><br>
@@ -71,8 +71,8 @@ The bitesize samples are compatible with the latest Unity Long Term Support (LTS
 
 ## Troubleshooting
 ### Bugs
-- Report bugs in Boss Room using Github [issues](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/issues)
-- Report NGO bugs using NGO Github [issues](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects)
+- Report bugs in the Bitesize samples using Github [issues](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/issues)
+- Report NGO bugs using NGO Github [issues](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/issues)
 - Report Unity bugs using the [Unity bug submission process](https://unity3d.com/unity/qa/bug-reporting)
   
 ### Documentation
@@ -88,7 +88,7 @@ We welcome your contributions to this sample code and objects. See our [contribu
 <br><br>
 
 ## Feedback
-If you have tried these samples already, please consider leaving us feedback [here](https://unitytech.typeform.com/bitesize) --it will only take a couple of minutes. Thanks!
+If you have tried these samples already, please consider leaving us feedback [here](https://unitytech.typeform.com/bitesize)--it will only take a couple of minutes. Thanks!
 <br><br>
 
 ## Other samples
