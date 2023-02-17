@@ -29,7 +29,7 @@ Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.
 
 Each scene in the project showcases a different, isolated feature of the API, allowing for easy extraction into other projects. We suggest exploring them in order to get a good understanding of the flow of dynamically loading and spawning network prefabs. The use-cases available in this sample are based around the current known limitations.
 
-**Important:** This sample assumes that Addressables will never fail to load, therefore there currently is no reconcilliation logic on the server for a client that fails to load an Addressable. In a realistic implementation, you would want to either have the offending client try to load the Addressable again, or disconnect it from the session. 
+**Important:** This sample assumes that Addressables will never fail to load, therefore the server does not account for the case in which client fails to load an Addressable. In a realistic implementation, you would want to either have the offending client try to load the Addressable again, or disconnect it from the session. 
 <br><br>
 
 ### Each Scene:
