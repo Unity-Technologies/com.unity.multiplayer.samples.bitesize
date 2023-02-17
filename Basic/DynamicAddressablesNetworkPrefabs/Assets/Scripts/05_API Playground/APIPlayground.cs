@@ -226,20 +226,28 @@ namespace Game.APIPlayground
                 // update UI for each client that is requested to load a certain prefab
                 foreach (var client in m_NetworkManager.ConnectedClients.Keys)
                 {
-                    m_InGameUI.ClientLoadedPrefabStatusChanged(client, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+                    m_InGameUI.ClientLoadedPrefabStatusChanged(client, 
+                        assetGuid.GetHashCode(), 
+                        "Undefined", 
+                        InGameUI.LoadStatus.Loading);
                 }
                 
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
-                
-                // server is starting to load a prefab, update UI
-                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
 
                 await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
                 
                 // server loaded a prefab, update UI with the loaded asset's name
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
-                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
+                
+                // every client loaded dynamic prefab, their respective ClientUIs in case they loaded first
+                foreach (var client in m_NetworkManager.ConnectedClients.Keys)
+                {
+                    m_InGameUI.ClientLoadedPrefabStatusChanged(client,
+                        assetGuid.GetHashCode(), 
+                        loadedGameObject.Result.name, 
+                        InGameUI.LoadStatus.Loading);
+                }
             }
         }
         
@@ -322,6 +330,16 @@ namespace Game.APIPlayground
                 var obj = Instantiate(prefab.Result, position, rotation).GetComponent<NetworkObject>();
                 obj.Spawn();
                 Debug.Log("Spawned dynamic prefab");
+                
+                // every client loaded dynamic prefab, their respective ClientUIs in case they loaded first
+                foreach (var client in m_NetworkManager.ConnectedClients.Keys)
+                {
+                    m_InGameUI.ClientLoadedPrefabStatusChanged(client, 
+                        assetGuid.GetHashCode(), 
+                        prefab.Result.name, 
+                        InGameUI.LoadStatus.Loading);
+                }
+                
                 return obj;
             }
         }
@@ -462,13 +480,20 @@ namespace Game.APIPlayground
             }
 
             // a quick way to grab a matching prefab reference's name via its prefabHash
-            var loadedPrefabName = prefabHash.ToString();
+            var loadedPrefabName = "Undefined";
             foreach (var prefabReference in m_DynamicPrefabReferences)
             {
                 var prefabReferenceGuid = new AddressableGUID() { Value = prefabReference.AssetGUID };
                 if (prefabReferenceGuid.GetHashCode() == prefabHash)
                 {
-                    loadedPrefabName = prefabReference.editorAsset.name;
+                    // found the matching prefab reference
+                    if (DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.TryGetValue(
+                            prefabReferenceGuid, 
+                            out var loadedGameObject))
+                    {
+                        // if it is loaded on the server, update the name on the ClientUI
+                        loadedPrefabName = loadedGameObject.Result.name;
+                    }
                     break;
                 }
             }
