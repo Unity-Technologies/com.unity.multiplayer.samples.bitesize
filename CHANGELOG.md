@@ -8,7 +8,7 @@ N/A
 ### Dynamic Addressables Network Prefabs
 
 #### Changed
-- Readme updated with link to the Dynamic Addressables Network Prefabs sample documentation
+- Readme updated with link to the Dynamic Addressables Network Prefabs sample documentation (#106)
 
 ### 2D Space Shooter
 
