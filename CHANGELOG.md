@@ -36,7 +36,7 @@ Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the
 - Readme was updated (#96)
 - Added readme banner image (#101)
 
-### Global
+### Bitesize Samples Repository
 #### Changed
 - Readme was updated (#96)
 
