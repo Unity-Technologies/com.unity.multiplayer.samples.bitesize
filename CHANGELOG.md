@@ -5,9 +5,9 @@ N/A
 
 ## [1.2.0] - 2023-02-16
 
-### Dynamic Prefabs
+### Dynamic Addressables Network Prefabs Sample
 
-Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This would be useful for games trying to use both Addressables and Netcode for GameObjects (#63) (#94) (#96) (#97)
+Added the Dynamic Addressables Network Prefabs Sample. This sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This would be useful for games trying to use both Addressables and Netcode for GameObjects (#63) (#94) (#96) (#97) (#98) (#99) (#100) (#101)
 
 ### 2DSpaceShooter
 
