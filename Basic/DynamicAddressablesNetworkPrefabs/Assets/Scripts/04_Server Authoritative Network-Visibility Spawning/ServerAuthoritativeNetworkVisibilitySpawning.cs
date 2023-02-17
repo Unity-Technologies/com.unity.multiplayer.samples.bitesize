@@ -280,13 +280,20 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             }
             
             // a quick way to grab a matching prefab reference's name via its prefabHash
-            var loadedPrefabName = prefabHash.ToString();
+            var loadedPrefabName = "Undefined";
             foreach (var prefabReference in m_DynamicPrefabReferences)
             {
                 var prefabReferenceGuid = new AddressableGUID() { Value = prefabReference.AssetGUID };
                 if (prefabReferenceGuid.GetHashCode() == prefabHash)
                 {
-                    loadedPrefabName = prefabReference.editorAsset.name;
+                    // found the matching prefab reference
+                    if (DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.TryGetValue(
+                            prefabReferenceGuid, 
+                            out var loadedGameObject))
+                    {
+                        // if it is loaded on the server, update the name on the ClientUI
+                        loadedPrefabName = loadedGameObject.Result.name;
+                    }
                     break;
                 }
             }
