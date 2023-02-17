@@ -3,8 +3,8 @@
 
 # Dynamic Addressables Network Prefabs Sample
 
-![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)
-![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/qa/lts-releases#:~:text=February%2014%2C%202023-,LTS%20Release,2021.3.18f1,-Released%3A%20February)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
 [![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0)
 <br><br>
 
@@ -20,7 +20,7 @@ In this sample, learn more about:
 
 ---
 ### 💡 Documentation
-Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+Check out the [Dynamic Addressables Network Prefabs sample documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-dynamicPrefabs) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
 
 ---
 <br>
