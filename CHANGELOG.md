@@ -18,17 +18,17 @@ N/A
 ### Client Driven
 
 #### Changed
-- Readme updated with link to the Client Driven sample documentation
+- Readme updated with link to the Client Driven sample documentation (#106)
 
 ### Invaders
 
 #### Changed
-- Readme updated with link to the Invaders samples documentation
+- Readme updated with link to the Invaders samples documentation (#106)
 
 ### Bitesize Samples Repository
 
 #### Fixed
-- Readme formatting adjustments and broken link fixes
+- Readme formatting adjustments and broken link fixes (#106)
 
 ## [1.2.0] - 2023-02-16
 
