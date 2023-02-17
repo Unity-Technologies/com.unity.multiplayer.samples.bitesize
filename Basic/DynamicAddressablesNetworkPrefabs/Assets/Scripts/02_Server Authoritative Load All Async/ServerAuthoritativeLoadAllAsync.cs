@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Game.UI;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -24,9 +25,11 @@ namespace Game.ServerAuthoritativeLoadAllAsync
         NetworkManager m_NetworkManager;
         
         [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabReferences;
-        
+
         [SerializeField]
-        int m_ArtificialDelayMilliseconds = 1000;
+        InGameUI m_InGameUI;
+        
+        const int k_MaxConnectedClientCount = 4;
 
         const int k_MaxConnectPayload = 1024;
         
@@ -50,10 +53,18 @@ namespace Game.ServerAuthoritativeLoadAllAsync
             // be used to validate a user's connection payload, see the connection approval use-case, or the
             // APIPlayground, where all post-connection techniques are used in harmony.
             m_NetworkManager.ConnectionApprovalCallback += ConnectionApprovalCallback;
+            
+            // hooking up UI callbacks
+            m_InGameUI.LoadAllAsyncButtonPressed += OnClickedPreload;
         }
 
         public override void OnDestroy()
         {
+            m_NetworkManager.ConnectionApprovalCallback -= ConnectionApprovalCallback;
+            if (m_InGameUI)
+            {
+                m_InGameUI.LoadAllAsyncButtonPressed -= OnClickedPreload;
+            }
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
@@ -68,6 +79,13 @@ namespace Game.ServerAuthoritativeLoadAllAsync
             {
                 // allow the host to connect
                 Approve();
+                return;
+            }
+            
+            // A sample-specific denial on clients after k_MaxConnectedClientCount clients have been connected
+            if (m_NetworkManager.ConnectedClientsList.Count >= k_MaxConnectedClientCount)
+            {
+                ImmediateDeny();
                 return;
             }
             
@@ -145,9 +163,23 @@ namespace Game.ServerAuthoritativeLoadAllAsync
                     return;
                 }
                 
+                // update UI for each client that is requested to load a certain prefab
+                foreach (var client in m_NetworkManager.ConnectedClients.Keys)
+                {
+                    m_InGameUI.ClientLoadedPrefabStatusChanged(client, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+                }
+                
                 Debug.Log("Loading dynamic prefab on the clients...");
                 LoadAddressableClientRpc(assetGuid);
-                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                
+                // server is starting to load a prefab, update UI
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+                
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
+                
+                // server loaded a prefab, update UI with the loaded asset's name
+                DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+                m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
             }
         }
         
@@ -161,9 +193,16 @@ namespace Game.ServerAuthoritativeLoadAllAsync
 
             async void Load(AddressableGUID assetGuid)
             {
+                // loading prefab as a client, update UI
+                m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
+                
                 Debug.Log("Loading dynamic prefab on the client...");
-                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_ArtificialDelayMilliseconds);
+                await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
                 Debug.Log("Client loaded dynamic prefab");
+                
+                DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
+                m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
+                
                 AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
         }
@@ -173,6 +212,21 @@ namespace Game.ServerAuthoritativeLoadAllAsync
         {
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, rpcParams.Receive.SenderClientId);
+            
+            // a quick way to grab a matching prefab reference's name via its prefabHash
+            var loadedPrefabName = prefabHash.ToString();
+            foreach (var prefabReference in m_DynamicPrefabReferences)
+            {
+                var prefabReferenceGuid = new AddressableGUID() { Value = prefabReference.AssetGUID };
+                if (prefabReferenceGuid.GetHashCode() == prefabHash)
+                {
+                    loadedPrefabName = prefabReference.editorAsset.name;
+                    break;
+                }
+            }
+            
+            // client has successfully loaded a prefab, update UI
+            m_InGameUI.ClientLoadedPrefabStatusChanged(rpcParams.Receive.SenderClientId, prefabHash, loadedPrefabName, InGameUI.LoadStatus.Loaded);
         }
     }
 }

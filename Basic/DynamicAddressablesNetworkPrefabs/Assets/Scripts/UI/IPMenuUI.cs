@@ -21,23 +21,27 @@ namespace Game.UI
         TextField m_IPInputField;
         TextField m_PortInputField;
         Button m_ButtonHost;
-        Button m_ButtonServer;
         Button m_ButtonClient;
         Button m_ButtonDisconnect;
         Label m_ConnectionTypeLabel;
 
         public string IpAddress { get; private set; } = "127.0.0.1";
         public ushort Port { get; private set; } = 9998;
+                
+        public event Action HostButtonPressed;
+        
+        public event Action ClientButtonPressed;
+        
+        public event Action DisconnectButtonPressed;
 
         void Awake()
         {
             SetupIPInputUI();
 
             // register UI elements to methods using callbacks for when they're clicked 
-            m_ButtonHost.clickable.clicked += HostStarted;
-            m_ButtonServer.clickable.clicked += ServerStarted;
-            m_ButtonClient.clickable.clicked += ClientStarted;
-            m_ButtonDisconnect.clickable.clicked += OnShutdownRequested;
+            m_ButtonHost.clickable.clicked += OnHostButtonPressed;
+            m_ButtonClient.clickable.clicked += OnClientButtonPressed;
+            m_ButtonDisconnect.clickable.clicked += OnDisconnectButtonPressed;
             m_IPInputField.RegisterValueChangedCallback(OnIpAddressChanged);
             m_PortInputField.RegisterValueChangedCallback(OnPortChanged);
         }
@@ -45,10 +49,9 @@ namespace Game.UI
         void OnDestroy()
         {
             // un-register UI elements from methods using callbacks for when they're clicked 
-            m_ButtonHost.clickable.clicked -= HostStarted;
-            m_ButtonServer.clickable.clicked -= ServerStarted;
-            m_ButtonClient.clickable.clicked -= ClientStarted;
-            m_ButtonDisconnect.clickable.clicked -= OnShutdownRequested;
+            m_ButtonHost.clickable.clicked -= OnHostButtonPressed;
+            m_ButtonClient.clickable.clicked -= OnClientButtonPressed;
+            m_ButtonDisconnect.clickable.clicked -= OnDisconnectButtonPressed;
             m_IPInputField.UnregisterValueChangedCallback(OnIpAddressChanged);
             m_PortInputField.UnregisterValueChangedCallback(OnPortChanged);
         }
@@ -59,20 +62,35 @@ namespace Game.UI
             m_IPInputField.value = IpAddress;
             m_PortInputField.value = Port.ToString();
         }
+        
+        void OnHostButtonPressed()
+        {
+            HostButtonPressed?.Invoke();
+        }
+        
+        void OnClientButtonPressed()
+        {
+            ClientButtonPressed?.Invoke();
+        }
+        
+        void OnDisconnectButtonPressed()
+        {
+            DisconnectButtonPressed?.Invoke();
+        }
 
-        void HostStarted()
+        public void HostStarted()
         {
             SwitchToInGameUI("Host");
         }
 
-        void ClientStarted()
+        public void ClientStarted()
         {
             SwitchToInGameUI("Client");
         }
-
-        void ServerStarted()
+        
+        public void HideIPConnectionMenu()
         {
-            SwitchToInGameUI("Server");
+            SetUIElementVisibility(m_IPMenuUIRoot, false);
         }
 
         void SwitchToInGameUI(string connectionType)
@@ -82,17 +100,12 @@ namespace Game.UI
             m_ConnectionTypeLabel.text = connectionType;
         }
 
-        void OnShutdownRequested()
+        public void DisconnectRequested()
         {
             ResetUI();
         }
 
-        void OnClientDisconnect(ulong clientId)
-        {
-            ResetUI();
-        }
-
-        void ResetUI()
+        public void ResetUI()
         {
             SetUIElementVisibility(m_IPMenuUIRoot, true);
             SetUIElementVisibility(m_ConnectionTypeUIRoot, false);
@@ -145,7 +158,6 @@ namespace Game.UI
             m_IPInputField = m_IPMenuUIRoot.Q<TextField>("IPAddressField");
             m_PortInputField = m_IPMenuUIRoot.Q<TextField>("PortField");
             m_ButtonHost = m_IPMenuUIRoot.Q<Button>("HostButton");
-            m_ButtonServer = m_IPMenuUIRoot.Q<Button>("ServerButton");
             m_ButtonClient = m_IPMenuUIRoot.Q<Button>("ClientButton");
             m_ButtonDisconnect = m_ConnectionTypeUIRoot.Q<Button>("DisconnectButton");
             m_ConnectionTypeLabel = m_ConnectionTypeUIRoot.Q<Label>("ConnectionType");
