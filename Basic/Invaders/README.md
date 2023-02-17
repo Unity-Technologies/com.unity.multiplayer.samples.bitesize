@@ -1,3 +1,6 @@
+![Banner](Resources/invaders_banner.png)
+<br><br>
+
 # Invaders
 
 ![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)
