@@ -28,6 +28,8 @@ Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.
 ## Exploring the Sample
 
 Each scene in the project showcases a different, isolated feature of the API, allowing for easy extraction into other projects. We suggest exploring them in order to get a good understanding of the flow of dynamically loading and spawning network prefabs. The use-cases available in this sample are based around the current known limitations.
+
+**Important:** This sample assumes that Addressables will never fail to load, therefore there currently is no reconcilliation logic on the server for a client that fails to load an Addressable. In a realistic implementation, you would want to either have the offending client try to load the Addressable again, or disconnect it from the session. 
 <br><br>
 
 ### Each Scene:
@@ -113,8 +115,9 @@ This section describes some next steps a game developer could do to extend the s
 
 - Compress Addressable GUID list before it is sent, thus reducing the amount of data being exchanged.
 
-- Rather than exchanging Addressable GUIDS, the peers exchange a `short` index that would refer to Addressables
-stored (in some sort of list) in a ScriptableObject, thus drastically reducing the amount of data being exchanged.
+- Rather than exchanging Addressable GUIDS (underlying type `FixedString128Bytes`), the server and clients could instead exchange just a `short` index that would refer to an Addressable stored in some sort of list (potentially in a `ScriptableObject`). This would drastically reduce the amount of data being exchanged over the network. 
+
+- This sample does not cover the use-case of using Addressables to load in custom User Generated Content (UGC) and replicating that to other clients.
 <br><br>
 
 ---
@@ -122,6 +125,7 @@ stored (in some sort of list) in a ScriptableObject, thus drastically reducing t
 Check out our main [Bitesize Samples GitHub Readme](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize#readme) for more documentation, resources, releases, contribution guidelines, and our feedback form.
 
 ---
+<br>
 
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
