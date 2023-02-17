@@ -8,22 +8,22 @@ N/A
 ### Dynamic Addressables Network Prefabs
 
 #### Changed
-- Readme updated with link to the Dynamic Addressables Network Prefabs sample documentation (#106)
+- Readme updated with link to the Dynamic Addressables Network Prefabs sample documentation, and broken links fixed (#106)
 
 ### 2D Space Shooter
 
 #### Changed
-- Readme updated with link to the 2D Space Shooter sample documentation (#106)
+- Readme updated with link to the 2D Space Shooter sample documentation, and broken links fixed (#106)
 
 ### Client Driven
 
 #### Changed
-- Readme updated with link to the Client Driven sample documentation (#106)
+- Readme updated with link to the Client Driven sample documentation, and broken links fixed (#106)
 
 ### Invaders
 
 #### Changed
-- Readme updated with link to the Invaders samples documentation (#106)
+- Readme updated with link to the Invaders samples documentation, and broken links fixed (#106)
 
 ### Bitesize Samples Repository
 
