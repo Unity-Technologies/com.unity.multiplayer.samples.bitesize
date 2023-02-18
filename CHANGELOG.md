@@ -28,7 +28,7 @@ N/A
 ### Bitesize Samples Repository
 
 #### Fixed
-- Readme formatting adjustments and broken link fixes (#106)
+- Readme formatting adjustments and broken link fixes (#106) (#108)
 
 ## [1.2.0] - 2023-02-16
 
