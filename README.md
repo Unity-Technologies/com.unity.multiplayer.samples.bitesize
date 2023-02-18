@@ -34,7 +34,6 @@ Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.c
 <br><br>
 
 ---
-<!--- > added -1 to the links for these table of contents items since they are also headers (and were linking to themselves) </!--->
 ## Readme Contents and Quick Links
 <details open> <summary> Click to expand/collapse contents </summary>
 
