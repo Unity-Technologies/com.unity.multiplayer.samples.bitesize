@@ -56,7 +56,7 @@ Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.c
 ## Getting the project
 ### Direct download
 
- - You can download the latest versions of these samples from our [Releases](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.1) page
+ - You can download the latest versions these samples from our [Releases](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases) page
 
  - __Alternatively:__ select `Code` and select the 'Download Zip' option.  Please note that this will download the branch you're currently viewing on Github
 <br><br>
@@ -65,7 +65,7 @@ Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.c
 
 The bitesize samples are compatible with the latest Unity Long Term Support (LTS) editor version, currently [2021 LTS](https://unity.com/releases/2021-lts). Please include standalone support for Windows/Mac in your installation.
 
-**PLEASE NOTE:** You will also need Netcode for Game Objects to use these samples. Complete the [Hello World Getting Started](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld) to prepare your environment.
+**PLEASE NOTE:** You will also need Netcode for Game Objects to use these samples. Complete the [Hello World](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld) tutorial to prepare your environment.
 <br><br>
 
 ## Troubleshooting
@@ -75,7 +75,7 @@ The bitesize samples are compatible with the latest Unity Long Term Support (LTS
 - Report Unity bugs using the [Unity bug submission process](https://unity3d.com/unity/qa/bug-reporting)
   
 ### Documentation
-For a deep dive into Unity Netcode and Boss Room, visit our [documentation site](https://docs-multiplayer.unity3d.com/).
+For a deep dive into Netcode for GameObjects and the Bitesize Samples, visit our [documentation site](https://docs-multiplayer.unity3d.com/).
 <br><br>
 
 ## Community
@@ -92,7 +92,7 @@ If you have tried these samples already, please consider leaving us feedback [he
 
 ## Other samples
 ### Boss Room Sample
-[Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/releases/latest) is a fully functional co-op multiplayer RPG made with Unity Netcode. It is an educational sample designed to showcase typical netcode patterns that are frequently featured in similar multiplayer games.
+[Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/) is a fully functional co-op multiplayer RPG made with Unity Netcode. It is an educational sample designed to showcase typical netcode patterns that are frequently featured in similar multiplayer games.
 <br><br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
