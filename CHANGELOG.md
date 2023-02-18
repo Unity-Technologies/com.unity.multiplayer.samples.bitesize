@@ -3,6 +3,33 @@
 ## [unreleased] - yyyy-mm-dd
 N/A
 
+## [1.2.1] - 2023-02-17
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Readme updated with link to the Dynamic Addressables Network Prefabs sample documentation, and broken links fixed (#106)
+
+### 2D Space Shooter
+
+#### Changed
+- Readme updated with link to the 2D Space Shooter sample documentation, and broken links fixed (#106)
+
+### Client Driven
+
+#### Changed
+- Readme updated with link to the Client Driven sample documentation, and broken links fixed (#106)
+
+### Invaders
+
+#### Changed
+- Readme updated with link to the Invaders samples documentation, and broken links fixed (#106)
+
+### Bitesize Samples Repository
+
+#### Fixed
+- Readme formatting adjustments and broken link fixes (#106)
+
 ## [1.2.0] - 2023-02-16
 
 ### Dynamic Addressables Network Prefabs Sample

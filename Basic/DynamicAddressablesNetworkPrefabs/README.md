@@ -3,9 +3,9 @@
 
 # Dynamic Addressables Network Prefabs Sample
 
-![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)
-![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)
-[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/qa/lts-releases#:~:text=February%2014%2C%202023-,LTS%20Release,2021.3.18f1,-Released%3A%20February)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
+[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.1-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.1)
 <br><br>
 
 The Dynamic Prefabs Sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This sample uses Addressables to load the dynamic prefab, however any GameObject with a NetworkObject component can be used, regardless of its source. This sample also uses in-game UI (created using UI Toolkit) to interface with the dynamic prefabs system with configurable options like artificial latency and network spawn timeout for easy testing.
@@ -20,7 +20,7 @@ In this sample, learn more about:
 
 ---
 ### 💡 Documentation
-Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+Check out the [Dynamic Addressables Network Prefabs sample documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-dynamicPrefabs) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
 
 ---
 <br>
@@ -94,13 +94,14 @@ Each scene in the project showcases a different, isolated feature of the API, al
 ### Dynamic Prefabs System
 
 - Preloading Dynamic Prefabs - [Assets/Scripts/00_Preloading/Preloading.cs](Assets/Scripts/00_Preloading/Preloading.cs)
-- Connection Approval supporting late join - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_ConnectionApproval/ConnectionApproval.cs)
-- Server Authoritative Preloading All Prefabs Asynchronously - [Assets/Scripts/02_Server Authoritative Load All Async/ServerAuthoritativeLoadAllAsync.cs](Assets/Scripts/02_ServerAuthoritativeLoadAllAsync/ServerAuthoritativeLoadAllAsync.cs)
-- Server Authoritative Try Spawning Synchronously - [Assets/Scripts/03_Server Authoritative Synchronous Spawning/ServerAuthoritativeSynchronousSpawning.cs](Assets/Scripts/03_ServerAuthoritativeSynchronousSpawning/ServerAuthoritativeSynchronousSpawning.cs)
-- Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_ServerAuthoritativeNetwork-VisibilitySpawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
+- Connection Approval supporting late join - [Assets/Scripts/01_Connection Approval/ConnectionApproval.cs](Assets/Scripts/01_Connection%20Approval/ConnectionApproval.cs)
+- Server Authoritative Preloading All Prefabs Asynchronously - [Assets/Scripts/02_Server Authoritative Load All Async/ServerAuthoritativeLoadAllAsync.cs](Assets/Scripts/02_Server%20Authoritative%20Load%20All%20Async/ServerAuthoritativeLoadAllAsync.cs)
+- Server Authoritative Try Spawning Synchronously - [Assets/Scripts/03_Server Authoritative Synchronous Spawning/ServerAuthoritativeSynchronousSpawning.cs](Assets/Scripts/03_Server%20Authoritative%20Synchronous%20Spawning/ServerAuthoritativeSynchronousSpawning.cs)
+- Server Authoritative Spawn using Network-Visibility - [Assets/Scripts/04_Server Authoritative Network-Visibility Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs](Assets/Scripts/04_Server%20Authoritative%20Network-Visibility%20Spawning/ServerAuthoritativeNetworkVisibilitySpawning.cs)
 
 ### UI
-- In Game UI - [Assets/Scripts/UI/IPMenuUI.cs](Assets/Scripts/UI/IPMenuUI.cs)
+- In Game UI [Assets/Scripts/UI/InGameUI.cs](Assets/Scripts/UI/InGameUI.cs)
+- IP Menu UI - [Assets/Scripts/UI/IPMenuUI.cs](Assets/Scripts/UI/IPMenuUI.cs)
 
 ### Addressables
 - Package version - [Packages/manifest.json](Packages/manifest.json)

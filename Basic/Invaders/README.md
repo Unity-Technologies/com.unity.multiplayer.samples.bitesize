@@ -3,9 +3,9 @@
 
 # Invaders
 
-![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)
-![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)
-[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/qa/lts-releases#:~:text=February%2014%2C%202023-,LTS%20Release,2021.3.18f1,-Released%3A%20February)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
+[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.1-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.1)
 <br><br>
 
 This is a UNet sample project converted to Netcode for GameObjects. The Invaders sample is a sample project designed to demonstrate game flows and game modes.
@@ -22,7 +22,7 @@ In this sample, learn more about:
 <br><br>
 ---
 ### 💡 Documentation
-Check out our [Bitesize Samples documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+Check out the [Invaders sample documentation](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-invaders) for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
 
 ---
 <br>
