@@ -2,9 +2,9 @@
 <br><br>
 # Netcode for GameObjects Bitesize Samples
 
-![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS+-57b9d3.svg?logo=unity&color=2196F3)
-![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0+-57b9d3.svg?logo=unity&color=2196F3)
-[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/qa/lts-releases#:~:text=February%2014%2C%202023-,LTS%20Release,2021.3.18f1,-Released%3A%20February)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.2.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
+[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.1-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.1)
 <br><br>
 
 This repository contains a collection of bitesize sample projects and games that showcase different 
@@ -30,34 +30,33 @@ See the [Client Driven Sample](https://github.com/Unity-Technologies/com.unity.m
 
 ### Dynamic Addressables Network Prefabs Overview ![](https://img.shields.io/badge/New!-brightgreen)
 
-Check out the new [Dynamic Addressables Network Prefabs Sample]() to learn more about the dynamic prefab system, which allows us to add new spawnable network prefabs at runtime.
+Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/DynamicAddressablesNetworkPrefabs) to learn more about the dynamic prefab system, which allows us to add new spawnable network prefabs at runtime.
 <br><br>
 
 ---
-
 ## Readme Contents and Quick Links
 <details open> <summary> Click to expand/collapse contents </summary>
 
-- ### [Getting the Project](#getting-the-project)
-- ### [Requirements](#requirements)
-- ### [Troubleshooting](#troubleshooting)
+- ### [Getting the Project](#getting-the-project-1)
+- ### [Requirements](#requirements-1)
+- ### [Troubleshooting](#troubleshooting-1)
   - [Bugs](#bugs)
   - [Documentation](#documentation)
-- ### [Contributing](#contributing)
-- ### [Community](#community)
-- ### [Feedback Form](#feedback-form)
-- ### [Other Samples](#other-samples)
+- ### [Contributing](#contributing-1)
+- ### [Community](#community-1)
+- ### [Feedback Form](#feedback)
+- ### [Other Samples](#other-samples-1)
   - [Boss Room](#boss-room-sample)
 
 </details>
 
 ---
-<br><br>
+<br>
 
 ## Getting the project
 ### Direct download
 
- - You can download the latest versions of these samples from our [Releases](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.0) page
+ - You can download the latest versions these samples from our [Releases](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases) page
 
  - __Alternatively:__ select `Code` and select the 'Download Zip' option.  Please note that this will download the branch you're currently viewing on Github
 <br><br>
@@ -66,17 +65,17 @@ Check out the new [Dynamic Addressables Network Prefabs Sample]() to learn more 
 
 The bitesize samples are compatible with the latest Unity Long Term Support (LTS) editor version, currently [2021 LTS](https://unity.com/releases/2021-lts). Please include standalone support for Windows/Mac in your installation.
 
-**PLEASE NOTE:** You will also need Netcode for Game Objects to use these samples. Complete the [Hello World Getting Started](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld) to prepare your environment.
+**PLEASE NOTE:** You will also need Netcode for Game Objects to use these samples. Complete the [Hello World](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld) tutorial to prepare your environment.
 <br><br>
 
 ## Troubleshooting
 ### Bugs
-- Report bugs in Boss Room using Github [issues](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/issues)
-- Report NGO bugs using NGO Github [issues](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects)
+- Report bugs in the Bitesize samples using Github [issues](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/issues)
+- Report NGO bugs using NGO Github [issues](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/issues)
 - Report Unity bugs using the [Unity bug submission process](https://unity3d.com/unity/qa/bug-reporting)
   
 ### Documentation
-For a deep dive into Unity Netcode and Boss Room, visit our [documentation site](https://docs-multiplayer.unity3d.com/).
+For a deep dive into Netcode for GameObjects and the Bitesize Samples, visit our [documentation site](https://docs-multiplayer.unity3d.com/).
 <br><br>
 
 ## Community
@@ -88,12 +87,12 @@ We welcome your contributions to this sample code and objects. See our [contribu
 <br><br>
 
 ## Feedback
-If you have tried these samples already, please consider leaving us feedback [here](https://unitytech.typeform.com/bitesize) --it will only take a couple of minutes. Thanks!
+If you have tried these samples already, please consider leaving us feedback [here](https://unitytech.typeform.com/bitesize)--it will only take a couple of minutes. Thanks!
 <br><br>
 
 ## Other samples
 ### Boss Room Sample
-[Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/releases/latest) is a fully functional co-op multiplayer RPG made with Unity Netcode. It is an educational sample designed to showcase typical netcode patterns that are frequently featured in similar multiplayer games.
+[Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/) is a fully functional co-op multiplayer RPG made with Unity Netcode. It is an educational sample designed to showcase typical netcode patterns that are frequently featured in similar multiplayer games.
 <br><br>
 
 [![Documentation](https://img.shields.io/badge/Unity-bitesize--docs-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction)
