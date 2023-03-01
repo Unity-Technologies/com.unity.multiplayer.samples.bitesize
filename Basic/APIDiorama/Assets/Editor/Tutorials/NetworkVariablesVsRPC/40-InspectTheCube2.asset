@@ -66,6 +66,41 @@ MonoBehaviour:
             m_VisualElementClassName: 
             m_VisualElementName: Color Manager (Script)
             m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: 
+          m_EditorWindowType:
+            m_TypeName: UnityEditor.ProjectBrowser, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls:
+          - m_SelectorMode: 4
+            m_SelectorMatchType: 0
+            m_GUIContent:
+              m_Text: ColorManager
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+            m_ControlName: 
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: 
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 
+                m_GameObjectGuid: 
+                m_SerializedComponentType:
+                  m_TypeName: 
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 11500000, guid: 27ebafe24377cd540a186d9d3ae1c9ba, type: 3}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: 
+            m_VisualElementName: Color Manager (Script)
+            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -137,7 +172,20 @@ MonoBehaviour:
   m_AutoAdvance: 0
   Showing:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 0bbd71a4713de434d8c94e72034b789c, type: 2}
+        m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.CommonTutorialCallbacks,
+          Unity.Tutorials.Core.Editor
+        m_MethodName: PingFolderOrAsset
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Assets/UseCaseSamples/NetvarVsRpc/Scripts/com.unity.samples.api-diorama.netvar-vs-rpc.asmdef
+          m_BoolArgument: 0
+        m_CallState: 1
   Shown:
     m_PersistentCalls:
       m_Calls: []
