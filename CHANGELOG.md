@@ -1,7 +1,11 @@
 # Change log
 
 ## [unreleased] - yyyy-mm-dd
-N/A
+
+### Dynamic Addressables Network Prefabs
+
+#### Fixed
+- Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
 
 ## [1.2.1] - 2023-02-17
 
