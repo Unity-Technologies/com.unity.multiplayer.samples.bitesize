@@ -9,6 +9,17 @@
 <br><br>
 
 The Dynamic Prefabs Sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This sample uses Addressables to load the dynamic prefab, however any GameObject with a NetworkObject component can be used, regardless of its source. This sample also uses in-game UI (created using UI Toolkit) to interface with the dynamic prefabs system with configurable options like artificial latency and network spawn timeout for easy testing.
+
+## Note on Addressables
+Addressables are great for managing your memory, download times, adding DLCs.
+
+Memory management with Addressables is great on platforms with restricted memory. Think mobile or webgl. In general on mobile, you won't load prefabs in memory directly on scene load, you'll want to load them only when you actually need them. You could load them from disk or from a CDN, that doesn't matter.
+Another use case is for reducing the initial app download time. You could ship a slim app with only the essentials asset wise. And when your player is in menus or playing the tutorial, start downloading the remainder of the app through addressables.
+
+There's a lot of optimizations potentials around asset bundles and addressables, we highly encourage you to look through them, they can be used on pretty much any platforms. 
+Some cool ressources:
+- Recent blog post on addressables: https://blog.unity.com/engine-platform/addressables-planning-and-best-practices
+- An older one: https://blog.unity.com/technology/tales-from-the-optimization-trenches-saving-memory-with-addressables
 <br><br>
 
 # Sample Overview
