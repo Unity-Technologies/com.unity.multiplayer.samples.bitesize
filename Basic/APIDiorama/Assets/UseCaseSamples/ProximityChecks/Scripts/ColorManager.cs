@@ -25,6 +25,7 @@ namespace Unity.Netcode.Samples.APIDiorama
             {
                 OnClientColorChanged(m_Material.color, m_NetworkedColor.Value);
                 m_NetworkedColor.OnValueChanged += OnClientColorChanged;
+                m_ProximityChecker.AddListener(OnClientLocalPlayerProximityStatusChanged);
             }
         }
 
@@ -34,6 +35,7 @@ namespace Unity.Netcode.Samples.APIDiorama
             if (IsClient)
             {
                 m_NetworkedColor.OnValueChanged -= OnClientColorChanged;
+                m_ProximityChecker.RemoveListener(OnClientLocalPlayerProximityStatusChanged);
             }
         }
 
@@ -64,6 +66,11 @@ namespace Unity.Netcode.Samples.APIDiorama
         void OnClientColorChanged(Color32 previousColor, Color32 newColor)
         {
             m_Material.color = newColor;
+        }
+
+        void OnClientLocalPlayerProximityStatusChanged(bool isClose)
+        {
+            Debug.Log($"Local player is now {(isClose ? "close" : "far")}");
         }
     }
 }
