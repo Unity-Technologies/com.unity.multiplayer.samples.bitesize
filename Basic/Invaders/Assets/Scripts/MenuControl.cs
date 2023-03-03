@@ -14,7 +14,6 @@ public class MenuControl : MonoBehaviour
 
     public void StartGame()
     {
-        // Update the current HostNameInput with whatever we have set in the NetworkConfig as default
         var utpTransport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
         if (utpTransport)
         {
