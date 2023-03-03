@@ -436,6 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d49b7c1bcd2e07499844da127be038d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_ForceModuleActive: 0
 --- !u!114 &388206763
 MonoBehaviour:
@@ -449,6 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -575,7 +577,7 @@ GameObject:
   - component: {fileID: 604336998}
   - component: {fileID: 604336997}
   m_Layer: 5
-  m_Name: StartLocalButton
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -650,7 +652,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 698002439}
         m_TargetAssemblyTypeName: 
-        m_MethodName: StartLocalGame
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -947,7 +949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f6caebb4c9b3cb4abe107a550d8ed9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HostIpInput: {fileID: 1160858181}
+  m_IPAddressText: {fileID: 0}
   m_LobbySceneName: InvadersLobby
 --- !u!1 &1016699296
 GameObject:
@@ -2085,7 +2087,7 @@ GameObject:
   - component: {fileID: 1810564612}
   - component: {fileID: 1810564611}
   m_Layer: 5
-  m_Name: JoinLocalButton
+  m_Name: JoinButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2160,7 +2162,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 698002439}
         m_TargetAssemblyTypeName: 
-        m_MethodName: JoinLocalGame
+        m_MethodName: JoinGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
