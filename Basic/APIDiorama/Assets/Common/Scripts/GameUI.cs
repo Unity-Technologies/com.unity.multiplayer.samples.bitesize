@@ -12,15 +12,9 @@ namespace Unity.Netcode.Samples.APIDiorama
         [SerializeField] TMP_Text startupLabel;
         [SerializeField] TMP_Text controlsLabel;
 
-        void OnEnable()
+        void Start()
         {
             Refreshlabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
-            StartCoroutine(SubscribeToNetworkManagerEvents());
-        }
-
-        IEnumerator SubscribeToNetworkManagerEvents()
-        {
-            yield return new WaitUntil(() => NetworkManager.Singleton);
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
