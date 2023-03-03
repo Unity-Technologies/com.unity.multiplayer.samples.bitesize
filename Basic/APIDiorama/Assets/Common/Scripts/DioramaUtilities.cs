@@ -20,7 +20,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         public static string GetRandomUsername() => s_Usernames[UnityEngine.Random.Range(0, s_Usernames.Length)];
 
         /// <summary>
-        /// Filders some 'bad words' from a string. In a production environment, consider using an external service for complex tasks like this.
+        /// Filders some 'bad words' from a string. In a production environment, consider using an external service for complex tasks like this. Players can be quite imaginative creating workarounds for those types of filters, using a library or service abstracting that complexity away is usually more strategic.
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
