@@ -1,7 +1,11 @@
 # Change log
 
 ## [unreleased] - yyyy-mm-dd
-N/A
+
+### Invaders
+
+#### Fixed
+- IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
 
 ## [1.2.1] - 2023-02-17
 
