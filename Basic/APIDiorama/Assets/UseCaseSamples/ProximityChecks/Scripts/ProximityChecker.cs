@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Unity.Netcode.Samples.APIDiorama
 {
     /// <summary>
-    /// Informs about the proximity staus of the local player
+    /// Informs about the proximity status of the local player
     /// </summary>
     public class ProximityChecker : MonoBehaviour
     {
