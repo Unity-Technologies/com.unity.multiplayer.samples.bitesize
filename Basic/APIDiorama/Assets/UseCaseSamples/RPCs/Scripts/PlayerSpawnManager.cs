@@ -16,11 +16,16 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             response.Approved = true;
             response.CreatePlayerObject = true;
+            response.Position = GetPlayerSpawnPosition();
+        }
 
-            // Position to spawn the player object (if null it uses default of Vector3.zero)
-            response.Position = new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3));
-            
-            response.Pending = false;
+        Vector3 GetPlayerSpawnPosition()
+        {
+            /*
+             * this is just an example, and you change this implementation to make players spawn on specific spawn points
+             * depending on other factors (I.E: player's team)
+             */
+            return new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3));
         }
     }
 }
