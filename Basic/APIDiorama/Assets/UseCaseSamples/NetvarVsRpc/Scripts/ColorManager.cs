@@ -61,7 +61,7 @@ namespace Unity.Netcode.Samples.APIDiorama
             OnServerChangeColorServerRpc();
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        [ServerRpc(RequireOwnership = false)] //note: please refer to RPCs documentation to learn more about the pros and cons of the RequireOwnership parameter
         void OnServerChangeColorServerRpc()
         {
             Color32 newColor = DioramaUtilities.GetRandomColor();

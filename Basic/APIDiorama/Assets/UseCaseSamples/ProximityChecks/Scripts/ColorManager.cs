@@ -39,8 +39,7 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void Update()
         {
-            if (!IsClient
-            || !m_ProximityChecker.LocalPlayerIsClose)
+            if (!IsClient || !m_ProximityChecker.LocalPlayerIsClose)
             {
                 return;
             }

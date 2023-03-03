@@ -39,7 +39,7 @@ namespace Unity.Netcode.Samples.APIDiorama
             }
         }
 
-        [ServerRpc(RequireOwnership = true)]
+        [ServerRpc]
         void OnServerMoodMessageReceivedServerRpc(string message)
         {
             string redactedMessage = OnServerFilterBadWords(message);
