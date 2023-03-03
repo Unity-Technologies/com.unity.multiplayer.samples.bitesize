@@ -11,7 +11,7 @@ namespace Unity.Netcode.Samples.APIDiorama
     struct SyncableCustomData : INetworkSerializable
     {
         public int Health;
-        public FixedString128Bytes Username; //value-type version of string with fixed allocation
+        public FixedString128Bytes Username; //value-type version of string with fixed allocation. Strings should be avoided in general when dealing with netcode. Fixed strings are a "less bad" option.
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
