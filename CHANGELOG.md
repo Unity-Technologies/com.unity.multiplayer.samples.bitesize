@@ -7,6 +7,11 @@
 #### Fixed
 - Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
 
+### Invaders
+
+#### Fixed
+- IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
+
 ## [1.2.1] - 2023-02-17
 
 ### Dynamic Addressables Network Prefabs
