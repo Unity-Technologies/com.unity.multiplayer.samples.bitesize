@@ -227,7 +227,7 @@ namespace Game.ServerAuthoritativeSynchronousSpawning
                     m_InGameUI.ClientLoadedPrefabStatusChanged(client, 
                         assetGuid.GetHashCode(), 
                         prefab.Result.name, 
-                        InGameUI.LoadStatus.Loading);
+                        InGameUI.LoadStatus.Loaded);
                 }
                 
                 return obj;

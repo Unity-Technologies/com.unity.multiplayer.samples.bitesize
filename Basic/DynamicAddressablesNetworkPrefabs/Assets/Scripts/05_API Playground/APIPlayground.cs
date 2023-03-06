@@ -246,7 +246,7 @@ namespace Game.APIPlayground
                     m_InGameUI.ClientLoadedPrefabStatusChanged(client,
                         assetGuid.GetHashCode(), 
                         loadedGameObject.Result.name, 
-                        InGameUI.LoadStatus.Loading);
+                        InGameUI.LoadStatus.Loaded);
                 }
             }
         }
