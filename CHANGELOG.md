@@ -2,6 +2,11 @@
 
 ## [unreleased] - yyyy-mm-dd
 
+### Dynamic Addressables Network Prefabs
+
+#### Fixed
+- Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
+
 ### Invaders
 
 #### Fixed
