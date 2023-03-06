@@ -1,8 +1,8 @@
-﻿using Unity.Mathematics;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerBullet : MonoBehaviour
+public class PlayerBullet : NetworkBehaviour
 {
     private const float k_YBoundary = 15.0f;
     public PlayerControl owner;
@@ -15,20 +15,33 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField]
     ParticleSystem m_EnemyExplosionParticle;
 
+    void Awake()
+    {
+        enabled = false;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        enabled = IsServer;
+    }
+
     private void Update()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!IsServer) return;
         
         transform.Translate(0, m_TravelSpeed * Time.deltaTime, 0);
 
         if (transform.position.y > k_YBoundary)
-            if (NetworkManager.Singleton.IsServer)
-                Destroy(gameObject);
+        {
+            NetworkObject.Despawn();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!NetworkManager.Singleton.IsServer)
+        // several OnTriggerEnter2D calls may be invoked in the same frame (for different Colliders), so we check if
+        // we're spawned to make sure we don't trigger hits for already despawned bullets
+        if (!IsServer || !IsSpawned)
             return;
 
         var hitEnemy = collider.gameObject.GetComponent<EnemyAgent>();
@@ -36,17 +49,13 @@ public class PlayerBullet : MonoBehaviour
         {
             owner.IncreasePlayerScore(hitEnemy.score);
 
-            if (NetworkManager.Singleton.IsServer)
-            {
-                // Only the server can despawn a NetworkObject
-                hitEnemy.NetworkObject.Despawn();
-            }
+            // Only the server can despawn a NetworkObject
+            hitEnemy.NetworkObject.Despawn();
             
-            Destroy(gameObject);
+            SpawnExplosionVFXClientRPC(transform.position, Quaternion.identity);
             
-            // this instantiates at the position of the bullet, there is an offset in the Y axis on the 
-            // particle systems in the prefab so it looks like it spawns in the middle of the enemy
-            Instantiate(m_EnemyExplosionParticle, transform.position, quaternion.identity);
+            NetworkObject.Despawn();
+            
             return;
         }
 
@@ -54,7 +63,15 @@ public class PlayerBullet : MonoBehaviour
         if (hitShield != null)
         {
             Destroy(hitShield.gameObject);
-            Destroy(gameObject);
+            NetworkObject.Despawn();
         }
+    }
+
+    [ClientRpc]
+    void SpawnExplosionVFXClientRPC(Vector3 spawnPosition, Quaternion spawnRotation)
+    {
+        // this instantiates at the position of the bullet, there is an offset in the Y axis on the 
+        // particle systems in the prefab so it looks like it spawns in the middle of the enemy
+        Instantiate(m_EnemyExplosionParticle, spawnPosition, spawnRotation);
     }
 }

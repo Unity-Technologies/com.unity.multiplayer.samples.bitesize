@@ -1,9 +1,9 @@
-﻿using Unity.Mathematics;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class EnemyBullet : MonoBehaviour
+public class EnemyBullet : NetworkBehaviour
 {
     private const float k_YBoundary = -4.0f;
 
@@ -16,10 +16,19 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField]
     ParticleSystem m_ShieldExplosionParticle;
 
+    void Awake()
+    {
+        enabled = false;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        enabled = IsServer;
+    }
+
     private void Start()
     {
         Assert.IsTrue(InvadersGame.Singleton);
-        Assert.IsTrue(NetworkManager.Singleton);
 
         if(InvadersGame.Singleton)
             InvadersGame.Singleton.isGameOver.OnValueChanged += OnGameOver;
@@ -27,37 +36,47 @@ public class EnemyBullet : MonoBehaviour
 
     private void Update()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!IsServer) return;
         transform.Translate(0, -m_TravelSpeed * Time.deltaTime, 0);
 
         if (transform.position.y < k_YBoundary) Destroy(gameObject);
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         if (InvadersGame.Singleton) InvadersGame.Singleton.isGameOver.OnValueChanged -= OnGameOver;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!NetworkManager.Singleton.IsServer)
+        // several OnTriggerEnter2D calls may be invoked in the same frame (for different Colliders), so we check if
+        // we're spawned to make sure we don't trigger hits for already despawned bullets
+        if (!IsServer || !IsSpawned)
             return;
 
         var hitPlayer = collider.gameObject.GetComponent<PlayerControl>();
         if (hitPlayer != null)
         {
             hitPlayer.HitByBullet();
-            Destroy(gameObject);
+            NetworkObject.Despawn();
             return;
         }
 
         var hitShield = collider.gameObject.GetComponent<Shield>();
         if (hitShield != null)
         {
+            SpawnExplosionVFXClientRpc(transform.position, Quaternion.identity);
+            
             Destroy(hitShield.gameObject);
-            Destroy(gameObject);
-            Instantiate(m_ShieldExplosionParticle, transform.position, quaternion.identity);
+            NetworkObject.Despawn();
         }
+    }
+    
+    [ClientRpc]
+    void SpawnExplosionVFXClientRpc(Vector3 spawnPosition, Quaternion spawnRotation)
+    {
+        Instantiate(m_ShieldExplosionParticle, spawnPosition, spawnRotation);
     }
 
     private void OnGameOver(bool oldValue, bool newValue)
@@ -65,6 +84,6 @@ public class EnemyBullet : MonoBehaviour
         enabled = false;
 
         // On game over destroy the bullets
-        if (NetworkManager.Singleton.IsServer) Destroy(gameObject);
+        if (IsServer) NetworkObject.Despawn();
     }
 }
