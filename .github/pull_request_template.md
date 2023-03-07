@@ -27,7 +27,7 @@
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Code refactor
-- [ ] UI/UX (see [style guide] and add Jil as a reviewer for relevant changes)
+- [ ] UI/UX (see [style guide] and add a technical artist as a reviewer for relevant changes)
 - [ ] Breaking change
 - [ ] Documentation update (see [style guide])
 - [ ] Other (please describe)
