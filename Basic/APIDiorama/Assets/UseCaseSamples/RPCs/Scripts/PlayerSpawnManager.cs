@@ -14,6 +14,8 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
+            /* you can use this method in your project to customize one of more aspects of the player 
+             * (I.E: its start position, its character) and to perform additional validation checks. */
             response.Approved = true;
             response.CreatePlayerObject = true;
             response.Position = GetPlayerSpawnPosition();

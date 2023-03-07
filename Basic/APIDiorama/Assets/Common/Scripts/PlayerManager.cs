@@ -19,6 +19,8 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         public override void OnNetworkSpawn()
         {
+            /* When an Network Object is spawned, you usally want to setup some if its components
+             * so that they behave differently depending on whether this object is owned by the local player or by other clients. */
             base.OnNetworkSpawn();
             if (IsOwner)
             {
@@ -41,6 +43,7 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void OnNonLocalPlayerSpawned()
         {
+            //you don't want other players to be able to control your player
             if (inputManager)
             {
                 inputManager.enabled = false;
@@ -49,6 +52,8 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void OnLocalPlayerSpawned()
         {
+            /* you want only the local player to be identified as such, and to have its input-related components enabled.
+             * The same concept usually applies for cameras, UI, etc...*/
             s_LocalPlayer = this;
             if (inputManager)
             {

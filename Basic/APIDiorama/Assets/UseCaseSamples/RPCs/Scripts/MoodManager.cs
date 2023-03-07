@@ -27,7 +27,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             if (!IsOwner)
             {
-                //we don't want to send chat messages from other players!
+                //you don't want to send mood messages from other players, you only want to receive them
                 return;
             }
 
@@ -42,6 +42,9 @@ namespace Unity.Netcode.Samples.APIDiorama
         [ServerRpc]
         void OnServerMoodMessageReceivedServerRpc(string message)
         {
+            /* Here's an example of the type of operation you could do on the server to prevent malicious actions
+             * from bad actors.
+             */
             string redactedMessage = OnServerFilterBadWords(message);
             OnClientMoodMessageReceivedClientRpc(redactedMessage);
         }

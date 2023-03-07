@@ -25,6 +25,9 @@ namespace Unity.Netcode.Samples.APIDiorama
             {
                 if (m_UseNetworkVariableForColor)
                 {
+                    /* in this case, you need to manually load the initial Color to catch up with the state of the network variable.
+                     * This is particularly useful when re-connecting or hot-joining a session
+                    */
                     OnClientColorChanged(m_Material.color, m_NetworkedColor.Value);
                     m_NetworkedColor.OnValueChanged += OnClientColorChanged;
                 }
@@ -45,8 +48,11 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void Update()
         {
-            if (!IsClient)
+            if (!IsClient) 
             {
+                /* note: in this case there's only client-side logic and therefore the scripts returns early.
+                 * In a real production scenario, you would have an UpdateManager script running all Updates from a centralized point.
+                 * An alternative to that is to disable behaviours on client/server depending to what is/is not going to be executed on that instance. */
                 return;
             }
 
@@ -83,6 +89,5 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             m_Material.color = newColor;
         }
-
     }
 }

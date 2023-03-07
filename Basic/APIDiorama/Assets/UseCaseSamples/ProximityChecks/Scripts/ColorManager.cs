@@ -7,7 +7,6 @@ namespace Unity.Netcode.Samples.APIDiorama
     /// </summary>
     public class ColorManager : NetworkBehaviour
     {
-
         NetworkVariable<Color32> m_NetworkedColor = new NetworkVariable<Color32>();
         Material m_Material;
         ProximityChecker m_ProximityChecker;
@@ -23,6 +22,8 @@ namespace Unity.Netcode.Samples.APIDiorama
             base.OnNetworkSpawn();
             if (IsClient)
             {
+                /* in this case, you need to manually load the initial Color to catch up with the state of the network variable.
+                * This is particularly useful when re-connecting or hot-joining a session */
                 OnClientColorChanged(m_Material.color, m_NetworkedColor.Value);
                 m_NetworkedColor.OnValueChanged += OnClientColorChanged;
                 m_ProximityChecker.AddListener(OnClientLocalPlayerProximityStatusChanged);
@@ -43,6 +44,9 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             if (!IsClient || !m_ProximityChecker.LocalPlayerIsClose)
             {
+                /* note: in this case there's only client-side logic and therefore the script returns early.
+                 * In a real production scenario, you would have an UpdateManager running all Updates from a centralized point.
+                 * An alternative to that is to disable behaviours on client/server depending to what is/is not going to be executed on that instance. */
                 return;
             }
 

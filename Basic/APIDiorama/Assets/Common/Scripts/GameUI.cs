@@ -39,7 +39,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer)
             {
-                return; //we don't want to do actions twice when playing as a host
+                return; //you don't want to do actions twice when playing as a host
             }
             OnNetworkedSessionStarted();
         }
