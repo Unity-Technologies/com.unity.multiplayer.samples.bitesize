@@ -53,11 +53,18 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         bool LocalPlayerIsCloseEnough(Vector3 point, float range)
         {
-            if (!PlayerManager.s_LocalPlayer)
+            //Note: This example shows how to use NetworkManager.Singleton.LocalClient.PlayerObject instead of a custom static flag to detect the local player
+            if (NetworkManager.Singleton == null || NetworkManager.Singleton.LocalClient == null)
             {
                 return false;
             }
-            return Vector3.Distance(point, PlayerManager.s_LocalPlayer.transform.position) < range;
+
+            NetworkObject localPlayer = NetworkManager.Singleton.LocalClient.PlayerObject;
+            if (!localPlayer)
+            {
+                return false;
+            }
+            return Vector3.Distance(point, localPlayer.transform.position) < range;
         }
     }
 }
