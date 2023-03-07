@@ -24,28 +24,36 @@ public class EnemyBullet : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         enabled = IsServer;
-    }
 
-    private void Start()
-    {
+        if (!IsServer)
+        {
+            return;
+        }
+        
         Assert.IsTrue(InvadersGame.Singleton);
 
-        if(InvadersGame.Singleton)
+        if (InvadersGame.Singleton)
+        {
             InvadersGame.Singleton.isGameOver.OnValueChanged += OnGameOver;
+        }
     }
 
     private void Update()
     {
-        if (!IsServer) return;
         transform.Translate(0, -m_TravelSpeed * Time.deltaTime, 0);
 
-        if (transform.position.y < k_YBoundary) Destroy(gameObject);
+        if (transform.position.y < k_YBoundary)
+        {
+            NetworkObject.Despawn();
+        }
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        base.OnDestroy();
-        if (InvadersGame.Singleton) InvadersGame.Singleton.isGameOver.OnValueChanged -= OnGameOver;
+        if (InvadersGame.Singleton)
+        {
+            InvadersGame.Singleton.isGameOver.OnValueChanged -= OnGameOver;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -58,8 +66,8 @@ public class EnemyBullet : NetworkBehaviour
         var hitPlayer = collider.gameObject.GetComponent<PlayerControl>();
         if (hitPlayer != null)
         {
-            hitPlayer.HitByBullet();
             NetworkObject.Despawn();
+            hitPlayer.HitByBullet();
             return;
         }
 
@@ -82,8 +90,8 @@ public class EnemyBullet : NetworkBehaviour
     private void OnGameOver(bool oldValue, bool newValue)
     {
         enabled = false;
-
+        
         // On game over destroy the bullets
-        if (IsServer) NetworkObject.Despawn();
+        NetworkObject.Despawn();
     }
 }

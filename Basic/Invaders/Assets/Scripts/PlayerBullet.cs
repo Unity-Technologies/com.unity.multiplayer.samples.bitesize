@@ -27,8 +27,6 @@ public class PlayerBullet : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsServer) return;
-        
         transform.Translate(0, m_TravelSpeed * Time.deltaTime, 0);
 
         if (transform.position.y > k_YBoundary)
