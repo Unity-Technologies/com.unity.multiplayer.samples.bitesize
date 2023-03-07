@@ -1,4 +1,3 @@
-using DevLocker.Utils;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +7,7 @@ namespace Unity.Netcode.Samples.APIDiorama
     [Serializable]
     internal struct SelectableScene
     {
-        [SerializeField] internal SceneReference Scene;
+        [SerializeField] internal string SceneName;
         [SerializeField] internal string DisplayName;
         [SerializeField] internal Texture2D Image;
     }

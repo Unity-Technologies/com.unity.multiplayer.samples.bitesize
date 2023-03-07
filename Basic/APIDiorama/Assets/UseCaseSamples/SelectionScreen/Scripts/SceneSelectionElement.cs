@@ -18,7 +18,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         internal void Setup(SelectableScene selectableScene)
         {
             m_SceneButton.onClick.RemoveAllListeners();
-            m_SceneButton.onClick.AddListener(() => OnClick(selectableScene.Scene.SceneName));
+            m_SceneButton.onClick.AddListener(() => OnClick(selectableScene.SceneName));
             m_TitleLabel.text = selectableScene.DisplayName;
             if (selectableScene.Image)
             {

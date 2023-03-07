@@ -1,4 +1,3 @@
-using DevLocker.Utils;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +16,7 @@ namespace Unity.Netcode.Samples.APIDiorama
         [SerializeField] Button m_QuitSceneButton;
         [SerializeField] Color32 m_HighlightedButtonColor;
         [SerializeField] Color32 m_DisabledButtonColor;
-        [SerializeField] SceneReference m_SelectionScreenScene;
+        [SerializeField] string m_SelectionScreenSceneName;
         [SerializeField] GameObject m_ServerOnlyOverlay;
         Button[] m_Buttons;
 
@@ -78,13 +77,13 @@ namespace Unity.Netcode.Samples.APIDiorama
         {
             Disconnect();
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.LoadScene(m_SelectionScreenScene.SceneName, LoadSceneMode.Single);
+            SceneManager.LoadScene(m_SelectionScreenSceneName, LoadSceneMode.Single);
         }
 
         void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
-            if (loadedScene.name == m_SelectionScreenScene.SceneName)
+            if (loadedScene.name == m_SelectionScreenSceneName)
             {
                 if (NetworkManager.Singleton)
                 {
