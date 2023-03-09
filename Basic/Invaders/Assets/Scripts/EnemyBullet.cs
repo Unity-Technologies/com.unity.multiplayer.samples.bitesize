@@ -12,7 +12,7 @@ public class EnemyBullet : NetworkBehaviour
     [SerializeField]
     [Tooltip("The constant speed at which the Bullet travels")]
     private float m_TravelSpeed = 3.0f;
-    
+
     [SerializeField]
     ParticleSystem m_ShieldExplosionParticle;
 
@@ -29,7 +29,7 @@ public class EnemyBullet : NetworkBehaviour
         {
             return;
         }
-        
+
         Assert.IsTrue(InvadersGame.Singleton);
 
         if (InvadersGame.Singleton)
@@ -75,12 +75,12 @@ public class EnemyBullet : NetworkBehaviour
         if (hitShield != null)
         {
             SpawnExplosionVFXClientRpc(transform.position, Quaternion.identity);
-            
+
             Destroy(hitShield.gameObject);
             NetworkObject.Despawn();
         }
     }
-    
+
     [ClientRpc]
     void SpawnExplosionVFXClientRpc(Vector3 spawnPosition, Quaternion spawnRotation)
     {
@@ -90,7 +90,7 @@ public class EnemyBullet : NetworkBehaviour
     private void OnGameOver(bool oldValue, bool newValue)
     {
         enabled = false;
-        
+
         // On game over destroy the bullets
         NetworkObject.Despawn();
     }
