@@ -1,9 +1,10 @@
 using TMPro;
 using Unity.Collections;
+using Unity.Netcode.Samples.APIDiorama.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.NetworkVariables
 {
     /// <summary>
     /// A complex data structure. Can only contain the types listed here: https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/index.html#supported-types

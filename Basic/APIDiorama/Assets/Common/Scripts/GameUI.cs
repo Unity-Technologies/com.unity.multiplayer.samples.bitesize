@@ -1,8 +1,7 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.Common
 {
     /// <summary>
     /// Manages the UI of the "NetworkVariable vs RPCs" scene
@@ -32,7 +31,7 @@ namespace Unity.Netcode.Samples.APIDiorama
 
         void OnServerStarted()
         {
-            OnNetworkedSessionStarted();
+            Refreshlabels(true);
         }
 
         void OnClientConnectedCallback(ulong obj)
@@ -41,28 +40,18 @@ namespace Unity.Netcode.Samples.APIDiorama
             {
                 return; //you don't want to do actions twice when playing as a host
             }
-            OnNetworkedSessionStarted();
+            Refreshlabels(true);
         }
 
         void OnClientDisconnectCallback(ulong obj)
         {
-            OnNetworkedSessionEnded();
+            Refreshlabels(false);
         }
 
         void Refreshlabels(bool isConnected)
         {
             startupLabel.gameObject.SetActive(!isConnected);
             controlsLabel.gameObject.SetActive(isConnected);
-        }
-
-        void OnNetworkedSessionStarted()
-        {
-            Refreshlabels(true);
-        }
-
-        void OnNetworkedSessionEnded()
-        {
-            Refreshlabels(false);
         }
     }
 }

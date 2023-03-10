@@ -3,7 +3,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.Common
 {
     /// <summary>
     /// Shows text in the form of a speech bubble

@@ -1,7 +1,8 @@
 using System.Collections;
+using Unity.Netcode.Samples.APIDiorama.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.RPC
 {
     /// <summary>
     /// Manages the mood of a player or NPC

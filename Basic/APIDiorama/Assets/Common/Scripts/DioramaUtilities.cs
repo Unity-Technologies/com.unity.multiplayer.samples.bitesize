@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.Common
 {
     /// <summary>
     /// A class of utilities used across Dioramas

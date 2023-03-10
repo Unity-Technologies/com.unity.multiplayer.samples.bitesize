@@ -1,6 +1,7 @@
+using Unity.Netcode.Samples.APIDiorama.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.NetVarVsRPC
 {
     /// <summary>
     /// Toggles an object when the local player is close enough

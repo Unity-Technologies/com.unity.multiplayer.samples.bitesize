@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.Proximity
 {
     /// <summary>
     /// Informs about the proximity status of the local player

@@ -1,6 +1,7 @@
+using Unity.Netcode.Samples.APIDiorama.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.APIDiorama.NetworkVariables
 {
     /// <summary>
     /// Manages the color of a Networked object
