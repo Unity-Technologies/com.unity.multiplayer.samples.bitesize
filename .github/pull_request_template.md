@@ -33,6 +33,7 @@
 - [ ] Other (please describe)
 
 ### Checklist
+- [ ] Release notes have been added to the [project changelog](../CHANGELOG.md) file
 - [ ] Unit tests pass locally
 - [ ] Added tests, if feasible, that prove my fix is effective or that my feature works
 - [ ] No warnings in the Console
