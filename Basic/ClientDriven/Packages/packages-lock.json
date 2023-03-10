@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "com.unity.burst": {
-      "version": "1.6.6",
-      "depth": 2,
+      "version": "1.8.2",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1"
@@ -19,12 +19,10 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "1.17.2",
+      "version": "2.0.0",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.services.core": "1.0.1"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
@@ -52,7 +50,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.15",
+      "version": "3.0.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -61,7 +59,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.16",
+      "version": "2.0.17",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -77,7 +75,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.4.3",
+      "version": "1.4.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -86,7 +84,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.learn.iet-framework": {
-      "version": "2.2.2",
+      "version": "3.1.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -97,7 +95,7 @@
     },
     "com.unity.mathematics": {
       "version": "1.2.6",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -108,13 +106,11 @@
       "source": "git",
       "dependencies": {
         "com.unity.learn.iet-framework": "1.2.1",
-        "com.unity.multiplayer.tools": "1.0.0-pre.7",
-        "com.unity.netcode.gameobjects": "1.0.0-pre.10",
-        "com.unity.services.authentication": "1.0.0-pre.4",
-        "com.unity.services.lobby": "1.0.0-pre.6",
-        "com.unity.services.relay": "1.0.2"
+        "com.unity.multiplayer.tools": "1.0.0",
+        "com.unity.netcode.gameobjects": "1.1.0",
+        "com.unity.services.relay": "1.0.3"
       },
-      "hash": "55bc606b0ae04e2368bdaeda903440570bd44900"
+      "hash": "782ce810febe13fc4b68235389a0f3224b2418d2"
     },
     "com.unity.multiplayer.tools": {
       "version": "1.0.0",
@@ -130,7 +126,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.netcode.gameobjects": {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -160,21 +156,49 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.services.authentication": {
-      "version": "2.2.0",
+    "com.unity.render-pipelines.core": {
+      "version": "12.1.10",
       "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "12.1.10",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.burst": "1.8.2",
+        "com.unity.render-pipelines.core": "12.1.10",
+        "com.unity.shadergraph": "12.1.10"
+      }
+    },
+    "com.unity.searcher": {
+      "version": "4.9.1",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.services.authentication": {
+      "version": "2.4.0",
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.unity.services.core": "1.4.3",
+        "com.unity.services.core": "1.7.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.4.3",
-      "depth": 1,
+      "version": "1.7.0",
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.unitywebrequest": "1.0.0",
@@ -183,24 +207,8 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.services.lobby": {
-      "version": "1.0.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.services.core": "1.4.0",
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
-        "com.unity.modules.unitywebrequestaudio": "1.0.0",
-        "com.unity.modules.unitywebrequesttexture": "1.0.0",
-        "com.unity.modules.unitywebrequestwww": "1.0.0",
-        "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.unity.services.authentication": "2.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.services.qos": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "depth": 2,
       "source": "registry",
       "dependencies": {
@@ -208,25 +216,25 @@
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.0.2",
         "com.unity.services.authentication": "2.0.0",
-        "com.unity.collections": "1.2.3"
+        "com.unity.collections": "1.2.4"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.services.relay": {
-      "version": "1.0.3",
+      "version": "1.0.5",
       "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.services.core": "1.4.0",
         "com.unity.services.authentication": "2.0.0",
-        "com.unity.services.qos": "1.0.1",
+        "com.unity.services.qos": "1.1.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
         "com.unity.modules.unitywebrequestaudio": "1.0.0",
         "com.unity.modules.unitywebrequesttexture": "1.0.0",
         "com.unity.modules.unitywebrequestwww": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.unity.transport": "1.0.0"
+        "com.unity.transport": "1.3.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -236,6 +244,15 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "12.1.10",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "12.1.10",
+        "com.unity.searcher": "4.9.1"
+      }
     },
     "com.unity.test-framework": {
       "version": "1.1.31",
@@ -270,7 +287,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.transport": {
-      "version": "1.3.0",
+      "version": "1.3.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {

@@ -4,9 +4,9 @@ using UnityEngine;
 public class ServerPlayerSpawnPoints : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> m_SpawnPoints;
+    List<GameObject> m_SpawnPoints;
 
-    private static ServerPlayerSpawnPoints s_Instance;
+    static ServerPlayerSpawnPoints s_Instance;
 
     public static ServerPlayerSpawnPoints Instance
     {
@@ -21,13 +21,18 @@ public class ServerPlayerSpawnPoints : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         s_Instance = null;
     }
 
     public GameObject ConsumeNextSpawnPoint()
     {
+        if (m_SpawnPoints.Count == 0)
+        {
+            return null;
+        }
+        
         var toReturn = m_SpawnPoints[m_SpawnPoints.Count - 1];
         m_SpawnPoints.RemoveAt(m_SpawnPoints.Count - 1);
         return toReturn;

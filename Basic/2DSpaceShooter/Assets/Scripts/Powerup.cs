@@ -61,21 +61,14 @@ public class Powerup : NetworkBehaviour
         {
             OnStartServer();
         }
-        Color buffColor = Buff.buffColors[(int)buffType.Value];
-        GetComponent<Renderer>().material.color = buffColor;
-        m_PowerUpGlow.material.SetColor("_Color", buffColor);
-        m_PowerUpGlow.material.SetColor("_EmissiveColor", buffColor);
-        m_PowerUpGlow2.material.SetColor("_Color", buffColor);
-        m_PowerUpGlow2.material.SetColor("_EmissiveColor", buffColor);
+        
+        UpdateVisuals(buffType.Value);
+        buffType.OnValueChanged += OnBuffTypeChanged;
+    }
 
-        m_PowerUpLabel.text = buffType.Value.ToString().ToUpper();
-        
-        if (buffType.Value == Buff.BuffType.QuadDamage)
-        {
-            m_PowerUpLabel.text = "Quad Damage";
-        }
-        
-        m_PowerUpLabel.style.color = buffColor;
+    public override void OnNetworkDespawn()
+    {
+        buffType.OnValueChanged -= OnBuffTypeChanged;
     }
 
     void OnStartClient()
@@ -93,6 +86,30 @@ public class Powerup : NetworkBehaviour
     void OnStartServer()
     {
         numPowerUps += 1;
+    }
+    
+    void OnBuffTypeChanged(Buff.BuffType previousValue, Buff.BuffType newValue)
+    {
+        UpdateVisuals(newValue);
+    }
+
+    void UpdateVisuals(Buff.BuffType buffType)
+    {
+        var buffColor = Buff.buffColors[(int)buffType];
+        GetComponent<Renderer>().material.color = buffColor;
+        m_PowerUpGlow.material.SetColor("_Color", buffColor);
+        m_PowerUpGlow.material.SetColor("_EmissiveColor", buffColor);
+        m_PowerUpGlow2.material.SetColor("_Color", buffColor);
+        m_PowerUpGlow2.material.SetColor("_EmissiveColor", buffColor);
+
+        m_PowerUpLabel.text = buffType.ToString().ToUpper();
+        
+        if (buffType == Buff.BuffType.QuadDamage)
+        {
+            m_PowerUpLabel.text = "Quad Damage";
+        }
+        
+        m_PowerUpLabel.style.color = buffColor;
     }
 
     void LateUpdate()

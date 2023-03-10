@@ -1,11 +1,23 @@
+using System;
 using UnityEngine;
 
 public class Dropzone : ServerObjectWithIngredientType
 {
     [SerializeField]
-    private ServerScoreReplicator m_ScoreTracker;
+    ServerScoreReplicator m_ScoreTracker;
 
-    private void OnTriggerEnter(Collider other)
+    [SerializeField]
+    Animator m_Animator;
+
+    [SerializeField]
+    float m_AnimationOffset;
+
+    void Start()
+    {
+        m_Animator.SetFloat("Offset", m_AnimationOffset);
+    }
+
+    void OnTriggerEnter(Collider other)
     {
         if (!IsServer) return;
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();
@@ -14,7 +26,7 @@ public class Dropzone : ServerObjectWithIngredientType
             return;
         }
 
-        if (ingredient.CurrentIngredientType.Value != CurrentIngredientType.Value)
+        if (ingredient.currentIngredientType.Value != currentIngredientType.Value)
         {
             return;
         }

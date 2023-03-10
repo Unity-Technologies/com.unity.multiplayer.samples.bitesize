@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a17d5446493e4284e92e20d8304a1973, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: ccc6b3ea84f7e4550b618abc8d06dd5d, type: 3}
+  title: 'Invaders: A Bitesize Sample'
+  sections:
+  - heading: Invaders
+    text: The Invaders sample is a sample project designed to demonstrate game flow
+      and modes with Netcode for GameObjects (Netcode) using Scene Managerment, unconventional
+      networked movement, and a shared timer between clients updated client-side
+      with server-side seeding. Read more about the sample from the
+    linkText: Invaders bitesize sample documentation page.
+    url: https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-invaders
+  - heading: 
+    text: The entry scene for this game is the InitBootStrap scene. From there a
+      game can be hosted or an existing game can be joined. Move back and forth using
+      the A and D keys, and shoot using the spacebar. Shoot enemies to gain points,
+      and avoid their bullets to avoid losing health (and eventually losing)!
+    linkText: 
+    url: 
+  - heading: 
+    text: 'To read more about Netcode and its built-in features, see the '
+    linkText: Netcode documentation.
+    url: https://docs-multiplayer.unity3d.com/
+  - heading: 
+    text: 'For more information about this bitesize sample or our other bitesize
+      samples, see the GitHub repo Readme from the '
+    linkText: Bitesize Samples GitHub public repository.
+    url: https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize
+  loadedLayout: 1
