@@ -152,8 +152,8 @@ public class Spawner : MonoBehaviour
 
             GameObject powerUp = m_ObjectPool.GetNetworkObject(m_PowerupPrefab).gameObject;
             powerUp.transform.position = pos;
-            powerUp.GetComponent<Powerup>().buffType.Value = (Buff.BuffType)Random.Range(0, (int)Buff.BuffType.Last);
             powerUp.GetComponent<NetworkObject>().Spawn(true);
+            powerUp.GetComponent<Powerup>().buffType.Value = (Buff.BuffType)Random.Range(0, (int)Buff.BuffType.Last);
         }
 
         if (Asteroid.numAsteroids == 0)

@@ -1,0 +1,44 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS_StyleSheet.uss?fileID=7433441132597879392&amp;guid=7e6bbc510a24f5d4c934e0953d561e01&amp;type=3#USS_StyleSheet" />
+    <Style src="project://database/Assets/UI/USS_Clients.uss?fileID=7433441132597879392&amp;guid=239f145be199f844fbf6e50d479855f7&amp;type=3#USS_Clients" />
+    <ui:VisualElement picking-mode="Ignore" style="align-items: flex-end; justify-content: flex-end; flex-direction: flex-start; flex-grow: 1; overflow: hidden;">
+        <ui:VisualElement name="APIControlsHolder" style="align-items: auto; justify-content: space-between; flex-direction: row-reverse; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <ui:VisualElement>
+                <ui:VisualElement name="Sliders" class="background" style="margin-bottom: 10px;">
+                    <ui:VisualElement name="ArtificialDelaySliderHolder" style="align-items: center; flex-direction: row; justify-content: center; flex-grow: 0; margin-bottom: 10px;">
+                        <ui:VisualElement name="Slider" style="flex-direction: column; flex-shrink: 1; width: 294px; align-items: stretch; flex-grow: 1; justify-content: space-between;">
+                            <ui:VisualElement style="flex-direction: row; justify-content: space-between; flex-grow: 1;">
+                                <ui:Label text="Artificial Latency:" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                                <ui:VisualElement style="flex-direction: row; align-items: center;">
+                                    <ui:TextField value="9999" text="9999" max-length="4" name="ArtificialDelayValue" class="button" style="font-size: 16px; height: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1; width: 70px;" />
+                                    <ui:Label text="ms" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px;" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:Slider focusable="false" value="1000" high-value="9999" name="SliderArtificialDelay" style="flex-shrink: 1; justify-content: space-between; flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="SpawnTimeoutSliderHolder">
+                        <ui:VisualElement name="Slider">
+                            <ui:VisualElement style="flex-direction: row; justify-content: space-between; flex-grow: 1; align-items: center;">
+                                <ui:Label text="Network Spawn Timeout:" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px; margin-left: 0; margin-right: 10px; margin-top: 0; margin-bottom: 0;" />
+                                <ui:VisualElement style="flex-direction: row; align-items: center;">
+                                    <ui:TextField value="99999" text="99999" max-length="5" name="NetworkTimeoutValue" class="button" style="font-size: 16px; height: auto; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-shrink: 1; width: 70px;" />
+                                    <ui:Label text="ms" display-tooltip-when-elided="true" class="labelText" style="overflow: hidden; font-size: 16px;" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                            <ui:Slider focusable="false" value="3000" high-value="99999" name="SliderSpawnTimeout" style="flex-shrink: 1; flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="ButtonHolder" class="background" style="flex-grow: 1; justify-content: space-between;">
+                    <ui:VisualElement name="APIButtons" style="margin-top: 0; justify-content: space-between; flex-grow: 0; margin-left: 0; margin-right: 0; margin-bottom: 0;">
+                        <ui:Label text="API Calls" display-tooltip-when-elided="true" name="Title" class="labelText" style="font-size: 20px; -unity-text-align: upper-center;" />
+                        <ui:Button text="Load All Prefabs Async" name="LoadAsync" focusable="false" class="button" />
+                        <ui:Button text="Try Spawn Synchronously" name="SpawnSync" focusable="false" class="button" />
+                        <ui:Button text="Spawn using Visibility" name="SpawnInvisible" focusable="false" class="button" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
