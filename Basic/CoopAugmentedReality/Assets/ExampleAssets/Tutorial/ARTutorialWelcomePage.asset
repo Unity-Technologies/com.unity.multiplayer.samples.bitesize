@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0885f594ab85594caa28e1a96cbe0d8, type: 3}
+  m_Name: ARTutorialWelcomePage
+  m_EditorClassIdentifier: 
+  m_Image: {fileID: 2800000, guid: a36153625af524c1f9fb6e04b5ed3e1c, type: 3}
+  m_WindowTitle:
+    m_Untranslated: AR Project Template
+  m_Title:
+    m_Untranslated: ' Welcome to the AR Project Template'
+  m_Description:
+    m_Untranslated: "Before you begin, go to Edit > Project Settings > XR Plug-in
+      Management and select the platform(s) you plan to deploy to. If you don\u2019t
+      see your platform listed, make sure you have the right build targets installed
+      in Unity Hub. For more information on the content and settings used in this
+      template, you can refer to the documentation <a href=\"https://docs.unity3d.com/2019.4/Documentation/Manual/xr-template-ar.html\">here</a>."
+  m_Buttons:
+  - Text:
+      m_Untranslated: Close
+    Tooltip:
+      m_Untranslated: 
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000}
+          m_MethodName: CloseCurrentModalDialog
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
