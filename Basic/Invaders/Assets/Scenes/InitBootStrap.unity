@@ -208,9 +208,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2577463361084716463, guid: a33721e9ba3981444b972ae70c494d73,
         type: 3}
-      propertyPath: NetworkConfig.PlayerPrefab
-      value: 
-      objectReference: {fileID: 100000, guid: c02eab22aaa0b68408500d6e87878b32, type: 3}
+      propertyPath: NetworkConfig.OldPrefabList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303540700821626563, guid: a33721e9ba3981444b972ae70c494d73,
+        type: 3}
+      propertyPath: ConnectionData.ServerListenAddress
+      value: 127.0.0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a33721e9ba3981444b972ae70c494d73, type: 3}
 --- !u!1001 &7334280963267320184
