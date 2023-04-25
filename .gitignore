@@ -13,7 +13,7 @@ upm-ci.log
 !/[Aa]ssets/**/*.meta
 
 # User's project-specific settings implemented using Settings Manager
-/ProjectSettings/Packages
+**/ProjectSettings/Packages
 
 # The rest are general best practices for Unity projects
 **/.Editor/
@@ -27,7 +27,7 @@ upm-ci.log
 **/[Vv]alidationSuiteResults/
 
 # Project/user-specific settings using Settings Manager
-/ProjectSettings/Packages/
+**/ProjectSettings/Packages/
 # UserSettings introduced in 2020.1
 **/UserSettings/
 
@@ -89,3 +89,5 @@ crashlytics-build.properties
 
 # Mac file setting
 .DS_Store
+
+**/*_clone*
