@@ -4,10 +4,26 @@
 
 ### Dynamic Addressables Network Prefabs
 
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+
 #### Fixed
 - Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
 
+### 2D Space Shooter
+
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+
+### Client Driven
+
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+
 ### Invaders
+
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
 
 #### Fixed
 - IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
