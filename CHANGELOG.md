@@ -13,6 +13,11 @@
 - IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
 - Enemy and Player bullet explosion FX are now replicated on clients via ClientRpcs (#113)
 
+### Bitesize Samples Repository
+
+#### Fixed
+- Removed individual gitignore files for individual projects and added parrelsync clones to root gitignore file (#117)
+
 ## [1.2.1] - 2023-02-17
 
 ### Dynamic Addressables Network Prefabs
