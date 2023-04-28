@@ -4,11 +4,27 @@
 
 ### Dynamic Addressables Network Prefabs
 
+#### Changed
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+
 #### Fixed
 - Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
 
+### 2D Space Shooter
+
+#### Changed
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+
+### Client Driven
+
+#### Changed
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+
 ### Invaders
 
+#### Changed
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+  
 #### Fixed
 - IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
 - Enemy and Player bullet explosion FX are now replicated on clients via ClientRpcs (#113)
