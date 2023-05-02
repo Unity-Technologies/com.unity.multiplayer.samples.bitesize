@@ -5,6 +5,7 @@
 ### Dynamic Addressables Network Prefabs
 
 #### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
 
 #### Fixed
@@ -13,16 +14,19 @@
 ### 2D Space Shooter
 
 #### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
 
 ### Client Driven
 
 #### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
 
 ### Invaders
 
 #### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
   
 #### Fixed
