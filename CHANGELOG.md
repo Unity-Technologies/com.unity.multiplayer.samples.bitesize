@@ -17,6 +17,7 @@
 
 #### Fixed
 - Removed individual gitignore files for individual projects and added parrelsync clones to root gitignore file (#117)
+- Fixed link to old tutorial and clarified supported platforms (#120)
 
 ## [1.2.1] - 2023-02-17
 
