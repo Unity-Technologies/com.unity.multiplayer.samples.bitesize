@@ -1,22 +1,27 @@
-# ‼️ Experimental Samples! Use at your own risk ‼️
+# ‼️ Experimental Samples‼️
 
-The goal of this folder is to aggregate ideas and small projects to be shared with the community, without guaranteeing those are Unity recommended practices. They are there for fostering discussion and with little quality guarantee, not for production use.
+Experimental samples are new samples or experimental modifications made to mature samples. Unity does not support Experimental samples because they are in the early stages of development, address currently unsupported use cases or rely on experimental technologies.
 
-This code might get promoted to full bitesize samples or they also might get removed if we figure they are not promoting good practices anymore. Please be critical when looking at these samples and use these at your own risk. If you need education for game features critical to your production, don't use these samples and stick to our regular samples and docs.
+Experimental samples can go through many changes before they are ready to be released and labelled as Production-Ready. At some point in the future, they might pass the verification requirements; however, they might also be deprecated instead. Because there is no guarantee for future support, you should not use experimental samples in production.
 
-## Process to contribute
+## Goal and Purpose
 
-1. Create a new pull request against main.
-1. The samples team will look at it real quick to see if there are no major blockers and publish it. No release announcements.
-1. The samples team will merge it back to develop afterward.
+The goal of this folder is to aggregate ideas and small projects in development to accelerate community access. They are made available to foster discussion and gauge interest in particular areas. 
 
-### Content requirements:
-- No secret or patentable content. Let’s keep in mind this repo is public.
-- No copyrighted material and 3rd parties. No legal time bombs.
-- To help us and users track this over time, we require a small paragraph in the **PR description** and in a **readme.md** at the root of the content including:
-  - A small description.
-  - The “why” this is interesting to users and what you expect them to get out of this content.
+**These samples come with no quality guarantee and are _not_ recommended for production use.**
 
-## What this isn’t
-- This isn’t to replace testprojects. The goal is to share education and usage samples with users fast, not create test beds for internal SDK development.
-- This isn’t to replace bitesize or in-package samples. Samples in Experimental are transient. They’ll either be destroyed or promoted to a real bitesize.
+This means:
+- They are unsupported and may be changed or removed at any time. 
+- They are not rigorously tested against editor versions, platforms or devices.
+- They are not maintained to the same quality or standards as those labelled as Production-Ready.
+- They may address unsupported use cases.
+
+If you are looking for education on game features critical to your production, please use our **'Production-Ready'** [samples](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction/) and [documentation](https://docs-multiplayer.unity3d.com/). 
+
+To connect, find support and share feedback, join the multiplayer community on the Unity [Discord](https://discord.gg/mNgM2XRDpb) and [Forum](https://forum.unity.com/forums/multiplayer.26/).<br> <center>
+| -- | 
+
+## Contributing
+
+If you're a Unity employee, click [here](https://docs.google.com/document/d/1PCti3N3a78fObtU8fm4EQYMibXFtmjtPFZ_x-f_O5w0/edit?usp=sharing) for the process.
+
