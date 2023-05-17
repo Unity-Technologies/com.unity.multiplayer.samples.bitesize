@@ -1,8 +1,8 @@
-# ‼️ Experimental Samples‼️
+# ‼️Experimental Samples‼️
 
-Experimental samples are new samples or experimental modifications made to mature samples. Unity does not support Experimental samples because they are in the early stages of development, address currently unsupported use cases or rely on experimental technologies.
+Experimental samples are new samples or experimental modifications made to mature samples. Unity does not support Experimental samples because they are in the early stages of development, address currently unsupported use cases, or rely on experimental technologies.
 
-Experimental samples can go through many changes before they are ready to be released and labelled as Production-Ready. At some point in the future, they might pass the verification requirements; however, they might also be deprecated instead. Because there is no guarantee for future support, you should not use experimental samples in production.
+Experimental samples can go through many changes before they are ready to be released and labelled as _Production-Ready_. They might pass the verification requirements; however, they could be deprecated. There is no guarantee for future support, so you should not use experimental samples in production.
 
 ## Goal and Purpose
 
@@ -12,13 +12,13 @@ The goal of this folder is to aggregate ideas and small projects in development 
 
 This means:
 - They are unsupported and may be changed or removed at any time. 
-- They are not rigorously tested against editor versions, platforms or devices.
-- They are not maintained to the same quality or standards as those labelled as Production-Ready.
+- They are not rigorously tested against Unity Editor versions, platforms, or devices.
+- They are not maintained to the same quality or standards as those labelled as _Production-Ready_.
 - They may address unsupported use cases.
 
-If you are looking for education on game features critical to your production, please use our **'Production-Ready'** [samples](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction/) and [documentation](https://docs-multiplayer.unity3d.com/). 
+For education on game features critical to your production, please use our **Production-Ready** [Bitesize samples](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction/), [Boss Room](https://docs-multiplayer.unity3d.com/netcode/current/learn/bossroom/bossroom/), and [documentation](https://docs-multiplayer.unity3d.com/). 
 
-To connect, find support and share feedback, join the multiplayer community on the Unity [Discord](https://discord.gg/mNgM2XRDpb) and [Forum](https://forum.unity.com/forums/multiplayer.26/).<br> <center>
+To connect, find support and share feedback, join the multiplayer community on the [Unity Discord](https://discord.gg/mNgM2XRDpb) and [Unity Forum](https://forum.unity.com/forums/multiplayer.26/).<br> <center>
 | -- | 
 
 ## Contributing
