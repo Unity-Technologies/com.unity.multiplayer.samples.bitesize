@@ -7,6 +7,7 @@
 #### Changed
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.2.13f1 (#123)
 
 #### Fixed
 - Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
@@ -16,22 +17,26 @@
 #### Changed
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.2.13f1 (#123)
 
 ### Client Driven
 
 #### Changed
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.2.13f1 (#123)
 
 ### Invaders
 
 #### Changed
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.2.13f1 (#123)
   
 #### Fixed
 - IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
 - Enemy and Player bullet explosion FX are now replicated on clients via ClientRpcs (#113)
+- Fixed an error produced when a client disconnected once the host disconnected after the game was complete (#123)
 
 ### Bitesize Samples Repository
 
