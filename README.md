@@ -2,7 +2,7 @@
 <br><br>
 # Netcode for GameObjects Bitesize Samples
 
-[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/qa/lts-releases#:~:text=February%2014%2C%202023-,LTS%20Release,2021.3.18f1,-Released%3A%20February)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2022.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.0)
 [![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.4.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
 [![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.2.1-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.2.1)
 <br><br>
@@ -63,7 +63,7 @@ Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.c
 
 ## Requirements
 
-The bitesize samples are compatible with the latest Unity Long Term Support (LTS) editor version, currently [2021 LTS](https://unity.com/releases/2021-lts) and are supported on the Windows 10 and Mac OSX platforms. Please include standalone support for Windows/Mac in your installation.
+The bitesize samples are compatible with the latest Unity Long Term Support (LTS) editor version, currently [2022 LTS](https://unity.com/releases/editor/qa/lts-releases?version=2022.3) and are supported on the Windows 10 and Mac OSX platforms. Please include standalone support for Windows/Mac in your installation.
 
 **PLEASE NOTE:** You will also need Netcode for Game Objects to use these samples. See the [Installation Documentation](https://docs-multiplayer.unity3d.com/netcode/current/installation) to prepare your environment. You can also complete the [Get Started With NGO](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/get-started-ngo) tutorial to familiarize yourself with Netcode For Game Objects.
 <br><br>
