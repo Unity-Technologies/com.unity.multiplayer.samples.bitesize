@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -194,7 +195,7 @@ public class ShipControl : NetworkBehaviour
 
     void Fire(Vector3 direction)
     {
-        fireSound.Play();
+        PlayFireSoundClientRpc();
 
         var damage = 5;
         if (QuadDamageTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
@@ -215,6 +216,7 @@ public class ShipControl : NetworkBehaviour
         bullet.SetVelocity(velocity);
         
     }
+    
 
     void Update()
     {
@@ -498,6 +500,12 @@ public class ShipControl : NetworkBehaviour
             TakeDamage(5);
         }
     }
+    // --- ClientRPCs ---
+    [ClientRpc]
+    void PlayFireSoundClientRpc()
+    {
+        fireSound.Play();
+    }
 
     // --- ServerRPCs ---
 
@@ -537,7 +545,7 @@ public class ShipControl : NetworkBehaviour
             }
         }
     }
-
+ 
     [ServerRpc]
     public void SetNameServerRpc(string name)
     {
