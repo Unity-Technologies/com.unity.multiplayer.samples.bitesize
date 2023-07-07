@@ -1,6 +1,6 @@
 # Change log
 
-## [unreleased] - yyyy-mm-dd
+## [1.3.0] - 2023-07-07
 
 ### Dynamic Addressables Network Prefabs
 
@@ -18,6 +18,7 @@
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
 - Upgraded sample to 2022.3.0f1 LTS (#124)
+- Upgraded Samples Utilities version to v2.2.0 (#129)
 
 ### Client Driven
 
@@ -25,6 +26,7 @@
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
 - Upgraded sample to 2022.3.0f1 LTS (#124)
+- Upgraded Samples Utilities version to v2.2.0 (#129)
 
 ### Invaders
 
@@ -32,6 +34,7 @@
 - Upgrade to Netcode for GameObjects 1.4.0 (#118)
 - Upgraded sample to 2021.3.24f1 LTS (#119)
 - Upgraded sample to 2022.3.0f1 LTS (#124)
+- Upgraded Samples Utilities version to v2.2.0 (#129)
   
 #### Fixed
 - IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
