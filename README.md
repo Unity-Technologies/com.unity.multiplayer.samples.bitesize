@@ -7,7 +7,7 @@
 [![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.3.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.3.0)
 <br><br>
 
-This repository contains a collection of bitesize sample projects and games that showcase different 
+This repository contains a collection of bitesize sample projects and games that showcase different techniques
 which can help you get started with development of a multiplayer 
 project using [Netcode for GameObjects](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects).
 <br><br>
