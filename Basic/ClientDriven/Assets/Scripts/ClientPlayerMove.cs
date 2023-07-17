@@ -31,6 +31,7 @@ public class ClientPlayerMove : NetworkBehaviour
     PlayerInput m_PlayerInput;
 
     RaycastHit[] m_HitColliders = new RaycastHit[4];
+    public static event System.Action OnNetworkSpawnEvent;
 
     void Awake()
     {
