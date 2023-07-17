@@ -9,7 +9,7 @@ public class InfoPanel : NetworkBehaviour
 {
     public ClientNetworkTransform ClientNetworkTransform;
     public List<ToggleEntry> ToggleEntries;
-    private bool isSpawned = false;
+    private bool m_IsSpawned = false;
 
     void Start()
     {
@@ -28,22 +28,42 @@ public class InfoPanel : NetworkBehaviour
             Cursor.visible = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             var foundItem = ToggleEntries.Find(item => item.Toggle.name == "HalfFloat");
+            foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+        } 
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            var foundItem = ToggleEntries.Find(item => item.Toggle.name == "QuatSynch");
+            foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+        } 
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            // Only activate Quaternion Compression if Quaternion Synchronization is enabled
+            if (ClientNetworkTransform.UseQuaternionSynchronization)
+            {
+                var foundItem = ToggleEntries.Find(item => item.Toggle.name == "QuatComp");
+                foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+            }
+        } 
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            var foundItem = ToggleEntries.Find(item => item.Toggle.name == "Interpolate");
             foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
         }
     }
     private void OnClientPlayerNetworkSpawn()
     {
-        isSpawned = true;
+        m_IsSpawned = true;
         ClientPlayerMove.OnNetworkSpawnEvent -= OnClientPlayerNetworkSpawn;
         UpdateClientSideToggles();
     }
     
     public void OnUpdateHalfFloat(bool isOn)
     {
-        if (ClientNetworkTransform != null && IsServer)
+        // Question: Do I need to specify that this is a client-side function? (adding IsClient in the if statement)
+        if (ClientNetworkTransform != null)
         {
             ClientNetworkTransform.UseHalfFloatPrecision = isOn;
         }   
@@ -51,7 +71,7 @@ public class InfoPanel : NetworkBehaviour
 
     public void OnUpdateQuatSync(bool isOn)
     {
-        if (ClientNetworkTransform != null && IsServer)
+        if (ClientNetworkTransform != null)
         {
             ClientNetworkTransform.UseQuaternionSynchronization = isOn;
         }
@@ -59,7 +79,7 @@ public class InfoPanel : NetworkBehaviour
 
     public void OnUpdateQuatComp(bool isOn)
     {
-        if (ClientNetworkTransform != null && IsServer)
+        if (ClientNetworkTransform != null)
         {
             ClientNetworkTransform.UseQuaternionCompression = isOn;
         }
@@ -67,7 +87,7 @@ public class InfoPanel : NetworkBehaviour
 
     public void OnInterpolate(bool isOn)
     {
-        if (ClientNetworkTransform != null && IsServer)
+        if (ClientNetworkTransform != null)
         {
             ClientNetworkTransform.Interpolate = isOn;
         }
