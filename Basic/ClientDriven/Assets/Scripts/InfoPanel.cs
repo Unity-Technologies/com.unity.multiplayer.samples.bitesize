@@ -1,28 +1,27 @@
 using System;
 using System.Collections.Generic;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InfoPanel : NetworkBehaviour
+public class InfoPanel : MonoBehaviour
 {
-    public ClientNetworkTransform ClientNetworkTransform;
     public List<ToggleEntry> ToggleEntries;
-    private bool m_IsSpawned = false;
+    private ClientNetworkTransform ClientNetworkTransform;
 
     void Start()
     {
         ClientPlayerMove.OnNetworkSpawnEvent += OnClientPlayerNetworkSpawn;
-        foreach (ToggleEntry toggle in ToggleEntries)
-        {
-            Debug.Log("Toggle " + toggle.Toggle.name);
-        }
+    }
+
+    void Awake()
+    {
+        Debug.Assert(ToggleEntries != null && ToggleEntries.Count > 0);
     }
 
     void Update()
     {
-        if (!Input.GetKeyDown(KeyCode.M))
+        if (!Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -53,9 +52,10 @@ public class InfoPanel : NetworkBehaviour
             foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
         }
     }
-    private void OnClientPlayerNetworkSpawn()
+    private void OnClientPlayerNetworkSpawn(ClientNetworkTransform clientNetworkTransform)
     {
-        m_IsSpawned = true;
+        Debug.Assert(clientNetworkTransform != null);
+        ClientNetworkTransform = clientNetworkTransform;
         ClientPlayerMove.OnNetworkSpawnEvent -= OnClientPlayerNetworkSpawn;
         UpdateClientSideToggles();
     }
@@ -63,37 +63,25 @@ public class InfoPanel : NetworkBehaviour
     public void OnUpdateHalfFloat(bool isOn)
     {
         // Question: Do I need to specify that this is a client-side function? (adding IsClient in the if statement)
-        if (ClientNetworkTransform != null)
-        {
-            ClientNetworkTransform.UseHalfFloatPrecision = isOn;
-        }   
+        ClientNetworkTransform.UseHalfFloatPrecision = isOn;
     }
 
     public void OnUpdateQuatSync(bool isOn)
     {
-        if (ClientNetworkTransform != null)
-        {
-            ClientNetworkTransform.UseQuaternionSynchronization = isOn;
-        }
+        ClientNetworkTransform.UseQuaternionSynchronization = isOn;
     }
 
     public void OnUpdateQuatComp(bool isOn)
     {
-        if (ClientNetworkTransform != null)
-        {
-            ClientNetworkTransform.UseQuaternionCompression = isOn;
-        }
+        ClientNetworkTransform.UseQuaternionCompression = isOn;
     }
 
     public void OnInterpolate(bool isOn)
     {
-        if (ClientNetworkTransform != null)
-        {
-            ClientNetworkTransform.Interpolate = isOn;
-        }
+        ClientNetworkTransform.Interpolate = isOn;
     }
 
-    public void UpdateClientSideToggles()
+    private void UpdateClientSideToggles()
     {
         foreach (var entry in ToggleEntries)
         {
@@ -124,7 +112,7 @@ public class InfoPanel : NetworkBehaviour
             entry.Toggle.enabled = false;
         }
     }
-    private void OnGUI()
+    /*private void OnGUI()
     {
         if (IsSpawned)
         {
@@ -133,7 +121,7 @@ public class InfoPanel : NetworkBehaviour
                 UpdateClientSideToggles();
             }
         }
-    }
+    }*/
 }
 
 [Serializable]

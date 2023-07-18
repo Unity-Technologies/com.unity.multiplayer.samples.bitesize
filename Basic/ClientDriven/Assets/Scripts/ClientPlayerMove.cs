@@ -1,9 +1,11 @@
 using System;
 using Cinemachine;
 using StarterAssets;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Debug = System.Diagnostics.Debug;
 
 /// <summary>
 /// Assumes client authority
@@ -31,7 +33,7 @@ public class ClientPlayerMove : NetworkBehaviour
     PlayerInput m_PlayerInput;
 
     RaycastHit[] m_HitColliders = new RaycastHit[4];
-    public static event System.Action OnNetworkSpawnEvent;
+    public static event Action<ClientNetworkTransform> OnNetworkSpawnEvent;
 
     void Awake()
     {
@@ -72,6 +74,8 @@ public class ClientPlayerMove : NetworkBehaviour
 
         var cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         cinemachineVirtualCamera.Follow = m_CameraFollow;
+        Debug.Assert(OnNetworkSpawnEvent != null, nameof(OnNetworkSpawnEvent) + " != null");
+        OnNetworkSpawnEvent.Invoke(GetComponent<ClientNetworkTransform>());
     }
 
     void OnPickUp()
