@@ -2297,7 +2297,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Quat-Comp (Press 3)
+  m_Text: Quat-Comp (Press 4)
 --- !u!224 &7616418621730689109
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2688,15 +2688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5316e5f582b02e24bbf32a0b8ea7c3d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToggleEntries:
-  - Toggle: {fileID: 7616418622185726795}
-    ToggleEntryType: 0
-  - Toggle: {fileID: 7616418622875608915}
-    ToggleEntryType: 1
-  - Toggle: {fileID: 7616418623250672374}
-    ToggleEntryType: 2
-  - Toggle: {fileID: 7616418622632387615}
-    ToggleEntryType: 3
+  HalfFloatToggle: {fileID: 7616418622185726795}
+  InterpolateToggle: {fileID: 7616418622632387615}
+  QuatSynchToggle: {fileID: 7616418622875608915}
+  QuatCompToggle: {fileID: 7616418623250672374}
 --- !u!1 &7616418622323388912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2730,9 +2725,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7616418622185726644}
+  - {fileID: 7616418622632387608}
   - {fileID: 7616418622875608924}
   - {fileID: 7616418623250672375}
-  - {fileID: 7616418622632387608}
   m_Father: {fileID: 7616418622443165529}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2950,7 +2945,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Interpolate (Press 4)
+  m_Text: Interpolate (Press 2)
 --- !u!224 &7616418622513569438
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3782,7 +3777,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Quat-Synch (Press 2)
+  m_Text: Quat-Synch (Press 3)
 --- !u!224 &7616418623720762617
 RectTransform:
   m_ObjectHideFlags: 0
