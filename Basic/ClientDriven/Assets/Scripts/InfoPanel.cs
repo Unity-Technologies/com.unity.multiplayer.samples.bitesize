@@ -11,7 +11,7 @@ public class InfoPanel : MonoBehaviour
 
     void Start()
     {
-        ClientPlayerMove.OnNetworkSpawnEvent += OnClientPlayerNetworkSpawn;
+        LocalPlayer.OnNetworkSpawnEvent += OnClientPlayerNetworkSpawn;
     }
 
     void Awake()
@@ -56,7 +56,7 @@ public class InfoPanel : MonoBehaviour
     {
         Debug.Assert(clientNetworkTransform != null);
         ClientNetworkTransform = clientNetworkTransform;
-        ClientPlayerMove.OnNetworkSpawnEvent -= OnClientPlayerNetworkSpawn;
+        LocalPlayer.OnNetworkSpawnEvent -= OnClientPlayerNetworkSpawn;
         UpdateClientSideToggles();
     }
     
