@@ -29,27 +29,27 @@ public class InfoPanel : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            var foundItem = ToggleEntries.Find(item => item.Toggle.name == "HalfFloat");
-            foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+            var toggleEntry = ToggleEntries.Find(entry => entry.Toggle.name == "HalfFloat");
+            toggleEntry.Toggle.isOn = !toggleEntry.Toggle.isOn;
         } 
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            var foundItem = ToggleEntries.Find(item => item.Toggle.name == "QuatSynch");
-            foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+            var toggleEntry = ToggleEntries.Find(entry => entry.Toggle.name == "QuatSynch");
+            toggleEntry.Toggle.isOn = !toggleEntry.Toggle.isOn;
         } 
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             // Only activate Quaternion Compression if Quaternion Synchronization is enabled
             if (ClientNetworkTransform.UseQuaternionSynchronization)
             {
-                var foundItem = ToggleEntries.Find(item => item.Toggle.name == "QuatComp");
-                foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+                var toggleEntry = ToggleEntries.Find(entry => entry.Toggle.name == "QuatComp");
+                toggleEntry.Toggle.isOn = !toggleEntry.Toggle.isOn;
             }
         } 
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            var foundItem = ToggleEntries.Find(item => item.Toggle.name == "Interpolate");
-            foundItem.Toggle.isOn = !foundItem.Toggle.isOn;
+            var toggleEntry = ToggleEntries.Find(entry => entry.Toggle.name == "Interpolate");
+            toggleEntry.Toggle.isOn = !toggleEntry.Toggle.isOn;
         }
     }
     private void OnClientPlayerNetworkSpawn(ClientNetworkTransform clientNetworkTransform)
@@ -85,7 +85,6 @@ public class InfoPanel : MonoBehaviour
     {
         foreach (var entry in ToggleEntries)
         {
-            entry.Toggle.enabled = true;
             switch (entry.ToggleEntryType)
             {
                 case ToggleEntry.ToggleEntryTypes.HalfFloat:
@@ -109,19 +108,8 @@ public class InfoPanel : MonoBehaviour
                         break;
                     }
             }
-            entry.Toggle.enabled = false;
         }
     }
-    /*private void OnGUI()
-    {
-        if (IsSpawned)
-        {
-            if (!ClientNetworkTransform.CanCommitToTransform)
-            {
-                UpdateClientSideToggles();
-            }
-        }
-    }*/
 }
 
 [Serializable]
