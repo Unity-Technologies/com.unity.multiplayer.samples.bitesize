@@ -267,16 +267,24 @@ namespace StarterAssets
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
-            // move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-
-            // update animator if using character
+            // update animator if using character *before* determining if we need to move
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
+
+            // Check to see if we actually need to move the character in order to allow other bodies
+            // influence the player (i.e. moving platforms etc)
+            if (inputDirection == Vector3.zero && (_verticalVelocity == 0.0f || _controller.isGrounded))
+            {
+                return;
+            }
+
+            // otherwise, we have motion and need to move the player
+            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+
         }
 
         private void JumpAndGravity()
