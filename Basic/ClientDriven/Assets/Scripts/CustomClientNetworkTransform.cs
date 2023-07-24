@@ -8,7 +8,7 @@ public class CustomClientNetworkTransform : NetworkTransform
     private PlatformVisualMover m_CurrentPlatform;
     private PlatformMover m_CurrentPlatformMover;
     private ThirdPersonController m_ThirdPersonController;
-    private Transform m_OriginalParent;    
+    private Transform m_OriginalParent;
 
     private NetworkVariable<NetworkBehaviourReference> m_AssignedPlatform = new NetworkVariable<NetworkBehaviourReference>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     // This is really to just handle late joining players where everything isn't spawned and the platform parenting
@@ -27,7 +27,7 @@ public class CustomClientNetworkTransform : NetworkTransform
     {
         return false;
     }
-    
+
     public override void OnNetworkSpawn()
     {
         m_ThirdPersonController = GetComponent<ThirdPersonController>();
@@ -46,7 +46,19 @@ public class CustomClientNetworkTransform : NetworkTransform
         }
     }
 
-    private void UpdatePlayerPlatformParenting()
+    /// <summary>
+    /// Updates the RootPlayer's parent based on its parent
+    /// </summary>
+    /// <remarks>
+    /// There is a known issue with parenting in NGO v1.5.2 and lower versions
+    /// where you could potentially get mixed world space/local space positions 
+    /// depending upon the spawn order of the NetworkObjects.
+    /// This will be resolved in NGO v1.6.0. and you will not need that extra 
+    /// worldPoitionStays parameter for late joining client synchronization.
+    /// Network
+    /// </remarks>
+    /// <param name="worldPoitionStays"></param>
+    private void UpdatePlayerPlatformParenting(bool worldPoitionStays = true)
     {
         var platformMover = (PlatformMover)null;
         m_AssignedPlatform.Value.TryGet(out platformMover);
@@ -54,7 +66,7 @@ public class CustomClientNetworkTransform : NetworkTransform
         {
             m_CurrentPlatformMover = platformMover;
             m_CurrentPlatform = platformMover.PlatformVisualMover;
-            transform.SetParent(m_CurrentPlatform.transform, true);
+            transform.SetParent(m_CurrentPlatform.transform, worldPoitionStays);
         }
         else if (transform.parent != m_OriginalParent && platformMover == null)
         {
@@ -63,7 +75,7 @@ public class CustomClientNetworkTransform : NetworkTransform
             transform.SetParent(m_OriginalParent, true);
         }
     }
-    
+
     private void NotifyPlatformParentChanged(NetworkBehaviourReference previous, NetworkBehaviourReference next)
     {
         UpdatePlayerPlatformParenting();
@@ -77,17 +89,20 @@ public class CustomClientNetworkTransform : NetworkTransform
             // A quick handler for late joining players 
             if (IsSpawned && m_LateJoinedClientPlatformSynchronize)
             {
-                UpdatePlayerPlatformParenting();
+                // Note: In NGO v1.5.2 and below use this:
+                UpdatePlayerPlatformParenting(false);
+                // In NGO v1.6.0 use this:
+                // UpdatePlayerPlatformParenting();
                 if (m_IsAssignedPlatform.Value && transform.parent != m_OriginalParent)
                 {
                     m_LateJoinedClientPlatformSynchronize = false;
                 }
-            }            
+            }
             return;
         }
 
-        if (m_CurrentPlatformMover != null && m_ThirdPersonController != null) 
-        {           
+        if (m_CurrentPlatformMover != null && m_ThirdPersonController != null)
+        {
             m_ThirdPersonController.WorldVelocity = (m_TickFrequency * m_CurrentPlatformMover.PlatformSpeed) * m_CurrentPlatformMover.MovementVector.Value;
         }
         else if (m_ThirdPersonController != null)
@@ -99,12 +114,10 @@ public class CustomClientNetworkTransform : NetworkTransform
         {
             return;
         }
-
-
     }
 
     private Transform GetMoverTransform<T>(Collider other) where T : MonoBehaviour
-    {        
+    {
         var mover = other.gameObject.GetComponent<T>();
         if (mover == null)
         {
@@ -123,26 +136,6 @@ public class CustomClientNetworkTransform : NetworkTransform
         }
         return null;
     }
-
-
-    public override void OnNetworkObjectParentChanged(NetworkObject parentNetworkObject)
-    {
-        if (!CanCommitToTransform)
-        {
-            return;
-        }
-
-        if (parentNetworkObject != null)
-        {
-            InLocalSpace = true;
-        }
-        else if (parentNetworkObject == null)
-        {
-            InLocalSpace = false;
-        }
-        base.OnNetworkObjectParentChanged(parentNetworkObject);
-    }
-
 
     private void HandleEnterVisualMover(Collider other)
     {
@@ -166,7 +159,7 @@ public class CustomClientNetworkTransform : NetworkTransform
     private void HandleEnterMover(Collider other)
     {
         // Exit early for Non-authority
-        if (!CanCommitToTransform) 
+        if (!CanCommitToTransform)
         {
             return;
         }
@@ -192,8 +185,8 @@ public class CustomClientNetworkTransform : NetworkTransform
 
     private void OnTriggerEnter(Collider other)
     {
-       HandleEnterVisualMover(other);        
-       HandleEnterMover(other);
+        HandleEnterVisualMover(other);
+        HandleEnterMover(other);
     }
 
     private void HandleExitVisualMover(Collider other)
@@ -237,14 +230,14 @@ public class CustomClientNetworkTransform : NetworkTransform
         if (transform.parent != m_OriginalParent)
         {
             transform.SetParent(m_OriginalParent, true);
-            InLocalSpace = false;                
+            InLocalSpace = false;
             m_CurrentPlatformMover = null;
             m_AssignedPlatform.Value = new NetworkBehaviourReference();
-            m_IsAssignedPlatform.Value = false;            
+            m_IsAssignedPlatform.Value = false;
         }
     }
 
-    private void OnTriggerExit(Collider other) 
+    private void OnTriggerExit(Collider other)
     {
         HandleExitVisualMover(other);
         HandleExitMover(other);
