@@ -49,16 +49,8 @@ public class CustomClientNetworkTransform : NetworkTransform
     /// <summary>
     /// Updates the RootPlayer's parent based on its parent
     /// </summary>
-    /// <remarks>
-    /// There is a known issue with parenting in NGO v1.5.2 and lower versions
-    /// where you could potentially get mixed world space/local space positions 
-    /// depending upon the spawn order of the NetworkObjects.
-    /// This will be resolved in NGO v1.6.0. and you will not need that extra 
-    /// worldPoitionStays parameter for late joining client synchronization.
-    /// Network
-    /// </remarks>
     /// <param name="worldPoitionStays"></param>
-    private void UpdatePlayerPlatformParenting(bool worldPoitionStays = true)
+    private void UpdatePlayerPlatformParenting()
     {
         var platformMover = (PlatformMover)null;
         m_AssignedPlatform.Value.TryGet(out platformMover);
@@ -89,10 +81,7 @@ public class CustomClientNetworkTransform : NetworkTransform
             // A quick handler for late joining players 
             if (IsSpawned && m_LateJoinedClientPlatformSynchronize)
             {
-                // Note: In NGO v1.5.2 and below use this:
-                UpdatePlayerPlatformParenting(false);
-                // In NGO v1.6.0 use this:
-                // UpdatePlayerPlatformParenting();
+                UpdatePlayerPlatformParenting();
                 if (m_IsAssignedPlatform.Value && transform.parent != m_OriginalParent)
                 {
                     m_LateJoinedClientPlatformSynchronize = false;
