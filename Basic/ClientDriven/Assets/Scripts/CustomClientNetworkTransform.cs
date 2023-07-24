@@ -1,96 +1,98 @@
-using System.Collections;
-using System.Collections.Generic;
+using StarterAssets;
 using Unity.Netcode;
 using Unity.Netcode.Components;
-using UnityEditor;
 using UnityEngine;
-
-#if UNITY_EDITOR
-/// <summary>
-/// The <see cref="CustomClientNetworkTransformEditor"/> for <see cref="CustomClientNetworkTransform"/>
-/// </summary>
-[CustomEditor(typeof(CustomClientNetworkTransform), true)]
-public class CustomClientNetworkTransformEditor : UnityEditor.Editor
-{
-
-}
-#endif
 
 public class CustomClientNetworkTransform : NetworkTransform
 {
-    public bool UseVisualMover;
-    public bool ParentUnderVisualMover;
-
-
     private PlatformVisualMover m_CurrentPlatform;
-
-    private Vector3 m_LastPosition;
-
-    private Transform m_OriginalParent;
+    private PlatformMover m_CurrentPlatformMover;
+    private ThirdPersonController m_ThirdPersonController;
+    private Transform m_OriginalParent;    
 
     private NetworkVariable<NetworkBehaviourReference> m_AssignedPlatform = new NetworkVariable<NetworkBehaviourReference>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
+    // This is really to just handle late joining players where everything isn't spawned and the platform parenting
+    // does not happen during OnNetworkSpawn (since it is possible that NetworkObjects are still spawning for the late joining player)
+    private NetworkVariable<bool> m_IsAssignedPlatform = new NetworkVariable<bool>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private bool m_LateJoinedClientPlatformSynchronize;
+    private float m_TickFrequency;
 
     protected override void Awake()
     {
-        if (!UseVisualMover)
-        {
-            ParentUnderVisualMover = false;
-        }
         base.Awake();
-        if ((UseVisualMover && ParentUnderVisualMover) || !UseVisualMover)
-        {
-            m_OriginalParent = transform.parent;
-        }        
+        m_OriginalParent = transform.parent;
     }
 
     protected override bool OnIsServerAuthoritative()
     {
         return false;
     }
-
+    
     public override void OnNetworkSpawn()
     {
+        m_ThirdPersonController = GetComponent<ThirdPersonController>();
+        m_TickFrequency = 1.0f / NetworkManager.NetworkConfig.TickRate;
         base.OnNetworkSpawn();
 
         if (!CanCommitToTransform)
         {
-            var capsuleCollider = GetComponentInChildren<CapsuleCollider>();
-            capsuleCollider.isTrigger = true;
             m_AssignedPlatform.OnValueChanged += NotifyPlatformParentChanged;
-        }
+            UpdatePlayerPlatformParenting();
 
+            if (m_IsAssignedPlatform.Value && transform.parent == m_OriginalParent)
+            {
+                m_LateJoinedClientPlatformSynchronize = true;
+            }
+        }
     }
 
+    private void UpdatePlayerPlatformParenting()
+    {
+        var platformMover = (PlatformMover)null;
+        m_AssignedPlatform.Value.TryGet(out platformMover);
+        if (transform.parent == m_OriginalParent && platformMover != null)
+        {
+            m_CurrentPlatformMover = platformMover;
+            m_CurrentPlatform = platformMover.PlatformVisualMover;
+            transform.SetParent(m_CurrentPlatform.transform, true);
+        }
+        else if (transform.parent != m_OriginalParent && platformMover == null)
+        {
+            m_CurrentPlatformMover = null;
+            m_CurrentPlatform = null;
+            transform.SetParent(m_OriginalParent, true);
+        }
+    }
+    
     private void NotifyPlatformParentChanged(NetworkBehaviourReference previous, NetworkBehaviourReference next)
     {
-        if (transform.parent == m_OriginalParent && next.TryGet(out PlatformMover platformMover))
-        {
-            transform.SetParent(platformMover.PlatformVisualMover.transform, false);
-
-            //NotifyPlatformParentChangedClientRpc(next);
-        }
+        UpdatePlayerPlatformParenting();
     }
-
-    //[ClientRpc]
-    //private void NotifyPlatformParentChangedClientRpc(NetworkBehaviourReference next)
-    //{
-    //    if (!IsServer && transform.parent == m_OriginalParent && next.TryGet(out PlatformMover platformMover))
-    //    {
-    //        transform.SetParent(platformMover.PlatformVisualMover.transform, false);
-    //        if (IsOwner)
-    //        {
-    //            InLocalSpace = true;
-    //        }
-    //    }
-    //}
 
     protected override void Update()
     {
         base.Update();
-        if (!IsSpawned && !CanCommitToTransform)
+        if (!IsSpawned || !CanCommitToTransform)
         {
+            // A quick handler for late joining players 
+            if (IsSpawned && m_LateJoinedClientPlatformSynchronize)
+            {
+                UpdatePlayerPlatformParenting();
+                if (m_IsAssignedPlatform.Value && transform.parent != m_OriginalParent)
+                {
+                    m_LateJoinedClientPlatformSynchronize = false;
+                }
+            }            
             return;
+        }
+
+        if (m_CurrentPlatformMover != null && m_ThirdPersonController != null) 
+        {           
+            m_ThirdPersonController.WorldVelocity = (m_TickFrequency * m_CurrentPlatformMover.PlatformSpeed) * m_CurrentPlatformMover.MovementVector.Value;
+        }
+        else if (m_ThirdPersonController != null)
+        {
+            m_ThirdPersonController.WorldVelocity = Vector3.zero;
         }
 
         if (m_CurrentPlatform == null)
@@ -98,26 +100,7 @@ public class CustomClientNetworkTransform : NetworkTransform
             return;
         }
 
-    }
 
-    private void LateUpdate()
-    {
-        if (!IsSpawned || !CanCommitToTransform || !UseVisualMover)
-        {
-            return;
-        }
-
-        if (UseVisualMover && !ParentUnderVisualMover)
-        {
-            if (m_CurrentPlatform == null)
-            {
-                return;
-            }
-
-            var delta = m_CurrentPlatform.transform.position - m_LastPosition;
-            transform.position = transform.position + delta;
-            m_LastPosition = m_CurrentPlatform.transform.position;
-        }
     }
 
     private Transform GetMoverTransform<T>(Collider other) where T : MonoBehaviour
@@ -144,7 +127,7 @@ public class CustomClientNetworkTransform : NetworkTransform
 
     public override void OnNetworkObjectParentChanged(NetworkObject parentNetworkObject)
     {
-        if (!IsOwner)
+        if (!CanCommitToTransform)
         {
             return;
         }
@@ -152,7 +135,6 @@ public class CustomClientNetworkTransform : NetworkTransform
         if (parentNetworkObject != null)
         {
             InLocalSpace = true;
-            m_LastPosition = parentNetworkObject.transform.position;
         }
         else if (parentNetworkObject == null)
         {
@@ -164,7 +146,7 @@ public class CustomClientNetworkTransform : NetworkTransform
 
     private void HandleEnterVisualMover(Collider other)
     {
-        // Exit early for Non-owners
+        // Exit early for Non-authority
         if (!CanCommitToTransform)
         {
             return;
@@ -178,18 +160,17 @@ public class CustomClientNetworkTransform : NetworkTransform
             return;
         }
         m_CurrentPlatform = platformVisualMover;
-
-        m_LastPosition = m_CurrentPlatform.transform.position;
         Debug.Log($"Entered Plat: {platformVisualMover.name}");
     }
 
     private void HandleEnterMover(Collider other)
     {
-        if (!IsServer && (UseVisualMover || ParentUnderVisualMover) && !(UseVisualMover && ParentUnderVisualMover))
+        // Exit early for Non-authority
+        if (!CanCommitToTransform) 
         {
             return;
         }
-        var moverTransform = UseVisualMover ? GetMoverTransform<PlatformVisualMover>(other) : GetMoverTransform<PlatformMover>(other);
+        var moverTransform = GetMoverTransform<PlatformVisualMover>(other);
         if (moverTransform == null)
         {
             return;
@@ -197,89 +178,55 @@ public class CustomClientNetworkTransform : NetworkTransform
 
         Debug.Log($"[Client-{NetworkObject.OwnerClientId}] Entered Plat: {moverTransform.gameObject.name}");
 
-        if (transform.parent == m_OriginalParent)
+        if (transform.parent == m_OriginalParent && m_CurrentPlatform != null)
         {
-            if (!UseVisualMover)
-            {
-                var networkObject = moverTransform.GetComponent<NetworkObject>();
-                if (networkObject == null)
-                {
-                    return;
-                }
-                if (!UseVisualMover && !NetworkObject.TrySetParent(networkObject, true))
-                {
-                    Debug.Log($"[Client-{NetworkManager.LocalClientId}] Failed to parent to: {moverTransform.gameObject.name}");
-                    return;
-                }
-            }
-            else if (UseVisualMover && m_CurrentPlatform != null) 
-            {
-                transform.SetParent(m_CurrentPlatform.transform, true);
-                InLocalSpace = true;
-                if (IsOwner)
-                {
-                    var bRef = new NetworkBehaviourReference(moverTransform.GetComponent<PlatformVisualMover>().PlatformMover);
-                    //if (IsServer)
-                    //{
-                    //    NotifyPlatformParentChangedClientRpc(bRef);
-                    //}
-                    //else
-                    //{
-                    //    m_AssignedPlatform.Value = new NetworkBehaviourReference(moverTransform.GetComponent<PlatformVisualMover>().PlatformMover);
-                    //}
-                    m_AssignedPlatform.Value = bRef;
-                    //SetState(transform.localPosition, null, null, false);
-                }
-            }
+            transform.SetParent(m_CurrentPlatform.transform, true);
+            InLocalSpace = true;
+            m_CurrentPlatformMover = moverTransform.GetComponent<PlatformVisualMover>().PlatformMover;
+            var bRef = new NetworkBehaviourReference(m_CurrentPlatformMover);
+            m_AssignedPlatform.Value = bRef;
+            m_IsAssignedPlatform.Value = true;
         }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (UseVisualMover)
-        {
-            HandleEnterVisualMover(other);
-        }
-        if (ParentUnderVisualMover)
-        {
-            HandleEnterMover(other);
-        }
+       HandleEnterVisualMover(other);        
+       HandleEnterMover(other);
     }
 
     private void HandleExitVisualMover(Collider other)
     {
-        // Exit early for Non-owners
+        // Exit early for Non-authority
         if (!CanCommitToTransform)
         {
             return;
         }
 
-        if (UseVisualMover)
+        var platformVisualMover = other.transform.parent.GetComponent<PlatformVisualMover>();
+        // Just quick POC, exit early if the thing triggered doesn't have a PlatformMover component
+        // You could use tags to more easily determine collider interest 
+        if (platformVisualMover == null)
         {
-            var platformVisualMover = other.transform.parent.GetComponent<PlatformVisualMover>();
-            // Just quick POC, exit early if the thing triggered doesn't have a PlatformMover component
-            // You could use tags to more easily determine collider interest 
-            if (platformVisualMover == null)
-            {
-                return;
-            }
+            return;
+        }
 
-            if (platformVisualMover == m_CurrentPlatform)
-            {
-                m_CurrentPlatform = null;
-            }
+        if (platformVisualMover == m_CurrentPlatform)
+        {
+            m_CurrentPlatform = null;
         }
         Debug.Log($"Exited Platform!");
     }
 
     private void HandleExitMover(Collider other)
     {
-        if (!IsServer && (UseVisualMover || ParentUnderVisualMover) && !(UseVisualMover && ParentUnderVisualMover))
+        // Exit early for Non-authority
+        if (!CanCommitToTransform)
         {
             return;
         }
-        var moverTransform = UseVisualMover ? GetMoverTransform<PlatformVisualMover>(other) : GetMoverTransform<PlatformMover>(other);
+        var moverTransform = GetMoverTransform<PlatformVisualMover>(other);
         if (moverTransform == null)
         {
             return;
@@ -289,42 +236,18 @@ public class CustomClientNetworkTransform : NetworkTransform
 
         if (transform.parent != m_OriginalParent)
         {
-            if (!UseVisualMover)
-            {
-                var networkObject = moverTransform.GetComponent<NetworkObject>();
-                if (networkObject == null)
-                {
-                    return;
-                }
-                if (!UseVisualMover && !NetworkObject.TryRemoveParent(true))
-                {
-                    Debug.Log($"[Client-{NetworkManager.LocalClientId}] Failed to unparent from: {moverTransform.gameObject.name}");
-                    return;
-                }
-            }
-            else if (UseVisualMover)
-            {
-                transform.SetParent(m_OriginalParent, false);
-                InLocalSpace = false;
-                if (IsOwner)
-                {
-                    m_AssignedPlatform.Value = new NetworkBehaviourReference();
-                }
-            }
+            transform.SetParent(m_OriginalParent, true);
+            InLocalSpace = false;                
+            m_CurrentPlatformMover = null;
+            m_AssignedPlatform.Value = new NetworkBehaviourReference();
+            m_IsAssignedPlatform.Value = false;            
         }
     }
 
     private void OnTriggerExit(Collider other) 
     {
-        if (UseVisualMover)
-        {
-            HandleExitVisualMover(other);
-        }
-
-        if (ParentUnderVisualMover)
-        {
-            HandleExitMover(other);
-        }
+        HandleExitVisualMover(other);
+        HandleExitMover(other);
     }
 
 }

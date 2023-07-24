@@ -156,13 +156,14 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            JumpAndGravity();
-            GroundedCheck();
-            Move();
+
         }
 
         private void LateUpdate()
         {
+            JumpAndGravity();
+            GroundedCheck();
+            Move();
             CameraRotation();
         }
 
@@ -276,16 +277,25 @@ namespace StarterAssets
 
             // Check to see if we actually need to move the character in order to allow other bodies
             // influence the player (i.e. moving platforms etc)
-            if (inputDirection == Vector3.zero && (_verticalVelocity == 0.0f || _controller.isGrounded))
+            if (inputDirection == Vector3.zero && _verticalVelocity < 0.0f && _controller.isGrounded)
             {
                 return;
             }
+            var movementDirectionAndMagnitude = targetDirection.normalized * _speed;
+            if (WorldVelocity != Vector3.zero) 
+            {
+                movementDirectionAndMagnitude += WorldVelocity;
+            }
+
+            movementDirectionAndMagnitude *= Time.deltaTime;
 
             // otherwise, we have motion and need to move the player
-            _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-
+            _controller.Move(movementDirectionAndMagnitude + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            //_controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+            //                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
         }
+
+        public Vector3 WorldVelocity;
 
         private void JumpAndGravity()
         {
