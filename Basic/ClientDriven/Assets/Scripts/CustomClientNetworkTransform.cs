@@ -58,7 +58,7 @@ public class CustomClientNetworkTransform : NetworkTransform
         {
             m_CurrentPlatformMover = platformMover;
             m_CurrentPlatform = platformMover.PlatformVisualMover;
-            transform.SetParent(m_CurrentPlatform.transform, worldPoitionStays);
+            transform.SetParent(m_CurrentPlatform.transform, true);
         }
         else if (transform.parent != m_OriginalParent && platformMover == null)
         {
