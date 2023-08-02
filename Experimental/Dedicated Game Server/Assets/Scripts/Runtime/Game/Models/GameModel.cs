@@ -23,7 +23,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         void Awake()
         {
-            if (CustomNetworkManager.Singleton.IsServer)
+            if (NetworkManager.Singleton.IsServer)
             {
                 matchDataSynchronizer = Instantiate(matchDataSnchronizerPrefab);
                 matchDataSynchronizer.GetComponent<NetworkObject>().Spawn();

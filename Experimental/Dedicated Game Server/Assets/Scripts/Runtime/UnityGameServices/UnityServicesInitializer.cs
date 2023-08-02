@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Core;
+using Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle;
 using UnityEngine;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
@@ -34,8 +35,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         IEnumerator InitializeOnConfigurationLoaded()
         {
-            yield return new WaitUntil(() => CustomNetworkManager.Configuration != null);
-            OnConfigurationLoaded(CustomNetworkManager.Configuration);
+            yield return new WaitUntil(() => ApplicationController.Configuration != null);
+            OnConfigurationLoaded(ApplicationController.Configuration);
         }
 
         async void OnConfigurationLoaded(ConfigurationManager configuration)

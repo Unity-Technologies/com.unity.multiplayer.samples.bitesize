@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle;
 using UnityEngine;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
@@ -31,7 +32,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         void OnClientMatchEndAcknowledged(MatchEndAcknowledgedEvent evt)
         {
-            CustomNetworkManager.Singleton.OnClientDoPostMatchCleanupAndReturnToMetagame();
+            ApplicationController.Singleton.OnClientDoPostMatchCleanupAndReturnToMetagame();
         }
     }
 }

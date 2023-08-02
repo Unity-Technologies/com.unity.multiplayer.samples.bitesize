@@ -17,7 +17,6 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         const string k_PlayerConfigFolder = "Player"; //todo: to be used for player-specific configuration files (I.E: game settings)
         const string k_PlayerConfigFileName = "settings.json";
         static readonly string s_PlayerConfigFilePath = Path.Combine(k_PlayerConfigFolder, k_PlayerConfigFileName);
-        public const string k_ModeHost = "StartAsHost";
         public const string k_ModeServer = "StartAsServer";
         public const string k_ModeClient = "StartAsClient";
         public const string k_MaxPlayers = "MaxPlayers";

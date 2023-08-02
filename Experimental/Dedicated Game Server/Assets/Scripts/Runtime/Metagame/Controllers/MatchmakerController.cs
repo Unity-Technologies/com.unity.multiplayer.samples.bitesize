@@ -1,5 +1,6 @@
 using System;
 using Unity.Services.Matchmaker.Models;
+using Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement;
 using UnityEngine;
 using static Unity.Services.Matchmaker.Models.MultiplayAssignment;
 
@@ -7,6 +8,10 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 {
     internal class MatchmakerController : Controller<MetagameApplication>
     {
+
+        [SerializeField]
+        ConnectionManager m_ConnectionManager;
+        
         MatchmakerView View => App.View.Matchmaker;
 
         void Awake()
@@ -34,7 +39,6 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         void OnEnterMatchmakerQueue(EnterMatchmakerQueueEvent evt)
         {
             View.Show();
-            CustomNetworkManager.Singleton.OnEnteredMatchmaker();
             UnityServicesInitializer.Instance.Matchmaker.FindMatch(evt.QueueName, OnMatchSearchCompleted, View.UpdateTimer);
         }
 
@@ -51,8 +55,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             {
                 case StatusOptions.Found:
                     Debug.Log("Match found!");
-                    CustomNetworkManager.s_AssignmentForCurrentGame = assignment;
-                    CustomNetworkManager.Singleton.PerformActionFromSetup(true);
+                    //todo investigate why assignment.Port is of type Nullable<int>
+                    m_ConnectionManager.StartClient(assignment.Ip, assignment.Port.Value);
                     break;
                 case StatusOptions.Failed:
                     error = $"Failed to get ticket status. See logged exception for more details: {assignment.Message}";

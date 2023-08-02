@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle;
 using UnityEngine;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
@@ -16,7 +17,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             Debug.Log("[LC] Preparing game [Showing loading screen]");
             if (!IsServer) //the server already does this before asking clients to do the same
             {
-                CustomNetworkManager.Singleton.InstantiateGameApplication();
+                ApplicationController.Singleton.InstantiateGameApplication();
             }
             OnClientReadyToStart();
         }
@@ -31,7 +32,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         internal void OnServerNotifiedOfClientReadinessServerRpc()
         {
             Debug.Log("[S] I'm ready");
-            CustomNetworkManager.Singleton.OnServerPlayerIsReady(this);
+            ApplicationController.Singleton.OnServerPlayerIsReady(this);
         }
 
         [ClientRpc]

@@ -53,7 +53,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             }
             App.OnReturnToMetagameAfterMatch -= OnReturnToMetagameAfterMatch;
             App.OnReturnToMetagameAfterMatch += OnReturnToMetagameAfterMatch;
-            CustomNetworkManager.Singleton.ReturnToMetagame = App.CallOnReturnToMetagameAfterMatch;
+            //CustomNetworkManager.Singleton.ReturnToMetagame = App.CallOnReturnToMetagameAfterMatch;
         }
 
         void OnReturnToMetagameAfterMatch()

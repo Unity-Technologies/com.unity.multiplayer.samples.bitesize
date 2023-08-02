@@ -41,10 +41,6 @@ namespace Unity.Template.Multiplayer.NGO.Editor
         }
         ConfigurationManager configuration;
 
-        /// <summary>
-        /// Will the game start as Host when autoconnecting?
-        /// </summary>
-        public bool HostSelf { get { return Configuration.GetBool(ConfigurationManager.k_ModeHost); } set { Configuration.Set(ConfigurationManager.k_ModeHost, value); } }
         bool ServerOnly { get { return Configuration.GetBool(ConfigurationManager.k_ModeServer); } set { Configuration.Set(ConfigurationManager.k_ModeServer, value); } }
         bool AutoClient { get { return Configuration.GetBool(ConfigurationManager.k_ModeClient); } set { Configuration.Set(ConfigurationManager.k_ModeClient, value); } }
 
@@ -93,10 +89,6 @@ namespace Unity.Template.Multiplayer.NGO.Editor
             else if (AutoClient)
             {
                 m_NetworkMode = NetworkMode.Client;
-            }
-            else //host
-            {
-                m_NetworkMode = NetworkMode.Host;
             }
         }
 
@@ -179,7 +171,7 @@ namespace Unity.Template.Multiplayer.NGO.Editor
 
             if (newIP != defaultIP)
             {
-                if (!NetworkEndPoint.TryParse(newIP, ServerPort, out NetworkEndPoint networkEndPoint))
+                if (!NetworkEndpoint.TryParse(newIP, ServerPort, out var networkEndpoint))
                 {
                     Debug.LogError($"{newIP} is not a valid IPv4 address!");
                     return;
@@ -227,17 +219,14 @@ namespace Unity.Template.Multiplayer.NGO.Editor
                 case NetworkMode.Server:
                     ServerOnly = true;
                     AutoClient = false;
-                    HostSelf = false;
                     break;
                 case NetworkMode.Client:
                     ServerOnly = false;
                     AutoClient = true;
-                    HostSelf = false;
                     break;
                 case NetworkMode.Host:
                     ServerOnly = false;
                     AutoClient = false;
-                    HostSelf = true;
                     break;
             }
 

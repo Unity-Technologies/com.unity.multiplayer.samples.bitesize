@@ -87,7 +87,6 @@ namespace Unity.Template.Multiplayer.NGO.Editor
         {
             var boostrapperWindow = EditorWindow.GetWindow<BootstrapperWindow>();
             return boostrapperWindow.AutoConnectOnStartup
-                && boostrapperWindow.HostSelf
                 && boostrapperWindow.MaxPlayers == requiredPlayers;
         }
     }
