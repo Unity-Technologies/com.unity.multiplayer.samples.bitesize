@@ -31,7 +31,7 @@ namespace Unity.Template.Multiplayer.NGO.Editor
             AssetDatabase.SaveAssets();
             ApplyChangesToMetagameApplication();
 
-            string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            string definesString = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup));
             List<string> allDefines = definesString.Split(';').ToList();
             if (k_BuildOnlySymbols.Length > 0)
             {
@@ -42,13 +42,13 @@ namespace Unity.Template.Multiplayer.NGO.Editor
                 allDefines.RemoveAll(def => k_EditorOnlySymbols.Contains(def));
             }
             Debug.Log($"Symbols used for build: {string.Join(";", allDefines.ToArray())}");
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", allDefines.ToArray()));
+            PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup), string.Join(";", allDefines.ToArray()));
         }
 
         public void OnPostprocessBuild(BuildReport report)
         {
             RevertChangesToMetagameApplication();
-            string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            string definesString = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup));
             List<string> allDefines = definesString.Split(';').ToList();
 
             if (k_BuildOnlySymbols.Length > 0)
@@ -60,7 +60,7 @@ namespace Unity.Template.Multiplayer.NGO.Editor
                 allDefines.AddRange(k_EditorOnlySymbols.Except(allDefines));
             }
             Debug.Log($"Symbols restored after build: {string.Join(";", allDefines.ToArray())}");
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", allDefines.ToArray()));
+            PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup), string.Join(";", allDefines.ToArray()));
             AssetDatabase.SaveAssets();
 #if !CLOUD_BUILD_WINDOWS && !CLOUD_BUILD_LINUX && !CLOUD_BUILD_MAX
             Debug.Log($"Manually Doing PostExport: {report.summary.outputPath}");

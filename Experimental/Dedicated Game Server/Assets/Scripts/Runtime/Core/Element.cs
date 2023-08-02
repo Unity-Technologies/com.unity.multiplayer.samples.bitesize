@@ -33,7 +33,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         /// <param name="p_var"></param>
         /// <param name="searchGlobally"></param>
         /// <returns></returns>
-        public T Find<T>(T p_var, bool searchGlobally = false) where T : Object => p_var == null ? (searchGlobally ? GameObject.FindObjectOfType<T>()
+        public T Find<T>(T p_var, bool searchGlobally = false) where T : Object => p_var == null ? (searchGlobally ? GameObject.FindFirstObjectByType<T>()
                                                                                                  : transform.GetComponentInChildren<T>(true)) : p_var;
         public T FindInParent<T>(T p_var) where T : Object => p_var == null ? transform.GetComponentInParent<T>()
                                                                             : p_var;

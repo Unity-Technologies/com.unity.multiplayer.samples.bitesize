@@ -5,6 +5,7 @@ using UnityEditor.PackageManager;
 using UnityEditor;
 using Unity.EditorCoroutines.Editor;
 using System.Collections.Generic;
+using UnityEditor.Build;
 
 namespace Unity.Template.Multiplayer.NGO.Editor
 {
@@ -36,7 +37,7 @@ namespace Unity.Template.Multiplayer.NGO.Editor
             }
             var hasParrelSync = pack.Result.Any(q => q.name == "com.veriorpies.parrelsync");
 
-            string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            string definesString = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup));
             List<string> allDefines = definesString.Split(';').ToList();
             if (allDefines.Contains(k_HasParrelSyncDefine))
             {
@@ -54,7 +55,7 @@ namespace Unity.Template.Multiplayer.NGO.Editor
                 }
                 allDefines.Add(k_HasParrelSyncDefine);
             }
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", allDefines.ToArray()));
+            PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup), string.Join(";", allDefines.ToArray()));
             AssetDatabase.SaveAssets();
         }
     }
