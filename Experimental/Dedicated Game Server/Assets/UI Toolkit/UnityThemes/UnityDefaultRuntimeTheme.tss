@@ -1,0 +1,112 @@
+@import url("unity-theme://default");
+
+#mainMenu {
+	flex-grow: 1;
+}
+
+#mainMenu > #titleLabel {
+	-unity-text-align: upper-center;
+	font-size: 68px;
+	-unity-font-style: bold;
+	top: 10%;
+	color: rgb(255, 255, 255);
+}
+
+#mainMenu > #findMatchButton {
+	position: absolute;
+	font-size: 60px;
+	top: 25%;
+	left: 25%;
+	right: 25%;
+	bottom: 50%;
+}
+
+#mainMenu > #quitButton {
+	position: absolute;
+	font-size: 60px;
+	top: 50%;
+	left: 25%;
+	right: 25%;
+	bottom: 25%;	
+}
+
+#matchmaker {
+	flex-grow: 1;
+}
+
+#matchmaker > #titleLabel {
+	-unity-text-align: upper-center;
+	font-size: 51px;
+	-unity-font-style: bold;
+	top: 10%;
+	color: rgb(255, 255, 255);
+}
+
+#matchmaker > #timerLabel {
+	-unity-text-align: upper-center;
+	font-size: 34px;
+	-unity-font-style: bold;
+	top: 20%;
+	color: rgb(255, 255, 255);
+}
+
+#matchmaker > #quitButton {
+	position: absolute;
+	font-size: 60px;
+	top: 50%;
+	left: 25%;
+	right: 25%;
+	bottom: 25%;
+}
+
+#match {
+	flex-grow: 1;
+}
+
+#match > #timerLabel {
+	color: rgb(209, 48, 48);
+	-unity-text-align: upper-center;
+	font-size: 68px;
+	-unity-font-style: bold;
+	top: 10%;
+}
+
+#match > #winButton {
+	position: absolute;
+	font-size: 60px;
+	top: 25%;
+	left: 25%;
+	right: 25%;
+	bottom: 25%;
+}
+
+#matchRecap {
+	flex-grow: 1;
+}
+
+#matchRecap > #background {
+	flex-grow: 1;
+	background-color: rgba(0, 0, 0, 0.9);
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+#matchRecap > #resultLabel {
+	-unity-text-align: upper-center;
+	font-size: 68px;
+	-unity-font-style: bold;
+	top: 10%;
+	color: rgb(255, 255, 255);
+}
+
+#matchRecap > #continueButton {
+	position: absolute;
+	font-size: 60px;
+	top: 40%;
+	left: 30%;
+	right: 30%;
+	bottom: 40%;
+}

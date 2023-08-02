@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="matchmaker">
+        <ui:Label text="In queue" name="titleLabel" />
+        <ui:Label text="00:00" name="timerLabel" />
+        <ui:Button text="Exit queue" display-tooltip-when-elided="true" name="quitButton" />
+    </ui:VisualElement>
+</ui:UXML>
