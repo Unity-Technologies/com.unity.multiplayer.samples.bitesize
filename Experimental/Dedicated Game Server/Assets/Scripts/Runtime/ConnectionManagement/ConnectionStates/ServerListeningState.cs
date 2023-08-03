@@ -27,7 +27,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 
         public override void OnUserRequestedShutdown()
         {
-            var reason = "";//JsonUtility.ToJson(ConnectStatus.HostEndedSession);
+            var reason = JsonUtility.ToJson(ConnectStatus.ServerEndedSession);
             for (var i = 0; i < ConnectionManager.NetworkManager.ConnectedClientsIds.Count; i++)
             {
                 var id = ConnectionManager.NetworkManager.ConnectedClientsIds[i];
@@ -57,7 +57,6 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         public override void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             var connectionData = request.Payload;
-            var clientId = request.ClientNetworkId;
             if (connectionData.Length > k_MaxConnectPayload)
             {
                 // If connectionData too high, deny immediately to avoid wasting time on the server. This is intended as
@@ -91,9 +90,9 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
                 return ConnectStatus.ServerFull;
             }
 
-            if (connectionPayload.isDebug != Debug.isDebugBuild)
+            if (connectionPayload.applicationVersion != Application.version)
             {
-                return ConnectStatus.IncompatibleBuildType;
+                return ConnectStatus.IncompatibleVersions;
             }
 
             return ConnectStatus.Success;

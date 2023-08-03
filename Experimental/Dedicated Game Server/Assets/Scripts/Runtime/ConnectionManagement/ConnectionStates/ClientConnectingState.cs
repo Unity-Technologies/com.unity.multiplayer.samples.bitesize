@@ -72,7 +72,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
             var payload = JsonUtility.ToJson(new ConnectionPayload()
             {
                 playerId = playerId,
-                isDebug = Debug.isDebugBuild
+                applicationVersion = Application.version
             });
 
             var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
