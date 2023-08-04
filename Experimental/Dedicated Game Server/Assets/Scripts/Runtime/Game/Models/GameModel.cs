@@ -6,27 +6,27 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
     public class GameModel : Model<GameApplication>
     {
         [SerializeField]
-        MatchDataSynchronizer matchDataSnchronizerPrefab;
-        internal MatchDataSynchronizer matchDataSynchronizer;
+        GameState matchDataSnchronizerPrefab;
+        internal GameState gameState;
         internal const uint k_CountdownStartValue = 60;
         internal uint CountdownValue
         {
-            get { return matchDataSynchronizer.matchCountdown.Value; }
-            set { matchDataSynchronizer.matchCountdown.Value = value; }
+            get { return gameState.matchCountdown.Value; }
+            set { gameState.matchCountdown.Value = value; }
         }
 
         internal bool MatchEnded
         {
-            get { return matchDataSynchronizer.matchEnded.Value; }
-            set { matchDataSynchronizer.matchEnded.Value = value; }
+            get { return gameState.matchEnded.Value; }
+            set { gameState.matchEnded.Value = value; }
         }
 
         void Awake()
         {
             if (NetworkManager.Singleton.IsServer)
             {
-                matchDataSynchronizer = Instantiate(matchDataSnchronizerPrefab);
-                matchDataSynchronizer.GetComponent<NetworkObject>().Spawn();
+                gameState = Instantiate(matchDataSnchronizerPrefab);
+                gameState.GetComponent<NetworkObject>().Spawn();
             }
         }
     }

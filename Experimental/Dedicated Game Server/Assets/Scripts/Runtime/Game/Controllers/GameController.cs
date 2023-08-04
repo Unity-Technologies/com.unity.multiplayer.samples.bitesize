@@ -86,7 +86,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             {
                 winnerClientId = evt.Winner.OwnerClientId;
             }
-            Model.matchDataSynchronizer.OnClientMatchResultComputedClientRpc(winnerClientId);
+            Model.gameState.OnClientMatchResultComputedClientRpc(winnerClientId);
         }
     }
 }

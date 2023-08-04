@@ -32,13 +32,6 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
         [SerializeField]
         ConnectionManager m_ConnectionManager;
 
-        [SerializeField]
-        GameApplication m_GameAppPrefab;
-        GameApplication m_GameApp;
-
-        //HashSet<Player> m_ReadyPlayers;
-        //NetworkManager m_NetworkManager;
-
         void Awake()
         {
             /*
@@ -95,66 +88,12 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
             }
         }
 
-        void OnClientDisconnected(ulong ClientId)
-        {
-            Debug.Log($"Client {ClientId} disconnected");
-            /*if (IsServer)
-            {
-                m_ReadyPlayers.RemoveWhere(p => p.NetworkObject == m_NetworkManager.ConnectedClients[ClientId].PlayerObject);
-            }*/
-        }
-
-        void OnClientConnected(ulong ClientId)
-        {
-            Debug.Log($"Remote or local client {ClientId} connected");
-            /*if (IsServer && m_NetworkManager.ConnectedClients.Count == m_ExpectedPlayers)
-            {
-                OnServerPrepareGame();
-            }*/
-        }
-
-        internal void OnServerPlayerIsReady(Player player)
-        {
-            /*m_ReadyPlayers.Add(player);
-            if (m_ReadyPlayers.Count == m_ExpectedPlayers)
-            {
-                OnServerGameReadyToStart();
-            }*/
-        }
-
-        void OnServerPrepareGame()
-        {
-            /*m_ReadyPlayers = new HashSet<Player>();
-            Debug.Log("[S] Preparing game");
-            InstantiateGameApplication();
-            foreach (var connectionToClient in m_NetworkManager.ConnectedClients.Values)
-            {
-                connectionToClient.PlayerObject.GetComponent<Player>().OnClientPrepareGameClientRpc();
-            }*/
-        }
-
-        internal void InstantiateGameApplication()
-        {
-            m_GameApp = Instantiate(m_GameAppPrefab);
-        }
-
-        internal void OnServerGameReadyToStart()
-        {
-            /*m_GameApp.Broadcast(new StartMatchEvent(true, false));
-            foreach (var player in m_ReadyPlayers)
-            {
-                player.OnClientStartGameClientRpc();
-            }
-            m_ReadyPlayers.Clear();*/
-        }
-
         /// <summary>
         /// Performs cleanup operation after a game
         /// </summary>
         internal void OnClientDoPostMatchCleanupAndReturnToMetagame()
         {
             m_ConnectionManager.RequestShutdown();
-            Destroy(GameApplication.Instance.gameObject);
             ReturnToMetagame?.Invoke();
         }
     }
