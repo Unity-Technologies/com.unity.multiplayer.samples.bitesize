@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Unity.Template.Multiplayer.NGO.Runtime
 {
     /// <summary>
-    /// Singleton class which saves/loads local-client settings.
+    /// Static class which saves/loads local-client settings.
     /// (This is just a wrapper around the PlayerPrefs system,
     /// so that all the calls are in the same place.)
     /// </summary>

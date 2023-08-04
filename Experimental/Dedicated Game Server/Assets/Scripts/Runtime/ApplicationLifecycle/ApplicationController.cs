@@ -34,11 +34,6 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
 
         void Awake()
         {
-            /*
-            m_NetworkManager = GetComponent<NetworkManager>();
-            m_NetworkManager.OnClientConnectedCallback += OnClientConnected;
-            m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnected;
-            */
         }
 
         [RuntimeInitializeOnLoadMethod]

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
 {
+    internal class AppEvent { }
+    
     /// <summary>
     /// A simple Event System that can be used for remote systems communication
     /// </summary>

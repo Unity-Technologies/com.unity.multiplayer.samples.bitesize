@@ -16,6 +16,10 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         [SerializeField]
         MatchmakerView m_MatchmakerView;
+        internal DirectIPView DirectIP => m_DirectIPView;
+
+        [SerializeField]
+        DirectIPView m_DirectIPView;
 
         void Start()
         {

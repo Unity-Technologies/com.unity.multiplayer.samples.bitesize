@@ -36,7 +36,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             }
             else
             {
-                Debug.Log("Player di not sign in");
+                Debug.Log("Player did not sign in");
             }
         }
 

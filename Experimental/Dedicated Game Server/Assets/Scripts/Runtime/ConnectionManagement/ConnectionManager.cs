@@ -120,7 +120,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
             m_CurrentState.OnServerStopped();
         }
 
-        public void StartClient(string ipaddress, int port)
+        public void StartClient(string ipaddress, ushort port)
         {
             m_CurrentState.StartClient(ipaddress, port);
         }
@@ -130,7 +130,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
             m_CurrentState.StartServerMatchmaker();
         }
 
-        public void StartServerIP(string ipaddress, int port)
+        public void StartServerIP(string ipaddress, ushort port)
         {
             m_CurrentState.StartServerIP(ipaddress, port);
         }

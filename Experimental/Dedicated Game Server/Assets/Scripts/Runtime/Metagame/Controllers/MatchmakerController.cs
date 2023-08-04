@@ -56,7 +56,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
                 case StatusOptions.Found:
                     Debug.Log("Match found!");
                     //todo investigate why assignment.Port is of type Nullable<int>
-                    m_ConnectionManager.StartClient(assignment.Ip, assignment.Port.Value);
+                    m_ConnectionManager.StartClient(assignment.Ip, (ushort)assignment.Port.Value);
                     break;
                 case StatusOptions.Failed:
                     error = $"Failed to get ticket status. See logged exception for more details: {assignment.Message}";

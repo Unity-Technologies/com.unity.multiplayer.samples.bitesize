@@ -18,9 +18,9 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 
         public virtual void OnServerStarted() { }
 
-        public virtual void StartClient(string ipaddress, int port) { }
+        public virtual void StartClient(string ipaddress, ushort port) { }
 
-        public virtual void StartServerIP(string ipaddress, int port) { }
+        public virtual void StartServerIP(string ipaddress, ushort port) { }
 
         public virtual void StartServerMatchmaker() { }
 
