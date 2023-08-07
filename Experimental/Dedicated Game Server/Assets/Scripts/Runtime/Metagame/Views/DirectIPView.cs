@@ -12,16 +12,17 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         void Awake()
         {
+            
+        }
+        
+        void OnEnable()
+        {
             var uiDocument = GetComponent<UIDocument>();
             var root = uiDocument.rootVisualElement;
             m_JoinButton = root.Q<Button>("joinButton");
             m_QuitButton = root.Q<Button>("quitButton");
             m_IPTextField = root.Q<TextField>("ipAddressTextField");
             m_PortTextField = root.Q<TextField>("portTextField");;
-        }
-        
-        void OnEnable()
-        {
             m_JoinButton.RegisterCallback<ClickEvent>(OnClickJoin);
             m_QuitButton.RegisterCallback<ClickEvent>(OnClickQuit);
             m_IPTextField.RegisterValueChangedCallback(OnIpAddressChanged);

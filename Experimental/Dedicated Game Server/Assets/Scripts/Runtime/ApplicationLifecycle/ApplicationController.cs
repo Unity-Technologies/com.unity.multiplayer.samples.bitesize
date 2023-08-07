@@ -33,6 +33,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
         [SerializeField]
         ConnectionManager m_ConnectionManager;
 
+        public ConnectionManager ConnectionManager => m_ConnectionManager;
+
         void Awake()
         {
             DontDestroyOnLoad(gameObject);

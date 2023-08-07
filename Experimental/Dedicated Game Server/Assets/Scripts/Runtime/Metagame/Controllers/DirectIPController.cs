@@ -1,3 +1,4 @@
+using Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle;
 using Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement;
 using UnityEngine;
 
@@ -5,8 +6,6 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 {
     internal class DirectIPController : Controller<MetagameApplication>
     {
-        [SerializeField]
-        ConnectionManager m_ConnectionManager;
         DirectIPView View => App.View.DirectIP;
         void Awake()
         {
@@ -39,7 +38,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         void OnJoinGame(JoinThroughDirectIPEvent evt)
         {
-            m_ConnectionManager.StartClient(evt.ipAddress, evt.port);
+            ApplicationController.Singleton.ConnectionManager.StartClient(evt.ipAddress, evt.port);
         }
     }
 }

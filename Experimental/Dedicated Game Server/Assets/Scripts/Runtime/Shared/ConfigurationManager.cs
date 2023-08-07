@@ -34,7 +34,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         public ConfigurationManager(string configFilePath)
         {
-            LoadSetupFromFile(configFilePath, false, false);
+            LoadSetupFromFile(configFilePath, true, true);
         }
 
         public ConfigurationManager(string configFilePath, bool keepUninitialized)

@@ -53,12 +53,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
             {
                 state.ConnectionManager = this;
             }
-        }
-
-        void Start()
-        {
             m_CurrentState = m_Offline;
-
             NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
             NetworkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
             NetworkManager.OnServerStarted += OnServerStarted;

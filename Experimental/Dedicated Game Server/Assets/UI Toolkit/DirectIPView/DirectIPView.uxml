@@ -2,9 +2,9 @@
     <ui:VisualElement name="mainMenu">
         <ui:Label text="The Game" name="titleLabel" />
         <ui:GroupBox style="left: 25%; right: 25%; top: 25%; position: absolute; bottom: 25%;">
-            <ui:TextField label="IP address" value="192.168.127.0" name="ipAdressTextField" />
+            <ui:TextField label="IP address" value="127.0.0.1" name="ipAddressTextField" />
             <ui:TextField label="Port" value="9797" name="portTextField" />
-            <ui:Button text="Join" display-tooltip-when-elided="true" name="joinDirectIPButton" />
+            <ui:Button text="Join" display-tooltip-when-elided="true" name="joinButton" />
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="quitButton" />
         </ui:GroupBox>
     </ui:VisualElement>
