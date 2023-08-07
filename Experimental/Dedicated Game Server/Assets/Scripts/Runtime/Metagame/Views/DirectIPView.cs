@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
@@ -17,6 +16,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             var root = uiDocument.rootVisualElement;
             m_JoinButton = root.Q<Button>("joinButton");
             m_QuitButton = root.Q<Button>("quitButton");
+            m_IPTextField = root.Q<TextField>("ipAddressTextField");
+            m_PortTextField = root.Q<TextField>("portTextField");;
         }
         
         void OnEnable()
