@@ -13,9 +13,11 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 {
     public class ProfileManager
     {
-        public const string AuthProfileCommandLineArg = "-AuthProfile";
+        const string k_AuthProfileCommandLineArg = "-AuthProfile";
         
-        public static ProfileManager Singleton { get; private set; }
+        public static ProfileManager Singleton => s_Singleton ??= new ProfileManager();
+
+        static ProfileManager s_Singleton;
 
         string m_Profile;
 
@@ -28,11 +30,11 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             set
             {
                 m_Profile = value;
-                onProfileChanged?.Invoke();
+                OnProfileChanged?.Invoke();
             }
         }
 
-        public event Action onProfileChanged;
+        public event Action OnProfileChanged;
 
         List<string> m_AvailableProfiles;
 
@@ -66,7 +68,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             var arguments = Environment.GetCommandLineArgs();
             for (int i = 0; i < arguments.Length; i++)
             {
-                if (arguments[i] == AuthProfileCommandLineArg)
+                if (arguments[i] == k_AuthProfileCommandLineArg)
                 {
                     var profileId = arguments[i + 1];
                     return profileId;

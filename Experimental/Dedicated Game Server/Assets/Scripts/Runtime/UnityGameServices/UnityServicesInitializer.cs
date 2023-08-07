@@ -30,6 +30,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
                 return;
             }
             Instance = this;
+            DontDestroyOnLoad(gameObject);
             StartCoroutine(InitializeOnConfigurationLoaded());
         }
 

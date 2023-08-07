@@ -1,6 +1,7 @@
 using System;
 using Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
 {
@@ -34,6 +35,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
 
         void Awake()
         {
+            DontDestroyOnLoad(gameObject);
+            Singleton ??= this;
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -63,12 +66,12 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
         /// </summary>
         public void PerformActionFromSetup()
         {
-
             var commandLineArgumentsParser = new CommandLineArgumentsParser();
             ushort listeningPort = commandLineArgumentsParser.ServerPort != -1 ? (ushort)commandLineArgumentsParser.ServerPort
                                                                                : (ushort)Configuration.GetInt(ConfigurationManager.k_Port);
-            if (Configuration.GetBool(ConfigurationManager.k_ModeServer))
+            if (Configuration.GetBool(ConfigurationManager.k_ModeServer)) //todo replace those configs with ContentSelection profiles
             {
+                SceneManager.LoadScene("GameScene01");
                 Application.targetFrameRate = 60; //lock framerate on dedicated servers
                 m_ConnectionManager.StartServerIP(k_DefaultServerListenAddress, listeningPort);
                 return;
@@ -76,7 +79,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle
 
             if (Configuration.GetBool(ConfigurationManager.k_ModeClient))
             {
-                if (AutoConnectOnStartup)
+                SceneManager.LoadScene("MetagameScene");
+                if (AutoConnectOnStartup) //todo should this stay in since DirectIP is now supported directly through in-game UI?
                 {
                     m_ConnectionManager.StartClient(Configuration.GetString(ConfigurationManager.k_ServerIP), listeningPort);
                 }

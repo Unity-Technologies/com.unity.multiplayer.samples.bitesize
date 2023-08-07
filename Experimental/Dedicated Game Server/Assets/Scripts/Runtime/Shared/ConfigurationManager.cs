@@ -62,7 +62,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             string templatePath = Path.Combine("DefaultConfigurations", configFilePath.Split('.')[0]);
             if (!File.Exists(configFilePath))
             {
-                if (!createIfNotExists)
+                if (createIfNotExists)
                 {
                     throw new FileNotFoundException($"{configFilePath} not found");
                 }
