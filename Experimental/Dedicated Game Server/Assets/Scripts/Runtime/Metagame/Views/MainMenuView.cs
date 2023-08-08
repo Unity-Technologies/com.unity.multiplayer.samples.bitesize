@@ -36,7 +36,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         void OnClickFindMatch(ClickEvent evt)
         {
-            Broadcast(new EnterMatchmakerQueueEvent("Standard"));
+            Broadcast(new EnterMatchmakerQueueEvent("Queue01"));
         }
 
         void OnClickJoinDirectIP(ClickEvent evt)
