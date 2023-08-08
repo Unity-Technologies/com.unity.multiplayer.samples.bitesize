@@ -10,9 +10,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
     {
         string m_IPAddress;
         ushort m_Port;
-
-        public ClientConnectingState() { }
-
+        
         public void Configure(string iPAddress, ushort port)
         {
             m_IPAddress = iPAddress;

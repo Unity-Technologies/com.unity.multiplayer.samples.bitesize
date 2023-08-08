@@ -14,6 +14,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         public abstract void Exit();
 
         public virtual void OnClientConnected(ulong clientId) { }
+        
         public virtual void OnClientDisconnect(ulong clientId) { }
 
         public virtual void OnServerStarted() { }
@@ -31,7 +32,5 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         public virtual void OnTransportFailure() { }
 
         public virtual void OnServerStopped() { }
-        
-        
     }
 }
