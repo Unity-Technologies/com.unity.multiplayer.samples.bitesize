@@ -34,11 +34,13 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 
                 ConnectionManager.NetworkManager.DisconnectClient(id, reason);
             }
+            ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.ServerEndedSession });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
         }
 
         public override void OnServerStopped()
         {
+            ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.GenericDisconnect });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
         }
 

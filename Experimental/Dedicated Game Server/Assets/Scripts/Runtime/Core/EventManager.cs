@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
 {
-    internal class AppEvent { }
+    public class AppEvent { }
     
     /// <summary>
     /// A simple Event System that can be used for remote systems communication
     /// </summary>
-    internal class EventManager
+    public class EventManager
     {
         readonly Dictionary<Type, Action<AppEvent>> m_Events = new Dictionary<Type, Action<AppEvent>>();
         readonly Dictionary<Delegate, Action<AppEvent>> m_EventLookups = new Dictionary<Delegate, Action<AppEvent>>();

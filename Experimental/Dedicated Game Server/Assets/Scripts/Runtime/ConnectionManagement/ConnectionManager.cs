@@ -7,10 +7,16 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 {
     public enum ConnectStatus
     {
+        Undefined,
+        Connecting,               // client is attempting to connect
         Success,                  // client successfully connected. This may also be a successful reconnect.
         ServerFull,               // can't join, server is already at capacity.
         IncompatibleVersions,     // client build version is incompatible with server.
+        UserRequestedDisconnect,  // intentional Disconnect triggered by the user.
+        GenericDisconnect,        // server disconnected, but no specific reason given.
         ServerEndedSession,       // server intentionally ended the session.
+        StartClientFailed,        // failed to connect to server and/or invalid network endpoint
+        StartServerFailed         // server failed to bind
     }
     
     [Serializable]
@@ -18,6 +24,11 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
     {
         public string playerId;
         public string applicationVersion;
+    }
+
+    public class ConnectionEvent : AppEvent
+    {
+        public ConnectStatus status;
     }
 
     /// <summary>
@@ -31,6 +42,10 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         [SerializeField]
         NetworkManager m_NetworkManager;
         public NetworkManager NetworkManager => m_NetworkManager;
+
+        public EventManager EventManager => m_EventManager ??= new EventManager();
+
+        EventManager m_EventManager;
         
         internal readonly OfflineState m_Offline = new();
         internal readonly ClientConnectingState m_ClientConnecting = new();

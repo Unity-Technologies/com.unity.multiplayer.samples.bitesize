@@ -1,3 +1,4 @@
+using System;
 using Unity.Template.Multiplayer.NGO.Runtime.ApplicationLifecycle;
 using Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             AddListener<EnterIPConnectionEvent>(OnEnterIPConnection);
             AddListener<ExitIPConnectionEvent>(OnExitIPConnection);
             AddListener<JoinThroughDirectIPEvent>(OnJoinGame);
+            ApplicationController.Singleton.ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         void OnDestroy()
@@ -24,6 +26,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
             RemoveListener<EnterIPConnectionEvent>(OnEnterIPConnection);
             RemoveListener<ExitIPConnectionEvent>(OnExitIPConnection);
             RemoveListener<JoinThroughDirectIPEvent>(OnJoinGame);
+            ApplicationController.Singleton.ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         void OnEnterIPConnection(EnterIPConnectionEvent evt)
@@ -39,6 +42,14 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         void OnJoinGame(JoinThroughDirectIPEvent evt)
         {
             ApplicationController.Singleton.ConnectionManager.StartClient(evt.ipAddress, evt.port);
+        }
+        
+        void OnConnectionEvent(ConnectionEvent evt)
+        {
+            if (evt.status == ConnectStatus.Connecting)
+            {
+                View.Hide();
+            }
         }
     }
 }

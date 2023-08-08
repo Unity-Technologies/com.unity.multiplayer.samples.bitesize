@@ -24,6 +24,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 
         public override void OnServerStarted()
         {
+            ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.Success });
             ConnectionManager.ChangeState(ConnectionManager.m_ServerListening);
         }
 
@@ -34,6 +35,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         
         void StartServerFailed()
         {
+            ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.StartServerFailed });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
         }
 

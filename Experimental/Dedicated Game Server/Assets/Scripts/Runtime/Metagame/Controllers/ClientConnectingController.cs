@@ -5,17 +5,14 @@ using UnityEngine;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime
 {
-    internal class MainMenuController : Controller<MetagameApplication>
+    public class ClientConnectingController : Controller<MetagameApplication>
     {
-        MainMenuView View => App.View.MainMenu;
+        ClientConnectingView View => App.View.ClientConnecting;
 
         void Awake()
         {
-            AddListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
-            AddListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
-            AddListener<EnterIPConnectionEvent>(OnEnterIPConnection);
-            AddListener<ExitIPConnectionEvent>(OnExitIPConnection);
             ApplicationController.Singleton.ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            AddListener<CancelConnectionEvent>(OnCancelConnection);
         }
 
         void OnDestroy()
@@ -25,37 +22,18 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
 
         internal override void RemoveListeners()
         {
-            RemoveListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
-            RemoveListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
-            RemoveListener<EnterIPConnectionEvent>(OnEnterIPConnection);
-            RemoveListener<ExitIPConnectionEvent>(OnExitIPConnection);
             ApplicationController.Singleton.ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            RemoveListener<CancelConnectionEvent>(OnCancelConnection);
         }
 
-        void OnEnterMatchmakerQueue(EnterMatchmakerQueueEvent evt)
-        {
-            View.Hide();
-        }
-
-        void OnExitMatchmakerQueue(ExitMatchmakerQueueEvent evt)
-        {
-            View.Show();
-        }
-
-        void OnEnterIPConnection(EnterIPConnectionEvent evt)
-        {
-            View.Hide();
-        }
-
-        void OnExitIPConnection(ExitIPConnectionEvent evt)
-        {
-            View.Show();
-        }
-        
         void OnConnectionEvent(ConnectionEvent evt)
         {
             switch (evt.status)
             {
+                case ConnectStatus.Connecting:
+                    App.Model.ClientConnecting.InitializeTimer();
+                    View.Show();
+                    break;
                 case ConnectStatus.Success:
                 case ConnectStatus.ServerFull:
                 case ConnectStatus.IncompatibleVersions:
@@ -63,10 +41,16 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
                 case ConnectStatus.GenericDisconnect:
                 case ConnectStatus.ServerEndedSession:
                 case ConnectStatus.StartClientFailed:
-                    View.Show();
+                    View.Hide();
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(); // other statuses should not be received here
             }
-            
+        }
+
+        void OnCancelConnection(CancelConnectionEvent evt)
+        {
+            ApplicationController.Singleton.ConnectionManager.RequestShutdown();
         }
     }
 }

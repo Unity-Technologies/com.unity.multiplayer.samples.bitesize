@@ -24,6 +24,8 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         public ushort port;
     }
     
+    internal class CancelConnectionEvent: AppEvent { }
+    
     /// <summary>
     /// Called when a match is entered (I.E: after matchmaking finds enough players)
     /// </summary>

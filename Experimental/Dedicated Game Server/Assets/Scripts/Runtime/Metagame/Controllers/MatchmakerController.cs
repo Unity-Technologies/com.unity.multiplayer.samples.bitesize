@@ -15,6 +15,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         {
             AddListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
             AddListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
+            ApplicationController.Singleton.ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         void OnDestroy()
@@ -31,6 +32,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         {
             RemoveListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
             RemoveListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
+            ApplicationController.Singleton.ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         void OnEnterMatchmakerQueue(EnterMatchmakerQueueEvent evt)
@@ -43,6 +45,14 @@ namespace Unity.Template.Multiplayer.NGO.Runtime
         {
             StopMatchmaker();
             View.Hide();
+        }
+        
+        void OnConnectionEvent(ConnectionEvent evt)
+        {
+            if (evt.status == ConnectStatus.Connecting)
+            {
+                View.Hide();
+            }
         }
 
         void OnMatchSearchCompleted(MultiplayAssignment assignment)

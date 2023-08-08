@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 {
-    class ClientConnectingState : ConnectionState
+    class ClientConnectingState : OnlineState
     {
         string m_IPAddress;
         ushort m_Port;
@@ -19,6 +19,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         
         public override void Enter()
         {
+            ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.Connecting });
             ConnectClient();
         }
 
@@ -26,6 +27,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
 
         public override void OnClientConnected(ulong _)
         {
+            ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.Success });
             ConnectionManager.ChangeState(ConnectionManager.m_ClientConnected);
         }
 
@@ -38,6 +40,15 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         void StartingClientFailed()
         {
             var disconnectReason = ConnectionManager.NetworkManager.DisconnectReason;
+            if (string.IsNullOrEmpty(disconnectReason))
+            {
+                ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.StartClientFailed });
+            }
+            else
+            {
+                var connectStatus = JsonUtility.FromJson<ConnectStatus>(disconnectReason);
+                ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = connectStatus });
+            }
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
         }
         
@@ -89,7 +100,7 @@ namespace Unity.Template.Multiplayer.NGO.Runtime.ConnectionManagement
         {
             string profile = ProfileManager.Singleton.Profile;
             
-            if (Services.Core.UnityServices.State != ServicesInitializationState.Initialized)
+            if (UnityServices.State != ServicesInitializationState.Initialized)
             {
                 return ClientPrefs.GetGuid() + profile;
             }
