@@ -1,4 +1,11 @@
-# Change log
+# Changelog
+
+## [unreleased] - yyyy-mm-dd
+
+### Dynamic Addressables Network Prefabs
+
+#### Fixed
+- Fixed loaded status displayed on UI for synchronous prefab spawns inside 05_API Playground Showcasing All Post-Connection Use-Cases scene (#132)
 
 ## [1.3.0] - 2023-07-07
 
