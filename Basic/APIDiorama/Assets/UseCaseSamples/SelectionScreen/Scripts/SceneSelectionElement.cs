@@ -14,6 +14,9 @@ namespace Unity.Netcode.Samples.APIDiorama.SelectionScreen
         [SerializeField] Button m_SceneButton;
         [SerializeField] TMP_Text m_TitleLabel;
         [SerializeField] Image m_ContrastImage;
+        [SerializeField] Image m_OutlineImage;
+        [SerializeField] Color m_OutlineColor;
+        [SerializeField] Color m_OutlineHighlightColor;
 
         internal void Setup(SelectableScene selectableScene)
         {
@@ -41,6 +44,7 @@ namespace Unity.Netcode.Samples.APIDiorama.SelectionScreen
         {
             m_ContrastImage.gameObject.SetActive(enable);
             m_TitleLabel.gameObject.SetActive(enable);
+            m_OutlineImage.color = enable ? m_OutlineHighlightColor : m_OutlineColor;
         }
 
         void OnClick(string sceneName)
