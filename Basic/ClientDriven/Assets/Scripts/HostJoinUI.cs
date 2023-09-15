@@ -1,4 +1,3 @@
-using System;
 using System.Text.RegularExpressions;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -56,6 +55,25 @@ public class HostJoinUI : MonoBehaviour
         ToggleInGameUI(false);
     }
 
+    private void OnDisconnect(bool value)
+    {
+        ToggleInGameUI(false);
+        ToggleMainMenuUI(true);
+    }
+
+    private void Update()
+    {
+        if (NetworkManager.Singleton.IsConnectedClient && NetworkManager.Singleton.IsListening)
+        {
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                NetworkManager.Singleton.Shutdown();
+                UnityEngine.Cursor.lockState = CursorLockMode.None;
+                UnityEngine.Cursor.visible = true;
+            }
+        }
+    }
+
     void StartHost(EventBase obj)
     {
         SetUtpConnectionData();
@@ -65,6 +83,8 @@ public class HostJoinUI : MonoBehaviour
             ToggleInGameUI(true);
             ToggleMainMenuUI(false);
         }
+        NetworkManager.Singleton.OnServerStopped -= OnDisconnect;
+        NetworkManager.Singleton.OnServerStopped += OnDisconnect;
     }
 
     void StartClient(EventBase obj)
@@ -76,6 +96,9 @@ public class HostJoinUI : MonoBehaviour
             ToggleInGameUI(true);
             ToggleMainMenuUI(false);
         }
+        NetworkManager.Singleton.OnClientStopped -= OnDisconnect;
+        NetworkManager.Singleton.OnClientStopped += OnDisconnect;
+
     }
 
     void StartServer(EventBase obj)
@@ -87,6 +110,9 @@ public class HostJoinUI : MonoBehaviour
             ToggleInGameUI(true);
             ToggleMainMenuUI(false);
         }
+        NetworkManager.Singleton.OnServerStopped -= OnDisconnect;
+        NetworkManager.Singleton.OnServerStopped += OnDisconnect;
+
     }
 
     void ToggleMainMenuUI(bool isVisible)

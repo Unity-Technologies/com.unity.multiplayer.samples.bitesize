@@ -42,7 +42,7 @@ public class ServerIngredientSpawner : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (NetworkManager != null && !IsServer)
+        if (!IsSpawned || (NetworkManager != null && !IsServer))
         {
             return;
         }
