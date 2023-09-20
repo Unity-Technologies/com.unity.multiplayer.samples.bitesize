@@ -92,7 +92,7 @@ public class Spawner : MonoBehaviour
             rigidbody2D.angularVelocity = dir;
             rigidbody2D.velocity = new Vector2(dx, dy);
             asteroid.asteroidPrefab = m_AsteroidPrefab;
-            asteroid.NetworkObject.Spawn( true); // TODO
+            asteroid.NetworkObject.Spawn(true);
         }
     }
     
