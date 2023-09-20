@@ -2,10 +2,35 @@
 
 ## [unreleased] - yyyy-mm-dd
 
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+#### Fixed
+- Fixed warnings when spawning new bullets or asteroids by instantiating a new NetworkVariable pre-spawn (#134)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
 ### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
 
 #### Fixed
 - Fixed loaded status displayed on UI for synchronous prefab spawns inside 05_API Playground Showcasing All Post-Connection Use-Cases scene (#132)
+
+### Invaders
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
 
 ## [1.3.0] - 2023-07-07
 
