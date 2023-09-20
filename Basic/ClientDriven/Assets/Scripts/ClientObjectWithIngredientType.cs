@@ -27,11 +27,19 @@ namespace Unity.Netcode.Samples
         {
             base.OnNetworkSpawn();
             enabled = IsClient;
+            
+            UpdateMaterial(default(IngredientType), m_Server.currentIngredientType.Value);
+            m_Server.currentIngredientType.OnValueChanged += UpdateMaterial;
         }
 
-        void UpdateMaterial()
+        public override void OnNetworkDespawn()
         {
-            switch (m_Server.currentIngredientType.Value)
+            m_Server.currentIngredientType.OnValueChanged -= UpdateMaterial;
+        }
+
+        void UpdateMaterial(IngredientType previousValue, IngredientType newValue)
+        {
+            switch (newValue)
             {
                 case IngredientType.Blue:
                     m_ColorMesh.material = m_BlueMaterial;
@@ -43,11 +51,6 @@ namespace Unity.Netcode.Samples
                     m_ColorMesh.material = m_PurpleMaterial;
                     break;
             }
-        }
-
-        protected void Update()
-        {
-            UpdateMaterial(); // this is not performant to be called every update, don't do this.
         }
     }
 }
