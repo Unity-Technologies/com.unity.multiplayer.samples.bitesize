@@ -16,6 +16,9 @@ namespace Unity.Netcode.Samples.APIDiorama.Common
         [SerializeField] Button m_QuitSceneButton;
         [SerializeField] Color32 m_HighlightedButtonColor;
         [SerializeField] Color32 m_DisabledButtonColor;
+        [SerializeField] Color32 m_ButtonOutlineColor;
+        [SerializeField] Color32 m_ButtonOutlineHighlightedColor;
+        [SerializeField] Color32 m_ButtonOutlineDisabledColor;
         [SerializeField] string m_SelectionScreenSceneName;
         [SerializeField] GameObject m_ServerOnlyOverlay;
         Button[] m_Buttons;
@@ -107,6 +110,10 @@ namespace Unity.Netcode.Samples.APIDiorama.Common
                                              : m_DisabledButtonColor;
             button.colors = colors;
             button.interactable = enable;
+            
+            var buttonOutline = button.transform.Find("Outline").GetComponent<Image>();
+            buttonOutline.color = enable ? m_ButtonOutlineColor : m_ButtonOutlineDisabledColor;
+            buttonOutline.color = highlight ? m_ButtonOutlineHighlightedColor : buttonOutline.color;
         }
     }
 }
