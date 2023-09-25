@@ -17,6 +17,9 @@
 - Upgraded to Netcode for GameObjects v1.6.0 (#134)
 - Upgraded sample to 2022.3.9f1 LTS (#134)
 
+#### Fixed
+- Added a script to handle NetworkObject parent changes on Ingredients to address a bug where Ingredients would not get stuck on client disconnect events (#136)
+
 ### Dynamic Addressables Network Prefabs
 
 #### Changed
