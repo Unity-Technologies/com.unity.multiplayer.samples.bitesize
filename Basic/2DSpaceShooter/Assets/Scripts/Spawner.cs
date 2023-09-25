@@ -80,16 +80,19 @@ public class Spawner : MonoBehaviour
             go.transform.position = new Vector3(Random.Range(-40, 40), Random.Range(-40, 40));
 
             go.transform.localScale = new Vector3(4, 4, 4);
-            go.GetComponent<Asteroid>().Size.Value = 4;
+
+            var asteroid = go.GetComponent<Asteroid>();
+            asteroid.Size = new NetworkVariable<int>(4);
 
             float dx = Random.Range(-40, 40) / 10.0f;
             float dy = Random.Range(-40, 40) / 10.0f;
             float dir = Random.Range(-40, 40);
             go.transform.rotation = Quaternion.Euler(0, 0, dir);
-            go.GetComponent<Rigidbody2D>().angularVelocity = dir;
-            go.GetComponent<Rigidbody2D>().velocity = new Vector2(dx, dy);
-            go.GetComponent<Asteroid>().asteroidPrefab = m_AsteroidPrefab;
-            go.GetComponent<NetworkObject>().Spawn( true); // TODO
+            var rigidbody2D = go.GetComponent<Rigidbody2D>();
+            rigidbody2D.angularVelocity = dir;
+            rigidbody2D.velocity = new Vector2(dx, dy);
+            asteroid.asteroidPrefab = m_AsteroidPrefab;
+            asteroid.NetworkObject.Spawn(true);
         }
     }
     
