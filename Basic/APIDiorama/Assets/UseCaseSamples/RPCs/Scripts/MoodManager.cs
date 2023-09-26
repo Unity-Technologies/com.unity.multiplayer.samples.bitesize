@@ -1,8 +1,8 @@
 using System.Collections;
-using Unity.Netcode.Samples.APIDiorama.Common;
+using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.RPC
+namespace Unity.Netcode.Samples.MultiplayerUseCases.RPC
 {
     /// <summary>
     /// Manages the mood of a player or NPC
@@ -52,7 +52,7 @@ namespace Unity.Netcode.Samples.APIDiorama.RPC
 
         string OnServerFilterBadWords(string message)
         {
-            return DioramaUtilities.FilterBadWords(message);
+            return MultiplayerUseCasesUtilities.FilterBadWords(message);
         }
 
         [ClientRpc]

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.Common
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 {
     /// <summary>
     /// Manages the UI of the "NetworkVariable vs RPCs" scene

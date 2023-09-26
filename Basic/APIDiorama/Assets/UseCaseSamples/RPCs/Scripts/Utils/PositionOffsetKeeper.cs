@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.RPC
+namespace Unity.Netcode.Samples.MultiplayerUseCases.RPC
 {
     /// <summary>
     /// Keeps an object at a certain offset from another one

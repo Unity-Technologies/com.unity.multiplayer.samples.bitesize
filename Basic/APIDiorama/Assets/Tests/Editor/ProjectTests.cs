@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Unity.Netcode.Samples.APIDiorama.Tests.Editor
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Tests.Editor
 {
     public class ProjectTests
     {

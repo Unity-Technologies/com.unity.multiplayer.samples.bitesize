@@ -1,10 +1,10 @@
 using TMPro;
 using Unity.Collections;
-using Unity.Netcode.Samples.APIDiorama.Common;
+using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.Netcode.Samples.APIDiorama.NetworkVariables
+namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
 {
     /// <summary>
     /// A complex data structure. Can only contain the types listed here: https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/index.html#supported-types
@@ -93,7 +93,7 @@ namespace Unity.Netcode.Samples.APIDiorama.NetworkVariables
             m_SyncedCustomData.Value = new SyncableCustomData
             {
                 Health = Random.Range(10, 101),
-                Username = DioramaUtilities.GetRandomUsername()
+                Username = MultiplayerUseCasesUtilities.GetRandomUsername()
             };
         }
 

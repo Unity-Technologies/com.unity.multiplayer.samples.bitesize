@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Unity.Netcode.Samples.APIDiorama.Common
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 {
 
     public class NetworkManagerUI : MonoBehaviour

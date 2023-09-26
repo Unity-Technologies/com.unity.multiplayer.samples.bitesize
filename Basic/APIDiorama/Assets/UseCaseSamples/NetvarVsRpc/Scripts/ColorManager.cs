@@ -1,7 +1,7 @@
-using Unity.Netcode.Samples.APIDiorama.Common;
+using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.NetVarVsRPC
+namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRPC
 {
     /// <summary>
     /// Manages the color of a Networked object
@@ -71,7 +71,7 @@ namespace Unity.Netcode.Samples.APIDiorama.NetVarVsRPC
         [ServerRpc(RequireOwnership = false)] //note: please refer to RPCs documentation to learn more about the pros and cons of the RequireOwnership parameter
         void OnServerChangeColorServerRpc()
         {
-            Color32 newColor = DioramaUtilities.GetRandomColor();
+            Color32 newColor = MultiplayerUseCasesUtilities.GetRandomColor();
             if (m_UseNetworkVariableForColor)
             {
                 m_NetworkedColor.Value = newColor;

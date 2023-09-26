@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.Tests.Editor
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Tests.Editor
 {
     /// <summary>
     /// A helper editor script for finding missing references to objects.

@@ -3,7 +3,7 @@ using UnityEditor;
 using Unity.Tutorials.Core.Editor;
 using Unity.Netcode;
 
-namespace Unity.Netcode.Samples.APIDiorama
+namespace Unity.Netcode.Samples.MultiplayerUseCases
 {
 
     /// <summary>
@@ -12,7 +12,7 @@ namespace Unity.Netcode.Samples.APIDiorama
     [CreateAssetMenu(fileName = DefaultFileName, menuName = "Tutorials/" + DefaultFileName + " Instance")]
     public class TutorialCallbacks : ScriptableObject
     {
-        [SerializeField] SceneAsset m_DioramaSelectionScene;
+        [SerializeField] SceneAsset m_UseCaseSelectionScene;
 
         /// <summary>
         /// The default file name used to create asset of this class type.
@@ -82,9 +82,9 @@ namespace Unity.Netcode.Samples.APIDiorama
             TutorialEditorUtils.OpenUrl(url);
         }
 
-        public void LoadDioramaSelectionScene()
+        public void LoadSelectionScene()
         {
-            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(m_DioramaSelectionScene));
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(m_UseCaseSelectionScene));
         }
     }
 }

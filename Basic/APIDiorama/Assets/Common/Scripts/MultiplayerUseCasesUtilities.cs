@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.Common
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 {
     /// <summary>
-    /// A class of utilities used across Dioramas
+    /// A class of utilities used across UseCases
     /// </summary>
-    public static class DioramaUtilities
+    public static class MultiplayerUseCasesUtilities
     {
         static readonly string[] s_Usernames = new string[] { "MaryDaBest", "BobTheBell", "FranklyVal", "Georgie96", "OP Morgan" };
 

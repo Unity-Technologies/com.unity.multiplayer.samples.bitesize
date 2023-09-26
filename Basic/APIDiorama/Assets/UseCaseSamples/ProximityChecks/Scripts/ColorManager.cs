@@ -1,7 +1,7 @@
-using Unity.Netcode.Samples.APIDiorama.Common;
+using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.APIDiorama.Proximity
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Proximity
 {
     /// <summary>
     /// Manages the color of a Networked object
@@ -65,7 +65,7 @@ namespace Unity.Netcode.Samples.APIDiorama.Proximity
         [ServerRpc(RequireOwnership = false)]
         void OnServerChangeColorServerRpc()
         {
-            m_NetworkedColor.Value = DioramaUtilities.GetRandomColor();
+            m_NetworkedColor.Value = MultiplayerUseCasesUtilities.GetRandomColor();
         }
 
         void OnClientColorChanged(Color32 previousColor, Color32 newColor)

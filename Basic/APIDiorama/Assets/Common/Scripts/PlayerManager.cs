@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-namespace Unity.Netcode.Samples.APIDiorama.Common
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 {
     /// <summary>
     /// A generic player manager that manages the lifecycle of a player

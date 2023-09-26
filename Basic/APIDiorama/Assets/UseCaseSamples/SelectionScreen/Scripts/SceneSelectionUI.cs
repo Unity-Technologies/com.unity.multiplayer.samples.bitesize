@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Unity.Netcode.Samples.APIDiorama.SelectionScreen
+namespace Unity.Netcode.Samples.MultiplayerUseCases.SelectionScreen
 {
     [Serializable]
     internal struct SelectableScene
