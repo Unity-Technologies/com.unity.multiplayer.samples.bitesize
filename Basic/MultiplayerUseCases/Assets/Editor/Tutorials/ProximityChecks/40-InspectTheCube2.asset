@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 40-InspectCharacter2
+  m_Name: 40-InspectTheCube2
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Character
+    m_Untranslated: Inspect Colored Cube
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -57,14 +57,14 @@ MonoBehaviour:
                 m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
                 m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
                 m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.APIDiorama.ColorManager, com.unity.samples.api-diorama.rpcvsnetvar,
+                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager, com.unity.samples.multiplayer-use-cases.rpcvsnetvar,
                     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
                 m_ComponentIndex: 0
                 m_AssetObject: {fileID: 0}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Character Manager (Script)
+            m_VisualElementName: Color Manager (Script)
             m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
       m_Summary: 
       m_Description: 
@@ -75,10 +75,11 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The CharacterManager script manages the health and username
-          of the character. \n\nFor this GameObject, the health and username are
-          managed by a <b>NetworkVariable</b> of a custom type which synchronizes
-          both of them at the same time."
+        m_Untranslated: "The ColorManager script manages the color of the cube. \n\nFor
+          this GameObject, the color is not managed by a <b>NetworkVariable</b>.
+          Instead, it is managed by <b>ServerRPCs</b> and <b>ClientRPCs</b>.\n\nYou
+          can read more about ServerRPCs <a href=\"https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/serverrpc\">here</a>,
+          and about ClientRPCs <a href=\"https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/clientrpc/index.html\">here</a>"
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}

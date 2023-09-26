@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 40-InspectCharacter2
+  m_Name: 45-ExploreTheScript
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Character
+    m_Untranslated: Explore the script
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -34,42 +34,6 @@ MonoBehaviour:
           m_ViewType:
             m_TypeName: 
           m_EditorWindowType:
-            m_TypeName: UnityEditor.InspectorWindow, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls:
-          - m_SelectorMode: 5
-            m_SelectorMatchType: 0
-            m_GUIContent:
-              m_Text: ColorManager
-              m_Image: {fileID: 0}
-              m_Tooltip: 
-            m_ControlName: 
-            m_PropertyPath: 
-            m_TargetType:
-              m_TypeName: 
-            m_GUIStyleName: 
-            m_ObjectReference:
-              m_SceneObjectReference:
-                m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
-                m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
-                m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.APIDiorama.ColorManager, com.unity.samples.api-diorama.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-                m_ComponentIndex: 0
-                m_AssetObject: {fileID: 0}
-                m_Prefab: {fileID: 0}
-              m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: 
-            m_VisualElementName: Character Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: 
-          m_EditorWindowType:
             m_TypeName: UnityEditor.ProjectBrowser, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
           m_AlternateEditorWindowTypes:
@@ -80,7 +44,7 @@ MonoBehaviour:
           - m_SelectorMode: 4
             m_SelectorMatchType: 0
             m_GUIContent:
-              m_Text: ColorManager
+              m_Text: 
               m_Image: {fileID: 0}
               m_Tooltip: 
             m_ControlName: 
@@ -95,12 +59,12 @@ MonoBehaviour:
                 m_SerializedComponentType:
                   m_TypeName: 
                 m_ComponentIndex: 0
-                m_AssetObject: {fileID: 11500000, guid: 795b9b070c5c4fe47bd564f96fbf9562, type: 3}
+                m_AssetObject: {fileID: 11500000, guid: f1b7085e00267864abe35fd1160709d8, type: 3}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Character Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+            m_VisualElementName: 
+            m_VisualElementTypeName: 
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -110,10 +74,12 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The CharacterManager script manages the health and username
-          of the character. \n\nFor this GameObject, the health and username are
-          managed by a <b>NetworkVariable</b> of a custom type which synchronizes
-          both of them at the same time."
+        m_Untranslated: "You can understand more about the syntax of RPCs by having
+          a look at the <b>MoodManager</b>. \n\nThe script also includes code to
+          manage common use cases such as performing operations on the data sent
+          by the clients (I.E: filtering out bad words), so be sure to use it as
+          a reference when architecturing your own code.\n\nOnce you're done, press
+          <b>Next</b> to continue."
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
@@ -182,7 +148,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Assets/UseCaseSamples/NetworkVariables/Scripts/ColorManager.cs
+          m_StringArgument: Assets/UseCaseSamples/RPCs/Scripts/com.unity.samples.multiplayer-use-cases.rpc.asmdef
           m_BoolArgument: 0
         m_CallState: 1
   Shown:

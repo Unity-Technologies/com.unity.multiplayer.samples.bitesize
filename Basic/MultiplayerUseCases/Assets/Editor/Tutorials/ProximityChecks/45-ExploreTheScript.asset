@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 30-InspectTheCube1
+  m_Name: 45-ExploreTheScript
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cube
+    m_Untranslated: Explore the scripts
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -30,42 +30,6 @@ MonoBehaviour:
       m_MaskingSettings:
         m_MaskingEnabled: 1
         m_UnmaskedViews:
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: 
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.InspectorWindow, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls:
-          - m_SelectorMode: 5
-            m_SelectorMatchType: 0
-            m_GUIContent:
-              m_Text: ColorManager
-              m_Image: {fileID: 0}
-              m_Tooltip: 
-            m_ControlName: 
-            m_PropertyPath: 
-            m_TargetType:
-              m_TypeName: 
-            m_GUIStyleName: 
-            m_ObjectReference:
-              m_SceneObjectReference:
-                m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
-                m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
-                m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.APIDiorama.ColorManager, com.unity.samples.api-diorama.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-                m_ComponentIndex: 0
-                m_AssetObject: {fileID: 0}
-                m_Prefab: {fileID: 0}
-              m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: 
-            m_VisualElementName: Color Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
@@ -95,7 +59,31 @@ MonoBehaviour:
                 m_SerializedComponentType:
                   m_TypeName: 
                 m_ComponentIndex: 0
-                m_AssetObject: {fileID: 11500000, guid: 8e0c07a436cb23b449c28f1eda07e5a3, type: 3}
+                m_AssetObject: {fileID: 11500000, guid: 8303682e75eacae45b055146e3bad7a3, type: 3}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: 
+            m_VisualElementName: 
+            m_VisualElementTypeName: 
+          - m_SelectorMode: 4
+            m_SelectorMatchType: 1
+            m_GUIContent:
+              m_Text: 
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+            m_ControlName: 
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: 
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 
+                m_GameObjectGuid: 
+                m_SerializedComponentType:
+                  m_TypeName: 
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 11500000, guid: bbf27a146cf84ed40a739ec969ed86a9, type: 3}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
@@ -110,9 +98,12 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The ColorManager script manages the color of the cube. \n\nFor
-          this GameObject, the color is managed by a <b>NetworkVariable</b>. \n\nYou
-          can read more about NetworkVariables <a href=\"https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/index.html\">here</a>"
+        m_Untranslated: "The ColorManager and ProximityChecker scripts manage the
+          color  and state of the cube.\n\nYou can understand more about how they
+          work by having a look at them. \n\nThe scripts also includes code to manage
+          common use cases such as initialization, so be sure to use it as a reference
+          when architecturing your own code.\n\nOnce you're done, press <b>Next</b>
+          to continue"
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_Video: {fileID: 0}
@@ -181,7 +172,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Assets/UseCaseSamples/NetworkVariables/Scripts/CharacterManager.cs
+          m_StringArgument: Assets/UseCaseSamples/ProximityChecks/Scripts/com.unity.samples.multiplayer-use-cases.proximity.asmdef
           m_BoolArgument: 0
         m_CallState: 1
   Shown:

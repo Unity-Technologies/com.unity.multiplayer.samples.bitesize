@@ -57,15 +57,16 @@ MonoBehaviour:
                 m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
                 m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
                 m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.APIDiorama.ColorManager, com.unity.samples.api-diorama.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager,
+                    com.unity.samples.multiplayer-use-cases.rpcvsnetvar, Version=0.0.0.0,
+                    Culture=neutral, PublicKeyToken=null
                 m_ComponentIndex: 0
                 m_AssetObject: {fileID: 0}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: 
-            m_VisualElementName: Color Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+            m_VisualElementClassName: unity-inspector-element--imgui
+            m_VisualElementName: Color Manager (Script)Inspector
+            m_VisualElementTypeName: UnityEditor.UIElements.InspectorElement
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
@@ -80,7 +81,7 @@ MonoBehaviour:
           - m_SelectorMode: 4
             m_SelectorMatchType: 0
             m_GUIContent:
-              m_Text: ColorManager
+              m_Text: 
               m_Image: {fileID: 0}
               m_Tooltip: 
             m_ControlName: 
@@ -95,12 +96,12 @@ MonoBehaviour:
                 m_SerializedComponentType:
                   m_TypeName: 
                 m_ComponentIndex: 0
-                m_AssetObject: {fileID: 11500000, guid: 27ebafe24377cd540a186d9d3ae1c9ba, type: 3}
+                m_AssetObject: {fileID: 11500000, guid: 8e0c07a436cb23b449c28f1eda07e5a3, type: 3}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Color Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+            m_VisualElementName: 
+            m_VisualElementTypeName: 
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -181,7 +182,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Assets/UseCaseSamples/NetvarVsRpc/Scripts/com.unity.samples.api-diorama.netvar-vs-rpc.asmdef
+          m_StringArgument: Assets/UseCaseSamples/NetworkVariables/Scripts/CharacterManager.cs
           m_BoolArgument: 0
         m_CallState: 1
   Shown:
