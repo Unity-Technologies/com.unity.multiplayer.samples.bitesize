@@ -10,6 +10,6 @@ Understanding how to send data and events over the network and to the right play
 
 Multiplayer Use Cases' goal is to show you how to perform common actions in a multiplayer environment, so that you can build the features of your game with them in mind.
 
-In this sample you'll learn about the core features of Netcode For GameObjects ("NGO") through practical examples that you'll be able to extend and adapt to fit the gameplay logic of your own game. 
+In this sample you'll learn about the core features of Netcode For GameObjects (Netcode) through practical examples that you'll be able to extend and adapt to fit the gameplay logic of your own game. 
 
 Each scene comes with an in-editor tutorial that will help you explore the main scripts and object of each scene, so you know where to look at to find what you're looking for.
