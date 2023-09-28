@@ -1,16 +1,86 @@
-# Change log
+# Changelog
 
-## [unreleased] - yyyy-mm-dd
+## [1.4.0] - 2023-09-25
+
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+#### Fixed
+- Fixed warnings when spawning new bullets or asteroids by instantiating a new NetworkVariable pre-spawn (#134)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+#### Fixed
+- Added a script to handle NetworkObject parent changes on Ingredients to address a bug where Ingredients would not get stuck on client disconnect events (#136)
 
 ### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+#### Fixed
+- Fixed loaded status displayed on UI for synchronous prefab spawns inside 05_API Playground Showcasing All Post-Connection Use-Cases scene (#132)
+
+### Invaders
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+## [1.3.0] - 2023-07-07
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.3.0f1 LTS (#124)
 
 #### Fixed
 - Resolved visual bug where the load status of dynamic prefabs on the host was not correct (#111)
 
+### 2D Space Shooter
+
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.3.0f1 LTS (#124)
+- Upgraded Samples Utilities version to v2.2.0 (#129)
+
+### Client Driven
+
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.3.0f1 LTS (#124)
+- Upgraded Samples Utilities version to v2.2.0 (#129)
+
 ### Invaders
 
+#### Changed
+- Upgrade to Netcode for GameObjects 1.4.0 (#118)
+- Upgraded sample to 2021.3.24f1 LTS (#119)
+- Upgraded sample to 2022.3.0f1 LTS (#124)
+- Upgraded Samples Utilities version to v2.2.0 (#129)
+  
 #### Fixed
 - IP address input field text value is now passed into UTP's ConnectionData, allowing for remote IP address hosting (#112)
+- Enemy and Player bullet explosion FX are now replicated on clients via ClientRpcs (#113)
+- Fixed an error produced when a client disconnected once the host disconnected after the game was complete (#124)
+
+### Bitesize Samples Repository
+
+#### Fixed
+- Removed individual gitignore files for individual projects and added parrelsync clones to root gitignore file (#117)
+- Fixed link to old tutorial and clarified supported platforms (#120)
 
 ## [1.2.1] - 2023-02-17
 

@@ -130,7 +130,11 @@ public class SceneTransitionHandler : NetworkBehaviour
     /// </summary>
     public void ExitAndLoadStartMenu()
     {
-        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.SceneManager != null)
+        {
+            NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
+        }
+        
         OnClientLoadedScene = null;
         SetSceneState(SceneStates.Start);
         SceneManager.LoadScene(1);

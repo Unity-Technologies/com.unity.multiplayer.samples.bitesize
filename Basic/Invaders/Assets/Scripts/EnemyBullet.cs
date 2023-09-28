@@ -1,9 +1,9 @@
-﻿using Unity.Mathematics;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class EnemyBullet : MonoBehaviour
+public class EnemyBullet : NetworkBehaviour
 {
     private const float k_YBoundary = -4.0f;
 
@@ -12,52 +12,79 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField]
     [Tooltip("The constant speed at which the Bullet travels")]
     private float m_TravelSpeed = 3.0f;
-    
+
     [SerializeField]
     ParticleSystem m_ShieldExplosionParticle;
 
-    private void Start()
+    void Awake()
     {
-        Assert.IsTrue(InvadersGame.Singleton);
-        Assert.IsTrue(NetworkManager.Singleton);
+        enabled = false;
+    }
 
-        if(InvadersGame.Singleton)
+    public override void OnNetworkSpawn()
+    {
+        enabled = IsServer;
+
+        if (!IsServer)
+        {
+            return;
+        }
+
+        Assert.IsTrue(InvadersGame.Singleton);
+
+        if (InvadersGame.Singleton)
+        {
             InvadersGame.Singleton.isGameOver.OnValueChanged += OnGameOver;
+        }
     }
 
     private void Update()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
         transform.Translate(0, -m_TravelSpeed * Time.deltaTime, 0);
 
-        if (transform.position.y < k_YBoundary) Destroy(gameObject);
+        if (transform.position.y < k_YBoundary)
+        {
+            NetworkObject.Despawn();
+        }
     }
 
-    private void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        if (InvadersGame.Singleton) InvadersGame.Singleton.isGameOver.OnValueChanged -= OnGameOver;
+        if (InvadersGame.Singleton)
+        {
+            InvadersGame.Singleton.isGameOver.OnValueChanged -= OnGameOver;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!NetworkManager.Singleton.IsServer)
+        // several OnTriggerEnter2D calls may be invoked in the same frame (for different Colliders), so we check if
+        // we're spawned to make sure we don't trigger hits for already despawned bullets
+        if (!IsServer || !IsSpawned)
             return;
 
         var hitPlayer = collider.gameObject.GetComponent<PlayerControl>();
         if (hitPlayer != null)
         {
+            NetworkObject.Despawn();
             hitPlayer.HitByBullet();
-            Destroy(gameObject);
             return;
         }
 
         var hitShield = collider.gameObject.GetComponent<Shield>();
         if (hitShield != null)
         {
+            SpawnExplosionVFXClientRpc(transform.position, Quaternion.identity);
+
             Destroy(hitShield.gameObject);
-            Destroy(gameObject);
-            Instantiate(m_ShieldExplosionParticle, transform.position, quaternion.identity);
+            NetworkObject.Despawn();
         }
+    }
+
+    [ClientRpc]
+    void SpawnExplosionVFXClientRpc(Vector3 spawnPosition, Quaternion spawnRotation)
+    {
+        Instantiate(m_ShieldExplosionParticle, spawnPosition, spawnRotation);
     }
 
     private void OnGameOver(bool oldValue, bool newValue)
@@ -65,6 +92,6 @@ public class EnemyBullet : MonoBehaviour
         enabled = false;
 
         // On game over destroy the bullets
-        if (NetworkManager.Singleton.IsServer) Destroy(gameObject);
+        NetworkObject.Despawn();
     }
 }

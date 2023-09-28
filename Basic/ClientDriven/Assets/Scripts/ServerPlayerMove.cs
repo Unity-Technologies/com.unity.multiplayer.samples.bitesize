@@ -56,14 +56,10 @@ public class ServerPlayerMove : NetworkBehaviour
 
         if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
         {
-            var pickUpObjectRigidbody = objectToPickup.GetComponent<Rigidbody>();
-            pickUpObjectRigidbody.isKinematic = true;
-            pickUpObjectRigidbody.interpolation = RigidbodyInterpolation.None;
-            objectToPickup.GetComponent<NetworkTransform>().InLocalSpace = true;
+            m_PickedUpObject = networkObject;
             objectToPickup.transform.localPosition = m_LocalHeldPosition;
             objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
             isObjectPickedUp.Value = true;
-            m_PickedUpObject = objectToPickup;
         }
     }
 
@@ -78,12 +74,9 @@ public class ServerPlayerMove : NetworkBehaviour
     {
         if (m_PickedUpObject != null)
         {
+            m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned -= IngredientDespawned;
             // can be null if enter drop zone while carrying
             m_PickedUpObject.transform.parent = null;
-            var pickedUpObjectRigidbody = m_PickedUpObject.GetComponent<Rigidbody>();
-            pickedUpObjectRigidbody.isKinematic = false;
-            pickedUpObjectRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
             m_PickedUpObject = null;
         }
 

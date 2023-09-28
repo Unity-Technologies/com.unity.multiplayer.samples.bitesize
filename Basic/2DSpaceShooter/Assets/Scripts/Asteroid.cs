@@ -24,7 +24,6 @@ public class Asteroid : NetworkBehaviour
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
     }
 
-    // Use this for initialization
     void Start()
     {
         numAsteroids += 1;
@@ -61,7 +60,7 @@ public class Asteroid : NetworkBehaviour
                 var go = m_ObjectPool.GetNetworkObject(asteroidPrefab, transform.position + diff, Quaternion.identity);
                 
                 var asteroid = go.GetComponent<Asteroid>();
-                asteroid.Size.Value = newSize;
+                asteroid.Size = new NetworkVariable<int>(newSize);
                 asteroid.asteroidPrefab = asteroidPrefab;
                 go.GetComponent<NetworkObject>().Spawn();
                 go.GetComponent<Rigidbody2D>().AddForce(diff * 10, ForceMode2D.Impulse);
