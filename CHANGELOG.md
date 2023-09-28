@@ -1,5 +1,12 @@
 # Change log
 
+## [Unreleased]
+
+### Dedicated Game Server
+todo: the changelog entry for this sample will be updated with subsequent PRs before being merged when ready
+
+- New Dedicated Game Server sample. (#1) This sample's goal is to demonstrate how to use the different tools and packages available to create a game using the dedicated server approach. It requires editor version 2023.3.
+
 ## [1.3.0] - 2023-07-07
 
 ### Dynamic Addressables Network Prefabs

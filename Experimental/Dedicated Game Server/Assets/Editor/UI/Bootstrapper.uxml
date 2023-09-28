@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Toggle label="Auto connect on Startup" name="tglAutoConnectOnStartup" tooltip="If enabled, skips the standard user flow (logins, etc...). If disabled, you&apos;ll have to connect using the same flow users use. Some features might not be available when this is enabled." />
+    <uie:EnumField label="Mode:" value="0" name="lstMode" text="" tooltip="Defines how the game will autostart. Host: server + client. Server: local dedicated server (no UI / Cameras). Client: local client that tries to connect to a server." />
+    <ui:Toggle label="Allow reconnection" name="tglAllowReconnection" tooltip="When enabled, dedicated servers will stay active even if a player disconnects after a match starts, to allow them to reconnect. When disabled, dedicated servers will shutdown when a player disconnects from a running match. Enabling this option will cause your servers to be deallocated slower." />
+    <ui:Toggle label="Use Bots" name="tglUseBots" tooltip="Enable if you want the match to be filled by bots when a player connects." />
+    <ui:TextField picking-mode="Ignore" label="Server IP" value="127.0.0.1" text="127.0.0.1" name="strServerIP" tooltip="The IP of the server to which this client will try to connect" class="ariokan-validated-input" style="left: auto; flex-grow: 0; right: auto; top: auto; bottom: auto; height: auto; position: relative; width: auto;" />
+    <uie:IntegerField label="Server Port" value="7777" name="intServerPort" readonly="false" tooltip="The port on which the server will be listening for a connection" />
+    <uie:IntegerField label="Max Players" value="2" name="intMaxPlayers" readonly="false" tooltip="How many players can join a single session" />
+    <ui:VisualElement style="flex-direction: row; flex-wrap: nowrap; flex-grow: 1; flex-shrink: initial; flex-basis: auto; position: relative; top: auto; left: auto; height: auto;">
+        <ui:Button text="Reset to default" name="btnReset" value="7777" style="flex-grow: 1; flex-shrink: 1; font-size: 25px; height: auto; width: auto; left: auto; right: auto;" />
+    </ui:VisualElement>
+</ui:UXML>
