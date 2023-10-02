@@ -1,53 +1,20 @@
-<!-- DO NOT REMOVE BEGIN -->
-[style guide]: https://unity-docs.gitbook.io/style-guide/
-[release note guide lines]: https://unity-docs.gitbook.io/style-guide/style/release-notes
-[coding conventions]: https://github.cds.internal.unity3d.com/unity/unity-meta/blob/stable/ReferenceSource/CSharp/Assets/CSharpReference.cs
-<!-- DO NOT REMOVE END -->
+### Description
+<!---
+    Please provide a description of the changes proposed in the pull request.
+    Make sure your commit messages have meaningful information.
+    To help us link commits and PRs to JIRA work items, please include the JIRA ticket ID in the PR title or at least of your commit messages.
+-->
 
-### Proposed change(s)
+### Issue Number(s)
+<!---
+    Provide a list of fixed issues from Jira (MTT-ticketnumber) or GitHub (#issuenumber).
+    This helps us understand the reasoning behind this change, what it fixes, feature being added, etc.
+-->
 
-- Describe the changes made in this PR.
-
-### Platform and Editor version used to develop and test this PR
-- e.g. Windows, 2019.4.11f1
-
-### Related links
-- Trello/JIRA/Airtable/FogBugz
-
-### Affected sample(s)
-
-- [ ] 2DSpaceShooter
-- [ ] Invaders
-- [ ] Client Driven
-- [ ] API Diorama
-- [ ] N/A (please describe)
-
-### Types of change(s)
-
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Code refactor
-- [ ] UI/UX (see [style guide] and add a technical artist as a reviewer for relevant changes)
-- [ ] Breaking change
-- [ ] Documentation update (see [style guide])
-- [ ] Other (please describe)
-
-### Checklist
-- [ ] Release notes have been added to the [project changelog](../CHANGELOG.md) file
-- [ ] Unit tests pass locally
-- [ ] Added tests, if feasible, that prove my fix is effective or that my feature works
-- [ ] No warnings in the Console
-- [ ] Documented (///) **public APIs** (public/protected functionality of public/protected classes), if applicable
-- [ ] Updated the sample documentation, if applicable (see [style guide])
-- [ ] UI & Style sheet changes: both Dark and Light styles/themes updated/tested
-- Remember to familiarize yourself with the [coding conventions]
-
-### How to test/validate
-
-1. this
-2. that
-
-### Other comments
-
-- Anything else? Remarks, known issues, future work, etc.
-
+### Contribution checklist
+ - [ ] Tests have been added for the project and/or any internal package
+ - [ ] Release notes have been added to the [project changelog](../CHANGELOG.md) file
+ - [ ] Pull request has a meaningful description of its purpose
+ - [ ] All commits are accompanied by meaningful commit messages
+ - [ ] JIRA ticket ID is in the PR title or at least one commit message
+ - [ ] Include the ticket ID number within the body message of the PR to create a hyperlink
