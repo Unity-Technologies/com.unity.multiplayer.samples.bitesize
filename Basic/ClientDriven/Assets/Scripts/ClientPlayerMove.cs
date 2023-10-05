@@ -41,7 +41,7 @@ public class ClientPlayerMove : NetworkBehaviour
         // these two components disabled, and will enable a CapsuleCollider. Per the CharacterController documentation: 
         // https://docs.unity3d.com/Manual/CharacterControllers.html, a Character controller can push rigidbody
         // objects aside while moving but will not be accelerated by incoming collisions. This means that a primitive
-        // CapusleCollider must instead be used for ghost clients to simulate collisions between owning players and 
+        // CapsuleCollider must instead be used for ghost clients to simulate collisions between owning players and 
         // ghost clients.
         m_ThirdPersonController.enabled = false;
         m_CapsuleCollider.enabled = false;
