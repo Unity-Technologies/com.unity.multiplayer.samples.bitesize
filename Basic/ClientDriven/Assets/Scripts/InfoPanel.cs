@@ -1,6 +1,7 @@
-using System;
-using System.Collections.Generic;
+using TMPro;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,9 @@ public class InfoPanel : MonoBehaviour
     public Toggle InterpolateToggle;
     public Toggle QuatSynchToggle;
     public Toggle QuatCompToggle;
+    public TMP_InputField PacketDelayMSInputField;
+    public GameObject PacketDelayMSInputField2;
+
     private ClientNetworkTransform ClientNetworkTransform;
 
     void Start()
@@ -40,6 +44,18 @@ public class InfoPanel : MonoBehaviour
         {
             QuatCompToggle.isOn = !QuatCompToggle.isOn;
         }
+        
+        PacketDelayMSInputField = GameObject.Find("PacketDelayInputField").GetComponent<TMP_InputField>();
+
+        /*var simulatorParameters = new UnityTransport.SimulatorParameters
+        {
+            PacketDelayMS = 50,
+        };
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            // Apply the simulator parameters to the Transport layer
+            NetworkManager.Singleton.GetComponent<UnityTransport>().DebugSimulator = simulatorParameters;
+        }*/
     }
     private void OnClientPlayerNetworkSpawn(ClientNetworkTransform clientNetworkTransform)
     {
@@ -88,5 +104,24 @@ public class InfoPanel : MonoBehaviour
         InterpolateToggle.isOn = ClientNetworkTransform.Interpolate;
         QuatSynchToggle.isOn = ClientNetworkTransform.UseQuaternionSynchronization;
         QuatCompToggle.isOn = ClientNetworkTransform.UseQuaternionCompression;
+    }
+    
+    private string SanitizeDirtyString(string input)
+    {
+        return input.Replace("\n", "").Replace("\r", "").Replace(" ", "");
+    }
+
+    public void OnDebugSimulatorChanges()
+    {
+        var simulatorParameters = new UnityTransport.SimulatorParameters
+        {
+            // Set the parameters for simulating network conditions here
+            PacketDelayMS = PacketDelayMSInputField.text == "" ? 0 : int.Parse(SanitizeDirtyString(PacketDelayMSInputField.text)),
+            //PacketJitterMS = packetJitterMs,
+            //PacketDropRate = packetDropRate
+        };
+
+        // Apply the simulator parameters to the Transport layer
+        NetworkManager.Singleton.GetComponent<UnityTransport>().DebugSimulator = simulatorParameters;
     }
 }
