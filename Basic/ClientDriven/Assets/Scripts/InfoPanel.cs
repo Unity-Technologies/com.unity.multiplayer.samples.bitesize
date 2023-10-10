@@ -99,7 +99,7 @@ public class InfoPanel : MonoBehaviour
         QuatCompToggle.isOn = ClientNetworkTransform.UseQuaternionCompression;
     }
     
-    private string SanitizeDirtyString(string input)
+    private static string SanitizeDirtyString(string input)
     {
         var digitsOnly = new Regex(@"[^\d]"); 
         return digitsOnly.Replace(input, "");
@@ -108,27 +108,30 @@ public class InfoPanel : MonoBehaviour
     public void OnUpdatePacketDelay()
     {
         PacketDelayMSInputField.characterValidation = TMP_InputField.CharacterValidation.Integer;
-        SimulatorParameters.PacketDelayMS = PacketDelayMSInputField.text == "" ? 0 : int.Parse(SanitizeDirtyString(PacketDelayMSInputField.text));
-
-        // Apply the simulator parameters to the Transport layer
+        if(int.TryParse(SanitizeDirtyString(PacketDelayMSInputField.text), out var packetDelay))
+        {
+            SimulatorParameters.PacketDelayMS = packetDelay;
+        }
         NetworkManager.Singleton.GetComponent<UnityTransport>().DebugSimulator = SimulatorParameters;
     }
 
     public void OnUpdatePacketJitter()
     {
         PacketJitterMSInputField.characterValidation = TMP_InputField.CharacterValidation.Integer;
-        SimulatorParameters.PacketJitterMS = PacketJitterMSInputField.text == "" ? 0 : int.Parse(SanitizeDirtyString(PacketJitterMSInputField.text));
-
-        // Apply the simulator parameters to the Transport layer
+        if(int.TryParse(SanitizeDirtyString(PacketJitterMSInputField.text), out var packetJitter))
+        {
+            SimulatorParameters.PacketJitterMS = packetJitter;
+        }
         NetworkManager.Singleton.GetComponent<UnityTransport>().DebugSimulator = SimulatorParameters;
     }
 
     public void OnUpdatePacketDropRate()
     {
         PacketDropRateInputField.characterValidation = TMP_InputField.CharacterValidation.Integer;
-        SimulatorParameters.PacketDropRate = PacketDropRateInputField.text == "" ? 0 : int.Parse(SanitizeDirtyString(PacketDropRateInputField.text));
-
-        // Apply the simulator parameters to the Transport layer
+        if(int.TryParse(SanitizeDirtyString(PacketDropRateInputField.text), out var packetDropRate))
+        {
+            SimulatorParameters.PacketDropRate = packetDropRate;
+        }
         NetworkManager.Singleton.GetComponent<UnityTransport>().DebugSimulator = SimulatorParameters;
     }
 }
