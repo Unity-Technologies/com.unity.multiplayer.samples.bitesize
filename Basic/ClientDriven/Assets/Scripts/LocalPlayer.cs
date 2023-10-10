@@ -13,8 +13,8 @@ public class LocalPlayer : NetworkBehaviour
         if (!IsOwner)
         {
             return;
-        }
+        }        
         Debug.Assert(OnNetworkSpawnEvent != null, nameof(OnNetworkSpawnEvent) + " != null");
-        OnNetworkSpawnEvent.Invoke(GetComponent<ClientNetworkTransform>());
+        OnNetworkSpawnEvent?.Invoke(GetComponent<ClientNetworkTransform>());
     }
 }
