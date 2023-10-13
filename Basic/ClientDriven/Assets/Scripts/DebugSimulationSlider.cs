@@ -34,6 +34,8 @@ public class DebugSimulationSlider : MonoBehaviour
         m_NetworkManager = bootStrap.GetComponent<NetworkManager>();
         m_NetworkManager.OnServerStarted -= OnStarted;
         m_NetworkManager.OnServerStarted += OnStarted;
+        m_NetworkManager.OnClientStarted -= OnStarted;
+        m_NetworkManager.OnClientStarted += OnStarted;
         m_NetworkManager.OnClientStopped -= OnStopped;
         m_NetworkManager.OnServerStopped -= OnStopped;
         m_NetworkManager.OnClientStopped += OnStopped;

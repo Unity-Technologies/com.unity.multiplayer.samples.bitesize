@@ -17,6 +17,9 @@ public class ServerPlayerMove : NetworkBehaviour
     [SerializeField]
     Vector3 m_LocalHeldPosition;
 
+    
+    public GameObject IngredientHoldPosition;
+
     // DOC START HERE
     public override void OnNetworkSpawn()
     {
@@ -67,10 +70,12 @@ public class ServerPlayerMove : NetworkBehaviour
         if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
         if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
-        {
+        {            
             m_PickedUpObject = networkObject;
-            objectToPickup.transform.localPosition = m_LocalHeldPosition;
-            objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
+            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = true;
+            m_PickedUpObject.transform.position = IngredientHoldPosition.transform.position;
+            var serverIngredient = objectToPickup.GetComponent<ServerIngredient>();
+            m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
             isObjectPickedUp.Value = true;
         }
     }
@@ -92,7 +97,13 @@ public class ServerPlayerMove : NetworkBehaviour
         {
             m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned -= IngredientDespawned;
             // can be null if enter drop zone while carrying
-            m_PickedUpObject.transform.parent = null;
+            m_PickedUpObject.TryRemoveParent(true);
+            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
+            m_PickedUpObject.transform.position = IngredientHoldPosition.transform.position;
+            var rigidBody = m_PickedUpObject.GetComponent<Rigidbody>();
+            var playerController = GetComponent<CharacterController>();
+            rigidBody.velocity = playerController.velocity;
+            m_PickedUpObject.GetComponent<Rigidbody>().AddForce(IngredientHoldPosition.transform.forward * 20f, ForceMode.Impulse);
             m_PickedUpObject = null;
         }
 
