@@ -60,19 +60,6 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
 
         var serverPlayerMove = parentNetworkObject == null ? (ServerPlayerMove)null : parentNetworkObject.GetComponent<ServerPlayerMove>();
 
-        //if (IsServer)
-        //{
-        //    if (parentNetworkObject != null)
-        //    {
-        //        transform.localScale = m_OriginalScale * 0.25f;
-        //        transform.localPosition = serverPlayerMove.IngredientHoldPosition.transform.localPosition;
-        //    }
-        //    else
-        //    {
-        //        transform.localScale = m_OriginalScale;
-        //    }
-        //}
-
         if (m_IngredientVisuals != null)
         {
             if (parentNetworkObject != null)
