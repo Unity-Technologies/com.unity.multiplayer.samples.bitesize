@@ -11,11 +11,14 @@ using UnityEngine;
 public class ServerPlayerMove : NetworkBehaviour
 {
     public NetworkVariable<bool> isObjectPickedUp = new NetworkVariable<bool>();
-    
+
     NetworkObject m_PickedUpObject;
 
     [SerializeField]
     Vector3 m_LocalHeldPosition;
+
+    
+    public GameObject IngredientHoldPosition;
 
     // DOC START HERE
     public override void OnNetworkSpawn()
@@ -27,7 +30,7 @@ public class ServerPlayerMove : NetworkBehaviour
         }
 
         OnServerSpawnPlayer();
-        
+
         base.OnNetworkSpawn();
     }
 
@@ -37,7 +40,7 @@ public class ServerPlayerMove : NetworkBehaviour
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
         transform.position = spawnPosition;
-        
+
         // A note specific to owner authority:
         // Side Note:  Specific to Owner Authoritative
         // Setting the position works as and can be set in OnNetworkSpawn server-side unless there is a
@@ -48,17 +51,31 @@ public class ServerPlayerMove : NetworkBehaviour
         // transform after synchronization with the initial position, thus overwriting the synchronized position.
     }
 
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer && IsLocalPlayer && m_PickedUpObject != null)
+        {
+            m_PickedUpObject.TryRemoveParent(m_PickedUpObject.WorldPositionStays());
+            m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned -= IngredientDespawned;
+            m_PickedUpObject = null;
+        }
+
+        base.OnNetworkDespawn();
+    }
+
     [ServerRpc]
     public void PickupObjectServerRpc(ulong objToPickupID)
-    {        
+    {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
         if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
         if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
-        {
+        {            
             m_PickedUpObject = networkObject;
-            objectToPickup.transform.localPosition = m_LocalHeldPosition;
-            objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
+            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = true;
+            m_PickedUpObject.transform.position = IngredientHoldPosition.transform.position;
+            var serverIngredient = objectToPickup.GetComponent<ServerIngredient>();
+            m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
             isObjectPickedUp.Value = true;
         }
     }
@@ -66,9 +83,13 @@ public class ServerPlayerMove : NetworkBehaviour
     void IngredientDespawned()
     {
         m_PickedUpObject = null;
+        if (NetworkManager.ShutdownInProgress)
+        {
+            return;
+        }
         isObjectPickedUp.Value = false;
     }
-    
+
     [ServerRpc]
     public void DropObjectServerRpc()
     {
@@ -76,7 +97,13 @@ public class ServerPlayerMove : NetworkBehaviour
         {
             m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned -= IngredientDespawned;
             // can be null if enter drop zone while carrying
-            m_PickedUpObject.transform.parent = null;
+            m_PickedUpObject.TryRemoveParent(true);
+            m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = false;
+            m_PickedUpObject.transform.position = IngredientHoldPosition.transform.position;
+            var rigidBody = m_PickedUpObject.GetComponent<Rigidbody>();
+            var playerController = GetComponent<CharacterController>();
+            rigidBody.velocity = playerController.velocity;
+            m_PickedUpObject.GetComponent<Rigidbody>().AddForce(IngredientHoldPosition.transform.forward * 20f, ForceMode.Impulse);
             m_PickedUpObject = null;
         }
 

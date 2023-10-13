@@ -19,7 +19,17 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
     public NetworkVariable<IngredientType> currentIngredientType;
 
     public event Action ingredientDespawned;
-    
+
+    private Vector3 m_OriginalScale;
+
+    [SerializeField]
+    private GameObject m_IngredientVisuals;
+
+    private void Awake()
+    {
+        m_OriginalScale = transform.localScale;
+    }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -32,6 +42,42 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
+        if (m_IngredientVisuals != null && m_IngredientVisuals.transform.parent != transform)
+        {
+            m_IngredientVisuals.transform.parent = transform;
+        }
+
         ingredientDespawned?.Invoke();
+    }
+
+    public override void OnNetworkObjectParentChanged(NetworkObject parentNetworkObject)
+    {
+
+        if (!IsSpawned)
+        {
+            return;
+        }
+
+        var serverPlayerMove = parentNetworkObject == null ? (ServerPlayerMove)null : parentNetworkObject.GetComponent<ServerPlayerMove>();
+
+        if (m_IngredientVisuals != null)
+        {
+            if (parentNetworkObject != null)
+            {
+                
+                if (serverPlayerMove != null && serverPlayerMove.IngredientHoldPosition != null)
+                {
+                    m_IngredientVisuals.transform.SetParent(serverPlayerMove.IngredientHoldPosition.transform, false);
+                    m_IngredientVisuals.transform.localScale = Vector3.one * 0.333f;
+                }
+            }
+            else
+            {
+                m_IngredientVisuals.transform.SetParent(transform, false);
+                m_IngredientVisuals.transform.localScale = Vector3.one;
+            }
+        }
+
+        base.OnNetworkObjectParentChanged(parentNetworkObject);
     }
 }
