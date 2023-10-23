@@ -21,25 +21,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
         /// </summary>
         public static readonly string k_DevConfigFileDefault = Path.Combine(Application.dataPath, Path.Combine("Resources", Path.Combine("DefaultConfigurations", k_DevConfigFile)));
         /// <summary>
-        /// Identifier of "Server mode" settings
+        /// Players the server expects in a match before allowing it to start
         /// </summary>
-        public const string k_ModeServer = "StartAsServer";
+        public const string k_MinPlayers = "MinPlayers";
         /// <summary>
-        /// Identifier of "Client mode" settings
-        /// </summary>
-        public const string k_ModeClient = "StartAsClient";
-        /// <summary>
-        /// Players the server expects in a match
+        /// Maximum number of players the server expects in a match
         /// </summary>
         public const string k_MaxPlayers = "MaxPlayers";
-        /// <summary>
-        /// Port where the game runs on the server 
-        /// </summary>
-        public const string k_Port = "Port";
-        /// <summary>
-        /// IP address of the server 
-        /// </summary>
-        public const string k_ServerIP = "ServerIP";
         /// <summary>
         /// Will the game startup behaviour change according to the settings?
         /// </summary>
@@ -58,7 +46,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
         /// <param name="configFilePath">path of the configuration file</param>
         public ConfigurationManager(string configFilePath)
         {
-            LoadConfigurationFromFile(configFilePath, false, false);
+            LoadConfigurationFromFile(configFilePath, true, false);
         }
 
         /// <summary>
@@ -73,7 +61,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 return;
             }
-            LoadConfigurationFromFile(configFilePath, false, false);
+            LoadConfigurationFromFile(configFilePath, true, false);
         }
 
         /// <summary>

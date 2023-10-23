@@ -1,69 +1,22 @@
 using System;
 using System.Collections.Generic;
+using Unity.Multiplayer;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 {
-    public enum ConnectStatus
-    {
-        /// <summary>
-        /// Status is not defined. This likely means an unexpected error occurred.
-        /// </summary>
-        Undefined,
-        /// <summary>
-        /// Client is attempting to connect.
-        /// </summary>
-        Connecting,
-        /// <summary>
-        /// Client successfully connected.
-        /// </summary>
-        Success,
-        /// <summary>
-        /// Can't join, server is already at capacity.
-        /// </summary>
-        ServerFull,
-        /// <summary>
-        /// Client build version is incompatible with server.
-        /// </summary>
-        IncompatibleVersions,
-        /// <summary>
-        /// Intentional Disconnect triggered by the user.
-        /// </summary>
-        UserRequestedDisconnect,
-        /// <summary>
-        /// Server disconnected, but no specific reason given.
-        /// </summary>
-        GenericDisconnect,
-        /// <summary>
-        /// Server intentionally ended the session.
-        /// </summary>
-        ServerEndedSession,
-        /// <summary>
-        /// Failed to connect to server and/or invalid network endpoint.
-        /// </summary>
-        StartClientFailed,
-        /// <summary>
-        /// Server failed to bind.
-        /// </summary>
-        StartServerFailed
-    }
-
     [Serializable]
     public class ConnectionPayload
     {
         public string applicationVersion;
     }
 
-    public class ConnectionEvent : AppEvent
-    {
-        public ConnectStatus status;
-    }
-
     /// <summary>
     /// This state machine handles connection through the NetworkManager. It is responsible for listening to
     /// NetworkManger callbacks and other outside calls and redirecting them to the current ConnectionState object.
     /// </summary>
+    [MultiplayerRoleRestricted]
     public class ConnectionManager : MonoBehaviour
     {
         ConnectionState m_CurrentState;

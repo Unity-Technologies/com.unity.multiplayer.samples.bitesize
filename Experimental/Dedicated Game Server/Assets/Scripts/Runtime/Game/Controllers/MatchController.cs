@@ -1,4 +1,4 @@
-using Unity.Netcode;
+using System;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
@@ -8,7 +8,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void Awake()
         {
-            AddListener<CountdownChangedEvent>(OnCountdownChanged);
+            App.Model.Countdown.OnValueChanged += OnCountdownChanged;
+            App.Model.MatchEnded.OnValueChanged += OnMatchEnded;
             AddListener<WinButtonClickedEvent>(OnClientWinButtonClicked);
         }
 
@@ -19,18 +20,24 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         internal override void RemoveListeners()
         {
-            RemoveListener<CountdownChangedEvent>(OnCountdownChanged);
+            App.Model.Countdown.OnValueChanged -= OnCountdownChanged;
+            App.Model.MatchEnded.OnValueChanged -= OnMatchEnded;
             RemoveListener<WinButtonClickedEvent>(OnClientWinButtonClicked);
         }
 
-        void OnCountdownChanged(CountdownChangedEvent evt)
+        void OnCountdownChanged(uint previousValue, uint newValue)
         {
-            View.OnCountdownChanged(evt.NewValue);
+            View.OnCountdownChanged(newValue);
         }
 
-        void OnClientWinButtonClicked(WinButtonClickedEvent evt)
+        void OnMatchEnded(bool previousValue, bool newValue)
         {
-            NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<Player>().OnPlayerAskedToWinServerRpc();
+            if (newValue)
+            {
+                Broadcast(new EndMatchEvent());
+            }
         }
+
+        void OnClientWinButtonClicked(WinButtonClickedEvent evt) { } // todo replace with disconnect logic when updating UI
     }
 }

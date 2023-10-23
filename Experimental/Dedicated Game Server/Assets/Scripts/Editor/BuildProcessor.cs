@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Unity.DedicatedGameServerSample.Runtime;
+using Unity.Multiplayer;
+using Unity.Multiplayer.Editor;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -130,16 +132,17 @@ namespace Unity.DedicatedGameServerSample.Editor
         [MenuItem("Multiplayer/Builds/All")]
         static void MakeServerAndClientBuilds()
         {
-            PerformStandaloneLinux64();
-            PerformStandaloneWindows64();
+            BuildServerStandaloneLinux();
+            BuildClientStandaloneWindows64();
         }
 
         [MenuItem("Multiplayer/Builds/Server_StandaloneLinux")]
-        static void PerformStandaloneLinux64()
+        static void BuildServerStandaloneLinux()
         {
             Debug.Log("Building server");
             DeleteOutputFolder("Server/");
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Server, BuildTarget.StandaloneLinux64);
+            EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Server, MultiplayerRoleFlags.Server);
             BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
@@ -150,12 +153,12 @@ namespace Unity.DedicatedGameServerSample.Editor
         }
 
         [MenuItem("Multiplayer/Builds/Client_StandaloneWindows64")]
-        static void PerformStandaloneWindows64()
+        static void BuildClientStandaloneWindows64()
         {
             Debug.Log("Building client");
             DeleteOutputFolder("Client/");
-
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, BuildTarget.StandaloneWindows64);
+            EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Standalone, MultiplayerRoleFlags.Client);
             BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),

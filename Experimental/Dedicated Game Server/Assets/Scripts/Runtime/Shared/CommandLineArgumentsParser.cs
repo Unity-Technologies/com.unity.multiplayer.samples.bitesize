@@ -1,22 +1,23 @@
 using System;
 using System.Linq;
+using UnityEngine.DedicatedServer;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
     internal class CommandLineArgumentsParser
     {
-        /// <summary>
-        /// Port, assigned to the spawned process (most likely a game server)
-        /// </summary>
-        public int ServerPort { get; private set; }
+        public int Port { get; }
+        const int k_DefaultPort = 7777;
+        public int TargetFramerate { get; }
+        const int k_DefaultTargetFramerate = 30;
 
         readonly string[] m_Args;
-        Arguments m_Names;
 
         /// <summary>
         /// Initializes the CommandLineArgumentsParser
         /// </summary>
         public CommandLineArgumentsParser() : this(Environment.GetCommandLineArgs()) { }
+        
         /// <summary>
         /// Initializes the CommandLineArgumentsParser
         /// </summary>
@@ -29,10 +30,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 m_Args = new string[0];
             }
 
-            m_Names = new Arguments();
-            //args = new string[] { "Game.exe", $"{names.ServerPort}", "9999" }; //uncomment to test behaviour in the editor, where the command line is not available
-            // todo use Dedicated Server package's CLI Arguments defaults for this
-            ServerPort = ExtractValueInt(m_Names.ServerPort, -1);
+            Port = Arguments.Port.HasValue ? Arguments.Port.Value : k_DefaultPort;
+            TargetFramerate = Arguments.TargetFramerate.HasValue ? Arguments.TargetFramerate.Value : k_DefaultTargetFramerate;
         }
 
         /// <summary>
@@ -40,6 +39,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
         /// </summary>
         /// <param name="argName"></param>
         /// <param name="defaultValue"></param>
+        /// <param name="argumentAndValueAreSeparated"></param>
         /// <returns></returns>
         string ExtractValue(string argName, string defaultValue = null, bool argumentAndValueAreSeparated = true)
         {
@@ -68,11 +68,6 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             var number = ExtractValue(argName, defaultValue.ToString());
             return Convert.ToInt32(number);
-        }
-
-        internal class Arguments
-        {
-            internal string ServerPort => "-port";
         }
     }
 }

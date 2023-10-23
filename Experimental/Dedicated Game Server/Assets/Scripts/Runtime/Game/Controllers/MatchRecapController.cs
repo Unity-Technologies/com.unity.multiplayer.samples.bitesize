@@ -8,7 +8,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void Awake()
         {
-            AddListener<MatchResultComputedEvent>(OnClientMatchResultComputed);
+            AddListener<EndMatchEvent>(OnClientEndMatch);
             AddListener<MatchEndAcknowledgedEvent>(OnClientMatchEndAcknowledged);
         }
 
@@ -19,13 +19,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         internal override void RemoveListeners()
         {
-            RemoveListener<MatchResultComputedEvent>(OnClientMatchResultComputed);
+            RemoveListener<EndMatchEvent>(OnClientEndMatch);
             RemoveListener<MatchEndAcknowledgedEvent>(OnClientMatchEndAcknowledged);
         }
 
-        void OnClientMatchResultComputed(MatchResultComputedEvent evt)
+        void OnClientEndMatch(EndMatchEvent evt)
         {
-            View.OnClientMatchResultComputed(evt);
+            View.OnClientEndMatch(evt);
         }
 
         void OnClientMatchEndAcknowledged(MatchEndAcknowledgedEvent evt)

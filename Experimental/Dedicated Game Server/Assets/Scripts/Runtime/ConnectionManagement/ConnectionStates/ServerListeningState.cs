@@ -1,3 +1,4 @@
+using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,10 +12,12 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
     {
         // used in ApprovalCheck. This is intended as a bit of light protection against DOS attacks that rely on sending silly big buffers of garbage.
         const int k_MaxConnectPayload = 1024;
-        
+        bool m_MinPlayerConnected = false;
+
         public override void Enter()
         {
             // todo setup gsh to receive matchmaker tickets
+            m_MinPlayerConnected = false;
         }
 
         public override void Exit() { }
@@ -22,11 +25,26 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public override void OnClientConnected(ulong clientId)
         {
             Debug.Log($"Client {clientId} connected to the server.");
+            
+            if (!m_MinPlayerConnected && ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Configuration.GetInt(ConfigurationManager.k_MinPlayers))
+            {
+                m_MinPlayerConnected = true;
+                ConnectionManager.EventManager.Broadcast(new MinNumberPlayersConnectedEvent());
+            }
         }
 
         public override void OnClientDisconnect(ulong clientId)
         {
             Debug.Log($"Client {clientId} disconnected from the server.");
+            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count == 1 && ConnectionManager.NetworkManager.ConnectedClients.ContainsKey(clientId))
+            {
+                // This callback is invoked by the last client disconnecting from the server
+                // Here the networked session is shut down immediately, but if we wanted to allow reconnection, we could
+                // include a delay in a coroutine that could get cancelled when a client reconnects
+                Debug.Log("All clients have disconnected from the server. Shutting down");
+                ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.ServerEndedSession });
+                ConnectionManager.ChangeState(ConnectionManager.m_Offline);
+            }
         }
 
         public override void OnUserRequestedShutdown()
@@ -91,7 +109,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         
         ConnectStatus GetConnectStatus(ConnectionPayload connectionPayload)
         {
-            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= 10/*ConnectionManager.MaxConnectedPlayers*/)
+            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Configuration.GetInt(ConfigurationManager.k_MaxPlayers))
             {
                 return ConnectStatus.ServerFull;
             }

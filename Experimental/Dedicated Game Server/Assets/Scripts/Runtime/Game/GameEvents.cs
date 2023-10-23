@@ -2,15 +2,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 {
     internal class WinButtonClickedEvent : AppEvent { }
     internal class MatchEndAcknowledgedEvent : AppEvent { }
-    internal class CountdownChangedEvent : AppEvent
-    {
-        public uint NewValue { get; private set; }
 
-        public CountdownChangedEvent(uint newValue)
-        {
-            NewValue = newValue;
-        }
-    }
     internal class StartMatchEvent : AppEvent
     {
         public bool IsServer { get; private set; }
@@ -23,23 +15,5 @@ namespace Unity.DedicatedGameServerSample.Runtime
         }
     }
 
-    internal class EndMatchEvent : AppEvent
-    {
-        public Player Winner { get; private set; }
-
-        public EndMatchEvent(Player winner)
-        {
-            Winner = winner;
-        }
-    }
-
-    internal class MatchResultComputedEvent : AppEvent
-    {
-        public ulong WinnerClientId { get; private set; }
-
-        public MatchResultComputedEvent(ulong winnerClientId)
-        {
-            WinnerClientId = winnerClientId;
-        }
-    }
+    internal class EndMatchEvent : AppEvent { }
 }

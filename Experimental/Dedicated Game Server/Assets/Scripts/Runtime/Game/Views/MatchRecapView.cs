@@ -1,4 +1,3 @@
-using Unity.Netcode;
 using UnityEngine.UIElements;
 
 namespace Unity.DedicatedGameServerSample.Runtime
@@ -28,17 +27,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_ContinueButton.UnregisterCallback<ClickEvent>(OnClickContinue);
         }
 
-        internal void OnClientMatchResultComputed(MatchResultComputedEvent evt)
+        internal void OnClientEndMatch(EndMatchEvent evt)
         {
             gameObject.SetActive(true);
-            if (evt.WinnerClientId == ulong.MaxValue)
-            {
-                m_ResultLabel.text = "it's a draw!";
-                return;
-            }
-
-            bool localPlayerWon = NetworkManager.Singleton.LocalClientId == evt.WinnerClientId;
-            m_ResultLabel.text = localPlayerWon ? "You win!" : "You lose";
+            m_ResultLabel.text = "Game Over!";
         }
 
         void OnClickContinue(ClickEvent evt)

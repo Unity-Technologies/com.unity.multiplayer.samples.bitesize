@@ -8,7 +8,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
     /// <summary>
     /// Utility class for JSON files
     /// </summary>
-    public class JSONUtilities : MonoBehaviour
+    public class JSONUtilities
     {
         /// <summary>
         /// Reads the content of a JSON file and returns it

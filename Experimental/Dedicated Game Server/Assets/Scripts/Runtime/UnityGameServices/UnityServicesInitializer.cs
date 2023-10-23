@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Core;
 using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
+using Unity.Multiplayer;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime
@@ -9,6 +10,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
     ///<summary>
     ///Initializes all the Unity Services managers
     ///</summary>
+    [MultiplayerRoleRestricted]
     internal class UnityServicesInitializer : MonoBehaviour
     {
         public const string k_ServerID = "SERVER";
@@ -29,6 +31,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 return;
             }
+
             Instance = this;
             DontDestroyOnLoad(gameObject);
             StartCoroutine(InitializeOnConfigurationLoaded());
@@ -42,28 +45,27 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         async void OnConfigurationLoaded(ConfigurationManager configuration)
         {
-            await Initialize(configuration.GetBool(ConfigurationManager.k_ModeServer) ? k_ServerID
-                                                                                      : string.Empty);
+            await Initialize(MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Client);
         }
 
-        async public Task Initialize(string externalPlayerID)
+        async public Task Initialize(bool isClient)
         {
             string serviceProfileName = ProfileManager.Singleton.Profile;
-            
-            if (!string.IsNullOrEmpty(externalPlayerID))
+
+            if (!isClient)
             {
-                UnityServices.ExternalUserId = externalPlayerID;
+                UnityServices.ExternalUserId = k_ServerID;
             }
 
             bool signedIn = await UnityServiceAuthenticator.TrySignInAsync(k_Environment, serviceProfileName);
-            MetagameApplication.Instance.Broadcast(new PlayerSignedIn(signedIn, UnityServiceAuthenticator.PlayerId));
-            if (!signedIn)
+            
+            if (isClient)
             {
-                return;
-            }
-            if (externalPlayerID != k_ServerID)
-            {
-                InitializeClientOnlyServices();
+                MetagameApplication.Instance.Broadcast(new PlayerSignedIn(signedIn, UnityServiceAuthenticator.PlayerId));
+                if (signedIn)
+                {
+                    InitializeClientOnlyServices();
+                }
             }
         }
 

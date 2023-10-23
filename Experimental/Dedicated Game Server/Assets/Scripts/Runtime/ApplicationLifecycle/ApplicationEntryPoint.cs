@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
+using Unity.Multiplayer;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,11 +10,13 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 {
     /// <summary>
     /// This is the application's entry point, where the configuration is read and the application is initialized
-    /// accordingly. This also keeps references to systems that must persist throughout the application's lifecyle.
+    /// accordingly. This also keeps references to systems that must persist throughout the application's lifecycle.
     /// </summary>
+    [MultiplayerRoleRestricted]
     public class ApplicationEntryPoint : MonoBehaviour
     {
         const string k_DefaultServerListenAddress = "0.0.0.0";
+        const string k_DefaultClientAutoConnectServerAddress = "127.0.0.1";
         public static ApplicationEntryPoint Singleton { get; private set; }
         public static ConfigurationManager Configuration { get; private set; }
 
@@ -43,6 +48,12 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
             {
                 Singleton = this;
             }
+            m_ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+        }
+
+        void OnDestroy()
+        {
+            m_ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -70,23 +81,27 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         void InitializeNetworkLogic()
         {
             var commandLineArgumentsParser = new CommandLineArgumentsParser();
-            ushort listeningPort = commandLineArgumentsParser.ServerPort != -1 ? (ushort)commandLineArgumentsParser.ServerPort
-                                                                               : (ushort)Configuration.GetInt(ConfigurationManager.k_Port);
-            if (Configuration.GetBool(ConfigurationManager.k_ModeServer)) //todo replace those configs with ContentSelection profiles
+            ushort listeningPort = (ushort) commandLineArgumentsParser.Port;
+            switch (MultiplayerRolesManager.ActiveMultiplayerRoleMask)
             {
-                SceneManager.LoadScene("GameScene01");
-                Application.targetFrameRate = 60; //lock framerate on dedicated servers
-                m_ConnectionManager.StartServerIP(k_DefaultServerListenAddress, listeningPort);
-                return;
-            }
-
-            if (Configuration.GetBool(ConfigurationManager.k_ModeClient))
-            {
-                SceneManager.LoadScene("MetagameScene");
-                if (AutoConnectOnStartup)
+                case MultiplayerRoleFlags.Server:
+                    //lock framerate on dedicated servers
+                    Application.targetFrameRate = commandLineArgumentsParser.TargetFramerate;
+                    QualitySettings.vSyncCount = 0;
+                    m_ConnectionManager.StartServerIP(k_DefaultServerListenAddress, listeningPort);
+                    NetworkManager.Singleton.SceneManager.LoadScene("GameScene01", LoadSceneMode.Single);
+                    break;
+                case MultiplayerRoleFlags.Client:
                 {
-                    m_ConnectionManager.StartClient(Configuration.GetString(ConfigurationManager.k_ServerIP), listeningPort);
+                    SceneManager.LoadScene("MetagameScene");
+                    if (AutoConnectOnStartup)
+                    {
+                        m_ConnectionManager.StartClient(k_DefaultClientAutoConnectServerAddress, listeningPort);
+                    }
+                    break;
                 }
+                case MultiplayerRoleFlags.ClientAndServer:
+                    throw new ArgumentOutOfRangeException("MultiplayerRole", "ClientAndServer is an invalid multiplayer role in this sample. Please select the Client or Server role.");
             }
         }
 
@@ -97,6 +112,31 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         {
             m_ConnectionManager.RequestShutdown();
             SceneManager.LoadScene("MetagameScene");
+        }
+
+        void OnConnectionEvent(ConnectionEvent evt)
+        {
+            if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
+            {
+                switch (evt.status)
+                {
+                    case ConnectStatus.GenericDisconnect:
+                    case ConnectStatus.ServerEndedSession:
+                    case ConnectStatus.StartServerFailed:
+                        // If server ends networked session or fails to start, quit the application
+                        Quit();
+                        break;
+                }
+            }
+        }
+
+        void Quit()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
     }
 }

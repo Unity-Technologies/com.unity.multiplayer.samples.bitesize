@@ -2,11 +2,13 @@
     "name": "com.unity.sample.dedicated-server.editor",
     "rootNamespace": "Unity.DedicatedGameServerSample.Editor",
     "references": [
-        "GUID:1491147abca9d7d4bb7105af628b223e",
-        "GUID:2663f133034a5d948a7f4ae04020cff1",
-        "GUID:bb4e5350789f09a40bde25a5f53d6d58",
-        "GUID:f2d49d9fa7e7eb3418e39723a7d3b92f",
-        "GUID:478a2357cc57436488a56e564b08d223"
+        "Unity.Netcode.Runtime",
+        "com.unity.sample.dedicated-server.shared",
+        "com.unity.sample.dedicated-server.runtime",
+        "Unity.Networking.Transport",
+        "Unity.EditorCoroutines.Editor",
+        "Unity.DedicatedServer.MultiplayerRoles",
+        "Unity.DedicatedServer.MultiplayerRoles.Editor"
     ],
     "includePlatforms": [
         "Editor"

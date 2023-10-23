@@ -51,6 +51,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 utp.SetConnectionData(m_IPAddress, m_Port);
                 
                 // NGO's StartServer launches everything
+                Debug.Log($"Starting server, listening on {m_IPAddress} with port {m_Port}");
                 if (!ConnectionManager.NetworkManager.StartServer())
                 {
                     StartServerFailed();

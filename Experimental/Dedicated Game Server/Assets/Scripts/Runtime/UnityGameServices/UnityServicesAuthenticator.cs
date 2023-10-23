@@ -53,7 +53,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             var initializationOptions = new InitializationOptions();
             initializationOptions.SetEnvironmentName(environment);
 
-            if (profileName != null)
+            if (!string.IsNullOrEmpty(profileName))
             {
                 //ProfileNames can't contain non-alphanumeric characters
                 var rgx = new Regex("[^a-zA-Z0-9 - _]");

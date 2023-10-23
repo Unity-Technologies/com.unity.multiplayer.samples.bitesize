@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime
@@ -8,27 +9,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
     public class GameModel : Model<GameApplication>
     {
         [SerializeField]
-        GameState m_GameState;
+        NetworkedGameState m_NetworkedGameState;
 
-        public GameState GameState { get => m_GameState; }
-        
-        internal const uint k_CountdownStartValue = 60;
-        internal uint CountdownValue
-        {
-            get => m_GameState.matchCountdown.Value;
-            set => m_GameState.matchCountdown.Value = value;
-        }
+        public NetworkedGameState NetworkedGameState => m_NetworkedGameState;
 
-        internal bool MatchEnded
-        {
-            get => m_GameState.matchEnded.Value;
-            set => m_GameState.matchEnded.Value = value;
-        }
-        
-        internal bool MatchStarted
-        {
-            get => m_GameState.matchStarted.Value;
-            set => m_GameState.matchStarted.Value = value;
-        }
+        internal NetworkVariable<uint> Countdown => m_NetworkedGameState.matchCountdown;
+
+        internal NetworkVariable<bool> MatchEnded => m_NetworkedGameState.matchEnded;
+
+        internal bool MatchStarted => m_NetworkedGameState.matchStarted.Value;
     }
 }

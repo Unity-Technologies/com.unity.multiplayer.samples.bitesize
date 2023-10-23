@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Unity.DedicatedGameServerSample.Runtime;
 using Unity.DedicatedGameServerSample.Runtime.SimpleJSON;
 using Unity.DedicatedGameServerSample.Shared;
-using Unity.Networking.Transport;
+using Unity.Multiplayer;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,58 +14,58 @@ namespace Unity.DedicatedGameServerSample.Editor
     ///</summary>
     public class BootstrapperWindow : EditorWindow
     {
-        enum NetworkMode
-        {
-            Server,
-            Client
-        }
-
         ConfigurationManager Configuration
         {
             get
             {
                 try
                 {
-                    if (configuration == null)
+                    if (m_Configuration == null)
                     {
-                        configuration = new ConfigurationManager(ConfigurationManager.k_DevConfigFile);
+                        m_Configuration = new ConfigurationManager(ConfigurationManager.k_DevConfigFile);
                     }
-                    return configuration;
+                    return m_Configuration;
                 }
                 catch (System.IO.FileNotFoundException)
                 {
-                    configuration = new ConfigurationManager(ConfigurationManager.k_DevConfigFile, true);
+                    m_Configuration = new ConfigurationManager(ConfigurationManager.k_DevConfigFile, true);
                     ResetConfigurationToDefault();
-                    return configuration;
+                    return m_Configuration;
                 }
             }
         }
-        ConfigurationManager configuration;
-
-        /// <summary>
-        /// Will the game start as Host when autoconnecting?
-        /// </summary>
-        bool ServerOnly { get { return Configuration.GetBool(ConfigurationManager.k_ModeServer); } set { Configuration.Set(ConfigurationManager.k_ModeServer, value); } }
-        bool AutoClient { get { return Configuration.GetBool(ConfigurationManager.k_ModeClient); } set { Configuration.Set(ConfigurationManager.k_ModeClient, value); } }
+        ConfigurationManager m_Configuration;
 
         /// <summary>
         /// How many players are needed to fill a game instance?
         /// </summary>
-        public int MaxPlayers { get { return Configuration.GetInt(ConfigurationManager.k_MaxPlayers); } set { Configuration.Set(ConfigurationManager.k_MaxPlayers, value); } }
-        string ServerIP { get { return Configuration.GetString(ConfigurationManager.k_ServerIP); } set { Configuration.Set(ConfigurationManager.k_ServerIP, value); } }
-        ushort ServerPort { get { return (ushort)Configuration.GetInt(ConfigurationManager.k_Port); } set { Configuration.Set(ConfigurationManager.k_Port, value); } }
+        public int MinPlayers
+        {
+            get => Configuration.GetInt(ConfigurationManager.k_MinPlayers);
+            set => Configuration.Set(ConfigurationManager.k_MinPlayers, value);
+        }
+
+        /// <summary>
+        /// How many players can a game instance accept?
+        /// </summary>
+        public int MaxPlayers
+        {
+            get => Configuration.GetInt(ConfigurationManager.k_MaxPlayers);
+            set => Configuration.Set(ConfigurationManager.k_MaxPlayers, value);
+        }
 
         /// <summary>
         /// Will the game run in a specific mode when started in the editor?
         /// </summary>
-        public bool AutoConnectOnStartup { get { return Configuration.GetBool(ConfigurationManager.k_Autoconnect); } set { Configuration.Set(ConfigurationManager.k_Autoconnect, value); } }
+        public bool AutoConnectOnStartup
+        {
+            get => Configuration.GetBool(ConfigurationManager.k_Autoconnect);
+            set => Configuration.Set(ConfigurationManager.k_Autoconnect, value);
+        }
 
-        NetworkMode m_NetworkMode;
         VisualElement m_Root;
-        TextField m_ServerIPTextField;
         Toggle m_AutoConnectOnStartupToggle;
-        EnumField m_NetworkModeList;
-        IntegerField m_ServerPort;
+        IntegerField m_MinPlayers;
         IntegerField m_MaxPlayers;
 
         /// <summary>
@@ -76,18 +76,6 @@ namespace Unity.DedicatedGameServerSample.Editor
         {
             var window = GetWindow<BootstrapperWindow>("Bootstrapper");
             window.Show();
-        }
-
-        void SetupBackend()
-        {
-            if (ServerOnly)
-            {
-                m_NetworkMode = NetworkMode.Server;
-            }
-            else if (AutoClient)
-            {
-                m_NetworkMode = NetworkMode.Client;
-            }
         }
 
         void SetupFrontend()
@@ -101,49 +89,27 @@ namespace Unity.DedicatedGameServerSample.Editor
             VisualTreeAsset playerVisualTree = UIElementsUtils.LoadUXML("Bootstrapper");
             playerVisualTree.CloneTree(m_Root);
 
-            m_NetworkModeList = UIElementsUtils.SetupEnumField("lstMode", "Autoconnect Mode", OnNetworkModeChanged, m_Root, m_NetworkMode);
-            UIElementsUtils.SetupButton("btnReset", OnClickReset, true, m_Root, "Reset to default", "Resets the state of the configuration file to the one of the template provided in Resources/DefaultConfigurations/");
-            m_ServerPort = UIElementsUtils.SetupIntegerField("intServerPort", ServerPort, OnServerPortChanged, m_Root);
-            m_ServerIPTextField = UIElementsUtils.SetupStringField("strServerIP", "Server IP", ServerIP, OnServerIPChanged, m_Root);
+            UIElementsUtils.SetupButton("btnReset", OnClickReset, true, m_Root, "Reset to default", "Resets the state of the m_Configuration file to the one of the template provided in Resources/DefaultConfigurations/");
             m_AutoConnectOnStartupToggle = UIElementsUtils.SetupToggle("tglAutoConnectOnStartup", "Autoconnect on startup", string.Empty, AutoConnectOnStartup, OnAutoConnectChanged, m_Root);
+            m_MinPlayers = UIElementsUtils.SetupIntegerField("intMinPlayers", MinPlayers, OnMinPlayersChanged, m_Root);
             m_MaxPlayers = UIElementsUtils.SetupIntegerField("intMaxPlayers", MaxPlayers, OnMaxPlayersChanged, m_Root);
             UpdateUIAccordingToNetworkMode();
         }
 
-        void OnNetworkModeChanged(ChangeEvent<System.Enum> evt)
-        {
-            m_NetworkMode = (NetworkMode)evt.newValue;
-            ApplyChanges();
-        }
-
         void UpdateUIAccordingToNetworkMode()
         {
-            UIElementsUtils.Show(m_MaxPlayers);
-            if (AutoConnectOnStartup)
+            UIElementsUtils.Show(m_AutoConnectOnStartupToggle);
+            if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
             {
-                UIElementsUtils.Show(m_NetworkModeList);
-                UIElementsUtils.Show(m_ServerIPTextField);
-                UIElementsUtils.Show(m_ServerPort);
-
-                switch (m_NetworkMode)
-                {
-                    case NetworkMode.Client:
-                        UIElementsUtils.Hide(m_MaxPlayers);
-                        break;
-                    case NetworkMode.Server:
-                        UIElementsUtils.Hide(m_ServerIPTextField);
-                        UIElementsUtils.Hide(m_ServerPort);
-                        break;
-                    default:
-                        break;
-                }
+                UIElementsUtils.Show(m_MinPlayers);
+                UIElementsUtils.Show(m_MaxPlayers);
             }
             else
             {
-                UIElementsUtils.Hide(m_NetworkModeList);
-                UIElementsUtils.Hide(m_ServerIPTextField);
-                UIElementsUtils.Hide(m_ServerPort);
+                UIElementsUtils.Hide(m_MinPlayers);
+                UIElementsUtils.Hide(m_MaxPlayers);
             }
+            
         }
 
         void OnAutoConnectChanged(ChangeEvent<bool> evt)
@@ -152,32 +118,9 @@ namespace Unity.DedicatedGameServerSample.Editor
             ApplyChanges();
         }
 
-        void OnServerIPChanged(ChangeEvent<string> evt)
+        void OnMinPlayersChanged(ChangeEvent<int> evt)
         {
-            const string defaultIP = "127.0.0.1";
-            string newIP = evt.newValue.ToLower();
-            if (string.IsNullOrEmpty(newIP))
-            {
-                newIP = defaultIP;
-                m_ServerIPTextField.SetValueWithoutNotify(newIP);
-            }
-
-            if (newIP != defaultIP)
-            {
-                if (!NetworkEndpoint.TryParse(newIP, ServerPort, out NetworkEndpoint networkEndPoint))
-                {
-                    Debug.LogError($"{newIP} is not a valid IPv4 address!");
-                    return;
-                }
-                Debug.Log($"{newIP} is a valid IPv4 address!");
-            }
-            ServerIP = newIP;
-            ApplyChanges();
-        }
-
-        void OnServerPortChanged(ChangeEvent<int> evt)
-        {
-            ServerPort = (ushort)evt.newValue;
+            MinPlayers = evt.newValue;
             ApplyChanges();
         }
 
@@ -187,14 +130,13 @@ namespace Unity.DedicatedGameServerSample.Editor
             ApplyChanges();
         }
 
-        void OnClickReset()
+        async void OnClickReset()
         {
-            Task.Run(ResetConfigurationToDefaultAsync).ConfigureAwait(false);
+            await ResetConfigurationToDefaultAsync();
         }
 
         void OnEnable()
         {
-            SetupBackend();
             SetupFrontend();
         }
 
@@ -205,31 +147,19 @@ namespace Unity.DedicatedGameServerSample.Editor
 
         async Task ResetConfigurationToDefaultAsync()
         {
-            JSONNode json = await JSONUtilities.ReadJSONFromFileAsync(ConfigurationManager.k_DevConfigFileDefault).ConfigureAwait(false);
+            JSONNode json = await JSONUtilities.ReadJSONFromFileAsync(ConfigurationManager.k_DevConfigFileDefault);
             OverwriteConfigurationAndReload(json);
         }
 
         void OverwriteConfigurationAndReload(JSONNode json)
         {
-            configuration.Overwrite(json);
+            m_Configuration.Overwrite(json);
             OnEnable();
             ApplyChanges();
         }
 
         void ApplyChanges()
         {
-            switch (m_NetworkMode)
-            {
-                case NetworkMode.Server:
-                    ServerOnly = true;
-                    AutoClient = false;
-                    break;
-                case NetworkMode.Client:
-                    ServerOnly = false;
-                    AutoClient = true;
-                    break;
-            }
-
             Configuration.SaveAsJSON(false);
             UpdateUIAccordingToNetworkMode();
         }

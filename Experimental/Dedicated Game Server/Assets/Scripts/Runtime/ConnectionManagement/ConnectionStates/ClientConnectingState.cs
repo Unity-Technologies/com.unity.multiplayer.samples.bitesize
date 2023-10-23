@@ -64,7 +64,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 SetConnectionPayload();
                 var utp = (UnityTransport)ConnectionManager.NetworkManager.NetworkConfig.NetworkTransport;
                 utp.SetConnectionData(m_IPAddress, m_Port);
-
+                
+                Debug.Log($"Attempting to connect to server on {m_IPAddress} with port {m_Port}");
                 // NGO's StartClient launches everything
                 if (!ConnectionManager.NetworkManager.StartClient())
                 {
