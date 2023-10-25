@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Unity.DedicatedGameServerSample.Runtime;
 using Unity.Multiplayer;
@@ -129,52 +128,40 @@ namespace Unity.DedicatedGameServerSample.Editor
             return null;
         }
 
-        [MenuItem("Multiplayer/Builds/All")]
-        static void MakeServerAndClientBuilds()
+        internal static void BuildServer(BuildTarget target, string locationPathName, bool exitApplicationOnFailure = false)
         {
-            BuildServerStandaloneLinux();
-            BuildClientStandaloneWindows64();
-        }
-
-        [MenuItem("Multiplayer/Builds/Server_StandaloneLinux")]
-        static void BuildServerStandaloneLinux()
-        {
-            Debug.Log("Building server");
-            DeleteOutputFolder("Server/");
+            Debug.Log($"Building {target} server");
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Server, BuildTarget.StandaloneLinux64);
             EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Server, MultiplayerRoleFlags.Server);
-            BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
-                locationPathName = "Builds/Server/Game.x86_64",
-                target = BuildTarget.StandaloneLinux64,
+                locationPathName = locationPathName,
+                target = target,
                 subtarget = (int) StandaloneBuildSubtarget.Server,
             });
+            if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
+            {
+                EditorApplication.Exit(1);
+            }
         }
 
-        [MenuItem("Multiplayer/Builds/Client_StandaloneWindows64")]
-        static void BuildClientStandaloneWindows64()
+        internal static void BuildClient(BuildTarget target, string locationPathName, bool exitApplicationOnFailure = false)
         {
-            Debug.Log("Building client");
-            DeleteOutputFolder("Client/");
-            EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, BuildTarget.StandaloneWindows64);
+            Debug.Log($"Building {target} client");
+            
+            EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, target);
             EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Standalone, MultiplayerRoleFlags.Client);
-            BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
-                locationPathName = "Builds/Client/Game.exe",
-                target = BuildTarget.StandaloneWindows64,
+                locationPathName = locationPathName,
+                target = target,
                 subtarget = (int) StandaloneBuildSubtarget.Player,
             });
-        }
-
-        static void DeleteOutputFolder(string pathFromBuildsFolder)
-        {
-            string projectPath = Path.Combine(Application.dataPath, "..", "Builds", pathFromBuildsFolder);
-            var directoryInfo = new FileInfo(projectPath).Directory;
-            if (directoryInfo != null && directoryInfo.Exists)
+            if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
             {
-                directoryInfo.Delete(true);
+                EditorApplication.Exit(1);
             }
         }
 

@@ -30,8 +30,8 @@ namespace Unity.DedicatedGameServerSample.Editor
         const string k_PreviousSceneKey = "PreviousScene";
         const string k_ShouldLoadBootstrapSceneKey = "LoadBootstrapScene";
 
-        const string k_LoadBootstrapSceneOnPlay = "Multiplayer/Load Bootstrap Scene On Play";
-        const string k_DoNotLoadBootstrapSceneOnPlay = "Multiplayer/Don't Load Bootstrap Scene On Play";
+        const string k_LoadBootstrapSceneOnPlay = "DedicatedGameServerSample/Load Bootstrap Scene On Play";
+        const string k_DoNotLoadBootstrapSceneOnPlay = "DedicatedGameServerSample/Don't Load Bootstrap Scene On Play";
 
         const string k_TestRunnerSceneName = "InitTestScene";
 

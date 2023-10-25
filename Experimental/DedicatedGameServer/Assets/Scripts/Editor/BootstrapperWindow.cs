@@ -71,7 +71,7 @@ namespace Unity.DedicatedGameServerSample.Editor
         /// <summary>
         /// Opens the bootstrapper window
         /// </summary>
-        [MenuItem("Multiplayer/Bootstrapper")]
+        [MenuItem("DedicatedGameServerSample/Bootstrapper")]
         public static void ShowWindow()
         {
             var window = GetWindow<BootstrapperWindow>("Bootstrapper");
