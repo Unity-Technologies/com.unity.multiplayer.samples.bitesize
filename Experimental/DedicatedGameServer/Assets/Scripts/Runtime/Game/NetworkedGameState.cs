@@ -13,6 +13,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
     public class NetworkedGameState : NetworkBehaviour
     {
         internal NetworkVariable<uint> matchCountdown = new NetworkVariable<uint>();
+        internal NetworkVariable<int> playersConnected = new NetworkVariable<int>();
         internal NetworkVariable<bool> matchEnded = new NetworkVariable<bool>();
         internal NetworkVariable<bool> matchStarted = new NetworkVariable<bool>();
 
@@ -31,6 +32,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 matchStarted.Value = false;
                 matchEnded.Value = false;
                 ConnectionManager.EventManager.AddListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
+                ConnectionManager.EventManager.AddListener<ClientConnectedEvent>(OnServerClientConnected);
+                ConnectionManager.EventManager.AddListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
             }
         }
 
@@ -56,6 +59,16 @@ namespace Unity.DedicatedGameServerSample.Runtime
             Debug.Log("[Server] Starting match!");
             matchStarted.Value = true;
             OnServerStartCountdown();
+        }
+
+        void OnServerClientConnected(ClientConnectedEvent evt)
+        {
+            playersConnected.Value++;
+        }
+
+        void OnServerClientDisconnected(ClientDisconnectedEvent evt)
+        {
+            playersConnected.Value--;
         }
 
         void OnServerStartCountdown()

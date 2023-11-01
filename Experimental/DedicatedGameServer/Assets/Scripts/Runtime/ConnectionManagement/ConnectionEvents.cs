@@ -49,5 +49,9 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public ConnectStatus status;
     }
     
+    public class ClientConnectedEvent: AppEvent { }
+    
+    public class ClientDisconnectedEvent: AppEvent { }
+    
     public class MinNumberPlayersConnectedEvent: AppEvent { }
 }

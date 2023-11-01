@@ -89,7 +89,6 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                     Application.targetFrameRate = commandLineArgumentsParser.TargetFramerate;
                     QualitySettings.vSyncCount = 0;
                     m_ConnectionManager.StartServerIP(k_DefaultServerListenAddress, listeningPort);
-                    NetworkManager.Singleton.SceneManager.LoadScene("GameScene01", LoadSceneMode.Single);
                     break;
                 case MultiplayerRoleFlags.Client:
                 {
@@ -105,15 +104,6 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
             }
         }
 
-        /// <summary>
-        /// Performs cleanup operation after a game
-        /// </summary>
-        internal void OnClientDoPostMatchCleanupAndReturnToMetagame()
-        {
-            m_ConnectionManager.RequestShutdown();
-            SceneManager.LoadScene("MetagameScene");
-        }
-
         void OnConnectionEvent(ConnectionEvent evt)
         {
             if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
@@ -125,6 +115,21 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                     case ConnectStatus.StartServerFailed:
                         // If server ends networked session or fails to start, quit the application
                         Quit();
+                        break;
+                    case ConnectStatus.Success:
+                        // If server successfully starts, load game scene
+                        NetworkManager.Singleton.SceneManager.LoadScene("GameScene01", LoadSceneMode.Single);
+                        break;
+                }
+            }
+            else
+            {
+                switch (evt.status)
+                {
+                    case ConnectStatus.GenericDisconnect:
+                    case ConnectStatus.UserRequestedDisconnect:
+                        // If client is disconnected, return to metagame scene
+                        SceneManager.LoadScene("MetagameScene");
                         break;
                 }
             }

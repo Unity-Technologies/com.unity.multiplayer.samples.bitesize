@@ -25,6 +25,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public override void OnClientConnected(ulong clientId)
         {
             Debug.Log($"Client {clientId} connected to the server.");
+            ConnectionManager.EventManager.Broadcast(new ClientConnectedEvent());
             
             if (!m_MinPlayerConnected && ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Configuration.GetInt(ConfigurationManager.k_MinPlayers))
             {
@@ -36,6 +37,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public override void OnClientDisconnect(ulong clientId)
         {
             Debug.Log($"Client {clientId} disconnected from the server.");
+            ConnectionManager.EventManager.Broadcast(new ClientDisconnectedEvent());
             if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count == 1 && ConnectionManager.NetworkManager.ConnectedClients.ContainsKey(clientId))
             {
                 // This callback is invoked by the last client disconnecting from the server

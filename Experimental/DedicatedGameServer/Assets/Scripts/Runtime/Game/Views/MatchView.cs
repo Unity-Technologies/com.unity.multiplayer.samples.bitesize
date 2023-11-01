@@ -5,9 +5,9 @@ namespace Unity.DedicatedGameServerSample.Runtime
 {
     internal class MatchView : View<GameApplication>
     {
-        Button m_WinButton;
-        Label m_TimerLabel;
         UIDocument m_UIDocument;
+        Label m_TimerLabel;
+        Label m_PlayersConnectedLabel;
 
         void Awake()
         {
@@ -17,15 +17,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
         void OnEnable()
         {
             var root = m_UIDocument.rootVisualElement;
-            m_WinButton = root.Q<Button>("winButton");
-            m_WinButton.RegisterCallback<ClickEvent>(OnClickWin);
-
             m_TimerLabel = root.Query<Label>("timerLabel");
-        }
-
-        void OnDisable()
-        {
-            m_WinButton.UnregisterCallback<ClickEvent>(OnClickWin);
+            m_PlayersConnectedLabel = root.Query<Label>("playersConnectedLabel");
         }
 
         internal void OnCountdownChanged(uint newValue)
@@ -33,9 +26,9 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_TimerLabel.text = string.Format("{0:D2}:{1:D2}", newValue / 60, newValue % 60);
         }
 
-        void OnClickWin(ClickEvent evt)
+        internal void OnPlayersConnectedChanged(int newValue)
         {
-            Broadcast(new WinButtonClickedEvent());
+            m_PlayersConnectedLabel.text = $"Players connected: {newValue}";
         }
     }
 }

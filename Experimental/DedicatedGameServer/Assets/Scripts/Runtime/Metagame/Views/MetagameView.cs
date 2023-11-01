@@ -26,18 +26,5 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         [SerializeField]
         ClientConnectingView m_ClientConnectingView;
-
-        void Start()
-        {
-            if (App.IsDedicatedServer)
-            {
-                OnDedicatedServerDestroyViews();
-            }
-        }
-
-        void OnDedicatedServerDestroyViews()
-        {
-            Destroy(gameObject);
-        }
     }
 }

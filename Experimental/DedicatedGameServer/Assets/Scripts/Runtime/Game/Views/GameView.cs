@@ -11,23 +11,15 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         [SerializeField]
         MatchView m_MatchView;
+        
+        internal GameMenuView Menu => m_GameMenuView;
+
+        [SerializeField]
+        GameMenuView m_GameMenuView;
 
         internal MatchRecapView MatchRecap => m_MatchRecapView;
 
         [SerializeField]
         MatchRecapView m_MatchRecapView;
-
-        void Awake()
-        {
-            if (App.IsDedicatedServer)
-            {
-                OnDedicatedServerDestroyViews();
-            }
-        }
-
-        void OnDedicatedServerDestroyViews()
-        {
-            Destroy(gameObject);
-        }
     }
 }

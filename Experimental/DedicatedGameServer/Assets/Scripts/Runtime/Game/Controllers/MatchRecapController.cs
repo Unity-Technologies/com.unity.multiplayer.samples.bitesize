@@ -25,12 +25,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnClientEndMatch(EndMatchEvent evt)
         {
+            App.Model.PlayerCharacter.SetInputsActive(false);
             View.OnClientEndMatch(evt);
         }
 
         void OnClientMatchEndAcknowledged(MatchEndAcknowledgedEvent evt)
         {
-            ApplicationEntryPoint.Singleton.OnClientDoPostMatchCleanupAndReturnToMetagame();
+            ApplicationEntryPoint.Singleton.ConnectionManager.RequestShutdown();
         }
     }
 }

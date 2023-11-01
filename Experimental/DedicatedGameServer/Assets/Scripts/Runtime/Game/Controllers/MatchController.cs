@@ -1,4 +1,5 @@
 using System;
+using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
@@ -9,8 +10,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
         void Awake()
         {
             App.Model.Countdown.OnValueChanged += OnCountdownChanged;
+            App.Model.PlayersConnected.OnValueChanged += OnPlayersConnectedChanged;
             App.Model.MatchEnded.OnValueChanged += OnMatchEnded;
-            AddListener<WinButtonClickedEvent>(OnClientWinButtonClicked);
         }
 
         void OnDestroy()
@@ -21,13 +22,18 @@ namespace Unity.DedicatedGameServerSample.Runtime
         internal override void RemoveListeners()
         {
             App.Model.Countdown.OnValueChanged -= OnCountdownChanged;
+            App.Model.PlayersConnected.OnValueChanged -= OnPlayersConnectedChanged;
             App.Model.MatchEnded.OnValueChanged -= OnMatchEnded;
-            RemoveListener<WinButtonClickedEvent>(OnClientWinButtonClicked);
         }
 
         void OnCountdownChanged(uint previousValue, uint newValue)
         {
             View.OnCountdownChanged(newValue);
+        }
+
+        void OnPlayersConnectedChanged(int previousValue, int newValue)
+        {
+            View.OnPlayersConnectedChanged(newValue);
         }
 
         void OnMatchEnded(bool previousValue, bool newValue)
@@ -37,7 +43,5 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 Broadcast(new EndMatchEvent());
             }
         }
-
-        void OnClientWinButtonClicked(WinButtonClickedEvent evt) { } // todo replace with disconnect logic when updating UI
     }
 }
