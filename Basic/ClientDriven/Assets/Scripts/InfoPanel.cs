@@ -2,7 +2,9 @@ using System.Text.RegularExpressions;
 using TMPro;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +17,8 @@ public class InfoPanel : MonoBehaviour
     public TMP_InputField PacketDelayMSInputField;
     public TMP_InputField PacketJitterMSInputField;
     public TMP_InputField PacketDropRateInputField;
-
+    public TMP_InputField RelayClientJoinCode;
+    
     private UnityTransport.SimulatorParameters SimulatorParameters;
     private ClientNetworkTransform ClientNetworkTransform;
 
@@ -48,7 +51,7 @@ public class InfoPanel : MonoBehaviour
             QuatCompToggle.isOn = !QuatCompToggle.isOn;
         }
         
-        PacketDelayMSInputField = GameObject.Find("PacketDelayInputField").GetComponent<TMP_InputField>();
+        RelayClientJoinCode = GameObject.Find("RelayClientTextField").GetComponent<TMP_InputField>();
     }
     private void OnClientPlayerNetworkSpawn(ClientNetworkTransform clientNetworkTransform)
     {
@@ -133,5 +136,11 @@ public class InfoPanel : MonoBehaviour
             SimulatorParameters.PacketDropRate = packetDropRate;
         }
         NetworkManager.Singleton.GetComponent<UnityTransport>().DebugSimulator = SimulatorParameters;
+    }
+    
+    public void OnUpdateJoinRelayAsClient()
+    {
+        var test = RelayClientJoinCode.text;
+        //NetworkManager.Singleton.StartClientWithRelay(RelayClientJoinCode.text);
     }
 }
