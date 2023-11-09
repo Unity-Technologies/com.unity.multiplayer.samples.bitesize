@@ -1049,7 +1049,7 @@ GameObject:
   - component: {fileID: 533285802}
   - component: {fileID: 533285801}
   m_Layer: 0
-  m_Name: RelayClientTextField
+  m_Name: PacketDelayInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1157,7 +1157,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7616418622323388811}
         m_TargetAssemblyTypeName: InfoPanel, Assembly-CSharp
-        m_MethodName: OnUpdateJoinRelayAsClient
+        m_MethodName: OnUpdatePacketDelay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2867,7 +2867,7 @@ GameObject:
   - component: {fileID: 1742131482}
   - component: {fileID: 1742131481}
   m_Layer: 0
-  m_Name: RelayClientTextLabel
+  m_Name: PacketDelayTextLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2912,7 +2912,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Relay Join Code
+  m_text: Debug Simulator MS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5038,7 +5038,6 @@ MonoBehaviour:
   PacketDelayMSInputField: {fileID: 533285801}
   PacketJitterMSInputField: {fileID: 334014642}
   PacketDropRateInputField: {fileID: 256540559}
-  RelayClientJoinCode: {fileID: 0}
 --- !u!1 &7616418622323388912
 GameObject:
   m_ObjectHideFlags: 0

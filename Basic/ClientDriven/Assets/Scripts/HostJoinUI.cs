@@ -1,7 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -28,8 +27,6 @@ public class HostJoinUI : MonoBehaviour
     
     TextField m_PortTextField;
     
-    TextField m_RelayClientJoinCode;
-    
     void Awake()
     {
         m_MainMenuRootVisualElement = m_MainMenuUIDocument.rootVisualElement;
@@ -40,19 +37,17 @@ public class HostJoinUI : MonoBehaviour
         m_ServerButton = m_MainMenuRootVisualElement.Query<Button>("ServerButton");
         m_IPAddressTextField = m_MainMenuRootVisualElement.Query<TextField>("IPAddressField");
         m_PortTextField = m_MainMenuRootVisualElement.Query<TextField>("PortField");
-        m_RelayClientJoinCode = m_MainMenuRootVisualElement.Query<TextField>("RelayClientTextField");
         
         m_HostButton.clickable.clickedWithEventInfo += StartHost;
         m_ServerButton.clickable.clickedWithEventInfo += StartServer;
-        m_ClientButton.clickable.clickedWithEventInfo += CustomStartClientWithRelay;
+        m_ClientButton.clickable.clickedWithEventInfo += StartClient;
     }
 
     void OnDestroy()
     {
         m_HostButton.clickable.clickedWithEventInfo -= StartHost;
         m_ServerButton.clickable.clickedWithEventInfo -= StartServer;
-        //m_ClientButton.clickable.clickedWithEventInfo -= StartClient;
-        m_ClientButton.clickable.clickedWithEventInfo -= CustomStartClientWithRelay;
+        m_ClientButton.clickable.clickedWithEventInfo -= StartClient;
     }
 
     void Start()
@@ -81,20 +76,6 @@ public class HostJoinUI : MonoBehaviour
             ToggleInGameUI(true);
             ToggleMainMenuUI(false);
         }
-    }
-
-    void CustomStartClientWithRelay(EventBase obj)
-    {
-        //var test = m_RelayClientJoinCode.text;
-        var test1 = m_IPAddressTextField.text;
-        NetworkManagerRelayIntegration.StartClientWithRelay(NetworkManager.Singleton, test1);
-        ToggleInGameUI(true);
-        ToggleMainMenuUI(false);
-        /*if (result)
-        {
-            ToggleInGameUI(true);
-            ToggleMainMenuUI(false);
-        }*/
     }
 
     void StartServer(EventBase obj)
