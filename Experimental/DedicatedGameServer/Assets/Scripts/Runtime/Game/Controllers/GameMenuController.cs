@@ -49,7 +49,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnMenuToggled(MenuToggleEvent evt)
         {
-            SetMenuActive(!App.Model.m_MenuVisible);
+            SetMenuActive(!App.Model.MenuVisible);
         }
 
         void OnClientEndMatch(EndMatchEvent evt)
@@ -68,7 +68,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 View.Hide();
             }
-            App.Model.m_MenuVisible = isMenuActive;
+            App.Model.MenuVisible = isMenuActive;
             App.Model.PlayerCharacter.SetInputsActive(!isMenuActive);
         }
     }

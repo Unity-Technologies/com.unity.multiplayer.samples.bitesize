@@ -13,15 +13,11 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         public NetworkedGameState NetworkedGameState => m_NetworkedGameState;
 
-        internal NetworkVariable<uint> Countdown => m_NetworkedGameState.matchCountdown;
-        
-        internal NetworkVariable<int> PlayersConnected => m_NetworkedGameState.playersConnected;
+        public NetworkVariable<uint> Countdown => m_NetworkedGameState.matchCountdown;
 
-        internal NetworkVariable<bool> MatchEnded => m_NetworkedGameState.matchEnded;
+        public NetworkVariable<int> PlayersConnected => m_NetworkedGameState.playersConnected;
 
-        internal bool MatchStarted => m_NetworkedGameState.matchStarted.Value;
-
-        internal bool m_MenuVisible = false;
+        public bool MenuVisible { get; set; } = false;
 
         public ClientPlayerCharacter PlayerCharacter { get; set; }
     }

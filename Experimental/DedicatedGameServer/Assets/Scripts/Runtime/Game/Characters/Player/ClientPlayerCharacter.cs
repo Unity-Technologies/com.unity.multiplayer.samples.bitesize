@@ -45,12 +45,12 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_PlayerInput.enabled = false;
             m_CapsuleCollider.enabled = false;
             m_CharacterController.enabled = false;
-            m_NetworkedPlayerCharacter.OnNetworkSpawned += OnNetworkSpawn;
+            m_NetworkedPlayerCharacter.OnNetworkSpawnHook += OnNetworkSpawn;
         }
 
         void OnDestroy()
         {
-            m_NetworkedPlayerCharacter.OnNetworkSpawned -= OnNetworkSpawn;
+            m_NetworkedPlayerCharacter.OnNetworkSpawnHook -= OnNetworkSpawn;
         }
 
         void OnNetworkSpawn()

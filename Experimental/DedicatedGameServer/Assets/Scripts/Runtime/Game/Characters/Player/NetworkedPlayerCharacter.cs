@@ -1,16 +1,16 @@
 using System;
+using Unity.Multiplayer.Samples.Utilities;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
     /// <summary>
-    /// Networked script to handle player character logic that needs to be networked. In charge of spawning (which happens server side in Netcode)
+    /// Networked script to handle player character logic that needs to be networked.
+    /// Inherits from NetcodeHooks class to provide hooks for spawn and despawn events.
     /// </summary>
-    public class NetworkedPlayerCharacter : NetworkBehaviour
+    public class NetworkedPlayerCharacter : NetcodeHooks
     {
-        public event Action OnNetworkSpawned;
-
         public override void OnNetworkSpawn()
         {
             if (IsServer)
@@ -19,7 +19,6 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
 
             base.OnNetworkSpawn();
-            OnNetworkSpawned?.Invoke();
         }
 
         void OnServerSpawnPlayer()

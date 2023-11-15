@@ -1,5 +1,4 @@
 using System;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
@@ -11,7 +10,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             App.Model.Countdown.OnValueChanged += OnCountdownChanged;
             App.Model.PlayersConnected.OnValueChanged += OnPlayersConnectedChanged;
-            App.Model.MatchEnded.OnValueChanged += OnMatchEnded;
+            App.Model.NetworkedGameState.OnMatchStarted += OnMatchStarted;
+            App.Model.NetworkedGameState.OnMatchEnded += OnMatchEnded;
         }
 
         void OnDestroy()
@@ -23,7 +23,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             App.Model.Countdown.OnValueChanged -= OnCountdownChanged;
             App.Model.PlayersConnected.OnValueChanged -= OnPlayersConnectedChanged;
-            App.Model.MatchEnded.OnValueChanged -= OnMatchEnded;
+            App.Model.NetworkedGameState.OnMatchStarted -= OnMatchStarted;
+            App.Model.NetworkedGameState.OnMatchEnded -= OnMatchEnded;
         }
 
         void OnCountdownChanged(uint previousValue, uint newValue)
@@ -36,12 +37,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
             View.OnPlayersConnectedChanged(newValue);
         }
 
-        void OnMatchEnded(bool previousValue, bool newValue)
+        void OnMatchEnded()
         {
-            if (newValue)
-            {
-                Broadcast(new EndMatchEvent());
-            }
+            Broadcast(new EndMatchEvent());
+        }
+
+        void OnMatchStarted()
+        {
+            Broadcast(new StartMatchEvent());
         }
     }
 }

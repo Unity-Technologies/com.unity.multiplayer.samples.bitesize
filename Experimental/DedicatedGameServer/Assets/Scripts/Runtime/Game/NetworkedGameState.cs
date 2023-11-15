@@ -14,8 +14,12 @@ namespace Unity.DedicatedGameServerSample.Runtime
     {
         internal NetworkVariable<uint> matchCountdown = new NetworkVariable<uint>();
         internal NetworkVariable<int> playersConnected = new NetworkVariable<int>();
-        internal NetworkVariable<bool> matchEnded = new NetworkVariable<bool>();
-        internal NetworkVariable<bool> matchStarted = new NetworkVariable<bool>();
+        bool m_MatchStarted;
+        bool m_MatchEnded;
+
+        internal event Action OnMatchStarted;
+        internal event Action OnMatchEnded;
+        
 
         const uint k_CountdownStartValue = 60;
         const float k_ShutdownDelayAfterCountdownEnd = 30;
@@ -29,11 +33,11 @@ namespace Unity.DedicatedGameServerSample.Runtime
             base.OnNetworkSpawn();
             if (IsServer)
             {
-                matchStarted.Value = false;
-                matchEnded.Value = false;
+                m_MatchEnded = false;
                 ConnectionManager.EventManager.AddListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
                 ConnectionManager.EventManager.AddListener<ClientConnectedEvent>(OnServerClientConnected);
                 ConnectionManager.EventManager.AddListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
+                playersConnected.Value = NetworkManager.ConnectedClientsIds.Count;
             }
         }
 
@@ -52,23 +56,25 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnServerMinNumberPlayersConnected(MinNumberPlayersConnectedEvent evt)
         {
-            if (matchStarted.Value)
+            if (m_MatchStarted)
             {
                 throw new Exception("[Server] Match has already started and received an unexpected MinNumberPlayersConnectedEvent");
             }
             Debug.Log("[Server] Starting match!");
-            matchStarted.Value = true;
+            m_MatchStarted = true;
             OnServerStartCountdown();
+            StartMatchClientRpc();
+            OnMatchStarted?.Invoke();
         }
 
         void OnServerClientConnected(ClientConnectedEvent evt)
         {
-            playersConnected.Value++;
+            playersConnected.Value = NetworkManager.ConnectedClientsIds.Count;
         }
 
         void OnServerClientDisconnected(ClientDisconnectedEvent evt)
         {
-            playersConnected.Value--;
+            playersConnected.Value = NetworkManager.ConnectedClientsIds.Count;
         }
 
         void OnServerStartCountdown()
@@ -77,10 +83,16 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_CountdownRoutine = StartCoroutine(OnServerDoCountdown());
         }
 
+        [ClientRpc]
+        void StartMatchClientRpc()
+        {
+            OnMatchStarted?.Invoke();
+        }
+
         IEnumerator OnServerDoCountdown()
         {
             while (matchCountdown.Value > 0
-                && !matchEnded.Value)
+                && !m_MatchEnded)
             {
                 yield return CoroutinesHelper.OneSecond;
                 matchCountdown.Value--;
@@ -90,14 +102,21 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnServerCountdownExpired()
         {
-            matchEnded.Value = true;
+            m_MatchEnded = true;
             if (m_CountdownRoutine != null)
             {
                 StopCoroutine(m_CountdownRoutine);
                 m_CountdownRoutine = null;
             }
 
+            EndMatchClientRpc();
             StartCoroutine(CoroutinesHelper.WaitAndDo(new WaitForSeconds(k_ShutdownDelayAfterCountdownEnd), () => ConnectionManager.RequestShutdown()));
+        }
+
+        [ClientRpc]
+        void EndMatchClientRpc()
+        {
+            OnMatchEnded?.Invoke();
         }
     }
 }

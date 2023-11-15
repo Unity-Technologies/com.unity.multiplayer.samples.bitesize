@@ -8,7 +8,7 @@ test_platforms:
     flavor: b1.large
   - name: mac
     type: Unity::VM::osx
-    image: package-ci/mac:stable
+    image: package-ci/macos-12:v4
     platform: StandaloneOSX
     flavor: m1.mac
 

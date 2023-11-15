@@ -35,7 +35,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                 return startAutomatically;
             }
         }
-        
+
         [SerializeField]
         ConnectionManager m_ConnectionManager;
 
@@ -128,6 +128,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                 {
                     case ConnectStatus.GenericDisconnect:
                     case ConnectStatus.UserRequestedDisconnect:
+                    case ConnectStatus.ServerEndedSession:
                         // If client is disconnected, return to metagame scene
                         SceneManager.LoadScene("MetagameScene");
                         break;
