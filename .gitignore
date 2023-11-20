@@ -12,6 +12,9 @@ upm-ci.log
 # Never ignore Asset meta data...
 !/[Aa]ssets/**/*.meta
 
+# Ignore ParrelSync clones for easier development
+**/*_clone_*/*
+
 # User's project-specific settings implemented using Settings Manager
 **/ProjectSettings/Packages
 
