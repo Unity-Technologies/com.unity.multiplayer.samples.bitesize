@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] - yyyy-mm-dd
+## [1.4.0] - 2023-09-25
 
 ### 2D Space Shooter
 
