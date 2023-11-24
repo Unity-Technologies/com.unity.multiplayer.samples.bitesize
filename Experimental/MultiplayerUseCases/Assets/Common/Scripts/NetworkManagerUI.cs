@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -63,13 +62,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void Disconnect()
         {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                foreach (var item in NetworkManager.Singleton.SpawnManager.SpawnedObjectsList.ToList())
-                {
-                    item.Despawn(false);
-                }
-            }
             NetworkManager.Singleton.Shutdown();
             EnableAndHighlightButtons(null, true);
             SetButtonStateAndColor(m_DisconnectButton, false, false);
