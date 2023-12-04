@@ -1,5 +1,12 @@
 # Changelog
 
+## [unreleased] yyyy-mm-dd
+
+### Bitesize Samples Repository
+
+#### Cleanup
+- Removed the usage of System.Linq across the repository (#146)
+
 ## [1.4.0] - 2023-09-25
 
 ### 2D Space Shooter
