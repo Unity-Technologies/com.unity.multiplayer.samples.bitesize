@@ -11,17 +11,30 @@ public class ServerStove : ServerObjectWithIngredientType
 
     public override void OnNetworkSpawn()
     {
+        if (IsOwner)
+        {
+            currentIngredientType.Value = IngredientType;
+        }
+
         base.OnNetworkSpawn();
+
+#if !NGO_DAMODE
         if (!IsServer)
         {
             enabled = false;
             return;
         }
+#endif
+
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!IsServer) return;
+        if (!IsSpawned || !NetworkObject.HasAuthority)
+        {
+            return;
+        }
+
 
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();
         if (ingredient == null)
@@ -40,16 +53,13 @@ public class ServerStove : ServerObjectWithIngredientType
             return;
         }
 
-        ingredient.GetComponent<Rigidbody>().isKinematic = true;
-        ingredient.transform.position = m_IngredientCookingLocation.position;
-        StartCoroutine(StartCooking(ingredient));
-    }
-
-    IEnumerator StartCooking(ServerIngredient ingredient)
-    {
-        yield return new WaitForSeconds(m_CookingTime);
-
-        ingredient.currentIngredientType.Value = currentIngredientType.Value;
-        ingredient.GetComponent<Rigidbody>().isKinematic = false;
+        if (ingredient.NetworkObject.HasAuthority)
+        {
+            ingredient.OnCookIngredient(currentIngredientType.Value, m_IngredientCookingLocation.position, m_CookingTime);
+        }
+        else
+        {
+            ingredient.CookIngedientServerRpc(currentIngredientType.Value, m_IngredientCookingLocation.position, m_CookingTime);
+        }
     }
 }

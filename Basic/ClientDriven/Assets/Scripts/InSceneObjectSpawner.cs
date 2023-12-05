@@ -15,8 +15,6 @@ public class InSceneObjectSpawner : NetworkBehaviour
     private void Awake()
     {
         GetComponent<NetworkObject>().SetSceneObjectStatus(true);
-        
-
     }
 
     public override void OnNetworkSpawn()
@@ -26,30 +24,34 @@ public class InSceneObjectSpawner : NetworkBehaviour
             if (!HasSpawnedInstance.Value)
             {
                 var goInstance = Instantiate(ObjectToSpawn);
+                goInstance.transform.position = transform.position;
+                goInstance.transform.rotation = transform.rotation;
+                goInstance.transform.localScale = transform.localScale;
                 Instance = goInstance.GetComponent<NetworkObject>();
+                Instance.SetSceneObjectStatus(true);
                 Instance.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable);
                 Instance.DontDestroyWithOwner = true;
                 Instance.SetSceneObjectStatus();
                 Debug.Log($"[{gameObject.name}][Is Scene Owner] Spawning {ObjectToSpawn.name} pool.");
                 Instance.SpawnWithOwnership(NetworkManager.LocalClientId, false);
-                Instance.GetComponent<NetworkTransform>().SetState(transform.position, transform.rotation, null, false);
+                
                 HasSpawnedInstance.Value = true;
             }
             else
             {
-                if (DestroyNonOwnerInstance)
-                {
-                    Destroy(Instance);
-                }
+                //if (DestroyNonOwnerInstance)
+                //{
+                //    Destroy(Instance);
+                //}
                 Debug.Log($"[{gameObject.name}][Is Scene Owner] Skipping spawn of {ObjectToSpawn.name} pool as it is already spawned.");
             }
         }
         else
         {
-            if (DestroyNonOwnerInstance)
-            {
-                Destroy(Instance);
-            }
+            //if (DestroyNonOwnerInstance)
+            //{
+            //    Destroy(Instance);
+            //}
             Debug.Log($"[{gameObject.name}] Non-scene owner skipping spawn of {ObjectToSpawn.name} pool.");
         }
         base.OnNetworkSpawn();

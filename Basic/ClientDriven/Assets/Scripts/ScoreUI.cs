@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,6 +24,24 @@ public class ScoreUI : MonoBehaviour
 
     void Start()
     {
+#if NGO_DAMODE
+        StartCoroutine(WaitForScoreTracker());
+#else
+        OnScoreChanged(0, m_ScoreTracker.ReplicatedScore.Value);
+        m_ScoreTracker.ReplicatedScore.OnValueChanged += OnScoreChanged;
+#endif
+    }
+
+    private IEnumerator WaitForScoreTracker()
+    {
+        var waitTime = new WaitForSeconds(0.1f);
+
+        while(!ServerScoreReplicator.Instance)
+        {
+            yield return waitTime;
+        }
+
+        m_ScoreTracker = ServerScoreReplicator.Instance;
         OnScoreChanged(0, m_ScoreTracker.ReplicatedScore.Value);
         m_ScoreTracker.ReplicatedScore.OnValueChanged += OnScoreChanged;
     }

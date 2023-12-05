@@ -52,12 +52,12 @@ public class DebugSimulationSlider : MonoBehaviour
 
     private void OnStarted()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     private void OnStopped(bool value)
     {
-        this.gameObject.SetActive(true);
+        gameObject?.SetActive(true);
     }
 
     private void SetParameter(int value)
@@ -67,7 +67,7 @@ public class DebugSimulationSlider : MonoBehaviour
             return;
         }
         var debugSim = m_UnityTransport.DebugSimulator;
-        switch(DebugSimType)
+        switch (DebugSimType)
         {
             case SimulationParameters.DropRate:
                 {

@@ -2,9 +2,17 @@ using Unity.Netcode;
 
 public class ServerScoreReplicator : NetworkBehaviour
 {
+
+    public static ServerScoreReplicator Instance { get; private set; }
+
     NetworkVariable<int> m_ReplicatedScore = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-    public NetworkVariable<int> ReplicatedScore => m_ReplicatedScore; 
+    public NetworkVariable<int> ReplicatedScore => m_ReplicatedScore;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public override void OnNetworkSpawn()
     {

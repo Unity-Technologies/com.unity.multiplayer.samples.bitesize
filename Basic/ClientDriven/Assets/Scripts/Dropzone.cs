@@ -12,21 +12,49 @@ public class Dropzone : ServerObjectWithIngredientType
     [SerializeField]
     float m_AnimationOffset;
 
+    private void Awake()
+    {
+#if NGO_DAMODE
+        m_ScoreTracker = ServerScoreReplicator.Instance;
+#endif
+    }
+
     void Start()
     {
         m_Animator.SetFloat("Offset", m_AnimationOffset);
     }
 
+#if NGO_DAMODE
+    public override void OnNetworkSpawn()
+    {
+        m_ScoreTracker = ServerScoreReplicator.Instance;
+        base.OnNetworkSpawn();
+    }
+
+    protected override bool ShouldAutoAdjustScale()
+    {
+        return false;
+    }
+
+    // Only disable in non-distributed authority mode
+    protected override bool ShouldDisable()
+    {
+        return (!IsServer && !NetworkManager.DistributedAuthorityMode);
+    }
+
+#endif
+
     void OnTriggerEnter(Collider other)
     {
-#if NGO_DAMODE
-        if ((NetworkManager.DistributedAuthorityMode && !IsOwner) || (!NetworkManager.DistributedAuthorityMode && !IsServer))
+        if (!IsSpawned) 
         {
             return;
         }
-#else
-        if (!IsServer) return;
-#endif
+
+        if (!NetworkObject.HasAuthority)
+        {
+            return;
+        }
 
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();
         if (ingredient == null)
@@ -39,17 +67,19 @@ public class Dropzone : ServerObjectWithIngredientType
             return;
         }
 
-        m_ScoreTracker.Score += 1;
-        if (ingredient.NetworkObject.IsOwner)
+        if (!m_ScoreTracker)
         {
-            ingredient.NetworkObject.Despawn(destroy: true);
+            m_ScoreTracker = ServerScoreReplicator.Instance;
+        }
+        m_ScoreTracker.Score += 1;
+
+        if (ingredient.NetworkObject.HasAuthority)
+        {
+            ingredient.Consumed();
         }
         else
         {
             ingredient.DespawnServerIngedientServerRpc();
         }
-        
     }
-
-
 }
