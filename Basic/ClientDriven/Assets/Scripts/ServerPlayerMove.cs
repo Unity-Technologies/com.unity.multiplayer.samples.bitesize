@@ -10,6 +10,8 @@ using UnityEngine;
 [DefaultExecutionOrder(0)] // before client component
 public class ServerPlayerMove : NetworkBehaviour
 {
+
+
     public NetworkVariable<bool> isObjectPickedUp = new NetworkVariable<bool>();
 
     NetworkObject m_PickedUpObject;
@@ -20,14 +22,32 @@ public class ServerPlayerMove : NetworkBehaviour
     
     public GameObject IngredientHoldPosition;
 
-    // DOC START HERE
-    public override void OnNetworkSpawn()
+    private void Awake()
     {
+#if NGO_DAMODE
+        if (NetworkManager.Singleton.NetworkConfig.SessionMode == SessionModeTypes.DistributedAuthority)
+        {
+            isObjectPickedUp = new NetworkVariable<bool>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        }
+#endif
+    }
+
+// DOC START HERE
+public override void OnNetworkSpawn()
+    {
+#if NGO_DAMODE
+        if (!IsOwner)
+        {
+            enabled = false;
+            return;
+        }
+#else
         if (!IsServer)
         {
             enabled = false;
             return;
         }
+#endif
 
         OnServerSpawnPlayer();
 
@@ -66,11 +86,17 @@ public class ServerPlayerMove : NetworkBehaviour
     [ServerRpc]
     public void PickupObjectServerRpc(ulong objToPickupID)
     {
+        OnPickupObject(objToPickupID);
+    }
+
+
+    public void OnPickupObject(ulong objToPickupID)
+    {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
         if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
         if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
-        {            
+        {
             m_PickedUpObject = networkObject;
             m_PickedUpObject.GetComponent<NetworkTransform>().InLocalSpace = true;
             m_PickedUpObject.transform.position = IngredientHoldPosition.transform.position;
@@ -90,8 +116,7 @@ public class ServerPlayerMove : NetworkBehaviour
         isObjectPickedUp.Value = false;
     }
 
-    [ServerRpc]
-    public void DropObjectServerRpc()
+    public void OnDropObject()
     {
         if (m_PickedUpObject != null)
         {
@@ -105,9 +130,14 @@ public class ServerPlayerMove : NetworkBehaviour
             rigidBody.velocity = playerController.velocity;
             m_PickedUpObject.GetComponent<Rigidbody>().AddForce(IngredientHoldPosition.transform.forward * 20f, ForceMode.Impulse);
             m_PickedUpObject = null;
+            isObjectPickedUp.Value = false;
         }
+    }
 
-        isObjectPickedUp.Value = false;
+    [ServerRpc]
+    public void DropObjectServerRpc()
+    {
+        OnDropObject();
     }
     // DOC END HERE
 }

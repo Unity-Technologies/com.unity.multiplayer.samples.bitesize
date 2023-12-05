@@ -62,6 +62,10 @@ public class DebugSimulationSlider : MonoBehaviour
 
     private void SetParameter(int value)
     {
+        if (m_UnityTransport == null)
+        {
+            return;
+        }
         var debugSim = m_UnityTransport.DebugSimulator;
         switch(DebugSimType)
         {

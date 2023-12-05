@@ -77,7 +77,18 @@ public class ClientPlayerMove : NetworkBehaviour
     {
         if (m_ServerPlayerMove.isObjectPickedUp.Value)
         {
+#if NGO_DAMODE
+            if (NetworkManager.DistributedAuthorityMode)
+            {
+                m_ServerPlayerMove.OnDropObject();
+            }
+            else
+            {
+                m_ServerPlayerMove.DropObjectServerRpc();
+            }
+#else
             m_ServerPlayerMove.DropObjectServerRpc();
+#endif
         }
         else
         {
@@ -96,10 +107,19 @@ public class ClientPlayerMove : NetworkBehaviour
                 if (ingredient != null)
                 {
                     var netObj = ingredient.NetworkObjectId;
+#if NGO_DAMODE
+                    if (!ingredient.IsOwner)
+                    {
+                        ingredient.NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
+                    }
+                    m_ServerPlayerMove.OnPickupObject(netObj);
+#else
                     // Netcode is a server driven SDK. Shared objects like ingredients need to be interacted with using ServerRPCs. Therefore, there
                     // will be a delay between the button press and the reparenting.
                     // This delay could be hidden with some animations/sounds/VFX that would be triggered here.
                     m_ServerPlayerMove.PickupObjectServerRpc(netObj);
+#endif
+
                 }
             }
         }

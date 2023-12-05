@@ -161,9 +161,16 @@ public class HostJoinUI : MonoBehaviour
         var sanitizedPortText = Sanitize(m_PortTextField.text);
 
         ushort.TryParse(sanitizedPortText, out var port);
-
+#if NGO_DAMODE
+        if (!NetworkManager.Singleton.DistributedAuthorityMode)
+        {
+            var utp = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
+            utp.SetConnectionData(sanitizedIPText, port);
+        }
+#else
         var utp = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
         utp.SetConnectionData(sanitizedIPText, port);
+#endif
     }
 
     /// <summary>

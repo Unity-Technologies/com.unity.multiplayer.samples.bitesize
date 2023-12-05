@@ -19,7 +19,15 @@ public class Dropzone : ServerObjectWithIngredientType
 
     void OnTriggerEnter(Collider other)
     {
+#if NGO_DAMODE
+        if ((NetworkManager.DistributedAuthorityMode && !IsOwner) || (!NetworkManager.DistributedAuthorityMode && !IsServer))
+        {
+            return;
+        }
+#else
         if (!IsServer) return;
+#endif
+
         var ingredient = other.gameObject.GetComponent<ServerIngredient>();
         if (ingredient == null)
         {
@@ -32,6 +40,16 @@ public class Dropzone : ServerObjectWithIngredientType
         }
 
         m_ScoreTracker.Score += 1;
-        ingredient.NetworkObject.Despawn(destroy: true);
+        if (ingredient.NetworkObject.IsOwner)
+        {
+            ingredient.NetworkObject.Despawn(destroy: true);
+        }
+        else
+        {
+            ingredient.DespawnServerIngedientServerRpc();
+        }
+        
     }
+
+
 }

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ServerIngredient : ServerObjectWithIngredientType
 {
+    [ServerRpc(RequireOwnership = false)]
+    public void DespawnServerIngedientServerRpc()
+    {
+        NetworkObject.Despawn(destroy: true);
+    }
 }
 
 public enum IngredientType
