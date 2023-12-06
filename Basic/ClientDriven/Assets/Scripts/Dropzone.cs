@@ -4,9 +4,6 @@ using UnityEngine;
 public class Dropzone : ServerObjectWithIngredientType
 {
     [SerializeField]
-    ServerScoreReplicator m_ScoreTracker;
-
-    [SerializeField]
     Animator m_Animator;
 
     [SerializeField]
@@ -14,9 +11,6 @@ public class Dropzone : ServerObjectWithIngredientType
 
     private void Awake()
     {
-#if NGO_DAMODE
-        m_ScoreTracker = ServerScoreReplicator.Instance;
-#endif
     }
 
     void Start()
@@ -25,12 +19,6 @@ public class Dropzone : ServerObjectWithIngredientType
     }
 
 #if NGO_DAMODE
-    public override void OnNetworkSpawn()
-    {
-        m_ScoreTracker = ServerScoreReplicator.Instance;
-        base.OnNetworkSpawn();
-    }
-
     protected override bool ShouldAutoAdjustScale()
     {
         return false;
@@ -67,11 +55,7 @@ public class Dropzone : ServerObjectWithIngredientType
             return;
         }
 
-        if (!m_ScoreTracker)
-        {
-            m_ScoreTracker = ServerScoreReplicator.Instance;
-        }
-        m_ScoreTracker.Score += 1;
+        ServerScoreReplicator.Instance.Score += 1;
 
         if (ingredient.NetworkObject.HasAuthority)
         {

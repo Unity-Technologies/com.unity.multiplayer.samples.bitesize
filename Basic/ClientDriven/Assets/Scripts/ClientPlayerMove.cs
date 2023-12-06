@@ -77,7 +77,6 @@ public class ClientPlayerMove : NetworkBehaviour
     {
         if (m_ServerPlayerMove.isObjectPickedUp.Value)
         {
-#if NGO_DAMODE
             if (NetworkManager.DistributedAuthorityMode)
             {
                 m_ServerPlayerMove.OnDropObject();
@@ -86,9 +85,6 @@ public class ClientPlayerMove : NetworkBehaviour
             {
                 m_ServerPlayerMove.DropObjectServerRpc();
             }
-#else
-            m_ServerPlayerMove.DropObjectServerRpc();
-#endif
         }
         else
         {
@@ -108,7 +104,7 @@ public class ClientPlayerMove : NetworkBehaviour
                 {
                     var netObj = ingredient.NetworkObjectId;
 #if NGO_DAMODE
-                    if (!ingredient.IsOwner)
+                    if (!ingredient.NetworkObject.HasAuthority)
                     {
                         ingredient.NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
                     }

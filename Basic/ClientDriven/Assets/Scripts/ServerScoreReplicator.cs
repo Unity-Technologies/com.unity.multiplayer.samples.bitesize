@@ -8,28 +8,18 @@ public class ServerScoreReplicator : NetworkBehaviour
     NetworkVariable<int> m_ReplicatedScore = new NetworkVariable<int>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     public NetworkVariable<int> ReplicatedScore => m_ReplicatedScore;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     public override void OnNetworkSpawn()
     {
+        Instance = this;
         base.OnNetworkSpawn();
+
+#if !NGO_DAMODE
         if (!IsServer)
         {
             enabled = false;
             return;
         }
-    }
-
-    public void AddScorePoint()
-    {
-        if (IsOwner) 
-        { 
-            
-        }
+#endif
     }
 
     public int Score
