@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 public class Bullet : NetworkBehaviour
@@ -12,10 +11,23 @@ public class Bullet : NetworkBehaviour
 
     public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
     {
+        if (!IsSpawned)
+        {
+            return;
+        }
         m_Owner = owner;
         m_Damage = damage;
         m_Bounce = bounce;
+#if NGO_DAMODE
+
+        if (IsOwner)
+        {
+            // This is bad code don't use invoke.
+            Invoke(nameof(DestroyBullet), lifetime);
+        }
+#else
         if (IsServer)
+#endif
         {
             // This is bad code don't use invoke.
             Invoke(nameof(DestroyBullet), lifetime);
@@ -25,7 +37,11 @@ public class Bullet : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         // This is inefficient, the explosion object could be pooled.
+#if NGO_DAMODE
+        GameObject ex = Instantiate(explosionParticle, transform.position, Quaternion.identity);
+#else
         GameObject ex = Instantiate(explosionParticle, transform.position + new Vector3(0, 0, -2), Quaternion.identity);
+#endif
     }
 
     private void DestroyBullet()
@@ -35,17 +51,40 @@ public class Bullet : NetworkBehaviour
             return;
         }
 
+        NetworkObject.DeferredDespawnTick = NetworkManager.ServerTime.Tick + 3;
         NetworkObject.Despawn(true);
     }
 
     public void SetVelocity(Vector2 velocity)
     {
+        if (!IsSpawned)
+        {
+            return;
+        }
+#if NGO_DAMODE
+        if (IsOwner)
+#else
         if (IsServer)
+#endif
+
         {
             var bulletRb = GetComponent<Rigidbody2D>();
             bulletRb.velocity = velocity;
-            SetVelocityClientRpc(velocity);
+            if (NetworkManager.DistributedAuthorityMode)
+            {
+                OnSetVelocity(velocity);
+            }
+            else
+            {
+                SetVelocityClientRpc(velocity);
+            }
         }
+    }
+
+    private void OnSetVelocity(Vector2 velocity)
+    {
+        var bulletRb = GetComponent<Rigidbody2D>();
+        bulletRb.velocity = velocity;
     }
 
     [ClientRpc]
@@ -53,8 +92,7 @@ public class Bullet : NetworkBehaviour
     {
         if (!IsHost)
         {
-            var bulletRb = GetComponent<Rigidbody2D>();
-            bulletRb.velocity = velocity;
+            OnSetVelocity(velocity);
         }
     }
 
@@ -62,10 +100,17 @@ public class Bullet : NetworkBehaviour
     {
         var otherObject = other.gameObject;
 
+#if NGO_DAMODE
+        if (!NetworkObject.IsSpawned || !IsOwner)
+        {
+            return;
+        }
+#else
         if (!NetworkManager.Singleton.IsServer || !NetworkObject.IsSpawned)
         {
             return;
         }
+#endif
 
         if (otherObject.TryGetComponent<Asteroid>(out var asteroid))
         {
@@ -83,7 +128,18 @@ public class Bullet : NetworkBehaviour
         {
             if (shipControl != m_Owner)
             {
+#if NGO_DAMODE
+                if (NetworkManager.DistributedAuthorityMode)
+                {
+                    shipControl.TakeDamageServerRpc(m_Damage);
+                }
+                else
+                {
+                    shipControl.TakeDamage(m_Damage);
+                }
+#else
                 shipControl.TakeDamage(m_Damage);
+#endif
                 DestroyBullet();
             }
         }

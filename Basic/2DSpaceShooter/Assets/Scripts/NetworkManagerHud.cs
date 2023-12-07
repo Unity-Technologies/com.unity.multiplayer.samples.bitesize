@@ -74,8 +74,14 @@ public class NetworkManagerHud : MonoBehaviour
     
     void Start()
     {
-        m_Transport = (UnityTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
-        
+#if NGO_DAMODE
+        if (!m_NetworkManager.NetworkConfig.UseCMBService)
+        {
+            m_Transport = (UnityTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
+        }
+#endif
+
+
         ShowMainMenuUI(true);
         ShowInGameUI(false);
         ShowStatusText(false);
@@ -123,7 +129,13 @@ public class NetworkManagerHud : MonoBehaviour
             StartCoroutine(ShowInvalidInputStatus());
             return false;
         }
-
+#if NGO_DAMODE
+        if (m_NetworkManager.NetworkConfig.UseCMBService)
+        {
+            // Skip trying to set ports and such since we are still using TCP
+            return true;
+        }
+#endif 
         if (ushort.TryParse(m_PortString, out ushort port))
         {
             m_Transport.SetConnectionData(m_ConnectAddress, port);
@@ -228,14 +240,26 @@ public class NetworkManagerHud : MonoBehaviour
         if (m_NetworkManager.IsServer)
         {
             var mode = m_NetworkManager.IsHost ? "Host" : "Server";
-            m_InGameStatusText.text = ($"ACTIVE ON PORT: {m_Transport.ConnectionData.Port.ToString()}");
+#if NGO_DAMODE
+            if (!m_NetworkManager.NetworkConfig.UseCMBService)
+            {
+                m_InGameStatusText.text = ($"ACTIVE ON PORT: {m_Transport.ConnectionData.Port.ToString()}");
+            }
+#endif 
+
             m_ShutdownButton.text = ($"Shutdown {mode}");
         }
         else
         {
             if (m_NetworkManager.IsConnectedClient)
             {
-                m_InGameStatusText.text = ($"CONNECTED {m_Transport.ConnectionData.Address} : {m_Transport.ConnectionData.Port.ToString()}");
+#if NGO_DAMODE
+                if (!m_NetworkManager.NetworkConfig.UseCMBService)
+                {
+                    m_InGameStatusText.text = ($"CONNECTED {m_Transport.ConnectionData.Address} : {m_Transport.ConnectionData.Port.ToString()}");
+                }
+#endif 
+                
                 m_ShutdownButton.text = "Shutdown Client";
             }
         }

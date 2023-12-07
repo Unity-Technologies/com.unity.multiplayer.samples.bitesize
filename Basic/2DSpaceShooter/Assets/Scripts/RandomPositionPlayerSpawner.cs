@@ -46,7 +46,18 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
     void ConnectionApprovalWithRandomSpawnPos(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         // Here we are only using ConnectionApproval to set the player's spawn position. Connections are always approved.
+#if NGO_DAMODE
+        if (NetworkManager.Singleton.DistributedAuthorityMode)
+        {
+            response.CreatePlayerObject = !NetworkManager.Singleton.NetworkConfig.ClientSidePlayerSpawning;
+        }
+        else
+        {
+            response.CreatePlayerObject = true;
+        }        
+#else
         response.CreatePlayerObject = true;
+#endif
         response.Position = GetNextSpawnPosition();
         response.Rotation = Quaternion.identity;
         response.Approved = true;

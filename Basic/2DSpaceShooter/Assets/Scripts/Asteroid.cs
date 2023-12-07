@@ -15,7 +15,6 @@ public class Asteroid : NetworkBehaviour
     [SerializeField]
     private int m_NumCreates = 3;
     
-    [HideInInspector]
     public GameObject asteroidPrefab;
 
     void Awake()
@@ -35,16 +34,10 @@ public class Asteroid : NetworkBehaviour
         transform.localScale = new Vector3(size, size, size);
     }
 
-    public void Explode()
+    private void OnExplode()
     {
-        if (NetworkObject.IsSpawned == false)
-        {
-            return;
-        }
-        Assert.IsTrue(NetworkManager.IsServer);
-        
         numAsteroids -= 1;
-        
+
         var newSize = Size.Value - 1;
 
         if (newSize > 0)
@@ -56,17 +49,58 @@ public class Asteroid : NetworkBehaviour
                 int dx = Random.Range(0, 4) - 2;
                 int dy = Random.Range(0, 4) - 2;
                 Vector3 diff = new Vector3(dx * 0.3f, dy * 0.3f, 0);
-                
+
                 var go = m_ObjectPool.GetNetworkObject(asteroidPrefab, transform.position + diff, Quaternion.identity);
-                
+
                 var asteroid = go.GetComponent<Asteroid>();
                 asteroid.Size = new NetworkVariable<int>(newSize);
                 asteroid.asteroidPrefab = asteroidPrefab;
-                go.GetComponent<NetworkObject>().Spawn();
+#if NGO_DAMODE
+                // Currently, we always need to spawn with ownership in DA mode (still contemplating how to handle this when the 
+                // NetworkObject being spawned has no assigned NetworkManager yet).
+                if (NetworkManager.DistributedAuthorityMode)
+                {
+                    go.GetComponent<NetworkObject>().SpawnWithOwnership(NetworkManager.LocalClientId);
+                }
+                else
+                {
+                    go.GetComponent<NetworkObject>().Spawn();
+                }
+
+                
+#endif
                 go.GetComponent<Rigidbody2D>().AddForce(diff * 10, ForceMode2D.Impulse);
             }
         }
-        
+
         NetworkObject.Despawn(true);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void OnExplodeServerRpc()
+    {
+        OnExplode();
+    }
+
+    public void Explode()
+    {
+        if (!IsSpawned)
+        {
+            return;
+        }
+
+#if NGO_DAMODE
+        if (IsOwner)
+        {
+            OnExplode();
+        }
+        else
+        {
+            OnExplodeServerRpc();
+        }
+#else
+        Assert.IsTrue(NetworkManager.IsServer);
+#endif
+
     }
 }

@@ -52,6 +52,16 @@ public class Powerup : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+#if NGO_DAMODE
+        if (IsOwner)
+        {
+            OnStartClient();
+            if (!NetworkManager.DistributedAuthorityMode && IsServer)
+            {
+                OnStartServer();
+            }            
+        }
+#else
         if (IsClient)
         {
             OnStartClient();
@@ -61,6 +71,7 @@ public class Powerup : NetworkBehaviour
         {
             OnStartServer();
         }
+#endif
         
         UpdateVisuals(buffType.Value);
         buffType.OnValueChanged += OnBuffTypeChanged;
@@ -76,8 +87,9 @@ public class Powerup : NetworkBehaviour
         float dir = -70.0f;
         transform.rotation = Quaternion.Euler(0, 180, dir);
         GetComponent<Rigidbody2D>().angularVelocity = dir;
-
+#if !NGO_DAMODE
         if (!IsServer)
+#endif
         {
             numPowerUps += 1;
         }
@@ -128,7 +140,16 @@ public class Powerup : NetworkBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (!IsSpawned)
+        {
+            return;
+        }
+
+#if NGO_DAMODE
+        if (!IsOwner)
+#else
         if (!IsServer)
+#endif
         {
             return;
         }
@@ -136,7 +157,18 @@ public class Powerup : NetworkBehaviour
         var otherShipControl = other.gameObject.GetComponent<ShipControl>();
         if (otherShipControl != null)
         {
+#if NGO_DAMODE
+            if (NetworkManager.DistributedAuthorityMode)
+            {
+                otherShipControl.AddBuffServerRpc(buffType.Value);
+            }
+            else
+            {
+                otherShipControl.AddBuff(buffType.Value);
+            }
+#else
             otherShipControl.AddBuff(buffType.Value);
+#endif
             DestroyPowerUp();
         }
     }

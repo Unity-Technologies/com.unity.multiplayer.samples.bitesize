@@ -16,13 +16,16 @@ public class NetworkObjectPool : MonoBehaviour
 
     HashSet<GameObject> prefabs = new HashSet<GameObject>();
 
-    Dictionary<GameObject, Queue<NetworkObject>> pooledObjects = new Dictionary<GameObject, Queue<NetworkObject>>();
+    Dictionary<uint, Queue<NetworkObject>> pooledObjects = new Dictionary<uint, Queue<NetworkObject>>();
 
-    public void Awake()
+    Dictionary<uint, DummyPrefabInstanceHandler> instanceHandlers = new Dictionary<uint, DummyPrefabInstanceHandler>();
+
+    public void Start()
     {
         InitializePool();
     }
 
+#if UNITY_EDITOR
     public void OnValidate()
     {
         for (var i = 0; i < PooledPrefabsList.Count; i++)
@@ -34,6 +37,7 @@ public class NetworkObjectPool : MonoBehaviour
             }
         }
     }
+#endif
 
     /// <summary>
     /// Gets an instance of the given prefab from the pool. The prefab must be registered to the pool.
@@ -42,7 +46,8 @@ public class NetworkObjectPool : MonoBehaviour
     /// <returns></returns>
     public NetworkObject GetNetworkObject(GameObject prefab)
     {
-        return GetNetworkObjectInternal(prefab, Vector3.zero, Quaternion.identity);
+        var prefabHash = prefab.GetComponent<NetworkObject>().PrefabIdHash;
+        return GetNetworkObjectInternal(prefabHash, Vector3.zero, Quaternion.identity);
     }
 
     /// <summary>
@@ -54,20 +59,21 @@ public class NetworkObjectPool : MonoBehaviour
     /// <returns></returns>
     public NetworkObject GetNetworkObject(GameObject prefab, Vector3 position, Quaternion rotation)
     {
-        return GetNetworkObjectInternal(prefab, position, rotation);
+        var prefabHash = prefab.GetComponent<NetworkObject>().PrefabIdHash;
+        return GetNetworkObjectInternal(prefabHash, position, rotation);
     }
 
     /// <summary>
     /// Return an object to the pool (and reset them).
     /// </summary>
-    public void ReturnNetworkObject(NetworkObject networkObject, GameObject prefab)
+    public void ReturnNetworkObject(NetworkObject networkObject, uint globalObjectIdHash)
     {
         var go = networkObject.gameObject;
 
         // In this simple example pool we just disable objects while they are in the pool. But we could call a function on the object here for more flexibility.
         go.SetActive(false);
         go.transform.SetParent(transform);
-        pooledObjects[prefab].Enqueue(networkObject);
+        pooledObjects[globalObjectIdHash].Enqueue(networkObject);
     }
 
     /// <summary>
@@ -93,12 +99,13 @@ public class NetworkObjectPool : MonoBehaviour
         prefabs.Add(prefab);
 
         var prefabQueue = new Queue<NetworkObject>();
-        pooledObjects[prefab] = prefabQueue;
+        var prefabhash = prefab.GetComponent<NetworkObject>().PrefabIdHash;
+        pooledObjects[prefabhash] = prefabQueue;
 
         for (int i = 0; i < prewarmCount; i++)
         {
             var go = CreateInstance(prefab);
-            ReturnNetworkObject(go.GetComponent<NetworkObject>(), prefab);
+            ReturnNetworkObject(go.GetComponent<NetworkObject>(), prefabhash);
         }
 
         // Register Netcode Spawn handlers
@@ -118,9 +125,9 @@ public class NetworkObjectPool : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="rotation"></param>
     /// <returns></returns>
-    private NetworkObject GetNetworkObjectInternal(GameObject prefab, Vector3 position, Quaternion rotation)
+    private NetworkObject GetNetworkObjectInternal(uint prefabHash, Vector3 position, Quaternion rotation)
     {
-        var queue = pooledObjects[prefab];
+        var queue = pooledObjects[prefabHash];
 
         NetworkObject networkObject;
         if (queue.Count > 0)
@@ -129,7 +136,8 @@ public class NetworkObjectPool : MonoBehaviour
         }
         else
         {
-            networkObject = CreateInstance(prefab).GetComponent<NetworkObject>();
+            var handler = instanceHandlers[prefabHash];
+            networkObject = CreateInstance(handler.Prefab).GetComponent<NetworkObject>();
         }
 
         // Here we must reverse the logic in ReturnNetworkObject.
@@ -164,22 +172,22 @@ struct PoolConfigObject
 
 class DummyPrefabInstanceHandler : INetworkPrefabInstanceHandler
 {
-    GameObject m_Prefab;
+    public GameObject Prefab { get; private set; }
     NetworkObjectPool m_Pool;
 
     public DummyPrefabInstanceHandler(GameObject prefab, NetworkObjectPool pool)
     {
-        m_Prefab = prefab;
+        Prefab = prefab;
         m_Pool = pool;
     }
 
     public NetworkObject Instantiate(ulong ownerClientId, Vector3 position, Quaternion rotation)
     {
-        return m_Pool.GetNetworkObject(m_Prefab, position, rotation);
+        return m_Pool.GetNetworkObject(Prefab, position, rotation);
     }
 
     public void Destroy(NetworkObject networkObject)
     {
-        m_Pool.ReturnNetworkObject(networkObject, m_Prefab);
+        m_Pool.ReturnNetworkObject(networkObject, networkObject.PrefabIdHash);
     }
 }

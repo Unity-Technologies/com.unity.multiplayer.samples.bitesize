@@ -69,9 +69,31 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
+#if NGO_DAMODE
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+#endif
         SpawnObstacles();
     }
 
+#if NGO_DAMODE
+    private bool m_CanStartSpawning;
+
+    private void OnClientConnectedCallback(ulong clientId)
+    {
+        if (NetworkManager.Singleton.LocalClient.IsSceneOwner && NetworkManager.Singleton.LocalClientId == clientId)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+            m_CanStartSpawning = true;
+            NetworkManager.Singleton.OnClientStopped += OnClientStopped;
+        }
+    }
+
+    private void OnClientStopped(bool obj)
+    {
+        NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+        m_CanStartSpawning = false;
+    }
+#endif
     void SpawnAsteroids()
     {
         for (int i = 0; i < m_Amount; i++)
@@ -138,10 +160,23 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
+#if NGO_DAMODE
+        if (NetworkManager.Singleton.DistributedAuthorityMode && !NetworkManager.Singleton.LocalClient.IsSceneOwner ||
+            !NetworkManager.Singleton.DistributedAuthorityMode && !NetworkManager.Singleton.IsServer)
+        {
+            return;
+        }
+
+        if (NetworkManager.Singleton.LocalClient.IsSceneOwner && !m_CanStartSpawning)
+        {
+            return;
+        }
+#else
         if (!NetworkManager.Singleton.IsServer)
         {
             return;
         }
+#endif
 
         if (Powerup.numPowerUps < m_Amount * 4)
         {
