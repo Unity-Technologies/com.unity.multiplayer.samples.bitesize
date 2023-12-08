@@ -7,6 +7,30 @@
 #### Cleanup
 - Removed the usage of System.Linq across the repository (#146)
 
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+### Invaders
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
 ## [1.4.0] - 2023-09-25
 
 ### 2D Space Shooter
