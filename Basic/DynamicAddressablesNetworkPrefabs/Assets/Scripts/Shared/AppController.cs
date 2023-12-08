@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Game.UI;
 using Unity.Netcode;
 using UnityEngine;
@@ -72,9 +71,9 @@ namespace Game
                 else
                 {
                     // grab all loaded prefabs and represent that on the newly joined client
-                    var loadedHashes = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Keys.Select(value => value.GetHashCode()).ToArray();
-                    var loadedNames = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Values.Select(value => value.Result.name).ToArray();
-                    m_InGameUI.AddConnectionUIInstance(clientId, loadedHashes, loadedNames);
+                    var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
+                    
+                    m_InGameUI.AddConnectionUIInstance(clientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
                 }
             }
             else if (m_NetworkManager.IsClient)
@@ -86,11 +85,26 @@ namespace Game
                     m_InGameUI.Show(InGameUI.ButtonVisibility.Client);
                     
                     // grab all locally loaded prefabs and represent that on local client
-                    var loadedHashes = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Keys.Select(value => value.GetHashCode()).ToArray();
-                    var loadedNames = DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Values.Select(value => value.Result.name).ToArray();
-                    m_InGameUI.AddConnectionUIInstance(clientId, loadedHashes, loadedNames);
+                    var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
+                    
+                    m_InGameUI.AddConnectionUIInstance(clientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
                 }
             }
+        }
+
+        static Tuple<int[], string[]> GetLoadedPrefabsHashesAndNames()
+        {
+            var loadedHashes = new int[DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Keys.Count];
+            var loadedNames = new string[DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.Keys.Count];
+            int index = 0;
+            foreach (var loadedPrefab in DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles)
+            {
+                loadedHashes[index] = loadedPrefab.Key.GetHashCode();
+                loadedNames[index] = loadedPrefab.Value.Result.name;
+                index++;
+            }
+
+            return Tuple.Create(loadedHashes, loadedNames);
         }
         
         void OnClientDisconnect(ulong clientId)
