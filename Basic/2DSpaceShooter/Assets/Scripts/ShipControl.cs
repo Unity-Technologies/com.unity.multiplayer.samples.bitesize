@@ -107,7 +107,7 @@ public class ShipControl : NetworkBehaviour
     float m_OldSpin = 0;
 
     // server movement
-    private NetworkVariable<float> m_Thrusting = new NetworkVariable<float>();
+    float m_Thrusting;
 
     float m_Spin;
 
@@ -271,7 +271,7 @@ public class ShipControl : NetworkBehaviour
         m_Rigidbody2D.angularVelocity = rotate;
 
         // update thrust
-        if (m_Thrusting.Value != 0)
+        if (m_Thrusting != 0)
         {
             float accel = m_Acceleration;
             if (SpeedBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
@@ -279,7 +279,7 @@ public class ShipControl : NetworkBehaviour
                 accel *= 2;
             }
 
-            Vector3 thrustVec = transform.right * (m_Thrusting.Value * accel);
+            Vector3 thrustVec = transform.right * (m_Thrusting * accel);
             m_Rigidbody2D.AddForce(thrustVec);
 
             // restrict max speed
@@ -504,7 +504,7 @@ public class ShipControl : NetworkBehaviour
     [ServerRpc]
     public void ThrustServerRpc(float thrusting, int spin)
     {
-        m_Thrusting.Value = thrusting;
+        m_Thrusting = thrusting;
         m_Spin = spin;
     }
 
