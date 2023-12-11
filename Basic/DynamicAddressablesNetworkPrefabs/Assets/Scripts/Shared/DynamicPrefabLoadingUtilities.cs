@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
@@ -99,10 +98,16 @@ namespace Game
         /// </remarks>
         public static string GenerateDisconnectionPayload()
         {
+            var dynamicPrefabGuidStrings = new List<string>();
+            foreach (var dynamicPrefabGuid in s_DynamicPrefabGUIDs)
+            {
+                dynamicPrefabGuidStrings.Add(dynamicPrefabGuid.ToString());
+            }
+            
             var rejectionPayload = new DisconnectionPayload()
             {
                 reason = DisconnectReason.ClientNeedsToPreload,
-                guids = s_DynamicPrefabGUIDs.Select(item => item.ToString()).ToList()
+                guids = dynamicPrefabGuidStrings
             };
     
             return JsonUtility.ToJson(rejectionPayload);

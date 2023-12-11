@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using StarterAssetsPackageChecker;
 using UnityEditor;
 using UnityEngine;
@@ -64,7 +63,17 @@ namespace StarterAssets
             }
 
             GameObject[] targets = GameObject.FindGameObjectsWithTag(CinemachineTargetTag);
-            GameObject target = targets.FirstOrDefault(t => t.transform.IsChildOf(targetParent));
+            
+            GameObject target = null;
+            foreach (var t in targets)
+            {
+                if (t.transform.IsChildOf(targetParent))
+                {
+                    target = t;
+                    break;
+                }
+            }
+            
             if (target == null)
             {
                 target = new GameObject("PlayerCameraRoot");
