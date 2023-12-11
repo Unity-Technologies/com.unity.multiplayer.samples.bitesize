@@ -13,6 +13,9 @@
 - Upgraded to Netcode for GameObjects v1.7.1 (#147)
 - Upgraded sample to 2022.3.14f1 LTS (#147)
 
+### Fixes
+- Converted unnecessary ship thrust NetworkVariable to a float (#149)
+
 ### Client Driven
 
 #### Changed
