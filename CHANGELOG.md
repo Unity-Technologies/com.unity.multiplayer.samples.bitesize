@@ -13,6 +13,9 @@
 - Upgraded to Netcode for GameObjects v1.7.1 (#147)
 - Upgraded sample to 2022.3.14f1 LTS (#147)
 
+### Fixed
+- Fixed non-host clients not hearing the Fire SFX (#148)
+
 ### Client Driven
 
 #### Changed
