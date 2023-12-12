@@ -13,6 +13,9 @@
 - Upgraded to Netcode for GameObjects v1.7.1 (#147)
 - Upgraded sample to 2022.3.14f1 LTS (#147)
 
+### Fixed
+- Corrected the variables used for initialization of Health and Energy (#150)
+
 ### Client Driven
 
 #### Changed
