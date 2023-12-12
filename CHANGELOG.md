@@ -14,6 +14,8 @@
 - Upgraded sample to 2022.3.14f1 LTS (#147)
 
 ### Fixed
+- Corrected the variables used for initialization of Health and Energy (#150)
+- Converted unnecessary ship thrust NetworkVariable to a float (#149)
 - Fixed non-host clients not hearing the Fire SFX (#148)
 
 ### Client Driven
