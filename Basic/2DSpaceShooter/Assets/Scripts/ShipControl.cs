@@ -151,8 +151,8 @@ public class ShipControl : NetworkBehaviour
         }
         Energy.OnValueChanged += OnEnergyChanged;
         Health.OnValueChanged += OnHealthChanged;
-        OnEnergyChanged(0, Health.Value);
-        OnHealthChanged(0, Energy.Value);
+        OnEnergyChanged(0, Energy.Value);
+        OnHealthChanged(0, Health.Value);
         
         SetPlayerName(PlayerName.Value.ToString().ToUpper());
     }
