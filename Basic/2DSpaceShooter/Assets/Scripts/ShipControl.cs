@@ -193,8 +193,7 @@ public class ShipControl : NetworkBehaviour
 
     void Fire(Vector3 direction)
     {
-        fireSound.Play();
-
+        PlayFireSoundClientRpc();
         var damage = 5;
         if (QuadDamageTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
@@ -498,6 +497,13 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
+    // --- ClientRPCs ---
+    
+    [ClientRpc]
+    void PlayFireSoundClientRpc()
+    {
+        fireSound.Play();
+    }
     // --- ServerRPCs ---
 
     [ServerRpc]
