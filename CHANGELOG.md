@@ -15,6 +15,7 @@
 
 ### Fixed
 - Corrected the variables used for initialization of Health and Energy (#150)
+- Converted unnecessary ship thrust NetworkVariable to a float (#149)
 
 ### Client Driven
 
