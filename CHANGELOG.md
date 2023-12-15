@@ -1,11 +1,75 @@
 # Changelog
 
-## [unreleased] - yyyy-mm-dd
+## [unreleased] yyyy-mm-dd
+
+### Bitesize Samples Repository
+
+#### Cleanup
+- Removed the usage of System.Linq across the repository (#146)
+
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+### Fixed
+- Corrected the variables used for initialization of Health and Energy (#150)
+- Converted unnecessary ship thrust NetworkVariable to a float (#149)
+- Fixed non-host clients not hearing the Fire SFX (#148)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
 
 ### Dynamic Addressables Network Prefabs
 
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+### Invaders
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+## [1.4.0] - 2023-09-25
+
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+#### Fixed
+- Fixed warnings when spawning new bullets or asteroids by instantiating a new NetworkVariable pre-spawn (#134)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
+#### Fixed
+- Added a script to handle NetworkObject parent changes on Ingredients to address a bug where Ingredients would not get stuck on client disconnect events (#136)
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
+
 #### Fixed
 - Fixed loaded status displayed on UI for synchronous prefab spawns inside 05_API Playground Showcasing All Post-Connection Use-Cases scene (#132)
+
+### Invaders
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.6.0 (#134)
+- Upgraded sample to 2022.3.9f1 LTS (#134)
 
 ## [1.3.0] - 2023-07-07
 
