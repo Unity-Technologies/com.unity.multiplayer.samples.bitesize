@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -27,8 +27,13 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Tests.Editor
         /// </summary>
         internal static void FindMissingReferencesInAllBuiltScenes()
         {
-            foreach (var scene in EditorBuildSettings.scenes.Where(s => s.enabled))
+            foreach (var scene in EditorBuildSettings.scenes)
             {
+                if (!scene.enabled)
+                {
+                    continue;
+                }
+                
                 EditorSceneManager.OpenScene(scene.path);
                 FindMissingReferencesInCurrentScene();
             }
@@ -39,13 +44,29 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Tests.Editor
         /// </summary>
         internal static void FindMissingReferencesInAssets()
         {
-            string[] assetsPats = AssetDatabase.GetAllAssetPaths().Where(path => path.StartsWith("Assets/"))
-                                                                  .ToArray();
-            var gameObjects = assetsPats.Select(a => AssetDatabase.LoadAssetAtPath(a, typeof(GameObject)) as GameObject)
-                                        .Where(a => a != null)
-                                        .ToArray();
+            string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
+            var filteredAssetPaths = new List<string>();
 
-            FindMissingReferences("Project", gameObjects);
+            foreach (var path in allAssetPaths)
+            {
+                if (path.StartsWith("Assets/"))
+                {
+                    filteredAssetPaths.Add(path);
+                }
+            }
+
+            var gameObjects = new List<GameObject>();
+
+            foreach (var assetPath in filteredAssetPaths)
+            {
+                var obj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject)) as GameObject;
+                if (obj != null)
+                {
+                    gameObjects.Add(obj);
+                }
+            }
+
+            FindMissingReferences("Project", gameObjects.ToArray());
         }
 
         static void FindMissingReferences(string context, GameObject[] gameObjects)
@@ -97,10 +118,19 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Tests.Editor
         static GameObject[] GetSceneObjects()
         {
             // Use this method since GameObject.FindObjectsOfType will not return disabled objects.
-            return Resources.FindObjectsOfTypeAll<GameObject>()
-                            .Where(go => string.IsNullOrEmpty(AssetDatabase.GetAssetPath(go))
-                                      && go.hideFlags == HideFlags.None)
-                            .ToArray();
+            GameObject[] allGameObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+            var matchingGameObjects = new List<GameObject>();
+
+            // Counting the number of game objects that meet the criteria
+            foreach (var go in allGameObjects)
+            {
+                if (string.IsNullOrEmpty(AssetDatabase.GetAssetPath(go)) && go.hideFlags == HideFlags.None)
+                {
+                    matchingGameObjects.Add(go);
+                }
+            }
+
+            return matchingGameObjects.ToArray();
         }
 
         static void ShowError(string context, GameObject go, string componentName, string propertyName)

@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -74,7 +73,7 @@ public class ShipControl : NetworkBehaviour
     ParticleSystem m_Friction;
     
     [SerializeField] 
-    ParticleSystem m_Thrust;
+    ParticleSystem m_ThrustParticleSystem;
     
     [SerializeField] 
     SpriteRenderer m_ShipGlow;
@@ -107,7 +106,7 @@ public class ShipControl : NetworkBehaviour
     float m_OldSpin = 0;
 
     // server movement
-    private NetworkVariable<float> m_Thrusting = new NetworkVariable<float>();
+    float m_Thrust;
 
     float m_Spin;
 
@@ -119,7 +118,7 @@ public class ShipControl : NetworkBehaviour
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
         Assert.IsNotNull(m_ObjectPool, $"{nameof(NetworkObjectPool)} not found in scene. Did you apply the {s_ObjectPoolTag} to the GameObject?");
         
-        m_ThrustMain = m_Thrust.main;
+        m_ThrustMain = m_ThrustParticleSystem.main;
         m_ShipGlow.color = m_ShipGlowDefaultColor;
         m_IsBuffed = false;
         
@@ -152,8 +151,8 @@ public class ShipControl : NetworkBehaviour
         }
         Energy.OnValueChanged += OnEnergyChanged;
         Health.OnValueChanged += OnHealthChanged;
-        OnEnergyChanged(0, Health.Value);
-        OnHealthChanged(0, Energy.Value);
+        OnEnergyChanged(0, Energy.Value);
+        OnHealthChanged(0, Health.Value);
         
         SetPlayerName(PlayerName.Value.ToString().ToUpper());
     }
@@ -194,8 +193,7 @@ public class ShipControl : NetworkBehaviour
 
     void Fire(Vector3 direction)
     {
-        fireSound.Play();
-
+        PlayFireSoundClientRpc();
         var damage = 5;
         if (QuadDamageTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
@@ -271,7 +269,7 @@ public class ShipControl : NetworkBehaviour
         m_Rigidbody2D.angularVelocity = rotate;
 
         // update thrust
-        if (m_Thrusting.Value != 0)
+        if (m_Thrust != 0)
         {
             float accel = m_Acceleration;
             if (SpeedBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
@@ -279,7 +277,7 @@ public class ShipControl : NetworkBehaviour
                 accel *= 2;
             }
 
-            Vector3 thrustVec = transform.right * (m_Thrusting.Value * accel);
+            Vector3 thrustVec = transform.right * (m_Thrust * accel);
             m_Rigidbody2D.AddForce(thrustVec);
 
             // restrict max speed
@@ -499,12 +497,19 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
+    // --- ClientRPCs ---
+    
+    [ClientRpc]
+    void PlayFireSoundClientRpc()
+    {
+        fireSound.Play();
+    }
     // --- ServerRPCs ---
 
     [ServerRpc]
     public void ThrustServerRpc(float thrusting, int spin)
     {
-        m_Thrusting.Value = thrusting;
+        m_Thrust = thrusting;
         m_Spin = spin;
     }
 

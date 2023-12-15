@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Game
@@ -29,9 +28,15 @@ namespace Game
 
         async void HandleDisconnectReason()
         {
-            var guids = disconnectionPayload.guids.Select(item => new AddressableGUID() { Value = item }).ToArray();
+            var addressableGuids = new AddressableGUID[disconnectionPayload.guids.Count];
+            var index = 0;
+            foreach (var guid in disconnectionPayload.guids)
+            {
+                addressableGuids[index] = new AddressableGUID() { Value = guid };
+                index++;
+            }
 
-            await DynamicPrefabLoadingUtilities.LoadDynamicPrefabs(guids);
+            await DynamicPrefabLoadingUtilities.LoadDynamicPrefabs(addressableGuids);
             Debug.Log("Restarting client");
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientConnecting);
         }

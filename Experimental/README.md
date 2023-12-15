@@ -23,5 +23,4 @@ To connect, find support and share feedback, join the multiplayer community on t
 
 ## Contributing
 
-If you're a Unity employee, click [here](https://docs.google.com/document/d/1PCti3N3a78fObtU8fm4EQYMibXFtmjtPFZ_x-f_O5w0/edit?usp=sharing) for the process.
-
+If you're a Unity employee, click [here](https://confluence.unity3d.com/display/MTT/Experimental+Folder+Contribution+Guidelines) for contribution guidelines.

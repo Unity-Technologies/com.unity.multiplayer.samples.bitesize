@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -19,8 +18,16 @@ namespace StarterAssets
         static void ResetThirdPersonControllerArmature()
         {
             var thirdPersonControllers = FindObjectsOfType<ThirdPersonController>();
-            var player = thirdPersonControllers.FirstOrDefault(controller =>
-                controller.GetComponent<Animator>() && controller.CompareTag(PlayerTag));
+            
+            ThirdPersonController player = null;
+            foreach (var controller in thirdPersonControllers)
+            {
+                if (controller.GetComponent<Animator>() && controller.CompareTag(PlayerTag))
+                {
+                    player = controller;
+                    break;
+                }
+            }
 
             GameObject playerGameObject = null;
 
@@ -52,8 +59,16 @@ namespace StarterAssets
         static void ResetThirdPersonControllerCapsule()
         {
             var thirdPersonControllers = FindObjectsOfType<ThirdPersonController>();
-            var player = thirdPersonControllers.FirstOrDefault(controller =>
-                !controller.GetComponent<Animator>() && controller.CompareTag(PlayerTag));
+            
+            ThirdPersonController player = null;
+            foreach (var controller in thirdPersonControllers)
+            {
+                if (controller.GetComponent<Animator>() && controller.CompareTag(PlayerTag))
+                {
+                    player = controller;
+                    break;
+                }
+            }
 
             GameObject playerGameObject = null;
 
