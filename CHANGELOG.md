@@ -12,6 +12,7 @@
 #### Changed
 - Upgraded to Netcode for GameObjects v1.7.1 (#147)
 - Upgraded sample to 2022.3.14f1 LTS (#147)
+- Upgraded Samples Utilities package to v1.8.0 (#151)
 
 ### Fixed
 - Corrected the variables used for initialization of Health and Energy (#150)
@@ -23,6 +24,7 @@
 #### Changed
 - Upgraded to Netcode for GameObjects v1.7.1 (#147)
 - Upgraded sample to 2022.3.14f1 LTS (#147)
+- Upgraded Samples Utilities package to v1.8.0 (#151)
 
 ### Dynamic Addressables Network Prefabs
 
@@ -35,6 +37,7 @@
 #### Changed
 - Upgraded to Netcode for GameObjects v1.7.1 (#147)
 - Upgraded sample to 2022.3.14f1 LTS (#147)
+- Upgraded Samples Utilities package to v1.8.0 (#151)
 
 ## [1.4.0] - 2023-09-25
 
