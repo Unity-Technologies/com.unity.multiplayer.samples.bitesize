@@ -18,8 +18,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         const string k_DefaultServerListenAddress = "0.0.0.0";
         const string k_DefaultClientAutoConnectServerAddress = "127.0.0.1";
         public static ApplicationEntryPoint Singleton { get; private set; }
-        public static ConfigurationManager Configuration { get; private set; }
-
+        
 #if UNITY_EDITOR
         public static bool s_AreTestsRunning = false;
         public bool AreTestsRunning => s_AreTestsRunning;
@@ -28,7 +27,16 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         {
             get
             {
-                bool startAutomatically = Configuration.GetBool(ConfigurationManager.k_Autoconnect);
+                bool startAutomatically = false;
+                switch (MultiplayerRolesManager.ActiveMultiplayerRoleMask)
+                {
+                    case MultiplayerRoleFlags.Server:
+                        startAutomatically = true;
+                        break;
+                    case MultiplayerRoleFlags.Client:
+                        startAutomatically = m_AutoconnectIfClient;
+                        break;
+                }
 #if UNITY_EDITOR
                 startAutomatically |= AreTestsRunning;
 #endif
@@ -38,8 +46,14 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 
         [SerializeField]
         ConnectionManager m_ConnectionManager;
-
         public ConnectionManager ConnectionManager => m_ConnectionManager;
+
+        [SerializeField]
+        internal int MinPlayers = 2;
+        [SerializeField]
+        internal int MaxPlayers = 2;
+        [SerializeField]
+        bool m_AutoconnectIfClient = false;
 
         void Awake()
         {
@@ -63,13 +77,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
             {
                 return;
             }
-            Configuration = new ConfigurationManager(ConfigurationManager.k_DevConfigFile);
             Singleton.InitializeNetworkLogic(); //note: this is the entry point for all autoconnected instances (including standalone servers)
-        }
-
-        public void SetConfiguration(ConfigurationManager configuration)
-        {
-            Configuration = configuration;
         }
 
         /// <summary>

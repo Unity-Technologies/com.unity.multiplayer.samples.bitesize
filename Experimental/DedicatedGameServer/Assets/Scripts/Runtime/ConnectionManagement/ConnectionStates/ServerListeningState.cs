@@ -27,7 +27,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             Debug.Log($"Client {clientId} connected to the server.");
             ConnectionManager.EventManager.Broadcast(new ClientConnectedEvent());
             
-            if (!m_MinPlayerConnected && ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Configuration.GetInt(ConfigurationManager.k_MinPlayers))
+            if (!m_MinPlayerConnected && ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Singleton.MinPlayers)
             {
                 m_MinPlayerConnected = true;
                 ConnectionManager.EventManager.Broadcast(new MinNumberPlayersConnectedEvent());
@@ -111,7 +111,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         
         ConnectStatus GetConnectStatus(ConnectionPayload connectionPayload)
         {
-            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Configuration.GetInt(ConfigurationManager.k_MaxPlayers))
+            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Singleton.MaxPlayers)
             {
                 return ConnectStatus.ServerFull;
             }

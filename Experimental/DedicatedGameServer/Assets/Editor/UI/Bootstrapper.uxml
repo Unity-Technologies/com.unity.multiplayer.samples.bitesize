@@ -1,8 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:Toggle label="Auto connect on Startup" name="tglAutoConnectOnStartup" tooltip="If enabled, skips the standard user flow (logins, etc...). If disabled, you&apos;ll have to connect using the same flow users use. Some features might not be available when this is enabled." />
-    <uie:IntegerField label="Min Players" value="2" name="intMinPlayers" readonly="false" tooltip="How many players are needed to fill a game instance?" />
-    <uie:IntegerField label="Max Players" value="2" name="intMaxPlayers" readonly="false" tooltip="How many players can a game instance accept?" />
-    <ui:VisualElement style="flex-direction: row; flex-wrap: nowrap; flex-grow: 1; flex-shrink: initial; flex-basis: auto; position: relative; top: auto; left: auto; height: auto;">
-        <ui:Button text="Reset to default" name="btnReset" value="7777" style="flex-grow: 1; flex-shrink: 1; font-size: 25px; height: auto; width: auto; left: auto; right: auto;" />
-    </ui:VisualElement>
-</ui:UXML>

@@ -34,16 +34,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            StartCoroutine(InitializeOnConfigurationLoaded());
+            OnConfigurationLoaded();
         }
 
-        IEnumerator InitializeOnConfigurationLoaded()
-        {
-            yield return new WaitUntil(() => ApplicationEntryPoint.Configuration != null);
-            OnConfigurationLoaded(ApplicationEntryPoint.Configuration);
-        }
-
-        async void OnConfigurationLoaded(ConfigurationManager configuration)
+        async void OnConfigurationLoaded()
         {
             await Initialize(MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Client);
         }
@@ -51,21 +45,29 @@ namespace Unity.DedicatedGameServerSample.Runtime
         async public Task Initialize(bool isClient)
         {
             string serviceProfileName = ProfileManager.Singleton.Profile;
-
             if (!isClient)
             {
+                //servers should always have a single ID so their data isn't mixed with Users'.
                 UnityServices.ExternalUserId = k_ServerID;
             }
 
             bool signedIn = await UnityServiceAuthenticator.TrySignInAsync(k_Environment, serviceProfileName);
-            
             if (isClient)
             {
-                MetagameApplication.Instance.Broadcast(new PlayerSignedIn(signedIn, UnityServiceAuthenticator.PlayerId));
-                if (signedIn)
+                //wait for the MetagameApplication to be instantiated, to avoid race conditions
+                StartCoroutine(CoroutinesHelper.WaitAndDo(new WaitUntil(() => MetagameApplication.Instance), () =>
                 {
-                    InitializeClientOnlyServices();
-                }
+                    //at this point, it's safe to tell the Application that the player signed in
+                    MetagameApplication.Instance.Broadcast(new PlayerSignedIn(signedIn, UnityServiceAuthenticator.PlayerId));
+                    if (signedIn)
+                    {
+                        InitializeClientOnlyServices();
+                    }
+                    else
+                    {
+                        Debug.LogError("User could not sign in. Please check that your device is connected to the internet, and that the project is linked to an existing Project in the Unity Cloud.");
+                    }
+                }));
             }
         }
 
