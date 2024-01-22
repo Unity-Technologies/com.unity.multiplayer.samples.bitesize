@@ -9,7 +9,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
     /// Networked script to handle player character logic that needs to be networked.
     /// Inherits from NetcodeHooks class to provide hooks for spawn and despawn events.
     /// </summary>
-    public class NetworkedPlayerCharacter : NetcodeHooks
+    public class NetworkedPlayerCharacter : NetcodeHooks, ICharacter
     {
         public override void OnNetworkSpawn()
         {

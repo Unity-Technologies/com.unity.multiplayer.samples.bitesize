@@ -21,7 +21,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
         internal event Action OnMatchEnded;
         
 
-        const uint k_CountdownStartValue = 60;
+        const uint k_CountdownStartValue = 300;
         const float k_ShutdownDelayAfterCountdownEnd = 30;
         
         Coroutine m_CountdownRoutine;
@@ -51,6 +51,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
                     m_CountdownRoutine = null;
                 }
                 ConnectionManager.EventManager.RemoveListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
+                ConnectionManager.EventManager.RemoveListener<ClientConnectedEvent>(OnServerClientConnected);
+                ConnectionManager.EventManager.RemoveListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
             }
         }
 

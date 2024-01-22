@@ -29,6 +29,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         [SerializeField]
         PlayerInput m_PlayerInput;
+        internal PlayerInput PlayerInput => m_PlayerInput;
 
         void Awake()
         {
