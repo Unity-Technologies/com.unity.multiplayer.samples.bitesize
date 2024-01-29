@@ -17,6 +17,9 @@ namespace Unity.DedicatedGameServerSample.Runtime
         [SerializeField]
         Animator m_Animator;
 
+        [SerializeField]
+        GameObject m_UI;
+
         public NetworkVariable<bool> IsOpen { get; } = new NetworkVariable<bool>();
         NetworkVariable<bool> m_CanBeOpened { get; } = new NetworkVariable<bool>();
         byte m_NearbyPlayers = 0;
@@ -45,8 +48,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
             if (IsServer)
             {
                 OnDoorStateChanged(false, IsOpen.Value);
-                OnDoorCanBeOpenedChanged(false, false);
             }
+            OnDoorCanBeOpenedChanged(false, false);
         }
 
         public override void OnNetworkDespawn()
@@ -111,7 +114,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
             Debug.Log("[Server] Player entered!");
             m_NearbyPlayers++;
-            m_CanBeOpened.Value = m_NearbyPlayers > 0;
+            OnServerUpdateCanBeOpened();
         }
 
         void OnServerTriggerExit(Collider other)
@@ -122,7 +125,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
             Debug.Log("[Server] Player exited!");
             m_NearbyPlayers--;
-            m_CanBeOpened.Value = m_NearbyPlayers > 0;
+            OnServerUpdateCanBeOpened();
         }
 
         void OnClientTriggerEnter(Collider other)
@@ -135,9 +138,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
             if (character.NetworkObject.IsLocalPlayer)
             {
-                Debug.Log("[Client] Displaying UI!");
                 m_LocalPlayerIsNearby = true;
-                //todo: display UI (Prediction)
+                /*
+                 * we do not use m_CanBeOpened here to predict if we can display the UI or not, 
+                 * because its value is being recalculated by the server
+                 * at the same time and we could have an outdated value.
+                 */
+                m_UI.SetActive(!IsOpen.Value);
             }
         }
 
@@ -153,8 +160,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 Debug.Log("[Client] Hiding UI!");
                 m_LocalPlayerIsNearby = false;
-                //todo: hide UI (Prediction)
+                m_UI.SetActive(false);
             }
+        }
+
+        void OnServerUpdateCanBeOpened()
+        {
+            m_CanBeOpened.Value = m_NearbyPlayers > 0 && !IsOpen.Value;
         }
 
         void OnDoorStateChanged(bool wasDoorOpen, bool isDoorOpen)
@@ -167,6 +179,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             if (IsClient)
             {
                 m_PhysicsObject.SetActive(!isDoorOpen);
+                if (isDoorOpen)
+                {
+                    m_UI.SetActive(false);
+                }
             }
         }
 
@@ -174,8 +190,11 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             if (IsClient)
             {
-                Debug.Log($"[Client] UI should be: {canBeOpened}");
-                //todo: display/hide UI (Reconciliation)
+                Debug.Log($"[Client] Door UI should be: {canBeOpened}");
+                if (gameObject.activeSelf != canBeOpened)
+                {
+                    m_UI.SetActive(canBeOpened);
+                }
             }
         }
 
