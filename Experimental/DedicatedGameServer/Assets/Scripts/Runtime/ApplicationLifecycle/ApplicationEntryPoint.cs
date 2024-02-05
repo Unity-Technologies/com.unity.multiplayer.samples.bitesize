@@ -5,6 +5,7 @@ using Unity.Multiplayer;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ConnectionEvent = Unity.DedicatedGameServerSample.Runtime.ConnectionManagement.ConnectionEvent;
 
 namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 {

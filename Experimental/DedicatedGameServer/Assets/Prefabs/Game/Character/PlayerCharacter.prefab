@@ -72,6 +72,26 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6480834101704243505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.30831507
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480834101704243505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.212
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480834101704243505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000026226041
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480834101704243505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480834101704243505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5885216827943657505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
     m_RemovedGameObjects: []
@@ -101,6 +121,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7649842775098529702}
+    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3143591770897947506}
     - targetCorrespondingSourceObject: {fileID: 8338988566280778634, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2060078632622766650}
@@ -123,8 +146,13 @@ MultiplayerRolesData:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514797524429996834}
-  m_GameObjectRolesMask: 1
+  m_GameObjectRolesMask: 3
   m_ComponentsRolesMasks: []
+--- !u!23 &898828323309504372 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4476495000965352127, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  m_PrefabInstance: {fileID: 3631858316268162507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!143 &1092933507198879504 stripped
 CharacterController:
   m_CorrespondingSourceObject: {fileID: 4416926081852918491, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
@@ -192,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 3552800169
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -295,6 +323,8 @@ MultiplayerRolesData:
     m_RolesMask: 1
   - m_Object: {fileID: -7649842775098529702}
     m_RolesMask: 2
+  - m_Object: {fileID: 3143591770897947506}
+    m_RolesMask: 1
 --- !u!114 &-7649842775098529702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +337,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5abadeefc16c65478b964d474f8af23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3143591770897947506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092933507198879514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc55263d027ad72419720fde3696727a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerNumberMesh: {fileID: 898828323309504372}
+  m_PlayerColors:
+  - {r: 2, g: 0, b: 0.19999981, a: 1}
+  - {r: 0, g: 0.41029543, b: 1.7176471, a: 1}
+  - {r: 1.1219676, g: 0.8517555, b: 0.041119244, a: 1}
+  - {r: 0, g: 1.0717734, b: 0.8802225, a: 0}
+  m_PlayerEmissiveColors:
+  - {r: 2, g: 0, b: 0.025966061, a: 0}
+  - {r: 0, g: 0.34600186, b: 1.8483082, a: 0}
+  - {r: 2, g: 1.0665532, b: 0.004249378, a: 1}
+  - {r: 0, g: 0.8357703, b: 0.5409957, a: 0}
+  m_PlayerNumber: 0
+  m_PlayerNumberVector: {x: 0, y: 0}
 --- !u!114 &3712300999824694118 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 135756642000475821, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
