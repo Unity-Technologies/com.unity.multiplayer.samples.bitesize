@@ -32,8 +32,14 @@ Unity moves the server to the game scene, where it waits for clients to connect.
 Unity moves clients to the Metagame scene. From here you can use the main menu to connect to a server. Select the **Find Match** to join a matchmaking queue to connect to a server. Select **Join with Direct IP** to connect to a server directly when you know its IP address. In both cases Unity moves clients to the game scene when the client connects.
 
 #### Autoconnect mode
-A client with the autoconnect mode will automatically connect to a local server, without first moving to the Metagame scene. This can be used to make testing faster. To set autoconnect mode on the main editor, if the main editor has the client role, use the bootstrapper window (menu DedicatedGameServerSample -> Bootstrapper). It can also be set directly in the configuration file (startupConfiguration.json). On Multiplayer Play Mode players, the bootstrapper window is not available, so the option needs to be changed manually in each player's configuration file. You can find each player's files in the "Pacakges/VP" directory.
+Use the autoconnect mode to automatically connect as a client to a local server without moving to the Metagame scene. You can use this mode to speed up testing.
 
+To enable autoconnect mode on the main editor, do the following:
+
+1. Set the editor [multiplayer role](multiplayer-roles.md) to **Client**.
+2. Open the StartupScene
+3. In the Hierarchy window, select the **ApplicationEntryPoint** GameObject.
+4. In the **ApplicationEntryPoint** component, select the **Autoconnect if client** checkbox .
 
 ---
 <br>
