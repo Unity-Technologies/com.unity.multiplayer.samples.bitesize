@@ -3,12 +3,12 @@
 test_platforms:
   - name: win
     type: Unity::VM
-    image: package-ci/win10:v4.36.0
+    image: package-ci/win10:stable
     platform: StandaloneWindows64
     flavor: b1.large
   - name: mac
     type: Unity::VM::osx
-    image: package-ci/macos-12:v4
+    image: package-ci/mac:stable
     platform: StandaloneOSX
     flavor: m1.mac
 
@@ -51,3 +51,9 @@ projects:
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool true
     test_filter: Unity.DedicatedGameServerSample.Tests
+  - name: multiplayerusecases
+    path: Experimental/MultiplayerUsecases
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool true
+    run_playmode_tests: !!bool true

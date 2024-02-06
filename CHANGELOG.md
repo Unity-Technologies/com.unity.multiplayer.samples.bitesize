@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.5.0] 2023-12-15
+
+### Bitesize Samples Repository
+
+#### Cleanup
+- Removed the usage of System.Linq across the repository (#146)
+
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+- Upgraded Samples Utilities package to v1.8.0 (#151)
+
+#### Fixed
+- Corrected the variables used for initialization of Health and Energy (#150)
+- Converted unnecessary ship thrust NetworkVariable to a float (#149)
+- Fixed non-host clients not hearing the Fire SFX (#148)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+- Upgraded Samples Utilities package to v1.8.0 (#151)
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+
+### Invaders
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.7.1 (#147)
+- Upgraded sample to 2022.3.14f1 LTS (#147)
+- Upgraded Samples Utilities package to v1.8.0 (#151)
+
 ## [1.4.0] - 2023-09-25
 
 ### 2D Space Shooter

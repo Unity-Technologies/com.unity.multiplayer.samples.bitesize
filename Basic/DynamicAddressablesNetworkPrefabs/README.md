@@ -4,8 +4,8 @@
 # Dynamic Addressables Network Prefabs Sample
 
 [![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2022.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.0)
-[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.4.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
-[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.3.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.3.0)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.7.1-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F1.7.1)
+[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.5.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.5.0)
 <br><br>
 
 The Dynamic Prefabs Sample showcases the available use-cases for the dynamic prefab system, which allows us to add new spawnable prefabs at runtime. This sample uses Addressables to load the dynamic prefab, however any GameObject with a NetworkObject component can be used, regardless of its source. This sample also uses in-game UI (created using UI Toolkit) to interface with the dynamic prefabs system with configurable options like artificial latency and network spawn timeout for easy testing.
