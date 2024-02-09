@@ -82,12 +82,21 @@ public class AnticipationSample : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        // Initialize the reanticipation for all of the values:
+        // C and D react to a request to reanticipate by simply smoothing between the previous anticipated value
+        // and the new authoritative value. They are not frequently updated and only need any reanticipation action
+        // when the anticipation was wrong.
         AnticipatedNetworkVariable<float>.OnReanticipateDelegate smooth = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTick, in float authoritativeValue, double authoritativeTick) =>
         {
             variable.Smooth(anticipatedValue, authoritativeValue, 0.25f, Mathf.Lerp);
         };
         ValueC.OnReanticipate = smooth;
         ValueD.OnReanticipate = smooth;
+
+        // E is actually trying to anticipate the current value of a constantly changing object to hide latency.
+        // It uses the amount of time that has passed since the authoritative tick to gauge the latency of this update
+        // and anticipates a new value based on that delay. The server value is in the past, so the predicted value
+        // attempts to guess what the value is in the present.
         ValueE.OnReanticipate = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTick, in float authoritativeValue, double authoritativeTick) =>
         {
             var secondsBehind = (NetworkManager.LocalTime.TickWithPartial - authoritativeTick) * 1/NetworkManager.NetworkTickSystem.TickRate;
