@@ -80,7 +80,7 @@ namespace DefaultNamespace
                 // to arrive at a new anticipated player location.
                 foreach (var item in InputManager.GetHistory())
                 {
-                    if (item.Tick < authorityTick)
+                    if (item.Tick <= authorityTick)
                     {
                         continue;
                     }
