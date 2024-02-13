@@ -15,7 +15,7 @@ namespace DefaultNamespace
     public class InputManager : MonoBehaviour
     {
         public NetworkManager NetworkManager;
-        private TickHistory<InputList> m_HistoricalInput = new TickHistory<InputList>();
+        private FrameHistory<InputList> m_HistoricalInput = new FrameHistory<InputList>();
 
         /// <summary>
         /// Retrieve input for the current frame.
@@ -57,25 +57,25 @@ namespace DefaultNamespace
             {
                 input |= InputList.PredictableTeleport;
             }
-            m_HistoricalInput.Add(NetworkManager.LocalTime.Tick, input);
+            m_HistoricalInput.Add(NetworkManager.LocalTime.Time, input);
 
             return input;
         }
 
         /// <summary>
-        /// Remove historical input before the given network tick
+        /// Remove historical input before the given time
         /// </summary>
-        /// <param name="tick"></param>
-        public void RemoveBefore(double tick)
+        /// <param name="time"></param>
+        public void RemoveBefore(double time)
         {
-            m_HistoricalInput.RemoveBefore(tick);
+            m_HistoricalInput.RemoveBefore(time);
         }
 
         /// <summary>
         /// Retrieves historical inputs
         /// </summary>
         /// <returns></returns>
-        public List<TickHistory<InputList>.TickWithItem> GetHistory()
+        public List<FrameHistory<InputList>.ItemFrameData> GetHistory()
         {
             return m_HistoricalInput.GetHistory();
         }

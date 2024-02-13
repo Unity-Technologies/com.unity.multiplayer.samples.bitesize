@@ -72,15 +72,15 @@ namespace DefaultNamespace
 
         public override void OnNetworkSpawn()
         {
-            MyTransform.OnReanticipate = (networkTransform, anticipatedValue, anticipationTick, authorityValue, authorityTick) =>
+            MyTransform.OnReanticipate = (networkTransform, anticipatedValue, anticipationTime, authorityValue, authorityTime) =>
             {
                 // Here we re-anticipate the new position of the player based on the updated server position.
                 // We do this by taking the current authoritative position and replaying every input we have received
-                // since the reported authority tick, re-applying all the movement we have applied since then
+                // since the reported authority time, re-applying all the movement we have applied since then
                 // to arrive at a new anticipated player location.
                 foreach (var item in InputManager.GetHistory())
                 {
-                    if (item.Tick <= authorityTick)
+                    if (item.Time <= authorityTime)
                     {
                         continue;
                     }
@@ -91,10 +91,10 @@ namespace DefaultNamespace
                     // and moving by a fixed amount each time.
                     Move(item.Item, item.DeltaTime);
                 }
-                // Clear out all the input history before the given authority tick. We don't need anything before that
+                // Clear out all the input history before the given authority time. We don't need anything before that
                 // anymore as we won't get anymore updates from the server from before this one. We keep the current
-                // authority tick because theoretically another system may need that.
-                InputManager.RemoveBefore(authorityTick);
+                // authority time because theoretically another system may need that.
+                InputManager.RemoveBefore(authorityTime);
                 if (SmoothTime != 0.0)
                 {
                     // Server updates are not necessarily smooth, so applying reanticipation can also result in
@@ -124,7 +124,7 @@ namespace DefaultNamespace
         public void Update()
         {
             // The "ghost transform" here is a little smaller player object that shows the current authority position,
-            // which is a few ticks behind our anticipated value. This helps render the difference.
+            // which is a few frames behind our anticipated value. This helps render the difference.
             GhostTrasform.position = MyTransform.AuthorityState.Position;
             GhostTrasform.rotation = MyTransform.AuthorityState.Rotation;
             GhostTrasform.localScale = MyTransform.AuthorityState.Scale * 0.75f;

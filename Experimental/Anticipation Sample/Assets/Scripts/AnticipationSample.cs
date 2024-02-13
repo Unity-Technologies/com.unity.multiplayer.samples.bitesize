@@ -86,7 +86,7 @@ public class AnticipationSample : NetworkBehaviour
         // C and D react to a request to reanticipate by simply smoothing between the previous anticipated value
         // and the new authoritative value. They are not frequently updated and only need any reanticipation action
         // when the anticipation was wrong.
-        AnticipatedNetworkVariable<float>.OnReanticipateDelegate smooth = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTick, in float authoritativeValue, double authoritativeTick) =>
+        AnticipatedNetworkVariable<float>.OnReanticipateDelegate smooth = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
         {
             variable.Smooth(anticipatedValue, authoritativeValue, 0.25f, Mathf.Lerp);
         };
@@ -94,12 +94,12 @@ public class AnticipationSample : NetworkBehaviour
         ValueD.OnReanticipate = smooth;
 
         // E is actually trying to anticipate the current value of a constantly changing object to hide latency.
-        // It uses the amount of time that has passed since the authoritative tick to gauge the latency of this update
+        // It uses the amount of time that has passed since the authoritativetime to gauge the latency of this update
         // and anticipates a new value based on that delay. The server value is in the past, so the predicted value
         // attempts to guess what the value is in the present.
-        ValueE.OnReanticipate = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTick, in float authoritativeValue, double authoritativeTick) =>
+        ValueE.OnReanticipate = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
         {
-            var secondsBehind = (NetworkManager.LocalTime.TickWithPartial - authoritativeTick) * 1/NetworkManager.NetworkTickSystem.TickRate;
+            var secondsBehind = (NetworkManager.LocalTime.Time - authoritativeTime);
             variable.Smooth(anticipatedValue, (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10, 0.1f, Mathf.Lerp);
         };
 
