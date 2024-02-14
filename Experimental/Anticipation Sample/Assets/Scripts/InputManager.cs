@@ -16,6 +16,7 @@ namespace DefaultNamespace
     {
         public NetworkManager NetworkManager;
         private FrameHistory<InputList> m_HistoricalInput = new FrameHistory<InputList>();
+        private InputList m_LastInput;
 
         /// <summary>
         /// Retrieve input for the current frame.
@@ -45,18 +46,40 @@ namespace DefaultNamespace
             {
                 input |= InputList.Right;
             }
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Q))
             {
                 input |= InputList.RandomTeleport;
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.E))
             {
                 input |= InputList.SmallRandomTeleport;
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKey(KeyCode.R))
             {
                 input |= InputList.PredictableTeleport;
             }
+
+            // To simulate checks for GetKeyDown while in FixedUpdate:
+            // We store the unaltered input each frame. Then we alter the current frame's input
+            // so that if these buttons were pressed, we remove them from the input we are going to
+            // return and add to the history. That ensure no two input frames in a row contain these inputs,
+            // while still letting us do the input polling within FixedUpdate.
+            var lastInput = m_LastInput;
+            m_LastInput = input;
+
+            if ((lastInput & InputList.RandomTeleport) != 0)
+            {
+                input &= ~InputList.RandomTeleport;
+            }
+            if ((lastInput & InputList.SmallRandomTeleport) != 0)
+            {
+                input &= ~InputList.SmallRandomTeleport;
+            }
+            if ((lastInput & InputList.PredictableTeleport) != 0)
+            {
+                input &= ~InputList.PredictableTeleport;
+            }
+
             m_HistoricalInput.Add(NetworkManager.LocalTime.Time, input);
 
             return input;

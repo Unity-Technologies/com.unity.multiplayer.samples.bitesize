@@ -15,7 +15,6 @@ namespace DefaultNamespace
         {
             public double Time;
             public T Item;
-            public float DeltaTime;
         }
         private List<ItemFrameData> m_History = new List<ItemFrameData>();
 
@@ -30,7 +29,7 @@ namespace DefaultNamespace
         /// <param name="value"></param>
         public void Add(double time, T value)
         {
-            m_History.Add(new ItemFrameData{Time = time, Item = value, DeltaTime = Time.deltaTime});
+            m_History.Add(new ItemFrameData{Time = time, Item = value});
         }
 
         /// <summary>

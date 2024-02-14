@@ -100,7 +100,25 @@ public class AnticipationSample : NetworkBehaviour
         ValueE.OnReanticipate = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
         {
             var secondsBehind = (NetworkManager.LocalTime.Time - authoritativeTime);
-            variable.Smooth(anticipatedValue, (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10, 0.1f, Mathf.Lerp);
+
+            var newAnticipatedValue = (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10;
+            // If we always smooth here, we will have differences in behavior between the client and server simulations
+            // The server simulation jumps backward when it reaches the end, but smoothing would result in a smooth
+            // movement back to the beginning.
+            // Checking if the new value is less than the previous anticipated value does not work here because
+            // network jitter can make that happen any time. Checking if the new value is less than the authority value
+            // also does not work because that will disable smoothing for the entire duration that the anticipated value
+            // is near the beginning of the scale. So what we do instead is check the size of the change: if the distance
+            // between the previous value and the new one is less than 1, we smooth it, otherwise, we snap to the new
+            // value.
+            if (Math.Abs(newAnticipatedValue - anticipatedValue) < 1f)
+            {
+                variable.Smooth(anticipatedValue, newAnticipatedValue, 0.1f, Mathf.Lerp);
+            }
+            else
+            {
+                variable.Anticipate(newAnticipatedValue);
+            }
         };
 
         AnticipatedNetworkVariable<float>.OnAuthoritativeValueChangedDelegate onUpdate = (AnticipatedNetworkVariable<float> variable, in float value, in float newValue) =>
@@ -197,7 +215,7 @@ public class AnticipationSample : NetworkBehaviour
             GUILayout.EndArea();
             if(IsClient)
             {
-                GUILayout.BeginArea(new Rect(0, 377, 600, 300));
+                GUILayout.BeginArea(new Rect(0, 310, 600, 300));
                 GUILayout.Label("Anticipated Network Transform controls:");
                 GUILayout.Label("W: Move Forward | S: Move Backward | A: Turn Left | D: Turn Right");
                 GUILayout.Label("Q: Large random teleport (very different server result)");
@@ -207,6 +225,15 @@ public class AnticipationSample : NetworkBehaviour
 
                 GUILayout.Label($"Transform smooth duration: {Player.SmoothTime}s");
                 Player.SmoothTime = GUILayout.HorizontalSlider(Player.SmoothTime, 0, 1);
+                GUILayout.Label($"Transform smooth distance threshold: {Player.SmoothDistance}");
+                Player.SmoothDistance = GUILayout.HorizontalSlider(Player.SmoothDistance, 0, 50);
+                if (GUILayout.Button("Toggle Server Visualization (Follower)"))
+                {
+                    foreach (var childRenderer in Player.GhostTrasform.GetComponentsInChildren<MeshRenderer>())
+                    {
+                        childRenderer.enabled = !childRenderer.enabled;
+                    }
+                }
                 GUILayout.EndArea();
             }
         }
