@@ -37,6 +37,21 @@ public class AnticipationSample : NetworkBehaviour
     /// <summary>
     /// This is a server-controlled value that gets updated by the server, and the client anticipates what it should be
     /// "now" based on the latency to the server (knowing that the value it sees from the server is actually in the past)
+    ///
+    /// A small note about ValueE: it constantly increments but displays a value between 1 and 10. While ValueE itself
+    /// could be constrained to being between 1 and 10, this creates odd network behavior: when tha value wraps around,
+    /// the smoothing code in the Reanticipate callback has to choose between one of two options:
+    /// 1) Smooth to the new value (which gets the value closest to what the server's actual value is, but does not get
+    /// matching behavior to the server), or
+    /// 2) Skip smoothing when the new calculated value jumps, which results in the slider jumping backward before it
+    /// actually reaches the end due to the extra latency added by interpolation.
+    ///
+    /// Instead, we have this value increment indefinitely, and do the modulo by 10 outside of the anticipation logic,
+    /// so that what we are doing the modulo on is the current anticipated value AFTER smoothing has been applied.
+    ///
+    /// Smoothing is applied every frame, while the Reanticipate callback is only called when data changes, so it is
+    /// best to handle these kinds of situations via some logic in your game code rather than via jumps in the actual
+    /// value in order to maintain the most consistent player experience.
     /// </summary>
     public AnticipatedNetworkVariable<float> ValueE = new AnticipatedNetworkVariable<float>(0, StaleDataHandling.Reanticipate);
 
@@ -88,7 +103,7 @@ public class AnticipationSample : NetworkBehaviour
         // when the anticipation was wrong.
         AnticipatedNetworkVariable<float>.OnReanticipateDelegate smooth = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
         {
-            variable.Smooth(anticipatedValue, authoritativeValue, 0.25f, Mathf.Lerp);
+            variable.Smooth(anticipatedValue, authoritativeValue, SmoothTime, Mathf.Lerp);
         };
         ValueC.OnReanticipate = smooth;
         ValueD.OnReanticipate = smooth;
@@ -99,26 +114,18 @@ public class AnticipationSample : NetworkBehaviour
         // attempts to guess what the value is in the present.
         ValueE.OnReanticipate = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
         {
-            var secondsBehind = (NetworkManager.LocalTime.Time - authoritativeTime);
+            // There is an important distinction between the smoothing this is doing and the smoothing the player object
+            // is doing:
+            // For the player object, it is replaying everything that has happened over a full round trip, so it has to
+            // account for the entire difference between the current time and the authoritative time.
+            // For this variable, we are only extrapolating over the time that has passed since the server sent us this
+            // value - the difference between current time and authoritativeTime represents a full round trip, but the
+            // actual time difference here is only a half round trip, so we multiply by 0.5.
+            // Then, because smoothing adds its own latency, we add the smooth time into the mix.
+            var secondsBehind = (NetworkManager.LocalTime.Time - authoritativeTime) * 0.5f + SmoothTime;
 
-            var newAnticipatedValue = (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10;
-            // If we always smooth here, we will have differences in behavior between the client and server simulations
-            // The server simulation jumps backward when it reaches the end, but smoothing would result in a smooth
-            // movement back to the beginning.
-            // Checking if the new value is less than the previous anticipated value does not work here because
-            // network jitter can make that happen any time. Checking if the new value is less than the authority value
-            // also does not work because that will disable smoothing for the entire duration that the anticipated value
-            // is near the beginning of the scale. So what we do instead is check the size of the change: if the distance
-            // between the previous value and the new one is less than 1, we smooth it, otherwise, we snap to the new
-            // value.
-            if (Math.Abs(newAnticipatedValue - anticipatedValue) < 1f)
-            {
-                variable.Smooth(anticipatedValue, newAnticipatedValue, 0.1f, Mathf.Lerp);
-            }
-            else
-            {
-                variable.Anticipate(newAnticipatedValue);
-            }
+            var newAnticipatedValue = (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind);
+            variable.Smooth(anticipatedValue, newAnticipatedValue, SmoothTime, Mathf.Lerp);
         };
 
         AnticipatedNetworkVariable<float>.OnAuthoritativeValueChangedDelegate onUpdate = (AnticipatedNetworkVariable<float> variable, in float value, in float newValue) =>
@@ -135,9 +142,27 @@ public class AnticipationSample : NetworkBehaviour
     {
         if (IsServer)
         {
-            ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime) % 10;
+            ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime);
         }
     }
+
+    private int Latency = 200;
+    private int Jitter = 25;
+    private float SmoothTime = 0.25f;
+
+    /// <summary>
+    /// Get the "true" value of ValueE, applying a modulo by 10.
+    /// See the comment in the description of ValueE for an explanation of why this is done this way.
+    /// </summary>
+    /// <returns></returns>
+    public float ValueEDisplayValue => ValueE.Value % 10;
+
+    /// <summary>
+    /// Get the "true" authoritative value of ValueE, applying a modulo by 10.
+    /// See the comment in the description of ValueE for an explanation of why this is done this way.
+    /// </summary>
+    /// <returns></returns>
+    public float ValueEDisplayAuthoritative => ValueE.AuthoritativeValue % 10;
 
     void OnGUI()
     {
@@ -207,9 +232,9 @@ public class AnticipationSample : NetworkBehaviour
 
             GUILayout.BeginVertical("Box");
             GUILayout.Label("Value E (Server-controlled, continuous anticipation):");
-            GUILayout.HorizontalSlider(ValueE.Value, 0, 10);
+            GUILayout.HorizontalSlider(ValueEDisplayValue % 10, 0, 10);
             GUILayout.Label("Value E Current Server Value:");
-            GUILayout.HorizontalSlider(ValueE.AuthoritativeValue, 0, 10);
+            GUILayout.HorizontalSlider(ValueEDisplayAuthoritative % 10, 0, 10);
             GUILayout.EndVertical();
 
             GUILayout.EndArea();
@@ -234,6 +259,8 @@ public class AnticipationSample : NetworkBehaviour
                         childRenderer.enabled = !childRenderer.enabled;
                     }
                 }
+                GUILayout.Label($"Variable smooth duration: {SmoothTime}s");
+                SmoothTime = GUILayout.HorizontalSlider(SmoothTime, 0, 1);
                 GUILayout.EndArea();
             }
         }
@@ -249,9 +276,13 @@ public class AnticipationSample : NetworkBehaviour
                 if (GUILayout.Button("Start Client"))
                 {
                     var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
-                    unityTransport.SetDebugSimulatorParameters(100, 0, 0);
+                    unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
                     NetworkManagerObject.StartClient();
                 }
+                GUILayout.Label($"Latency: {Latency}ms");
+                Latency = (int)GUILayout.HorizontalSlider(Latency, 0, 300);
+                GUILayout.Label($"Jitter: {Jitter}ms");
+                Jitter = (int)GUILayout.HorizontalSlider(Jitter, 0, 50);
             }
             GUILayout.EndArea();
         }
