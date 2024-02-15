@@ -124,7 +124,7 @@ namespace DefaultNamespace
                     Move(item.Item, true);
                 }
                 // Clear out all the input history before the given authority time. We don't need anything before that
-                // anymore as we won't get anymore updates from the server from before this one. We keep the current
+                // anymore as we won't get any more updates from the server from before this one. We keep the current
                 // authority time because theoretically another system may need that.
                 InputManager.RemoveBefore(authorityTime);
                 // It's not always desirable to smooth the transform. In cases of very large discrepencies in state,
