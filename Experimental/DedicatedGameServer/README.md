@@ -68,7 +68,7 @@ Use the Matchmaker service to connect clients to the servers hosted by Game Serv
  **Note**: Name your Queue "Queue01" for the sample to use it automatically.
 
 ---
-<br>
+<br><br>
  <a name="test-dedicated-server-sample"></a>
 ## Test the dedicated game server sample in multiplayer
 
