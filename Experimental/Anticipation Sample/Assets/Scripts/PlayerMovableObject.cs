@@ -157,9 +157,12 @@ namespace DefaultNamespace
         [Rpc(SendTo.Server)]
         private void ServerMoveRpc(InputList inputs)
         {
+            var currentPosition = MyTransform.AnticipatedState;
             // Calling Anticipate functions on the authority sets the authority value, too, so we can
             // just reuse the same method here with no problem.
             Move(inputs);
+            // Server can use Smoothing for interpolation purposes as well.
+            MyTransform.Smooth(currentPosition, MyTransform.AuthorityState, SmoothTime);
         }
 
         public void Update()

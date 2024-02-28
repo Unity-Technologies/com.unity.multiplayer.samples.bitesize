@@ -64,7 +64,9 @@ public class AnticipationSample : NetworkBehaviour
     [Rpc(SendTo.Server)]
     void SetValueCRpc(float value)
     {
+        var previousValue = ValueC.AuthoritativeValue;
         ValueC.AuthoritativeValue = value;
+        ValueC.Smooth(previousValue, value, SmoothTime, Mathf.Lerp);
         LogEverywhereRpc($"Set value C to {ValueC.AuthoritativeValue}");
     }
 
@@ -142,6 +144,13 @@ public class AnticipationSample : NetworkBehaviour
 
     private void Update()
     {
+        if (Restart && !NetworkManagerObject.IsListening && !NetworkManagerObject.ShutdownInProgress)
+        {
+            var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
+            unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
+            NetworkManagerObject.StartClient();
+            Restart = false;
+        }
         if (IsServer)
         {
             ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime) % 10;
@@ -151,6 +160,7 @@ public class AnticipationSample : NetworkBehaviour
     private int Latency = 200;
     private int Jitter = 25;
     private float SmoothTime = 0.25f;
+    private bool Restart = false;
 
     void OnGUI()
     {
@@ -255,15 +265,28 @@ public class AnticipationSample : NetworkBehaviour
                     }
                 }
                 GUILayout.EndArea();
+                GUILayout.BeginArea(new Rect(610, 456, 300, 150));
+                GUILayout.Label($"Latency: {Latency}ms");
+                Latency = (int)GUILayout.HorizontalSlider(Latency, 0, 300);
+                GUILayout.Label($"Jitter: {Jitter}ms");
+                Jitter = (int)GUILayout.HorizontalSlider(Jitter, 0, 50);
+                if (GUILayout.Button("Apply"))
+                {
+                    Restart = true;
+                    NetworkManagerObject.Shutdown();
+                }
+                GUILayout.EndArea();
             }
         }
         else
         {
             GUILayout.BeginArea(new Rect(0, 0, 300, 600));
 
-            if (!NetworkManagerObject.IsListening){
+            if (!NetworkManagerObject.IsListening && !Restart){
                 if (GUILayout.Button("Start Server"))
                 {
+                    var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
+                    unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
                     NetworkManagerObject.StartServer();
                 }
                 if (GUILayout.Button("Start Client"))
@@ -272,10 +295,6 @@ public class AnticipationSample : NetworkBehaviour
                     unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
                     NetworkManagerObject.StartClient();
                 }
-                GUILayout.Label($"Latency: {Latency}ms");
-                Latency = (int)GUILayout.HorizontalSlider(Latency, 0, 300);
-                GUILayout.Label($"Jitter: {Jitter}ms");
-                Jitter = (int)GUILayout.HorizontalSlider(Jitter, 0, 50);
             }
             GUILayout.EndArea();
         }
