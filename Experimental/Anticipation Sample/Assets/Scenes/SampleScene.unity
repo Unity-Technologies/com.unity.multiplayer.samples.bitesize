@@ -1140,7 +1140,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: de6faa52be7e8a04ca90031d3b30a5e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1226,6 +1226,7 @@ MonoBehaviour:
   MyTransform: {fileID: 1323803462}
   InputManager: {fileID: 1300003875}
   SmoothTime: 0.1
+  SmoothDistance: 3
 --- !u!1 &1534093157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,8 +1359,7 @@ MonoBehaviour:
     NetworkTransport: {fileID: 1999467624}
     PlayerPrefab: {fileID: 0}
     Prefabs:
-      NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 18d16f9f7c8e8bb4c93d04a7f4b0010f, type: 2}
+      NetworkPrefabsLists: []
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0

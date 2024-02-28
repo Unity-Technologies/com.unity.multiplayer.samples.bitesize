@@ -1,7 +1,7 @@
 # Anticipation Sample
 
 [![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2021.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.0)
-[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.9.0-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F1.7.1)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-feat/NetworkVariable_Traits_And_Anticipation-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/tree/feat/NetworkVariable_Traits_And_Anticipation)
 <br><br>
 
 This sample provides examples for how the Client Anticipation feature of Netcode for GameObjects 1.9.0 can be used. It covers several use cases:

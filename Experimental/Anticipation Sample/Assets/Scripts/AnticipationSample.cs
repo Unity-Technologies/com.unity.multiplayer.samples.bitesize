@@ -38,17 +38,6 @@ public class AnticipationSample : NetworkBehaviour
     /// This is a server-controlled value that gets updated by the server, and the client anticipates what it should be
     /// "now" based on the latency to the server (knowing that the value it sees from the server is actually in the past)
     ///
-    /// A small note about ValueE: it constantly increments but displays a value between 1 and 10. While ValueE itself
-    /// could be constrained to being between 1 and 10, this creates odd network behavior: when tha value wraps around,
-    /// the smoothing code in the Reanticipate callback has to choose between one of two options:
-    /// 1) Smooth to the new value (which gets the value closest to what the server's actual value is, but does not get
-    /// matching behavior to the server), or
-    /// 2) Skip smoothing when the new calculated value jumps, which results in the slider jumping backward before it
-    /// actually reaches the end due to the extra latency added by interpolation.
-    ///
-    /// Instead, we have this value increment indefinitely, and do the modulo by 10 outside of the anticipation logic,
-    /// so that what we are doing the modulo on is the current anticipated value AFTER smoothing has been applied.
-    ///
     /// Smoothing is applied every frame, while the Reanticipate callback is only called when data changes, so it is
     /// best to handle these kinds of situations via some logic in your game code rather than via jumps in the actual
     /// value in order to maintain the most consistent player experience.
@@ -124,8 +113,21 @@ public class AnticipationSample : NetworkBehaviour
             // Then, because smoothing adds its own latency, we add the smooth time into the mix.
             var secondsBehind = (NetworkManager.LocalTime.Time - authoritativeTime) * 0.5f + SmoothTime;
 
-            var newAnticipatedValue = (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind);
-            variable.Smooth(anticipatedValue, newAnticipatedValue, SmoothTime, Mathf.Lerp);
+            var newAnticipatedValue = (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10;
+
+            // This variable uses a custom interpolation callback that handles the drop from 10
+            // down to 0. Without this, there is either weird smoothing behavior, or hitching.
+            // This keeps the interpolation going, and handles the case where the interpolated value
+            // goes over 10 and has to jump back to 0.
+            variable.Smooth(anticipatedValue, newAnticipatedValue, SmoothTime, ((start, end, amount) =>
+            {
+                if (end < 3 && start > 7)
+                {
+                    end += 10;
+                }
+
+                return Mathf.Lerp(start, end, amount) % 10;
+            }));
         };
 
         AnticipatedNetworkVariable<float>.OnAuthoritativeValueChangedDelegate onUpdate = (AnticipatedNetworkVariable<float> variable, in float value, in float newValue) =>
@@ -142,27 +144,13 @@ public class AnticipationSample : NetworkBehaviour
     {
         if (IsServer)
         {
-            ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime);
+            ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime) % 10;
         }
     }
 
     private int Latency = 200;
     private int Jitter = 25;
     private float SmoothTime = 0.25f;
-
-    /// <summary>
-    /// Get the "true" value of ValueE, applying a modulo by 10.
-    /// See the comment in the description of ValueE for an explanation of why this is done this way.
-    /// </summary>
-    /// <returns></returns>
-    public float ValueEDisplayValue => ValueE.Value % 10;
-
-    /// <summary>
-    /// Get the "true" authoritative value of ValueE, applying a modulo by 10.
-    /// See the comment in the description of ValueE for an explanation of why this is done this way.
-    /// </summary>
-    /// <returns></returns>
-    public float ValueEDisplayAuthoritative => ValueE.AuthoritativeValue % 10;
 
     void OnGUI()
     {
@@ -232,10 +220,17 @@ public class AnticipationSample : NetworkBehaviour
 
             GUILayout.BeginVertical("Box");
             GUILayout.Label("Value E (Server-controlled, continuous anticipation):");
-            GUILayout.HorizontalSlider(ValueEDisplayValue % 10, 0, 10);
+            GUILayout.HorizontalSlider(ValueE.Value, 0, 10);
             GUILayout.Label("Value E Current Server Value:");
-            GUILayout.HorizontalSlider(ValueEDisplayAuthoritative % 10, 0, 10);
+            GUILayout.HorizontalSlider(ValueE.AuthoritativeValue, 0, 10);
             GUILayout.EndVertical();
+
+            if (IsClient)
+            {
+                GUILayout.Label("");
+                GUILayout.Label($"Variable smooth duration: {SmoothTime}s");
+                SmoothTime = GUILayout.HorizontalSlider(SmoothTime, 0, 1);
+            }
 
             GUILayout.EndArea();
             if(IsClient)
@@ -259,8 +254,6 @@ public class AnticipationSample : NetworkBehaviour
                         childRenderer.enabled = !childRenderer.enabled;
                     }
                 }
-                GUILayout.Label($"Variable smooth duration: {SmoothTime}s");
-                SmoothTime = GUILayout.HorizontalSlider(SmoothTime, 0, 1);
                 GUILayout.EndArea();
             }
         }
