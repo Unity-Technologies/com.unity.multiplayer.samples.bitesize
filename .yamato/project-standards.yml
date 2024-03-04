@@ -5,7 +5,7 @@
 {% for editor in test_editors -%}
 
 standards_{{ project.name }}:
-  name: Standards Check
+  name: Standards Check {{ project.name }} - {{ editor }}
   agent:
     type: Unity::VM
     image: desktop/logging-testing-linux:v0.1.2-926285
