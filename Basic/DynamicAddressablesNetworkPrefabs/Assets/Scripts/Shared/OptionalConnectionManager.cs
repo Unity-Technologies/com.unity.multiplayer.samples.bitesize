@@ -14,23 +14,23 @@ namespace Game
     {
         [SerializeField]
         internal NetworkManager m_NetworkManager;
-        
+
         ConnectionState m_CurrentState;
-        
+
         internal OfflineState m_Offline;
-        
+
         internal ClientConnectingState m_ClientConnecting;
-        
+
         internal ClientConnectedState m_ClientConnected;
-        
+
         internal ClientPreloadingState m_ClientPreloading;
-        
+
         internal StartingHostState m_StartingHost;
-        
+
         internal HostingState m_Hosting;
-        
+
         internal string m_ConnectAddress;
-        
+
         internal ushort m_Port;
 
         void Awake()
@@ -46,7 +46,7 @@ namespace Game
             m_ClientPreloading = new ClientPreloadingState(this);
             m_StartingHost = new StartingHostState(this);
             m_Hosting = new HostingState(this);
-            
+
             m_CurrentState = m_Offline;
 
             m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
@@ -54,7 +54,7 @@ namespace Game
             m_NetworkManager.OnServerStarted += OnServerStarted;
             m_NetworkManager.OnTransportFailure += OnTransportFailure;
         }
-        
+
         void OnDestroy()
         {
             m_NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
@@ -62,22 +62,22 @@ namespace Game
             m_NetworkManager.OnServerStarted -= OnServerStarted;
             m_NetworkManager.OnTransportFailure -= OnTransportFailure;
         }
-        
+
         void OnClientConnectedCallback(ulong clientId)
         {
             m_CurrentState.OnClientConnected(clientId);
         }
-        
+
         void OnClientDisconnectCallback(ulong clientId)
         {
             m_CurrentState.OnClientDisconnect(clientId);
         }
-        
+
         void OnServerStarted()
         {
             m_CurrentState.OnServerStarted();
         }
-        
+
         void OnTransportFailure()
         {
             m_CurrentState.OnTransportFailure();
