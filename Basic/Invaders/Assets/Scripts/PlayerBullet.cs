@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -49,11 +49,11 @@ public class PlayerBullet : NetworkBehaviour
 
             // Only the server can despawn a NetworkObject
             hitEnemy.NetworkObject.Despawn();
-            
+
             SpawnExplosionVFXClientRPC(transform.position, Quaternion.identity);
-            
+
             NetworkObject.Despawn();
-            
+
             return;
         }
 
