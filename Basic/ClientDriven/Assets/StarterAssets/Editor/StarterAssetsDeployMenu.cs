@@ -27,7 +27,7 @@ namespace StarterAssets
         private const string CinemachineTargetTag = "CinemachineTarget";
 
         private static GameObject _cinemachineVirtualCamera;
-        
+
         /// <summary>
         /// Deletes the scripting define set by the Package Checker.
         /// See Assets/Editor/PackageChecker/PackageChecker.cs for more information
@@ -47,7 +47,7 @@ namespace StarterAssets
 
             if (!vcam)
             {
-                if (TryLocatePrefab(CinemachineVirtualCameraName, new string[]{prefabFolder}, new[] { typeof(CinemachineVirtualCamera) }, out GameObject vcamPrefab, out string _))
+                if (TryLocatePrefab(CinemachineVirtualCameraName, new string[] { prefabFolder }, new[] { typeof(CinemachineVirtualCamera) }, out GameObject vcamPrefab, out string _))
                 {
                     HandleInstantiatingPrefab(vcamPrefab, out vcam);
                     _cinemachineVirtualCamera = vcam;
@@ -63,7 +63,7 @@ namespace StarterAssets
             }
 
             GameObject[] targets = GameObject.FindGameObjectsWithTag(CinemachineTargetTag);
-            
+
             GameObject target = null;
             foreach (var t in targets)
             {
@@ -73,7 +73,7 @@ namespace StarterAssets
                     break;
                 }
             }
-            
+
             if (target == null)
             {
                 target = new GameObject("PlayerCameraRoot");
@@ -93,7 +93,7 @@ namespace StarterAssets
             if (mainCameras.Length < 1)
             {
                 // if there are no MainCameras, add one
-                if (TryLocatePrefab(MainCameraPrefabName, new string[]{inFolder}, new[] { typeof(CinemachineBrain), typeof(Camera) }, out GameObject camera, out string _))
+                if (TryLocatePrefab(MainCameraPrefabName, new string[] { inFolder }, new[] { typeof(CinemachineBrain), typeof(Camera) }, out GameObject camera, out string _))
                 {
                     HandleInstantiatingPrefab(camera, out _);
                 }
@@ -148,12 +148,12 @@ namespace StarterAssets
 
                         if (hasRequiredComponents)
                         {
-                             if (loadedGo.name == name)
-                             {
-                                 prefab = loadedGo;
-                                 path = assetPath;
-                                 return true;
-                             }                           
+                            if (loadedGo.name == name)
+                            {
+                                prefab = loadedGo;
+                                path = assetPath;
+                                return true;
+                            }
                         }
                     }
                 }
