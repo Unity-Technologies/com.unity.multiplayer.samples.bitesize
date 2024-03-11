@@ -51,10 +51,10 @@ public class PlayerControl : NetworkBehaviour
         switch (SceneTransitionHandler.sceneTransitionHandler.GetCurrentSceneState())
         {
             case SceneTransitionHandler.SceneStates.Ingame:
-            {
-                InGameUpdate();
-                break;
-            }
+                {
+                    InGameUpdate();
+                    break;
+                }
         }
     }
 

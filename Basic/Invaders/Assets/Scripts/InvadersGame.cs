@@ -466,24 +466,24 @@ public class InvadersGame : NetworkBehaviour
         switch (invadersObjectType)
         {
             case InvadersObjectType.Enemy:
-            {
-                // Don't register if this is a saucer
-                if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
-                    return;
+                {
+                    // Don't register if this is a saucer
+                    if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
+                        return;
 
-                gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
-                Assert.IsTrue(enemyAgent != null);
-                if (!m_Enemies.Contains(enemyAgent))
-                    m_Enemies.Add(enemyAgent);
-                break;
-            }
+                    gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
+                    Assert.IsTrue(enemyAgent != null);
+                    if (!m_Enemies.Contains(enemyAgent))
+                        m_Enemies.Add(enemyAgent);
+                    break;
+                }
             case InvadersObjectType.Shield:
-            {
-                gameObject.TryGetComponent<Shield>(out var shield);
-                Assert.IsTrue(shield != null);
-                m_Shields.Add(shield);
-                break;
-            }
+                {
+                    gameObject.TryGetComponent<Shield>(out var shield);
+                    Assert.IsTrue(shield != null);
+                    m_Shields.Add(shield);
+                    break;
+                }
             default:
                 Assert.IsTrue(false);
                 break;
@@ -497,25 +497,25 @@ public class InvadersGame : NetworkBehaviour
         switch (invadersObjectType)
         {
             case InvadersObjectType.Enemy:
-            {
-                // Don't unregister if this is a saucer
-                if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
-                    return;
+                {
+                    // Don't unregister if this is a saucer
+                    if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
+                        return;
 
-                gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
-                Assert.IsTrue(enemyAgent != null);
-                if (m_Enemies.Contains(enemyAgent))
-                    m_Enemies.Remove(enemyAgent);
-                break;
-            }
+                    gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
+                    Assert.IsTrue(enemyAgent != null);
+                    if (m_Enemies.Contains(enemyAgent))
+                        m_Enemies.Remove(enemyAgent);
+                    break;
+                }
             case InvadersObjectType.Shield:
-            {
-                gameObject.TryGetComponent<Shield>(out var shield);
-                Assert.IsTrue(shield != null);
-                if (m_Shields.Contains(shield))
-                    m_Shields.Remove(shield);
-                break;
-            }
+                {
+                    gameObject.TryGetComponent<Shield>(out var shield);
+                    Assert.IsTrue(shield != null);
+                    if (m_Shields.Contains(shield))
+                        m_Shields.Remove(shield);
+                    break;
+                }
             default:
                 Assert.IsTrue(false);
                 break;
