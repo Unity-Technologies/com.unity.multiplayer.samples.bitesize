@@ -55,12 +55,12 @@ namespace Game
                         m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
                         break;
                     case DisconnectReason.ClientNeedsToPreload:
-                    {
-                        Debug.Log("Client needs to preload");
-                        m_ConnectionManager.m_ClientPreloading.disconnectionPayload = disconnectionPayload;
-                        m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientPreloading);
-                    }
-                    break;
+                        {
+                            Debug.Log("Client needs to preload");
+                            m_ConnectionManager.m_ClientPreloading.disconnectionPayload = disconnectionPayload;
+                            m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientPreloading);
+                        }
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
