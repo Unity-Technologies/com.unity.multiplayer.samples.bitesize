@@ -182,16 +182,16 @@ namespace DefaultNamespace
             // just reuse the same method here with no problem.
             Move(inputs);
             // Server can use Smoothing for interpolation purposes as well.
-            MyTransform.Smooth(currentPosition, MyTransform.AuthorityState, SmoothTime);
+            MyTransform.Smooth(currentPosition, MyTransform.AuthoritativeState, SmoothTime);
         }
 
         public void Update()
         {
             // The "ghost transform" here is a little smaller player object that shows the current authority position,
             // which is a few frames behind our anticipated value. This helps render the difference.
-            GhostTrasform.position = MyTransform.AuthorityState.Position;
-            GhostTrasform.rotation = MyTransform.AuthorityState.Rotation;
-            GhostTrasform.localScale = MyTransform.AuthorityState.Scale * 0.75f;
+            GhostTrasform.position = MyTransform.AuthoritativeState.Position;
+            GhostTrasform.rotation = MyTransform.AuthoritativeState.Rotation;
+            GhostTrasform.localScale = MyTransform.AuthoritativeState.Scale * 0.75f;
         }
 
         // Input processing happens in FixedUpdate rather than Update because the frame rate of server and client
