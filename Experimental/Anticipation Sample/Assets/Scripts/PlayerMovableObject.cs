@@ -106,44 +106,64 @@ namespace DefaultNamespace
             }
         }
 
-        public override void OnNetworkSpawn()
+        public override void OnReanticipate(double lastRoundTripTime)
         {
-            MyTransform.OnReanticipate = (networkTransform, anticipatedValue, anticipationTime, authorityValue, authorityTime) =>
-            {
-                // Here we re-anticipate the new position of the player based on the updated server position.
-                // We do this by taking the current authoritative position and replaying every input we have received
-                // since the reported authority time, re-applying all the movement we have applied since then
-                // to arrive at a new anticipated player location.
-                foreach (var item in InputManager.GetHistory())
-                {
-                    if (item.Time <= authorityTime)
-                    {
-                        continue;
-                    }
+            // Have to store the transform's previous state because calls to AnticipateMove() and
+            // AnticipateRotate() will overwrite it.
+            var previousState = MyTransform.PreviousAnticipatedState;
 
-                    Move(item.Item, true);
+            var authorityTime = NetworkManager.LocalTime.Time - lastRoundTripTime;
+            // Here we re-anticipate the new position of the player based on the updated server position.
+            // We do this by taking the current authoritative position and replaying every input we have received
+            // since the reported authority time, re-applying all the movement we have applied since then
+            // to arrive at a new anticipated player location.
+
+            foreach (var item in InputManager.GetHistory())
+            {
+                if (item.Time <= authorityTime)
+                {
+                    continue;
                 }
-                // Clear out all the input history before the given authority time. We don't need anything before that
-                // anymore as we won't get any more updates from the server from before this one. We keep the current
-                // authority time because theoretically another system may need that.
-                InputManager.RemoveBefore(authorityTime);
-                // It's not always desirable to smooth the transform. In cases of very large discrepencies in state,
-                // it can sometimes be desirable to simply teleport to the new position. We use the SmoothDistance
-                // value (and use SqrMagnitude instead of Distance for efficiency) as a threshold for teleportation.
-                // This could also use other mechanisms of detection: For example, when the Telport input is included
-                // in the replay set, we could set a flag to disable smoothing because we know we are teleporting.
-                if (SmoothTime != 0.0 && Vector3.SqrMagnitude(anticipatedValue.Position - networkTransform.AnticipatedState.Position) < SmoothDistance * SmoothDistance)
+
+                Move(item.Item, true);
+            }
+            // Clear out all the input history before the given authority time. We don't need anything before that
+            // anymore as we won't get any more updates from the server from before this one. We keep the current
+            // authority time because theoretically another system may need that.
+            InputManager.RemoveBefore(authorityTime);
+            // It's not always desirable to smooth the transform. In cases of very large discrepencies in state,
+            // it can sometimes be desirable to simply teleport to the new position. We use the SmoothDistance
+            // value (and use SqrMagnitude instead of Distance for efficiency) as a threshold for teleportation.
+            // This could also use other mechanisms of detection: For example, when the Telport input is included
+            // in the replay set, we could set a flag to disable smoothing because we know we are teleporting.
+            if (SmoothTime != 0.0)
+            {
+                var sqDist = Vector3.SqrMagnitude(previousState.Position - MyTransform.AnticipatedState.Position);
+                if (sqDist <= 0.25 * 0.25)
+                {
+                    // This prevents small amounts of wobble from slight differences.
+                    MyTransform.AnticipateState(previousState);
+                }
+                else if (sqDist < SmoothDistance * SmoothDistance)
                 {
                     // Server updates are not necessarily smooth, so applying reanticipation can also result in
                     // hitchy, unsmooth animations. To compensate for that, we call this to smooth from the previous
                     // anticipated state (stored in "anticipatedValue") to the new state (which, because we have used
                     // the "Move" method that updates the anticipated state of the transform, is now the current
                     // transform anticipated state)
-                    networkTransform.Smooth(anticipatedValue, networkTransform.AnticipatedState, SmoothTime);
+                    MyTransform.Smooth(previousState, MyTransform.AnticipatedState, SmoothTime);
                 }
-            };
-            base.OnNetworkSpawn();
+            }
 
+        }
+
+        /// <summary>
+        /// When we apply changes to the latency and jitter, it respawns everything.
+        /// We want to make sure there's no input left over from before that by clearing it.
+        /// </summary>
+        public override void OnNetworkSpawn()
+        {
+            InputManager.Clear();
         }
 
         /// <summary>
