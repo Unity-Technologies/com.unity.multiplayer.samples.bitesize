@@ -11,7 +11,6 @@ public class NetworkObjectSpawner : NetworkBehaviour
     public void Start()
     {
         NetworkManager.Singleton.OnServerStarted += OnServerStartedIngredientSpawn;
-        enabled = false;
     }
 
     void OnServerStartedIngredientSpawn()
@@ -21,6 +20,5 @@ public class NetworkObjectSpawner : NetworkBehaviour
         var ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
         ingredient.NetworkObject.Spawn();
         ingredient.currentIngredientType.Value = (IngredientType)randomGenerator.Next((int)IngredientType.MAX);
-        enabled = false;
     }
 }
