@@ -99,7 +99,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
 
         void OnClientHealthChanged(int previousHealth, int newHealth)
         {
-            m_HealthBarImage.rectTransform.localScale = new Vector3((float) newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
+            m_HealthBarImage.rectTransform.localScale = new Vector3((float)newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
             OnClientUpdateHealthBarColor(newHealth);
             //note: you could use the previousHealth to play an healing/damage animation
         }

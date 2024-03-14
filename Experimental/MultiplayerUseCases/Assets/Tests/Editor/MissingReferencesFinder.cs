@@ -33,7 +33,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Tests.Editor
                 {
                     continue;
                 }
-                
+
                 EditorSceneManager.OpenScene(scene.path);
                 FindMissingReferencesInCurrentScene();
             }

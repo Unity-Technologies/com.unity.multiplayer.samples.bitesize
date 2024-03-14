@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
@@ -9,11 +9,11 @@ public class LobbyControl : NetworkBehaviour
 {
     [SerializeField]
     private string m_InGameSceneName = "InGame";
-    
+
     // Minimum player count required to transition to next level
     [SerializeField]
     private int m_MinimumPlayerCount = 2;
-    
+
     public TMP_Text LobbyText;
     private bool m_AllPlayersInLobby;
 
@@ -23,7 +23,7 @@ public class LobbyControl : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         m_ClientsInLobby = new Dictionary<ulong, bool>();
-        
+
         //Always add ourselves to the list at first
         m_ClientsInLobby.Add(NetworkManager.LocalClientId, false);
 

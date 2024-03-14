@@ -5,15 +5,15 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NetworkManager))]
-public class RandomPositionPlayerSpawner: MonoBehaviour
+public class RandomPositionPlayerSpawner : MonoBehaviour
 {
     NetworkManager m_NetworkManager;
 
     int m_RoundRobinIndex = 0;
-    
+
     [SerializeField]
     SpawnMethod m_SpawnMethod;
-    
+
     [SerializeField]
     List<Vector3> m_SpawnPositions = new List<Vector3>() { Vector3.zero };
 
@@ -36,7 +36,7 @@ public class RandomPositionPlayerSpawner: MonoBehaviour
                 throw new NotImplementedException();
         }
     }
-    
+
     private void Awake()
     {
         var networkManager = gameObject.GetComponent<NetworkManager>();

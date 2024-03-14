@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -61,7 +61,7 @@ public class EnemyAgent : NetworkBehaviour
             // Wait for the grace shooting period to pass
             return;
         }
-        
+
         bool bCanShootThisFrame = false;
         if (IsServer && canShoot)
             if (Random.Range(0, 1.0f) > k_ShootingRandomThreshold)
