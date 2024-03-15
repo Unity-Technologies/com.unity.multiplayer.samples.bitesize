@@ -11,7 +11,7 @@ using UnityEngine;
 public class ServerPlayerMove : NetworkBehaviour
 {
     public NetworkVariable<bool> isObjectPickedUp = new NetworkVariable<bool>();
-    
+
     NetworkObject m_PickedUpObject;
 
     [SerializeField]
@@ -27,7 +27,7 @@ public class ServerPlayerMove : NetworkBehaviour
         }
 
         OnServerSpawnPlayer();
-        
+
         base.OnNetworkSpawn();
     }
 
@@ -37,7 +37,7 @@ public class ServerPlayerMove : NetworkBehaviour
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
         var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
         transform.position = spawnPosition;
-        
+
         // A note specific to owner authority:
         // Side Note:  Specific to Owner Authoritative
         // Setting the position works as and can be set in OnNetworkSpawn server-side unless there is a
@@ -50,7 +50,7 @@ public class ServerPlayerMove : NetworkBehaviour
 
     [ServerRpc]
     public void PickupObjectServerRpc(ulong objToPickupID)
-    {        
+    {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
         if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
 
@@ -68,7 +68,7 @@ public class ServerPlayerMove : NetworkBehaviour
         m_PickedUpObject = null;
         isObjectPickedUp.Value = false;
     }
-    
+
     [ServerRpc]
     public void DropObjectServerRpc()
     {

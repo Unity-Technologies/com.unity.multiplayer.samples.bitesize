@@ -53,17 +53,17 @@ namespace Game.UI
         public float NetworkSpawnTimeoutSeconds { get; private set; } = 3000;
 
         Dictionary<ulong, ClientUI> m_Clients = new Dictionary<ulong, ClientUI>();
-        
+
         public event Action LoadAllAsyncButtonPressed;
-        
+
         public event Action TrySpawnSynchronouslyButtonPressed;
-        
+
         public event Action SpawnUsingVisibilityButtonPressed;
-        
+
         [Flags]
-        public enum ButtonVisibility 
+        public enum ButtonVisibility
         {
-            None   = 0,
+            None = 0,
             Server = 1,
             Client = 2
         }
@@ -165,7 +165,7 @@ namespace Game.UI
         public void Show(ButtonVisibility visibility)
         {
             SetUIElementVisibility(m_InGameUIRoot, true);
-            
+
             SetUIElementVisibility(m_ArtificialDelaySliderHolder, m_ShowArtificialDelaySlider.HasFlag(visibility));
             SetUIElementVisibility(m_NetworkSpawnTimeoutSliderHolder, m_ShowNetworkSpawnTimeoutSlider.HasFlag(visibility));
             SetUIElementVisibility(m_ApiControlsHolder, m_ShowApiControls.HasFlag(visibility));
@@ -173,7 +173,7 @@ namespace Game.UI
             SetUIElementVisibility(m_SpawnSynchronouslyButton, m_ShowTrySpawnSynchronouslyButton.HasFlag(visibility));
             SetUIElementVisibility(m_SpawnWithVisibilityButton, m_ShowSpawnUsingVisibilityButton.HasFlag(visibility));
         }
-        
+
         public void Hide()
         {
             SetUIElementVisibility(m_InGameUIRoot, false);

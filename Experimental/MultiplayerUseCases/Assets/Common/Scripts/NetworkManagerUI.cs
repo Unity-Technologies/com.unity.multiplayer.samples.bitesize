@@ -102,7 +102,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
                                              : m_DisabledButtonColor;
             button.colors = colors;
             button.interactable = enable;
-            
+
             var buttonOutline = button.transform.Find("Outline").GetComponent<Image>();
             buttonOutline.color = enable ? m_ButtonOutlineColor : m_ButtonOutlineDisabledColor;
             buttonOutline.color = highlight ? m_ButtonOutlineHighlightedColor : buttonOutline.color;

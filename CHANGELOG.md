@@ -1,6 +1,11 @@
 # Changelog
 
-## [Unreleased]
+## [unreleased] yyyy-mm-dd
+
+### Bitesize Samples Repository
+
+#### Cleanup
+- Formatted .cs files inside the Bitesize Samples repository to adhere to coding standards (#156) Internal testing job definition files were added in order for internal processes to execute.
 
 ### Client Driven
 

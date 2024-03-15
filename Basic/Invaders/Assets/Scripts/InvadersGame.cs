@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
@@ -100,7 +100,7 @@ public class InvadersGame : NetworkBehaviour
     {
         Assert.IsNull(Singleton, $"Multiple instances of {nameof(InvadersGame)} detected. This should not happen.");
         Singleton = this;
-        
+
         OnSingletonReady?.Invoke();
 
         if (IsServer)
@@ -198,7 +198,7 @@ public class InvadersGame : NetworkBehaviour
         if (m_ReplicatedTimeSent)
         {
             // Send the RPC only to the newly connected client
-            SetReplicatedTimeRemainingClientRPC(m_TimeRemaining, new ClientRpcParams {Send = new ClientRpcSendParams{TargetClientIds = new List<ulong>() {clientId}}});
+            SetReplicatedTimeRemainingClientRPC(m_TimeRemaining, new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong>() { clientId } } });
         }
     }
 
@@ -320,13 +320,13 @@ public class InvadersGame : NetworkBehaviour
             UpdateEnemiesResultFlags enemiesResultFlags = UpdateEnemiesResultFlags.None;
             UpdateShootingEnemies(ref enemiesResultFlags);
 
-            if((enemiesResultFlags & UpdateEnemiesResultFlags.ReachedBottom) != 0)
+            if ((enemiesResultFlags & UpdateEnemiesResultFlags.ReachedBottom) != 0)
             {
                 // Force game end as at least one of the enemies have reached the bottom!
                 SetGameEnd(GameOverReason.EnemiesReachedBottom);
                 return;
             }
-            
+
             // If we didn't find any enemies, then spawn some
             if ((enemiesResultFlags & UpdateEnemiesResultFlags.FoundEnemy) == 0)
             {
@@ -367,14 +367,14 @@ public class InvadersGame : NetworkBehaviour
             {
                 continue;
             }
-            
+
             // If at least one of the enemies reached bottom, return early.
             if (enemy.transform.position.y <= k_BottomBoundaryOffset)
             {
                 flags |= UpdateEnemiesResultFlags.ReachedBottom;
                 return;
             }
-            
+
             if (enemy.score > 100)
                 continue;
 
@@ -435,17 +435,17 @@ public class InvadersGame : NetworkBehaviour
             BroadcastGameOverClientRpc(reason); // Notify our clients!
             return;
         }
-        
+
         foreach (NetworkClient networkedClient in NetworkManager.Singleton.ConnectedClientsList)
         {
             var playerObject = networkedClient.PlayerObject;
-            if(playerObject == null) continue;
-            
+            if (playerObject == null) continue;
+
             // We should just early out if any of the player's are still alive
             if (playerObject.GetComponent<PlayerControl>().IsAlive)
                 return;
         }
-        
+
         this.isGameOver.Value = true;
     }
 
@@ -466,24 +466,24 @@ public class InvadersGame : NetworkBehaviour
         switch (invadersObjectType)
         {
             case InvadersObjectType.Enemy:
-            {
-                // Don't register if this is a saucer
-                if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
-                    return;
+                {
+                    // Don't register if this is a saucer
+                    if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
+                        return;
 
-                gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
-                Assert.IsTrue(enemyAgent != null);
-                if (!m_Enemies.Contains(enemyAgent))
-                    m_Enemies.Add(enemyAgent);
-                break;
-            }
+                    gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
+                    Assert.IsTrue(enemyAgent != null);
+                    if (!m_Enemies.Contains(enemyAgent))
+                        m_Enemies.Add(enemyAgent);
+                    break;
+                }
             case InvadersObjectType.Shield:
-            {
-                gameObject.TryGetComponent<Shield>(out var shield);
-                Assert.IsTrue(shield != null);
-                m_Shields.Add(shield);
-                break;
-            }
+                {
+                    gameObject.TryGetComponent<Shield>(out var shield);
+                    Assert.IsTrue(shield != null);
+                    m_Shields.Add(shield);
+                    break;
+                }
             default:
                 Assert.IsTrue(false);
                 break;
@@ -497,25 +497,25 @@ public class InvadersGame : NetworkBehaviour
         switch (invadersObjectType)
         {
             case InvadersObjectType.Enemy:
-            {
-                // Don't unregister if this is a saucer
-                if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
-                    return;
+                {
+                    // Don't unregister if this is a saucer
+                    if (gameObject.TryGetComponent<SuperEnemyMovement>(out var saucer))
+                        return;
 
-                gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
-                Assert.IsTrue(enemyAgent != null);
-                if (m_Enemies.Contains(enemyAgent))
-                    m_Enemies.Remove(enemyAgent);
-                break;
-            }
+                    gameObject.TryGetComponent<EnemyAgent>(out var enemyAgent);
+                    Assert.IsTrue(enemyAgent != null);
+                    if (m_Enemies.Contains(enemyAgent))
+                        m_Enemies.Remove(enemyAgent);
+                    break;
+                }
             case InvadersObjectType.Shield:
-            {
-                gameObject.TryGetComponent<Shield>(out var shield);
-                Assert.IsTrue(shield != null);
-                if (m_Shields.Contains(shield))
-                    m_Shields.Remove(shield);
-                break;
-            }
+                {
+                    gameObject.TryGetComponent<Shield>(out var shield);
+                    Assert.IsTrue(shield != null);
+                    if (m_Shields.Contains(shield))
+                        m_Shields.Remove(shield);
+                    break;
+                }
             default:
                 Assert.IsTrue(false);
                 break;
