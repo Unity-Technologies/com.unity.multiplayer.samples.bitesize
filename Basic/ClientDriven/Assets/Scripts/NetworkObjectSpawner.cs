@@ -10,7 +10,7 @@ namespace Unity.Multiplayer.Samples.ClientDriven
     {
         [SerializeField] NetworkObject prefabReference;
 
-        public void Start()
+        void Start()
         {
             if (NetworkManager.Singleton != null)
             {
@@ -28,9 +28,9 @@ namespace Unity.Multiplayer.Samples.ClientDriven
 
         void OnServerStartedIngredientSpawn()
         {
-            Random randomGenerator = new Random();
-            var instantiatedNetworkObject = Instantiate(prefabReference, transform.position, transform.rotation, null);
-            var ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
+            Random randomGenerator = new Random(); 
+            NetworkObject instantiatedNetworkObject = Instantiate(prefabReference, transform.position, transform.rotation, null);
+            ServerIngredient ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
             ingredient.NetworkObject.Spawn();
             ingredient.currentIngredientType.Value = (IngredientType)randomGenerator.Next((int)IngredientType.MAX);
         }
