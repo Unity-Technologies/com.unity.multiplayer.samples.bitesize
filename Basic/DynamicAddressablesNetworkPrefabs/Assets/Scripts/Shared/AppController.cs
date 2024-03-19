@@ -17,10 +17,10 @@ namespace Game
 
         [SerializeField]
         OptionalConnectionManager m_ConnectionManager;
-        
+
         [SerializeField]
         IPMenuUI m_IPMenuUI;
-        
+
         [SerializeField]
         InGameUI m_InGameUI;
 
@@ -33,7 +33,7 @@ namespace Game
         {
             m_IPMenuUI.ResetUI();
             m_InGameUI.Hide();
-            
+
             m_NetworkManager.OnClientConnectedCallback += OnClientConnected;
             m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnect;
 
@@ -58,7 +58,7 @@ namespace Game
         void OnClientConnected(ulong clientId)
         {
             m_IPMenuUI.HideIPConnectionMenu();
-            
+
             // for host
             if (m_NetworkManager.IsHost)
             {
@@ -72,7 +72,7 @@ namespace Game
                 {
                     // grab all loaded prefabs and represent that on the newly joined client
                     var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
-                    
+
                     m_InGameUI.AddConnectionUIInstance(clientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
                 }
             }
@@ -83,10 +83,10 @@ namespace Game
                 {
                     m_IPMenuUI.ClientStarted();
                     m_InGameUI.Show(InGameUI.ButtonVisibility.Client);
-                    
+
                     // grab all locally loaded prefabs and represent that on local client
                     var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
-                    
+
                     m_InGameUI.AddConnectionUIInstance(clientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
                 }
             }
@@ -106,7 +106,7 @@ namespace Game
 
             return Tuple.Create(loadedHashes, loadedNames);
         }
-        
+
         void OnClientDisconnect(ulong clientId)
         {
             // when a connected client disconnects, remove their UI
@@ -123,13 +123,13 @@ namespace Game
                 m_InGameUI.Hide();
             }
         }
-        
+
         void StartHost()
         {
             Debug.Log(nameof(StartHost));
             m_ConnectionManager.StartHostIp(m_IPMenuUI.IpAddress, m_IPMenuUI.Port);
         }
-        
+
         void StartClient()
         {
             Debug.Log(nameof(StartClient));

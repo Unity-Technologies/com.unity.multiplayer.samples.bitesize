@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
 using Unity.Netcode;

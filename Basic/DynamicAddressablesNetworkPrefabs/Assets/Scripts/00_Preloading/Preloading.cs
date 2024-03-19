@@ -21,9 +21,9 @@ namespace Game.Preloading
     public sealed class Preloading : MonoBehaviour
     {
         [SerializeField] AssetReferenceGameObject m_DynamicPrefabReference;
-        
+
         [SerializeField] NetworkManager m_NetworkManager;
-        
+
         async void Start()
         {
             await PreloadDynamicPlayerPrefab();
@@ -35,18 +35,18 @@ namespace Game.Preloading
         async Task PreloadDynamicPlayerPrefab()
         {
             Debug.Log($"Started to load addressable with GUID: {m_DynamicPrefabReference.AssetGUID}");
-            var op =  Addressables.LoadAssetAsync<GameObject>(m_DynamicPrefabReference);
+            var op = Addressables.LoadAssetAsync<GameObject>(m_DynamicPrefabReference);
             var prefab = await op.Task;
             Addressables.Release(op);
-            
+
             //it's important to actually add the player prefab to the list of network prefabs - it doesn't happen
             //automatically
             m_NetworkManager.AddNetworkPrefab(prefab);
             Debug.Log($"Loaded prefab has been assigned to NetworkManager's PlayerPrefab");
-            
+
             // at this point we can easily change the PlayerPrefab
             m_NetworkManager.NetworkConfig.PlayerPrefab = prefab;
-            
+
             // Forcing all game instances to load a set of network prefabs and having each game instance inject network
             // prefabs to NetworkManager's NetworkPrefabs list pre-connection time guarantees that all players will have
             // matching NetworkConfigs. This is why NetworkManager.ForceSamePrefabs is set to true. We let Netcode for

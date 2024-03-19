@@ -12,11 +12,11 @@ namespace Game
         {
             m_ConnectionManager = connectionManager;
         }
-        
+
         public override void Enter() { }
 
         public override void Exit() { }
-        
+
         public override void OnUserRequestedShutdown()
         {
             m_ConnectionManager.m_NetworkManager.Shutdown();
