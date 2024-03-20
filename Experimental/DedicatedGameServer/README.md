@@ -2,8 +2,8 @@
 
 # Dedicated Game Server
 
-[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2023.3%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.0)
-[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.6.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2023.3.017a%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/alpha/2023.3.0a17)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.8.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
 <br><br>
 
 The Dedicated Game Server sample project uses Netcode For GameObjects (NGO). It also demonstrates the structure of a project that uses the dedicated server and the tools that you can use to configure it.
@@ -15,7 +15,7 @@ The dedicated server sample scene contains a small maze with interactive doors a
 
 - Integrate features from the [Dedicated Server](https://docs.unity3d.com/Packages/com.unity.dedicated-server@1.0/manual/index.html) and [Multiplayer Play Mode](https://docs.unity3d.com/Packages/com.unity.multiplayer.playmode@1.0/manual/index.html) packages with Netcode for GameObjects to with the dedicated server architecture.
 * [Set default comand line arguments](https://docs.unity3d.com/Packages/com.unity.dedicated-server@1.0/manual/cli-arguments.html)
-* Use [multiplayer roles](https://docs.unity3d.com/Packages/com.unity.dedicated-server@0.10/manual/multiplayer-roles.html).
+* Use [multiplayer roles](https://docs.unity3d.com/Packages/com.unity.dedicated-server@1.0/manual/multiplayer-roles.html).
 * Use the dedicated server with [multiplayer play mode](https://docs-multiplayer.unity3d.com/mppm/current/about/).
 * Strip GameObjects from the clients and server.
 - Integrate a project that uses the dedicated server with the [Game Server Hosting](https://docs.unity.com/ugs/en-us/manual/game-server-hosting/manual/welcome) and [Matchmaker](https://docs.unity.com/ugs/en-us/manual/matchmaker/manual/matchmaker-overview) services.
@@ -36,7 +36,7 @@ Use the autoconnect mode to automatically connect as a client to a local server 
 
 To enable autoconnect mode on the main editor, do the following:
 
-1. Set the editor [multiplayer role](multiplayer-roles.md) to **Client**.
+1. Set the editor [multiplayer role](https://docs.unity3d.com/Packages/com.unity.dedicated-server@1.0/manual/multiplayer-roles.html) to **Client**.
 2. Open the StartupScene
 3. In the Hierarchy window, select the **ApplicationEntryPoint** GameObject.
 4. In the **ApplicationEntryPoint** component, select the **Autoconnect if client** checkbox .
