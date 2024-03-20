@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
@@ -51,10 +51,10 @@ public class PlayerControl : NetworkBehaviour
         switch (SceneTransitionHandler.sceneTransitionHandler.GetCurrentSceneState())
         {
             case SceneTransitionHandler.SceneStates.Ingame:
-                {
-                    InGameUpdate();
-                    break;
-                }
+            {
+                InGameUpdate();
+                break;
+            }
         }
     }
 
@@ -120,7 +120,7 @@ public class PlayerControl : NetworkBehaviour
             InvadersGame.OnSingletonReady += SubscribeToDelegatesAndUpdateValues;
         else
             SubscribeToDelegatesAndUpdateValues();
-
+        
         SceneTransitionHandler.sceneTransitionHandler.OnSceneStateChanged += SceneTransitionHandler_sceneStateChanged;
         UpdateColor();
     }

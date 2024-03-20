@@ -14,23 +14,23 @@ namespace Game
         {
             m_ConnectionManager = connectionManager;
         }
-
+        
         public override void Enter()
         {
             StartClient();
         }
 
         public override void Exit() { }
-
+        
         void StartClient()
         {
             var transport = m_ConnectionManager.m_NetworkManager.GetComponent<UnityTransport>();
             transport.SetConnectionData(m_ConnectionManager.m_ConnectAddress, m_ConnectionManager.m_Port);
-            m_ConnectionManager.m_NetworkManager.NetworkConfig.ConnectionData =
+            m_ConnectionManager.m_NetworkManager.NetworkConfig.ConnectionData = 
                 DynamicPrefabLoadingUtilities.GenerateRequestPayload();
             m_ConnectionManager.m_NetworkManager.StartClient();
         }
-
+        
         public override void OnClientConnected(ulong _)
         {
             m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientConnected);
@@ -55,11 +55,11 @@ namespace Game
                         m_ConnectionManager.ChangeState(m_ConnectionManager.m_Offline);
                         break;
                     case DisconnectReason.ClientNeedsToPreload:
-                        {
-                            Debug.Log("Client needs to preload");
-                            m_ConnectionManager.m_ClientPreloading.disconnectionPayload = disconnectionPayload;
-                            m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientPreloading);
-                        }
+                    {
+                        Debug.Log("Client needs to preload");
+                        m_ConnectionManager.m_ClientPreloading.disconnectionPayload = disconnectionPayload;
+                        m_ConnectionManager.ChangeState(m_ConnectionManager.m_ClientPreloading);
+                    }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

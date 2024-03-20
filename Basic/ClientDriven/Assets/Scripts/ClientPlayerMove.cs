@@ -36,7 +36,7 @@ public class ClientPlayerMove : NetworkBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
+        
         // ThirdPersonController & CharacterController are enabled only on owning clients. Ghost player objects have
         // these two components disabled, and will enable a CapsuleCollider. Per the CharacterController documentation: 
         // https://docs.unity3d.com/Manual/CharacterControllers.html, a Character controller can push rigidbody
@@ -64,7 +64,7 @@ public class ClientPlayerMove : NetworkBehaviour
         // player input is only enabled on owning players
         m_PlayerInput.enabled = true;
         m_ThirdPersonController.enabled = true;
-
+        
         // see the note inside ServerPlayerMove why this step is also necessary for synchronizing initial player
         // position on owning clients
         m_CharacterController.enabled = true;

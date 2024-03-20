@@ -13,7 +13,7 @@ namespace Game
     {
         public int hashOfDynamicPrefabGUIDs;
     }
-
+    
     /// <summary>
     /// For the purposes of this sample, this class will be serialized inside of Netcode for GameObject's
     /// DisconnectReason string, and sent to clients which failed to connect. It contains the reason enum, and the list

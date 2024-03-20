@@ -42,7 +42,7 @@ public class MenuControl : MonoBehaviour
             Debug.LogError("Failed to start client.");
         }
     }
-
+    
     static string Sanitize(string dirtyString)
     {
         // sanitize the input for the ip address

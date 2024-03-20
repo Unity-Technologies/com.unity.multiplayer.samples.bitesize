@@ -12,7 +12,7 @@ namespace Game
         {
             m_ConnectionManager = connectionManager;
         }
-
+        
         public override void Enter() { }
 
         public override void Exit() { }
@@ -27,7 +27,7 @@ namespace Game
         {
             Debug.Log($"Client {clientId} connected");
         }
-
+        
         public override void OnClientDisconnect(ulong clientId)
         {
             if (clientId == m_ConnectionManager.m_NetworkManager.LocalClientId)

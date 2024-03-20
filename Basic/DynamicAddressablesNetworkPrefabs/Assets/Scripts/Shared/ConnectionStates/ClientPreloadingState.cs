@@ -23,7 +23,7 @@ namespace Game
         public override void Enter()
         {
             m_ConnectionManager.m_NetworkManager.Shutdown();
-            HandleDisconnectReason();
+            HandleDisconnectReason(); 
         }
 
         async void HandleDisconnectReason()

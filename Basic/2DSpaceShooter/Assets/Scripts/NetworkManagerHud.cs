@@ -14,35 +14,35 @@ public class NetworkManagerHud : MonoBehaviour
     NetworkManager m_NetworkManager;
 
     UnityTransport m_Transport;
-
+    
     // This is needed to make the port field more convenient. GUILayout.TextField is very limited and we want to be able to clear the field entirely so we can't cache this as ushort.
     string m_PortString = "7777";
     string m_ConnectAddress = "127.0.0.1";
-
+    
     [SerializeField]
     UIDocument m_MainMenuUIDocument;
 
     [SerializeField]
     UIDocument m_InGameUIDocument;
-
+    
     VisualElement m_MainMenuRootVisualElement;
 
     VisualElement m_InGameRootVisualElement;
-
+    
     Button m_HostButton;
-
+    
     Button m_ServerButton;
-
+    
     Button m_ClientButton;
 
     Button m_ShutdownButton;
-
+    
     TextField m_IPAddressField;
-
+    
     TextField m_PortField;
 
     TextElement m_MenuStatusText;
-
+    
     TextElement m_InGameStatusText;
 
     void Awake()
@@ -51,7 +51,7 @@ public class NetworkManagerHud : MonoBehaviour
         m_NetworkManager = GetComponent<NetworkManager>();
 
         m_MainMenuRootVisualElement = m_MainMenuUIDocument.rootVisualElement;
-
+        
         m_IPAddressField = m_MainMenuRootVisualElement.Q<TextField>("IPAddressField");
         m_PortField = m_MainMenuRootVisualElement.Q<TextField>("PortField");
         m_HostButton = m_MainMenuRootVisualElement.Q<Button>("HostButton");
@@ -65,21 +65,21 @@ public class NetworkManagerHud : MonoBehaviour
 
         m_IPAddressField.value = m_ConnectAddress;
         m_PortField.value = m_PortString;
-
+        
         m_HostButton.clickable.clickedWithEventInfo += HostButtonClicked;
         m_ServerButton.clickable.clickedWithEventInfo += ServerButtonClicked;
         m_ClientButton.clickable.clickedWithEventInfo += ClientButtonClicked;
         m_ShutdownButton.clickable.clickedWithEventInfo += ShutdownButtonClicked;
     }
-
+    
     void Start()
     {
         m_Transport = (UnityTransport)m_NetworkManager.NetworkConfig.NetworkTransport;
-
+        
         ShowMainMenuUI(true);
         ShowInGameUI(false);
         ShowStatusText(false);
-
+        
         NetworkManager.Singleton.OnClientConnectedCallback += OnOnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnOnClientDisconnectCallback;
     }
@@ -99,7 +99,7 @@ public class NetworkManagerHud : MonoBehaviour
         ShowMainMenuUI(true);
         ShowInGameUI(false);
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     bool IsRunning(NetworkManager networkManager) => networkManager.IsServer || networkManager.IsClient;
 
@@ -115,7 +115,7 @@ public class NetworkManagerHud : MonoBehaviour
             StartCoroutine(ShowInvalidInputStatus());
             return false;
         }
-
+        
         if (m_PortString == "")
         {
             m_MenuStatusText.text = "Port Invalid";
@@ -134,13 +134,13 @@ public class NetworkManagerHud : MonoBehaviour
         }
         return true;
     }
-
+    
     static string SanitizeInput(string dirtyString)
     {
         // sanitize the input for the ip address
         return Regex.Replace(dirtyString, "[^0-9.]", "");
     }
-
+    
     void HostButtonClicked(EventBase obj)
     {
         if (SetConnectionData())
@@ -148,7 +148,7 @@ public class NetworkManagerHud : MonoBehaviour
             NetworkManager.Singleton.StartHost();
         }
     }
-
+    
     void ClientButtonClicked(EventBase obj)
     {
         if (SetConnectionData())
@@ -158,7 +158,7 @@ public class NetworkManagerHud : MonoBehaviour
             StartCoroutine(ShowConnectingStatus());
         }
     }
-
+    
     void ServerButtonClicked(EventBase obj)
     {
         if (SetConnectionData())
@@ -168,14 +168,14 @@ public class NetworkManagerHud : MonoBehaviour
             ShowInGameUI(true);
         }
     }
-
+    
     void ShutdownButtonClicked(EventBase obj)
     {
         m_NetworkManager.Shutdown();
         ShowMainMenuUI(true);
         ShowInGameUI(false);
     }
-
+    
     void ShowStatusText(bool visible)
     {
         m_MenuStatusText.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
@@ -186,18 +186,18 @@ public class NetworkManagerHud : MonoBehaviour
         ShowStatusText(true);
 
         yield return new WaitForSeconds(3f);
-
+        
         ShowStatusText(false);
     }
-
+    
     IEnumerator ShowConnectingStatus()
     {
         m_MenuStatusText.text = "Attempting to Connect...";
         ShowStatusText(true);
-
+        
         m_HostButton.SetEnabled(false);
         m_ServerButton.SetEnabled(false);
-
+        
         var unityTransport = m_NetworkManager.GetComponent<UnityTransport>();
         var connectTimeoutMs = unityTransport.ConnectTimeoutMS;
         var maxConnectAttempts = unityTransport.MaxConnectAttempts;
@@ -206,13 +206,13 @@ public class NetworkManagerHud : MonoBehaviour
 
         // wait to verify connect status
         yield return new WaitForSeconds(1f);
-
+        
         m_MenuStatusText.text = "Connection Attempt Failed";
         m_HostButton.SetEnabled(true);
         m_ServerButton.SetEnabled(true);
-
+        
         yield return new WaitForSeconds(3f);
-
+        
         ShowStatusText(false);
     }
 
@@ -224,7 +224,7 @@ public class NetworkManagerHud : MonoBehaviour
     void ShowInGameUI(bool visible)
     {
         m_InGameRootVisualElement.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-
+        
         if (m_NetworkManager.IsServer)
         {
             var mode = m_NetworkManager.IsHost ? "Host" : "Server";
@@ -240,7 +240,7 @@ public class NetworkManagerHud : MonoBehaviour
             }
         }
     }
-
+    
     void OnDestroy()
     {
         if (m_HostButton != null)

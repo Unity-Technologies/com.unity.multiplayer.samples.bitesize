@@ -13,7 +13,7 @@ namespace Game
         {
             m_ConnectionManager = connectionManager;
         }
-
+        
         public override void Enter()
         {
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();

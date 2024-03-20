@@ -8,10 +8,10 @@ public class ServerIngredientPhysics : NetworkBehaviour
 {
     [SerializeField]
     NetworkTransform m_NetworkTransform;
-
+    
     [SerializeField]
     Rigidbody m_Rigidbody;
-
+    
     public override void OnNetworkObjectParentChanged(NetworkObject parentNetworkObject)
     {
         SetPhysics(parentNetworkObject == null);

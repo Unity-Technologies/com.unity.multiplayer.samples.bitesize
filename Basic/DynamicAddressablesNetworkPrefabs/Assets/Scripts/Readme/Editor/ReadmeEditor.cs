@@ -78,7 +78,7 @@ namespace Game.Readme
             var assembly = typeof(EditorApplication).Assembly;
             var windowLayoutType = assembly.GetType("UnityEditor.WindowLayout", true);
             var method = windowLayoutType.GetMethod("LoadWindowLayout", BindingFlags.Public | BindingFlags.Static);
-            method?.Invoke(null, new object[] { Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false });
+            method?.Invoke(null, new object[] {Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false});
         }
 
         [MenuItem("Sample/Show Sample Instructions")]
@@ -89,9 +89,9 @@ namespace Game.Readme
             {
                 var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
 
-                Selection.objects = new UnityEngine.Object[] { readmeObject };
+                Selection.objects = new UnityEngine.Object[] {readmeObject};
 
-                return (Readme)readmeObject;
+                return (Readme) readmeObject;
             }
             else
             {
@@ -102,7 +102,7 @@ namespace Game.Readme
 
         protected override void OnHeaderGUI()
         {
-            var readme = (Readme)target;
+            var readme = (Readme) target;
             Init();
 
             var iconWidth = Mathf.Min(EditorGUIUtility.currentViewWidth / 3f - 20f, 128f);
@@ -117,7 +117,7 @@ namespace Game.Readme
 
         public override void OnInspectorGUI()
         {
-            var readme = (Readme)target;
+            var readme = (Readme) target;
             Init();
 
             foreach (var section in readme.sections)

@@ -19,7 +19,7 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
     public NetworkVariable<IngredientType> currentIngredientType;
 
     public event Action ingredientDespawned;
-
+    
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

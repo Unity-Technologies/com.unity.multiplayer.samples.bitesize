@@ -14,7 +14,7 @@ namespace Unity.Netcode.Samples
         Material m_RedMaterial;
 
         ServerObjectWithIngredientType m_Server;
-
+        
         [SerializeField]
         Renderer m_ColorMesh;
 
@@ -27,7 +27,7 @@ namespace Unity.Netcode.Samples
         {
             base.OnNetworkSpawn();
             enabled = IsClient;
-
+            
             UpdateMaterial(default(IngredientType), m_Server.currentIngredientType.Value);
             m_Server.currentIngredientType.OnValueChanged += UpdateMaterial;
         }

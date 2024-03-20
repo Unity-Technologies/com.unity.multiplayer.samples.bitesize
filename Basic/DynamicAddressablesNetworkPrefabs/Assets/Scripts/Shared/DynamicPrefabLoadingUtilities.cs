@@ -22,16 +22,16 @@ namespace Game
         public static int HashOfDynamicPrefabGUIDs { get; private set; } = k_EmptyDynamicPrefabHash;
 
         static Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>> s_LoadedDynamicPrefabResourceHandles = new Dictionary<AddressableGUID, AsyncOperationHandle<GameObject>>(new AddressableGUIDEqualityComparer());
-
+        
         static List<AddressableGUID> s_DynamicPrefabGUIDs = new List<AddressableGUID>(); //cached list to avoid GC
 
         //A storage where we keep the association between the dynamic prefab (hash of it's GUID) and the clients that have it loaded
         static Dictionary<int, HashSet<ulong>> s_PrefabHashToClientIds = new Dictionary<int, HashSet<ulong>>();
 
-        public static bool HasClientLoadedPrefab(ulong clientId, int prefabHash) =>
+        public static bool HasClientLoadedPrefab(ulong clientId, int prefabHash) => 
             s_PrefabHashToClientIds.TryGetValue(prefabHash, out var clientIds) && clientIds.Contains(clientId);
 
-        public static bool IsPrefabLoadedOnAllClients(AddressableGUID assetGuid) =>
+        public static bool IsPrefabLoadedOnAllClients(AddressableGUID assetGuid) => 
             s_LoadedDynamicPrefabResourceHandles.ContainsKey(assetGuid);
 
         public static bool TryGetLoadedGameObjectFromGuid(AddressableGUID assetGuid, out AsyncOperationHandle<GameObject> loadedGameObject)
@@ -64,7 +64,7 @@ namespace Game
                 RecordThatClientHasLoadedAPrefab(dynamicPrefabGUID.GetHashCode(), clientId);
             }
         }
-
+        
         public static void RecordThatClientHasLoadedAPrefab(int assetGuidHash, ulong clientId)
         {
             if (s_PrefabHashToClientIds.TryGetValue(assetGuidHash, out var clientIds))
@@ -103,17 +103,17 @@ namespace Game
             {
                 dynamicPrefabGuidStrings.Add(dynamicPrefabGuid.ToString());
             }
-
+            
             var rejectionPayload = new DisconnectionPayload()
             {
                 reason = DisconnectReason.ClientNeedsToPreload,
                 guids = dynamicPrefabGuidStrings
             };
-
+    
             return JsonUtility.ToJson(rejectionPayload);
         }
-
-        public static async Task<GameObject> LoadDynamicPrefab(AddressableGUID guid, int artificialDelayMilliseconds,
+        
+        public static async Task<GameObject> LoadDynamicPrefab(AddressableGUID guid, int artificialDelayMilliseconds, 
             bool recomputeHash = true)
         {
             if (s_LoadedDynamicPrefabResourceHandles.ContainsKey(guid))
@@ -121,7 +121,7 @@ namespace Game
                 Debug.Log($"Prefab has already been loaded, skipping loading this time | {guid}");
                 return s_LoadedDynamicPrefabResourceHandles[guid].Result;
             }
-
+            
             Debug.Log($"Loading dynamic prefab {guid.Value}");
             var op = Addressables.LoadAssetAsync<GameObject>(guid.ToString());
             var prefab = await op.Task;
@@ -133,7 +133,7 @@ namespace Game
 
             s_NetworkManager.AddNetworkPrefab(prefab);
             s_LoadedDynamicPrefabResourceHandles.Add(guid, op);
-
+            
             if (recomputeHash)
             {
                 CalculateDynamicPrefabArrayHash();
@@ -141,7 +141,7 @@ namespace Game
 
             return prefab;
         }
-
+        
         public static async Task<IList<GameObject>> LoadDynamicPrefabs(AddressableGUID[] guids,
             int artificialDelaySeconds = 0)
         {
@@ -149,12 +149,12 @@ namespace Game
 
             foreach (var guid in guids)
             {
-                tasks.Add(LoadDynamicPrefab(guid, artificialDelaySeconds, recomputeHash: false));
+                tasks.Add( LoadDynamicPrefab(guid, artificialDelaySeconds, recomputeHash:false));
             }
-
+            
             var prefabs = await Task.WhenAll(tasks);
             CalculateDynamicPrefabArrayHash();
-
+            
             return prefabs;
         }
 
@@ -163,7 +163,7 @@ namespace Game
             s_DynamicPrefabGUIDs.Clear();
             s_DynamicPrefabGUIDs.AddRange(s_LoadedDynamicPrefabResourceHandles.Keys);
         }
-
+        
         static void CalculateDynamicPrefabArrayHash()
         {
             //we need to sort the array so that the hash is consistent across clients
@@ -171,7 +171,7 @@ namespace Game
             RefreshLoadedPrefabGuids();
             s_DynamicPrefabGUIDs.Sort((a, b) => a.Value.CompareTo(b.Value));
             HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
-
+            
             //a simple hash combination algorithm suggested by Jon Skeet,
             //found here: https://stackoverflow.com/questions/1646807/quick-and-simple-hash-code-combinations
             //we can't use C# HashCode combine because it is unreliable across different processes (by design)
@@ -188,17 +188,17 @@ namespace Game
 
             Debug.Log($"Calculated hash of dynamic prefabs: {HashOfDynamicPrefabGUIDs}");
         }
-
+        
         public static void UnloadAndReleaseAllDynamicPrefabs()
         {
             HashOfDynamicPrefabGUIDs = k_EmptyDynamicPrefabHash;
-
+            
             foreach (var handle in s_LoadedDynamicPrefabResourceHandles.Values)
             {
                 s_NetworkManager.RemoveNetworkPrefab(handle.Result);
                 Addressables.Release(handle);
             }
-
+            
             s_LoadedDynamicPrefabResourceHandles.Clear();
         }
     }

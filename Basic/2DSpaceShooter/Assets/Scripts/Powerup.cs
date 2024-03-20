@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -9,14 +9,14 @@ public class Powerup : NetworkBehaviour
     static string s_ObjectPoolTag = "ObjectPool";
 
     public static int numPowerUps = 0;
-
+    
     NetworkObjectPool m_ObjectPool;
 
     public NetworkVariable<Buff.BuffType> buffType = new NetworkVariable<Buff.BuffType>();
 
-    [SerializeField]
+    [SerializeField] 
     Renderer m_PowerUpGlow;
-
+    
     [SerializeField]
     Renderer m_PowerUpGlow2;
 
@@ -24,17 +24,17 @@ public class Powerup : NetworkBehaviour
     UIDocument m_PowerUpUIDocument;
 
     VisualElement m_PowerUpRootVisualElement;
-
+    
     VisualElement m_PowerUpUIWrapper;
-
+    
     TextElement m_PowerUpLabel;
 
     Camera m_MainCamera;
-
+    
     public Vector2 m_ScreenPosition;
 
     IPanel m_Panel;
-
+    
     void Awake()
     {
         m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
@@ -61,7 +61,7 @@ public class Powerup : NetworkBehaviour
         {
             OnStartServer();
         }
-
+        
         UpdateVisuals(buffType.Value);
         buffType.OnValueChanged += OnBuffTypeChanged;
     }
@@ -87,7 +87,7 @@ public class Powerup : NetworkBehaviour
     {
         numPowerUps += 1;
     }
-
+    
     void OnBuffTypeChanged(Buff.BuffType previousValue, Buff.BuffType newValue)
     {
         UpdateVisuals(newValue);
@@ -103,12 +103,12 @@ public class Powerup : NetworkBehaviour
         m_PowerUpGlow2.material.SetColor("_EmissiveColor", buffColor);
 
         m_PowerUpLabel.text = buffType.ToString().ToUpper();
-
+        
         if (buffType == Buff.BuffType.QuadDamage)
         {
             m_PowerUpLabel.text = "Quad Damage";
         }
-
+        
         m_PowerUpLabel.style.color = buffColor;
     }
 
@@ -145,7 +145,7 @@ public class Powerup : NetworkBehaviour
     {
         AudioSource.PlayClipAtPoint(GetComponent<AudioSource>().clip, transform.position);
         numPowerUps -= 1;
-
+       
         NetworkObject.Despawn(true);
     }
 }

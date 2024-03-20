@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +18,7 @@ namespace StarterAssets
         static void ResetThirdPersonControllerArmature()
         {
             var thirdPersonControllers = FindObjectsOfType<ThirdPersonController>();
-
+            
             ThirdPersonController player = null;
             foreach (var controller in thirdPersonControllers)
             {
@@ -59,7 +59,7 @@ namespace StarterAssets
         static void ResetThirdPersonControllerCapsule()
         {
             var thirdPersonControllers = FindObjectsOfType<ThirdPersonController>();
-
+            
             ThirdPersonController player = null;
             foreach (var controller in thirdPersonControllers)
             {

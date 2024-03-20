@@ -49,7 +49,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRPC
 
         void Update()
         {
-            if (!IsClient)
+            if (!IsClient) 
             {
                 /* note: in this case there's only client-side logic and therefore the scripts returns early.
                  * In a real production scenario, you would have an UpdateManager script running all Updates from a centralized point.

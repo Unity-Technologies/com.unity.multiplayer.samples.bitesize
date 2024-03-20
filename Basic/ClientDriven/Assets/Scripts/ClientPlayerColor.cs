@@ -17,6 +17,6 @@ public class ClientPlayerColor : NetworkBehaviour
             // OwnerClientId is used here for debugging purposes. A live game should use a session manager to make sure reconnecting players still get the same color, as client IDs could be reused for other clients between disconnect and reconnect. See Boss Room for a session manager example.
             material.SetFloat("_Color_Index", OwnerClientId);
         }
-
+        
     }
 }
