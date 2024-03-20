@@ -48,7 +48,7 @@ To enable autoconnect mode on the main editor, do the following:
 
 ### Register the project with Unity Gaming Services (UGS)
 
-This sample uses the following services from Unity Game Services (UGS) to help connect  between players: 
+This sample uses the following services from Unity Game Services (UGS) to help connect between players: 
 
 - Game Server Hosting
 - Matchmaker
@@ -73,6 +73,11 @@ Use the Matchmaker service to connect clients to the servers hosted by Game Serv
 ## Test the dedicated game server sample in multiplayer
 
 To run the dedicated game server sample as a multiplayer game, you can use [Multiplayer Play Mode](https://docs-multiplayer.unity3d.com/mppm/current/about/) to run multiple instances of the game locally, or connect to a friend over the internet. For more information, refer to [Testing locally](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/testing/testing_locally).
+
+To change the total number of players allowed in a single session, do the following:
+1. Open the StartupScene
+2. In the Hierarchy window, select the **ApplicationEntryPoint** GameObject.
+3. In the **ApplicationEntryPoint** component, adjust the numbers in the **Min Players** and **Max Players** fields.
 <br><br>
 
 ### Use Multiplayer Play Mode to test the dedicated game server sample
