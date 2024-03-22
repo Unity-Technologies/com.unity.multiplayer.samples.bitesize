@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UnityStyleSheet.uss?fileID=7433441132597879392&amp;guid=819e6491a1421a14db87a36e0c93b136&amp;type=3#UnityStyleSheet" />
+    <ui:VisualElement name="mainMenu" style="justify-content: center; align-self: auto; align-items: center;">
+        <ui:Label text="The Game" name="titleLabel" class="title" style="align-self: center; top: auto; font-size: 140px;" />
+        <ui:GroupBox style="align-self: center; height: auto; justify-content: center; width: auto; align-items: center; padding-bottom: 30px;">
+            <ui:TextField label="IP address" value="127.0.0.1" name="ipAddressTextField" />
+            <ui:TextField label="Port" value="7777" name="portTextField" />
+        </ui:GroupBox>
+        <ui:Button text="Join" display-tooltip-when-elided="true" name="joinButton" class="button" />
+        <ui:Button text="Quit" display-tooltip-when-elided="true" name="quitButton" class="button" style="position: relative; top: 0; left: 0; right: 0; bottom: 0;" />
+    </ui:VisualElement>
+</ui:UXML>

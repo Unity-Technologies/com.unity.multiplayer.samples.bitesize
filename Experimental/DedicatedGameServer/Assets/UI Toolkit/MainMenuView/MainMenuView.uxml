@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UnityStyleSheet.uss?fileID=7433441132597879392&amp;guid=819e6491a1421a14db87a36e0c93b136&amp;type=3#UnityStyleSheet" />
+    <ui:VisualElement name="mainMenu" style="justify-content: center; align-items: center;">
+        <ui:Label text="The Game" name="titleLabel" class="title" />
+        <ui:Button text="Find Match" display-tooltip-when-elided="true" name="findMatchButton" class="button" style="top: auto; left: auto; right: auto; bottom: auto; align-self: center; position: relative;" />
+        <ui:Button text="Join with Direct IP" display-tooltip-when-elided="true" name="joinDirectIPButton" class="button" style="align-self: center;" />
+        <ui:Button text="Quit" display-tooltip-when-elided="true" name="quitButton" class="button" style="top: auto; left: auto; right: auto; bottom: auto; align-self: center; position: relative;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UnityStyleSheet.uss?fileID=7433441132597879392&amp;guid=819e6491a1421a14db87a36e0c93b136&amp;type=3#UnityStyleSheet" />
+    <ui:VisualElement name="matchRecap" style="justify-content: center; align-items: center;">
+        <ui:VisualElement name="background" />
+        <ui:Label text="Result" display-tooltip-when-elided="true" name="resultLabel" style="top: 0; font-size: 120px;" />
+        <ui:Button text="Continue" display-tooltip-when-elided="true" name="continueButton" class="button" style="top: 0; left: 0; right: 0; bottom: 0; position: relative;" />
+    </ui:VisualElement>
+</ui:UXML>

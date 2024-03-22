@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="match" style="align-items: flex-start;">
+        <ui:VisualElement name="GroupBox" style="flex-grow: 0; align-items: flex-start; top: 30px; left: 30px;">
+            <ui:Label text="00:60" display-tooltip-when-elided="true" name="timerLabel" style="-unity-text-align: middle-center; height: 30px; width: 100px; font-size: 32px; left: auto; top: auto;" />
+            <ui:Label text="Players connected: 0" display-tooltip-when-elided="true" name="playersConnectedLabel" style="-unity-text-align: middle-center; height: 30px; width: 240px; font-size: 24px; left: auto; top: auto;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
