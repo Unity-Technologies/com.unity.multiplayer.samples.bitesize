@@ -54,6 +54,14 @@ namespace DefaultNamespace
         }
 
         /// <summary>
+        /// Remove all items from the history
+        /// </summary>
+        public void Clear()
+        {
+            m_History.Clear();;
+        }
+
+        /// <summary>
         /// Get the full history, useful for iterating through all the values to reapply them when reanticipating.
         /// </summary>
         /// <returns></returns>

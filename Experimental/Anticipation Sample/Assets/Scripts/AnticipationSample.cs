@@ -86,24 +86,27 @@ public class AnticipationSample : NetworkBehaviour
 
     private const float k_ValueEChangePerSecond = 2.5f;
 
-    public override void OnNetworkSpawn()
+    public override void OnReanticipate(double lastRoundTripTime)
     {
         // Initialize the reanticipation for all of the values:
         // C and D react to a request to reanticipate by simply smoothing between the previous anticipated value
         // and the new authoritative value. They are not frequently updated and only need any reanticipation action
         // when the anticipation was wrong.
-        AnticipatedNetworkVariable<float>.OnReanticipateDelegate smooth = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
+
+        if (ValueC.ShouldReanticipate)
         {
-            variable.Smooth(anticipatedValue, authoritativeValue, SmoothTime, Mathf.Lerp);
-        };
-        ValueC.OnReanticipate = smooth;
-        ValueD.OnReanticipate = smooth;
+            ValueC.Smooth(ValueC.PreviousAnticipatedValue, ValueC.AuthoritativeValue, SmoothTime, Mathf.Lerp);
+        }
+        if (ValueD.ShouldReanticipate)
+        {
+            ValueD.Smooth(ValueD.PreviousAnticipatedValue, ValueD.AuthoritativeValue, SmoothTime, Mathf.Lerp);
+        }
 
         // E is actually trying to anticipate the current value of a constantly changing object to hide latency.
         // It uses the amount of time that has passed since the authoritativetime to gauge the latency of this update
         // and anticipates a new value based on that delay. The server value is in the past, so the predicted value
         // attempts to guess what the value is in the present.
-        ValueE.OnReanticipate = (AnticipatedNetworkVariable<float> variable, in float anticipatedValue, double anticipationTime, in float authoritativeValue, double authoritativeTime) =>
+        if(ValueE.ShouldReanticipate)
         {
             // There is an important distinction between the smoothing this is doing and the smoothing the player object
             // is doing:
@@ -113,15 +116,15 @@ public class AnticipationSample : NetworkBehaviour
             // value - the difference between current time and authoritativeTime represents a full round trip, but the
             // actual time difference here is only a half round trip, so we multiply by 0.5.
             // Then, because smoothing adds its own latency, we add the smooth time into the mix.
-            var secondsBehind = (NetworkManager.LocalTime.Time - authoritativeTime) * 0.5f + SmoothTime;
+            var secondsBehind = lastRoundTripTime * 0.5f + SmoothTime;
 
-            var newAnticipatedValue = (float)(authoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10;
+            var newAnticipatedValue = (float)(ValueE.AuthoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10;
 
             // This variable uses a custom interpolation callback that handles the drop from 10
             // down to 0. Without this, there is either weird smoothing behavior, or hitching.
             // This keeps the interpolation going, and handles the case where the interpolated value
             // goes over 10 and has to jump back to 0.
-            variable.Smooth(anticipatedValue, newAnticipatedValue, SmoothTime, ((start, end, amount) =>
+            ValueE.Smooth(ValueE.PreviousAnticipatedValue, newAnticipatedValue, SmoothTime, ((start, end, amount) =>
             {
                 if (end < 3 && start > 7)
                 {

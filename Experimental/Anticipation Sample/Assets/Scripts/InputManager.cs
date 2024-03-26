@@ -102,5 +102,13 @@ namespace DefaultNamespace
         {
             return m_HistoricalInput.GetHistory();
         }
+
+        /// <summary>
+        /// Remove all items from the history
+        /// </summary>
+        public void Clear()
+        {
+            m_HistoricalInput.Clear();
+        }
     }
 }
