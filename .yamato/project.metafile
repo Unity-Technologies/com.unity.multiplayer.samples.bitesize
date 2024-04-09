@@ -1,35 +1,59 @@
-# Editors where tests will happen. The first entry of this array is also used
-# for validation.
-#
-# Therefore, **do not** put an older V1-lifecycle ver. 
-#  like 2020.x or 2019.x on top of 'test_editors'
-test_editors:
-  - 2022.3
-
 # Platforms that will be tested. The first entry in this array will also
 # be used for validation
 test_platforms:
   - name: win
     type: Unity::VM
-    image: package-ci/win10:stable
+    image: package-ci/win10:v4.36.0
     platform: StandaloneWindows64
     flavor: b1.large
   - name: mac
     type: Unity::VM::osx
-    image: package-ci/mac:stable
+    image: package-ci/macos-13:v4
     platform: StandaloneOSX
     flavor: m1.mac
 
-# Projects within the repository that will be tested. Name will be used
-# for job ids, so it should not contain spaces/non-supported characters
+# Projects within the repository that will be tested. Name will be used for job ids, so it should not contain spaces/non-supported characters
+# The test-editors field is for editors where tests will happen. The first entry of this array is also used
+# for validation. Therefore, **do not** put an older V1-lifecycle ver. like 2020.x or 2019.x on top of 'test_editors'
 projects:
   - name: 2dspaceshooter
     path: Basic/2DSpaceShooter
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
   - name: invaders
     path: Basic/Invaders
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
   - name: clientdriven
     path: Basic/ClientDriven
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
   - name: dynamicaddressablesnetworkprefabs
     path: Basic/DynamicAddressablesNetworkPrefabs
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
+  - name: dedicatedgameserver
+    path: Experimental/DedicatedGameServer
+    test_editors:
+      - 2023.3.0a17
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool true
+    test_filter: Unity.DedicatedGameServerSample.Tests
   - name: multiplayerusecases
     path: Experimental/MultiplayerUseCases
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool true
+    run_playmode_tests: !!bool false
