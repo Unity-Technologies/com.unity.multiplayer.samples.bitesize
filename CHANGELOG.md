@@ -10,7 +10,7 @@
 ### Client Driven
 
 #### Fixed
-- Added Spawner with event executed on Server Start to fix incosistent ghost ingredients issue (#157)
+- Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
 
 ## [1.5.0] 2023-12-15
 
