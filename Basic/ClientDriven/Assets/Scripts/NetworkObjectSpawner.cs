@@ -15,30 +15,31 @@ namespace Unity.Multiplayer.Samples.ClientDriven
     {
         [SerializeField]
         NetworkObject m_PrefabReference;
-        [SerializeField]
-        private NetworkManager m_NetworkManager;
 
         void Start()
         {
-            Debug.Assert(m_NetworkManager != null, "The NetworkManager needs to be referenced!");
-            if (m_NetworkManager == null)
+            Debug.Assert(NetworkManager.Singleton != null, "The NetworkManager needs to be referenced!");
+            if (NetworkManager.Singleton == null)
             {
                 return;
             }
 
-            m_NetworkManager.OnServerStarted += SpawnIngredient;
+            NetworkManager.Singleton.OnServerStarted += SpawnIngredient;
         }
 
         void OnDestroy()
         {
-            m_NetworkManager.OnServerStarted -= SpawnIngredient;
+            if(NetworkManager.Singleton != null)
+            { 
+                NetworkManager.Singleton.OnServerStarted -= SpawnIngredient;
+            }
         }
 
         void SpawnIngredient()
         {
-            Random randomGenerator = new Random();
+            var randomGenerator = new Random();
             NetworkObject instantiatedNetworkObject = Instantiate(m_PrefabReference, transform.position, transform.rotation, null);
-            ServerIngredient ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
+            var ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
             ingredient.NetworkObject.Spawn();
         }
     }
