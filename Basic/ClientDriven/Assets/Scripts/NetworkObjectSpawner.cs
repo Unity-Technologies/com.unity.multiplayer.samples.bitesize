@@ -1,7 +1,5 @@
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Networking;
-using Random = System.Random;
 
 namespace Unity.Multiplayer.Samples.ClientDriven
 {
@@ -18,7 +16,7 @@ namespace Unity.Multiplayer.Samples.ClientDriven
 
         void Start()
         {
-            Debug.Assert(NetworkManager.Singleton != null, "The NetworkManager needs to be referenced!");
+            Debug.Assert(NetworkManager.Singleton != null, "A NetworkManager is likely not a part of this MonoBehaviour's scene.");
             if (NetworkManager.Singleton == null)
             {
                 return;
@@ -37,7 +35,6 @@ namespace Unity.Multiplayer.Samples.ClientDriven
 
         void SpawnIngredient()
         {
-            var randomGenerator = new Random();
             NetworkObject instantiatedNetworkObject = Instantiate(m_PrefabReference, transform.position, transform.rotation, null);
             var ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
             ingredient.NetworkObject.Spawn();
