@@ -2,7 +2,7 @@ using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using UnityEngine;
 
 /// <summary>
-/// Component inheriting from <see cref="ClientNetworkTransform"/>, where server-driven player position changes are made to
+/// Component inheriting from <see cref="ClientNetworkTransform"/>, where server-driven player position changes are
 /// applied to the owning client.
 /// </summary>
 /// <remarks>

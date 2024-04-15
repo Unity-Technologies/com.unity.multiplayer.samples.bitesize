@@ -52,11 +52,15 @@ public class ServerPlayerMove : NetworkBehaviour
     public void PickupObjectServerRpc(ulong objToPickupID)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
-        if (objectToPickup == null || objectToPickup.transform.parent != null) return; // object already picked up, server authority says no
-
-        if (objectToPickup.TryGetComponent(out NetworkObject networkObject) && networkObject.TrySetParent(transform))
+        if (objectToPickup == null || objectToPickup.transform.parent != null)
         {
-            m_PickedUpObject = networkObject;
+            // object already picked up, server authority says no
+            return;
+        }
+
+        if (objectToPickup.TrySetParent(transform))
+        {
+            m_PickedUpObject = objectToPickup;
             objectToPickup.transform.localPosition = m_LocalHeldPosition;
             objectToPickup.GetComponent<ServerIngredient>().ingredientDespawned += IngredientDespawned;
             isObjectPickedUp.Value = true;
