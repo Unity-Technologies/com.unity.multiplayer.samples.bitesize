@@ -36,7 +36,7 @@ public class ServerPlayerMove : NetworkBehaviour
     {
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
-        spawnPosition.Value = spawnPoint.transform.position;
+        spawnPosition.Value = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
 
         // A note specific to owner authority:
         // Side Note:  Specific to Owner Authoritative
