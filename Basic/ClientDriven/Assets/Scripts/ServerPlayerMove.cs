@@ -48,8 +48,8 @@ public class ServerPlayerMove : NetworkBehaviour
         // transform after synchronization with the initial position, thus overwriting the synchronized position.
     }
 
-    [ServerRpc]
-    public void PickupObjectServerRpc(ulong objToPickupID)
+    [Rpc(SendTo.Server)]
+    public void ServerPickupObjectRpc(ulong objToPickupID)
     {
         NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(objToPickupID, out var objectToPickup);
         if (objectToPickup == null || objectToPickup.transform.parent != null)
@@ -73,8 +73,8 @@ public class ServerPlayerMove : NetworkBehaviour
         isObjectPickedUp.Value = false;
     }
 
-    [ServerRpc]
-    public void DropObjectServerRpc()
+    [Rpc(SendTo.Server)]
+    public void ServerDropObjectRpc()
     {
         if (m_PickedUpObject != null)
         {
