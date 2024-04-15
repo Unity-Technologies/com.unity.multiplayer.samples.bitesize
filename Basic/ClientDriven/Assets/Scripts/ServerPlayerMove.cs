@@ -1,6 +1,5 @@
 using System;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +15,8 @@ public class ServerPlayerMove : NetworkBehaviour
 
     [SerializeField]
     Vector3 m_LocalHeldPosition;
+
+    public NetworkVariable<Vector3> spawnPosition;
 
     // DOC START HERE
     public override void OnNetworkSpawn()
@@ -35,8 +36,7 @@ public class ServerPlayerMove : NetworkBehaviour
     {
         // this is done server side, so we have a single source of truth for our spawn point list
         var spawnPoint = ServerPlayerSpawnPoints.Instance.ConsumeNextSpawnPoint();
-        var spawnPosition = spawnPoint ? spawnPoint.transform.position : Vector3.zero;
-        transform.position = spawnPosition;
+        spawnPosition.Value = spawnPoint.transform.position;
 
         // A note specific to owner authority:
         // Side Note:  Specific to Owner Authoritative
@@ -76,7 +76,7 @@ public class ServerPlayerMove : NetworkBehaviour
         {
             m_PickedUpObject.GetComponent<ServerIngredient>().ingredientDespawned -= IngredientDespawned;
             // can be null if enter drop zone while carrying
-            m_PickedUpObject.transform.parent = null;
+            m_PickedUpObject.TrySetParent(parent: (Transform)null);
             m_PickedUpObject = null;
         }
 

@@ -1,0 +1,44 @@
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
+using UnityEngine;
+
+/// <summary>
+/// Component inheriting from <see cref="ClientNetworkTransform"/>, where server-driven player position changes are made to
+/// applied to the owning client.
+/// </summary>
+/// <remarks>
+/// Handling movement inside this component's OnNetworkSpawn method only ensures the mitigation of race condition issues
+/// arising due to the execution order of other NetworkBehaviours' OnNetworkSpawn methods.
+/// </remarks>
+[RequireComponent(typeof(ServerPlayerMove))]
+[DisallowMultipleComponent]
+public class ClientDrivenNetworkTransform : ClientNetworkTransform
+{
+    [SerializeField]
+    ServerPlayerMove m_ServerPlayerMove;
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsClient && IsOwner)
+        {
+            OnValueChanged(Vector3.zero, m_ServerPlayerMove.spawnPosition.Value);
+            m_ServerPlayerMove.spawnPosition.OnValueChanged += OnValueChanged;
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (m_ServerPlayerMove != null)
+        {
+            m_ServerPlayerMove.spawnPosition.OnValueChanged -= OnValueChanged;
+        }
+    }
+
+    void OnValueChanged(Vector3 previousValue, Vector3 newValue)
+    {
+        transform.position = newValue;
+    }
+}

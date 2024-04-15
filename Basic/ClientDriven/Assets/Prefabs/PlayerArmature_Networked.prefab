@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7567938585585123398}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 303777381631976334}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &6758041290174012784
 SphereCollider:
@@ -180,7 +180,7 @@ PrefabInstance:
       addedObject: {fileID: 5801232430748397462}
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7243582772389402832}
+      addedObject: {fileID: 5997952762632541840}
     - targetCorrespondingSourceObject: {fileID: 8187455079231382173, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3615669438616969171}
@@ -230,11 +230,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 3868643671
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
 --- !u!114 &-2755784201116707001
@@ -252,6 +254,8 @@ MonoBehaviour:
   isObjectPickedUp:
     m_InternalValue: 0
   m_LocalHeldPosition: {x: 0, y: 2.85, z: 0}
+  spawnPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!114 &5667156634780145037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 5969265393934875124}
---- !u!114 &7243582772389402832
+--- !u!114 &5997952762632541840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,9 +297,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1116025501350672692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
+  m_Script: {fileID: 11500000, guid: 53b28d1b2108d4d199dae3ac8f537c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
@@ -314,6 +319,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+  m_ServerPlayerMove: {fileID: -2755784201116707001}
 --- !u!114 &1116025501350672696 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4416926081852918493, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
