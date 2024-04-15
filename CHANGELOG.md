@@ -7,6 +7,13 @@
 #### Cleanup
 - Formatted .cs files inside the Bitesize Samples repository to adhere to coding standards (#156) Internal testing job definition files were added in order for internal processes to execute.
 
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.8.1 (#164)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+
 ## [1.5.0] 2023-12-15
 
 ### Bitesize Samples Repository
@@ -80,13 +87,6 @@
 #### Changed
 - Upgraded to Netcode for GameObjects v1.6.0 (#134)
 - Upgraded sample to 2022.3.9f1 LTS (#134)
-
-## [Unreleased]
-
-### Dedicated Game Server
-todo: the changelog entry for this sample will be updated with subsequent PRs before being merged when ready
-
-- New Dedicated Game Server sample. (#1) This sample's goal is to demonstrate how to use the different tools and packages available to create a game using the dedicated server approach. It requires editor version 2023.3.
 
 ## [1.3.0] - 2023-07-07
 
