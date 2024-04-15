@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,8 +8,9 @@ public class Bullet : NetworkBehaviour
     bool m_Bounce;
     int m_Damage = 5;
     ShipControl m_Owner;
-
+    NetworkObjectPool m_ObjectPool;
     public GameObject explosionParticle;
+    static string s_ObjectPoolTag = "ObjectPool";
 
     public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
     {
@@ -17,15 +19,22 @@ public class Bullet : NetworkBehaviour
         m_Bounce = bounce;
         if (IsServer)
         {
-            // This is bad code don't use invoke.
-            Invoke(nameof(DestroyBullet), lifetime);
+            StartCoroutine(BulletDestroyCoroutine(lifetime));
         }
+    }
+
+    IEnumerator BulletDestroyCoroutine(float lifetime)
+    {
+        yield return new WaitForSeconds(lifetime);
+        DestroyBullet();
     }
 
     public override void OnNetworkDespawn()
     {
-        // This is inefficient, the explosion object could be pooled.
-        GameObject ex = Instantiate(explosionParticle, transform.position + new Vector3(0, 0, -2), Quaternion.identity);
+        m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
+        var ex = m_ObjectPool.GetNetworkObject(explosionParticle).gameObject;
+        ex.transform.position = transform.position + new Vector3(0, 0, -2);
+        ex.transform.rotation = Quaternion.identity;
     }
 
     private void DestroyBullet()
