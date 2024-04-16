@@ -36,7 +36,7 @@ namespace Game.ConnectionApproval
             m_NetworkManager.NetworkConfig.ConnectionApproval = true;
 
             // Here, we keep ForceSamePrefabs disabled. This will allow us to dynamically add network prefabs to Netcode
-            // for GameObjects after establishing a connection. In this implementation of the connection approval
+            // for GameObject after establishing a connection. In this implementation of the connection approval
             // callback, the server validates the client's connection payload based on the hash of their dynamic prefabs
             // loaded, and either approves or denies connection to the joining client. If a client is denied connection,
             // the server provides a disconnection payload through NetworkManager's DisconnectReason, so that a

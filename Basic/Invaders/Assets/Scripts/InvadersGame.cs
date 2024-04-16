@@ -80,7 +80,7 @@ public class InvadersGame : NetworkBehaviour
     private float m_NextTick;
 
     // the timer should only be synced at the beginning
-    // and then let the client update it in a predictive manner
+    // and then let the client to update it in a predictive manner
     private bool m_ReplicatedTimeSent = false;
     private GameObject m_Saucer;
     private List<Shield> m_Shields = new List<Shield>();
