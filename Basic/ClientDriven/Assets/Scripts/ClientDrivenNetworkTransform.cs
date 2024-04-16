@@ -22,8 +22,8 @@ public class ClientDrivenNetworkTransform : ClientNetworkTransform
 
         if (IsClient && IsOwner)
         {
-            OnValueChanged(Vector3.zero, m_ServerPlayerMove.spawnPosition.Value);
-            m_ServerPlayerMove.spawnPosition.OnValueChanged += OnValueChanged;
+            SetPosition(Vector3.zero, m_ServerPlayerMove.spawnPosition.Value);
+            m_ServerPlayerMove.spawnPosition.OnValueChanged += SetPosition;
         }
     }
 
@@ -33,11 +33,11 @@ public class ClientDrivenNetworkTransform : ClientNetworkTransform
 
         if (m_ServerPlayerMove != null)
         {
-            m_ServerPlayerMove.spawnPosition.OnValueChanged -= OnValueChanged;
+            m_ServerPlayerMove.spawnPosition.OnValueChanged -= SetPosition;
         }
     }
 
-    void OnValueChanged(Vector3 previousValue, Vector3 newValue)
+    void SetPosition(Vector3 previousValue, Vector3 newValue)
     {
         transform.position = newValue;
     }
