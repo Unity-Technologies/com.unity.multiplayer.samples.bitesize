@@ -39,7 +39,6 @@ public class ServerPlayerMove : NetworkBehaviour
         transform.position = spawnPosition;
 
         // A note specific to owner authority:
-        // Side Note:  Specific to Owner Authoritative
         // Setting the position works as and can be set in OnNetworkSpawn server-side unless there is a
         // CharacterController that is enabled by default on the authoritative side. With CharacterController, it
         // needs to be disabled by default (i.e. in Awake), the server applies the position (OnNetworkSpawn), and then
