@@ -7,6 +7,11 @@
 #### Cleanup
 - Formatted .cs files inside the Bitesize Samples repository to adhere to coding standards (#156) Internal testing job definition files were added in order for internal processes to execute.
 
+### Client Driven
+
+#### Fixed
+- Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
+
 ## [1.5.0] 2023-12-15
 
 ### Bitesize Samples Repository
