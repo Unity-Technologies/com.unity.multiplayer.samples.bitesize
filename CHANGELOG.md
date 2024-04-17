@@ -14,6 +14,9 @@
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
 
+#### Fixed
+- Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
+
 ## [1.5.0] 2023-12-15
 
 ### Bitesize Samples Repository
