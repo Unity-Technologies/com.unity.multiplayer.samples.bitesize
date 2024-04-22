@@ -7,15 +7,31 @@
 #### Cleanup
 - Formatted .cs files inside the Bitesize Samples repository to adhere to coding standards (#156) Internal testing job definition files were added in order for internal processes to execute.
 
+### 2D Space Shooter
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 and TextMeshPro v3.0.8 (#166)
+
 ### Client Driven
 
 #### Changed
 - Upgraded to Netcode for GameObjects v1.8.1 (#164)
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+- Upgraded to IDE Rider v3.0.28, TextMeshPro v3.0.8 and Cinemachine 2.9.7 (#166)
 
 #### Fixed
 - Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28, TextMeshPro v3.0.8 and Addressables v1.21.20 (#166)
+
+### Invaders
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 and TextMeshPro v3.0.8 (#166)
 
 ## [1.5.0] 2023-12-15
 
