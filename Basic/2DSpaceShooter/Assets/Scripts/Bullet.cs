@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class Bullet : NetworkBehaviour
 {
@@ -31,10 +33,12 @@ public class Bullet : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        m_ObjectPool = GameObject.FindWithTag(s_ObjectPoolTag).GetComponent<NetworkObjectPool>();
-        var ex = m_ObjectPool.GetNetworkObject(explosionParticle).gameObject;
-        ex.transform.position = transform.position + new Vector3(0, 0, -2);
-        ex.transform.rotation = Quaternion.identity;
+            GameObject ex = ObjectPool.SharedInstance.GetPooledObject();
+            if (ex != null) {
+                ex.transform.position = transform.position + new Vector3(0, 0, -2);
+                ex.transform.rotation = Quaternion.identity;
+                ex.SetActive(true);
+            }
     }
 
     private void DestroyBullet()

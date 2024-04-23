@@ -41,7 +41,7 @@ public class ShipControl : NetworkBehaviour
 
     float m_Acceleration = 12f;
 
-    float m_BulletLifetime = 3;
+    float m_BulletLifetime = 2;
 
     float m_TopSpeed = 7.0f;
 
@@ -180,7 +180,8 @@ public class ShipControl : NetworkBehaviour
 
         if (Health.Value <= 0)
         {
-            // reset all buffs
+            Health.Value = 0;
+            // reset all values and buffs
             Health.Value = 100;
             LatestShipColor.Value = m_ShipGlowDefaultColor;
             SpeedBuffTimer.Value = 0;
@@ -264,7 +265,7 @@ public class ShipControl : NetworkBehaviour
             m_EnergyTimer = NetworkManager.ServerTime.TimeAsFloat + 1;
         }
 
-        // update rotation 
+        // update rotation
         float rotate = m_Spin * m_RotateSpeed;
         if (RotateBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
