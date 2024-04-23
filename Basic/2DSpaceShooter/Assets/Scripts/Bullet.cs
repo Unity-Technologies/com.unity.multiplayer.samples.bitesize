@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class Bullet : NetworkBehaviour
 {
@@ -11,8 +9,6 @@ public class Bullet : NetworkBehaviour
     int m_Damage = 5;
     ShipControl m_Owner;
     NetworkObjectPool m_ObjectPool;
-    public GameObject explosionParticle;
-    static string s_ObjectPoolTag = "ObjectPool";
 
     public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
     {
@@ -33,12 +29,13 @@ public class Bullet : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-            GameObject ex = ObjectPool.SharedInstance.GetPooledObject();
-            if (ex != null) {
-                ex.transform.position = transform.position + new Vector3(0, 0, -2);
-                ex.transform.rotation = Quaternion.identity;
-                ex.SetActive(true);
-            }
+        GameObject ex = ObjectPool.SharedInstance.GetPooledObject();
+        if (ex != null)
+        {
+            ex.transform.position = transform.position + new Vector3(0, 0, -2);
+            ex.transform.rotation = Quaternion.identity;
+            ex.SetActive(true);
+        }
     }
 
     private void DestroyBullet()
