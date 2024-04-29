@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Collections;
 
-public class ObjectPool : MonoBehaviour
+/*public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool SharedInstance;
     public List<GameObject> pooledObjects;
@@ -45,4 +45,4 @@ public class ObjectPool : MonoBehaviour
         // executes when do method went through all of pooledObjects in one call
         return null;
         }
-}
+}*/

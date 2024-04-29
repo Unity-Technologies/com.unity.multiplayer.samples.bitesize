@@ -8,7 +8,6 @@ public class Bullet : NetworkBehaviour
     bool m_Bounce;
     int m_Damage = 5;
     ShipControl m_Owner;
-    ReturnToPool m_Pool;
     public ParticleSystem particles;
 
     public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
@@ -22,11 +21,6 @@ public class Bullet : NetworkBehaviour
         }
     }
 
-    void Start()
-    {
-        m_Pool = GetComponent<ReturnToPool>();
-    }
-
     IEnumerator BulletDestroyCoroutine(float lifetime)
     {
         yield return new WaitForSeconds(lifetime);
@@ -35,9 +29,12 @@ public class Bullet : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        //GameObject ex = ObjectPool.SharedInstance.GetPooledObject();
-        var ex = m_Pool.m_Pool.Get();
-        ex.Play();
+        if (IsClient)
+        {
+            ParticleSystem explosionParticles = ExplosionsPool.s_Singleton.Pool.Get();
+            explosionParticles.transform.position = transform.position;
+            explosionParticles.Play();
+        }
     }
 
     private void DestroyBullet()
