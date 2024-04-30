@@ -181,10 +181,16 @@ public class ShipControl : NetworkBehaviour
         if (Health.Value <= 0)
         {
             Health.Value = 0;
-
-            //todo: reset all buffs
-
+            // reset all values and buffs
             Health.Value = 100;
+            LatestShipColor.Value = m_ShipGlowDefaultColor;
+            SpeedBuffTimer.Value = 0;
+            RotateBuffTimer.Value = 0;
+            TripleShotTimer.Value = 0;
+            DoubleShotTimer.Value = 0;
+            QuadDamageTimer.Value = 0;
+            Energy.Value = 100;
+            // reset ship to start position
             transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
@@ -231,7 +237,7 @@ public class ShipControl : NetworkBehaviour
     {
         if (IsLocalPlayer)
         {
-            // center camera.. only if this is MY player!
+            // center camera... only if this is MY player!
             Vector3 pos = transform.position;
             pos.z = -50;
             m_MainCamera.transform.position = pos;
@@ -259,7 +265,7 @@ public class ShipControl : NetworkBehaviour
             m_EnergyTimer = NetworkManager.ServerTime.TimeAsFloat + 1;
         }
 
-        // update rotation 
+        // update rotation
         float rotate = m_Spin * m_RotateSpeed;
         if (RotateBuffTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
@@ -469,7 +475,7 @@ public class ShipControl : NetworkBehaviour
 
         if (buff == Buff.BuffType.Bounce)
         {
-            QuadDamageTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
+            BounceTimer.Value = NetworkManager.ServerTime.TimeAsFloat + 10;
             LatestShipColor.Value = Buff.GetColor(Buff.BuffType.Bounce);
         }
 
