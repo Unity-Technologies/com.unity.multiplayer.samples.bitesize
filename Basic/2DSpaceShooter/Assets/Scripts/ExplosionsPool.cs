@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.Serialization;
 
 public class ExplosionsPool : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class ExplosionsPool : MonoBehaviour
     [SerializeField]
     bool m_CollectionChecks = true;
     [SerializeField]
-    int m_MaxPoolSize = 50;
+    int m_MaxPoolSize = 100;
     [SerializeField]
     GameObject m_ExplosionPrefab;
     ObjectPool<ParticleSystem> m_Pool;
@@ -23,7 +22,7 @@ public class ExplosionsPool : MonoBehaviour
         {
             if (m_Pool == null)
             {
-                m_Pool = new ObjectPool<ParticleSystem>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, m_CollectionChecks, 1, m_MaxPoolSize);
+                m_Pool = new ObjectPool<ParticleSystem>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool, OnDestroyPoolObject, m_CollectionChecks, 50, m_MaxPoolSize);
             }
             return m_Pool;
         }
@@ -37,6 +36,15 @@ public class ExplosionsPool : MonoBehaviour
             return;
         }
         s_Singleton = this;
+    }
+
+    void Start()
+    {
+        // create pool item instances at the start of a game to avoid performance loss throughout the game session
+        for (int i = 0; i < 10; i++)
+        {
+           s_Singleton.Pool.Get();
+        }
     }
 
     void OnDestroy()

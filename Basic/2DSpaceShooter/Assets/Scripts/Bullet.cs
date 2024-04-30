@@ -8,7 +8,6 @@ public class Bullet : NetworkBehaviour
     bool m_Bounce;
     int m_Damage = 5;
     ShipControl m_Owner;
-    public ParticleSystem particles;
 
     public void Config(ShipControl owner, int damage, bool bounce, float lifetime)
     {

@@ -12,6 +12,9 @@
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
 
+#### Fixed
+- Reset values and buffs after respawn and added local pooling for explosionParticles to optimize performance and showcase built-in pooling component (#167)
+
 ### Client Driven
 
 #### Changed
