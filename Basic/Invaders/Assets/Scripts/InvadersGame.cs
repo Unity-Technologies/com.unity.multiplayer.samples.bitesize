@@ -198,7 +198,7 @@ public class InvadersGame : NetworkBehaviour
         if (m_ReplicatedTimeSent)
         {
             // Send the RPC only to the newly connected client
-            SetReplicatedTimeRemainingClientRPC(m_TimeRemaining, new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong>() { clientId } } });
+            ClientSetReplicatedTimeRemainingRPC(m_TimeRemaining, RpcTarget.Single(clientId, RpcTargetUse.Temp));
         }
     }
 
@@ -218,7 +218,7 @@ public class InvadersGame : NetworkBehaviour
             //While we are counting down, continually set the replicated time remaining value for clients (client should only receive the update once)
             if (m_CountdownStarted.Value && !m_ReplicatedTimeSent)
             {
-                SetReplicatedTimeRemainingClientRPC(m_DelayedStartTime);
+                ClientSetReplicatedTimeRemainingRPC(m_DelayedStartTime, RpcTarget.ClientsAndHost);
                 m_ReplicatedTimeSent = true;
             }
 
@@ -233,9 +233,9 @@ public class InvadersGame : NetworkBehaviour
     ///     will deal with updating it. For that, we use a ClientRPC
     /// </summary>
     /// <param name="delayedStartTime"></param>
-    /// <param name="clientRpcParams"></param>
-    [ClientRpc]
-    private void SetReplicatedTimeRemainingClientRPC(float delayedStartTime, ClientRpcParams clientRpcParams = new ClientRpcParams())
+    /// <param name="rpcParams"></param>
+    [Rpc(SendTo.SpecifiedInParams)]
+    private void ClientSetReplicatedTimeRemainingRPC(float delayedStartTime, RpcParams rpcParams)
     {
         // See the ShouldStartCountDown method for when the server updates the value
         if (m_TimeRemaining == 0)
@@ -432,7 +432,7 @@ public class InvadersGame : NetworkBehaviour
         if (reason != GameOverReason.Death)
         {
             this.isGameOver.Value = true;
-            BroadcastGameOverClientRpc(reason); // Notify our clients!
+            ClientBroadcastGameOverRpc(reason); // Notify our clients!
             return;
         }
 
@@ -449,8 +449,8 @@ public class InvadersGame : NetworkBehaviour
         this.isGameOver.Value = true;
     }
 
-    [ClientRpc]
-    public void BroadcastGameOverClientRpc(GameOverReason reason)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ClientBroadcastGameOverRpc(GameOverReason reason)
     {
         var localPlayerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
         Assert.IsNotNull(localPlayerObject);

@@ -33,7 +33,6 @@ public class PlayerControl : NetworkBehaviour
     private NetworkVariable<int> m_MoveX = new NetworkVariable<int>(0);
 
     private GameObject m_MyBullet;
-    private ClientRpcParams m_OwnerRPCParams;
 
     [SerializeField]
     private SpriteRenderer m_PlayerVisual;
@@ -114,7 +113,6 @@ public class PlayerControl : NetworkBehaviour
         m_Lives.OnValueChanged += OnLivesChanged;
         m_Score.OnValueChanged += OnScoreChanged;
 
-        if (IsServer) m_OwnerRPCParams = new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new[] { OwnerClientId } } };
 
         if (!InvadersGame.Singleton)
             InvadersGame.OnSingletonReady += SubscribeToDelegatesAndUpdateValues;
@@ -192,7 +190,7 @@ public class PlayerControl : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) ShootServerRPC();
     }
 
-    [ServerRpc]
+    [Rpc(SendTo.Server)]
     private void ShootServerRPC()
     {
         if (!m_IsAlive)
@@ -220,7 +218,7 @@ public class PlayerControl : NetworkBehaviour
             m_MoveX.Value = 0;
             m_Lives.Value = 0;
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
-            NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
+            ClientNotifyGameOverRpc(GameOverReason.Death);//, m_OwnerRPCParams);
             Instantiate(m_ExplosionParticleSystem, transform.position, quaternion.identity);
 
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
@@ -233,8 +231,8 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    private void NotifyGameOverClientRpc(GameOverReason reason, ClientRpcParams clientParams)
+    [Rpc(SendTo.Owner)]
+    private void ClientNotifyGameOverRpc(GameOverReason reason)
     {
         NotifyGameOver(reason);
     }

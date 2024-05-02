@@ -77,7 +77,7 @@ public class LobbyControl : NetworkBehaviour
 
         foreach (var clientLobbyStatus in m_ClientsInLobby)
         {
-            SendClientReadyStatusUpdatesClientRpc(clientLobbyStatus.Key, clientLobbyStatus.Value);
+            ClientSendReadyStatusUpdatesRpc(clientLobbyStatus.Key, clientLobbyStatus.Value);
             if (!NetworkManager.Singleton.ConnectedClients.ContainsKey(clientLobbyStatus.Key))
 
                 //If some clients are still loading into the lobby scene then this is false
@@ -124,14 +124,14 @@ public class LobbyControl : NetworkBehaviour
     }
 
     /// <summary>
-    ///     SendClientReadyStatusUpdatesClientRpc
+    ///     ClientSendReadyStatusUpdatesRpc
     ///     Sent from the server to the client when a player's status is updated.
     ///     This also populates the connected clients' (excluding host) player state in the lobby
     /// </summary>
     /// <param name="clientId"></param>
     /// <param name="isReady"></param>
-    [ClientRpc]
-    private void SendClientReadyStatusUpdatesClientRpc(ulong clientId, bool isReady)
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ClientSendReadyStatusUpdatesRpc(ulong clientId, bool isReady)
     {
         if (!IsServer)
         {
@@ -186,7 +186,7 @@ public class LobbyControl : NetworkBehaviour
         }
         else
         {
-            OnClientIsReadyServerRpc(NetworkManager.Singleton.LocalClientId);
+            ServerOnClientIsReadyRpc(NetworkManager.Singleton.LocalClientId);
         }
 
         GenerateUserStatsForLobby();
@@ -197,8 +197,8 @@ public class LobbyControl : NetworkBehaviour
     ///     Sent to the server when the player clicks the ready button
     /// </summary>
     /// <param name="clientid">clientId that is ready</param>
-    [ServerRpc(RequireOwnership = false)]
-    private void OnClientIsReadyServerRpc(ulong clientid)
+    [Rpc(SendTo.Server)]
+    private void ServerOnClientIsReadyRpc(ulong clientid)
     {
         if (m_ClientsInLobby.ContainsKey(clientid))
         {
