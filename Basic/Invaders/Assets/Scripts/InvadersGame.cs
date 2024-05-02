@@ -148,7 +148,7 @@ public class InvadersGame : NetworkBehaviour
             m_Shields.Clear();
         }
 
-        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.Singleton.OnConnectionEvent -= OnClientConnected;
     }
 
     internal static event Action OnSingletonReady;
@@ -187,18 +187,21 @@ public class InvadersGame : NetworkBehaviour
 
         if (IsServer)
         {
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnConnectionEvent += OnClientConnected;
         }
 
         base.OnNetworkSpawn();
     }
 
-    private void OnClientConnected(ulong clientId)
+    private void OnClientConnected(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
+        if (connectionEventData.EventType != ConnectionEvent.ClientConnected)
+            return;
+
         if (m_ReplicatedTimeSent)
         {
             // Send the RPC only to the newly connected client
-            ClientSetReplicatedTimeRemainingRPC(m_TimeRemaining, RpcTarget.Single(clientId, RpcTargetUse.Temp));
+            ClientSetReplicatedTimeRemainingRPC(m_TimeRemaining, RpcTarget.Single(connectionEventData.ClientId, RpcTargetUse.Temp));
         }
     }
 

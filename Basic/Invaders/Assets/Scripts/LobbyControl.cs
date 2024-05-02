@@ -34,7 +34,7 @@ public class LobbyControl : NetworkBehaviour
             m_AllPlayersInLobby = false;
 
             //Server will be notified when a client connects
-            NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
+            NetworkManager.OnConnectionEvent += OnClientConnectedCallback;
             SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
         }
 
@@ -79,9 +79,10 @@ public class LobbyControl : NetworkBehaviour
         {
             ClientSendReadyStatusUpdatesRpc(clientLobbyStatus.Key, clientLobbyStatus.Value);
             if (!NetworkManager.Singleton.ConnectedClients.ContainsKey(clientLobbyStatus.Key))
-
+            {
                 //If some clients are still loading into the lobby scene then this is false
                 m_AllPlayersInLobby = false;
+            }
         }
 
         CheckForAllPlayersReady();
@@ -111,16 +112,19 @@ public class LobbyControl : NetworkBehaviour
     ///     Since we are entering a lobby and Netcode's NetworkManager is spawning the player,
     ///     the server can be configured to only listen for connected clients at this stage.
     /// </summary>
-    /// <param name="clientId">client that connected</param>
-    private void OnClientConnectedCallback(ulong clientId)
+    /// <param name="networkManager"></param>
+    /// <param name="connectionEventData">Connection event to check for which player id is connecting.</param>
+    private void OnClientConnectedCallback(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
-        if (IsServer)
-        {
-            if (!m_ClientsInLobby.ContainsKey(clientId)) m_ClientsInLobby.Add(clientId, false);
-            GenerateUserStatsForLobby();
+        if (connectionEventData.EventType != ConnectionEvent.ClientConnected)
+            return;
 
-            UpdateAndCheckPlayersInLobby();
-        }
+        var clientId = connectionEventData.ClientId;
+        if (!m_ClientsInLobby.ContainsKey(clientId))
+            m_ClientsInLobby.Add(clientId, false);
+
+        GenerateUserStatsForLobby();
+        UpdateAndCheckPlayersInLobby();
     }
 
     /// <summary>
@@ -162,7 +166,7 @@ public class LobbyControl : NetworkBehaviour
             if (allPlayersAreReady)
             {
                 //Remove our client connected callback
-                NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+                NetworkManager.Singleton.OnConnectionEvent -= OnClientConnectedCallback;
 
                 //Remove our scene loaded callback
                 SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene -= ClientLoadedScene;
