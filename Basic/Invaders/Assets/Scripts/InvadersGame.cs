@@ -39,11 +39,11 @@ public class InvadersGame : NetworkBehaviour
     private const float k_BottomBoundaryOffset = 1.25f;
 
     [Header("Prefab settings")]
-    public GameObject enemy1Prefab;
-    public GameObject enemy2Prefab;
-    public GameObject enemy3Prefab;
-    public GameObject superEnemyPrefab;
-    public GameObject shieldPrefab;
+    public NetworkObject enemy1Prefab;
+    public NetworkObject enemy2Prefab;
+    public NetworkObject enemy3Prefab;
+    public NetworkObject superEnemyPrefab;
+    public NetworkObject shieldPrefab;
 
     [Header("UI Settings")]
     public TMP_Text gameTimerText;
@@ -82,7 +82,7 @@ public class InvadersGame : NetworkBehaviour
     // the timer should only be synced at the beginning
     // and then let the client update it in a predictive manner
     private bool m_ReplicatedTimeSent = false;
-    private GameObject m_Saucer;
+    private NetworkObject m_Saucer;
     private List<Shield> m_Shields = new List<Shield>();
     private float m_TimeRemaining;
 
@@ -531,7 +531,7 @@ public class InvadersGame : NetworkBehaviour
         SceneTransitionHandler.sceneTransitionHandler.ExitAndLoadStartMenu();
     }
 
-    private void CreateShield(GameObject prefab, int posX, int posY)
+    private void CreateShield(NetworkObject prefab, int posX, int posY)
     {
         Assert.IsTrue(IsServer, "Create Shield should be called server-side only!");
 
@@ -550,10 +550,10 @@ public class InvadersGame : NetworkBehaviour
                     continue;
                 }
 
-                var shield = Instantiate(prefab, new Vector3(x - 1, y, 0), Quaternion.identity);
-
                 // Spawn the Networked Object, this should notify the clients
-                shield.GetComponent<NetworkObject>().Spawn();
+                prefab.InstantiateAndSpawn(NetworkManager.Singleton,
+                    position: new Vector3(x - 1, y, 0),
+                    rotation: Quaternion.identity);
                 xcount += 1;
             }
 
@@ -573,22 +573,21 @@ public class InvadersGame : NetworkBehaviour
     {
         Assert.IsTrue(IsServer, "Create Saucer should be called server-side only!");
 
-        m_Saucer = Instantiate(superEnemyPrefab, saucerSpawnPoint.position, Quaternion.identity);
-
         // Spawn the Networked Object, this should notify the clients
-        m_Saucer.GetComponent<NetworkObject>().Spawn();
+        m_Saucer = superEnemyPrefab.InstantiateAndSpawn(NetworkManager.Singleton,
+            position: saucerSpawnPoint.position,
+            rotation: Quaternion.identity);
     }
 
-    private void CreateEnemy(GameObject prefab, float posX, float posY)
+    private void CreateEnemy(NetworkObject prefab, float posX, float posY)
     {
         Assert.IsTrue(IsServer, "Create Enemy should be called server-side only!");
 
-        var enemy = Instantiate(prefab);
-        enemy.transform.position = new Vector3(posX, posY, 0.0f);
-        enemy.GetComponent<EnemyAgent>().Setup(Mathf.RoundToInt(posX), Mathf.RoundToInt(posY));
-
         // Spawn the Networked Object, this should notify the clients
-        enemy.GetComponent<NetworkObject>().Spawn();
+        var enemy = prefab.InstantiateAndSpawn(NetworkManager.Singleton,
+            position: new Vector3(posX, posY, 0.0f),
+            rotation: Quaternion.identity);
+        enemy.GetComponent<EnemyAgent>().Setup(Mathf.RoundToInt(posX), Mathf.RoundToInt(posY));
     }
 
     public void CreateEnemies()

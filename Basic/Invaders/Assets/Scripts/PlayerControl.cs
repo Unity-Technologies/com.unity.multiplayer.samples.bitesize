@@ -3,12 +3,11 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Rendering.VirtualTexturing;
 
 public class PlayerControl : NetworkBehaviour
 {
     [Header("Weapon Settings")]
-    public GameObject bulletPrefab;
+    public NetworkObject bulletPrefab;
 
     [Header("Movement Settings")]
     [SerializeField]
@@ -32,7 +31,7 @@ public class PlayerControl : NetworkBehaviour
 
     private NetworkVariable<int> m_MoveX = new NetworkVariable<int>(0);
 
-    private GameObject m_MyBullet;
+    private NetworkObject m_MyBullet;
 
     [SerializeField]
     private SpriteRenderer m_PlayerVisual;
@@ -198,9 +197,10 @@ public class PlayerControl : NetworkBehaviour
 
         if (m_MyBullet == null)
         {
-            m_MyBullet = Instantiate(bulletPrefab, transform.position + Vector3.up, Quaternion.identity);
+            m_MyBullet = bulletPrefab.InstantiateAndSpawn(NetworkManager.Singleton,
+                position: transform.position + Vector3.up,
+                rotation: Quaternion.identity);
             m_MyBullet.GetComponent<PlayerBullet>().owner = this;
-            m_MyBullet.GetComponent<NetworkObject>().Spawn();
         }
     }
 
