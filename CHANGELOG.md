@@ -39,6 +39,10 @@
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
 - Upgraded to Unity 2022.3.27f1 (#169)
+- Upgraded to Netcode for GameObjects v1.8.1 (#172)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to the newer API for NetworkObject spawning to use NetworkObject.InstantiateAndSpawn
+  - Upgraded usage of NetworkManager.OnClientConnectedCallback to the new NetworkManager.OnConnectionEvent 
 
 ## [1.5.0] 2023-12-15
 
