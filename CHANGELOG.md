@@ -38,6 +38,7 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#169)
 
 #### Fixed
 - Optimized NetworkTransform on all networked prefabs so the Clients objects movements are closer to the Host ones (#168)
