@@ -9,7 +9,7 @@ namespace Unity.Multiplayer.Samples.ClientDriven
     /// <remarks>
     /// A NetworkManager is expected to be part of the scene that this NetworkObject is a part of.
     /// </remarks>
-    internal class NetworkObjectSpawner : MonoBehaviour
+    class NetworkObjectSpawner : MonoBehaviour
     {
         [SerializeField]
         NetworkObject m_PrefabReference;
@@ -27,17 +27,18 @@ namespace Unity.Multiplayer.Samples.ClientDriven
 
         void OnDestroy()
         {
-            if(NetworkManager.Singleton != null)
-            { 
+            if (NetworkManager.Singleton != null)
+            {
                 NetworkManager.Singleton.OnServerStarted -= SpawnIngredient;
             }
         }
 
         void SpawnIngredient()
         {
+            // Note: this will be converted to NetworkObject.InstantiateAndSpawn(), but a current limitation on Netcode
+            // for GameObjects invoking this method on OnServerStarted prevents this API upgrade
             NetworkObject instantiatedNetworkObject = Instantiate(m_PrefabReference, transform.position, transform.rotation, null);
-            var ingredient = instantiatedNetworkObject.GetComponent<ServerIngredient>();
-            ingredient.NetworkObject.Spawn();
+            instantiatedNetworkObject.Spawn();
         }
     }
 }

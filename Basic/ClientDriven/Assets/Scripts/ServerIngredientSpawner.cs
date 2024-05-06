@@ -12,7 +12,7 @@ public class ServerIngredientSpawner : NetworkBehaviour
     float m_SpawnRatePerSecond;
 
     [SerializeField]
-    GameObject m_IngredientPrefab;
+    NetworkObject m_IngredientPrefab;
 
     [SerializeField]
     int m_MaxSpawnWaves;
@@ -42,7 +42,7 @@ public class ServerIngredientSpawner : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (NetworkManager != null && !IsServer)
+        if (NetworkManager != null && !NetworkManager.IsListening && !IsServer)
         {
             return;
         }
@@ -51,11 +51,10 @@ public class ServerIngredientSpawner : NetworkBehaviour
         {
             foreach (var spawnPoint in m_SpawnPoints)
             {
-                var newIngredientObject = Instantiate(m_IngredientPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-                newIngredientObject.transform.position = spawnPoint.transform.position +
-                    new Vector3(UnityEngine.Random.Range(-0.25f, 0.25f), 0, UnityEngine.Random.Range(-0.25f, 0.25f));
+                var newIngredientObject = m_IngredientPrefab.InstantiateAndSpawn(NetworkManager,
+                    position: spawnPoint.transform.position + new Vector3(UnityEngine.Random.Range(-0.25f, 0.25f), 0, UnityEngine.Random.Range(-0.25f, 0.25f)),
+                    rotation: spawnPoint.transform.rotation);
                 var ingredient = newIngredientObject.GetComponent<ServerIngredient>();
-                ingredient.NetworkObject.Spawn();
                 ingredient.currentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
             }
             m_SpawnWaves++;
