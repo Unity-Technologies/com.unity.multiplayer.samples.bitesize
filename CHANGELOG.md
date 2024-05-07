@@ -39,10 +39,6 @@
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
 
-### Multiplayer Use Cases
-
-#### Changed
-- Upgraded to Unity 2022.3.27f1 (#171)
 
 ## [1.5.0] 2023-12-15
 
