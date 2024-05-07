@@ -47,6 +47,7 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#169)
 
 ## [1.5.0] 2023-12-15
 
