@@ -80,24 +80,26 @@ public class NetworkManagerHud : MonoBehaviour
         ShowInGameUI(false);
         ShowStatusText(false);
 
-        NetworkManager.Singleton.OnClientConnectedCallback += OnOnClientConnectedCallback;
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnOnClientDisconnectCallback;
+        NetworkManager.Singleton.OnConnectionEvent += SingletonOnOnConnectionEvent;
     }
 
-    void OnOnClientConnectedCallback(ulong obj)
+    void SingletonOnOnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
-        ShowMainMenuUI(false);
-        ShowInGameUI(true);
-    }
-
-    void OnOnClientDisconnectCallback(ulong clientId)
-    {
-        if ((NetworkManager.Singleton.IsServer && clientId != NetworkManager.ServerClientId))
+        if (connectionEventData.EventType == ConnectionEvent.ClientConnected)
         {
-            return;
+            ShowMainMenuUI(false);
+            ShowInGameUI(true);
         }
-        ShowMainMenuUI(true);
-        ShowInGameUI(false);
+
+        else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
+        {
+            if ((NetworkManager.Singleton.IsServer && connectionEventData.ClientId != NetworkManager.ServerClientId))
+            {
+                return;
+            }
+            ShowMainMenuUI(true);
+            ShowInGameUI(false);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -262,7 +264,6 @@ public class NetworkManagerHud : MonoBehaviour
         {
             m_ShutdownButton.clickable.clickedWithEventInfo -= ShutdownButtonClicked;
         }
-        m_NetworkManager.OnClientConnectedCallback -= OnOnClientConnectedCallback;
-        m_NetworkManager.OnClientDisconnectCallback -= OnOnClientDisconnectCallback;
+        m_NetworkManager.OnConnectionEvent -= SingletonOnOnConnectionEvent;
     }
 }

@@ -67,7 +67,7 @@ public class ShipControl : NetworkBehaviour
 
     bool m_IsBuffed;
 
-    public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
+    public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes());
 
     [SerializeField]
     ParticleSystem m_Friction;
@@ -141,8 +141,8 @@ public class ShipControl : NetworkBehaviour
         if (IsServer)
         {
             LatestShipColor.Value = m_ShipGlowDefaultColor;
-
-            PlayerName.Value = $"Player {OwnerClientId}";
+            var playerNameString = PlayerName.Value.ToString();
+            playerNameString = $"Player {OwnerClientId}";
 
             if (!IsHost)
             {
@@ -199,7 +199,7 @@ public class ShipControl : NetworkBehaviour
 
     void Fire(Vector3 direction)
     {
-        PlayFireSoundClientRpc();
+        ClientPlayFireSoundRpc();
         var damage = 5;
         if (QuadDamageTimer.Value > NetworkManager.ServerTime.TimeAsFloat)
         {
@@ -366,7 +366,7 @@ public class ShipControl : NetworkBehaviour
 
         if (m_OldMoveForce != moveForce || m_OldSpin != spin)
         {
-            ThrustServerRpc(moveForce, spin);
+            ServerThrustRpc(moveForce, spin);
             m_OldMoveForce = moveForce;
             m_OldSpin = spin;
         }
@@ -388,7 +388,7 @@ public class ShipControl : NetworkBehaviour
         // fire
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            FireServerRpc();
+            ServerFireRpc();
         }
     }
 
@@ -505,22 +505,22 @@ public class ShipControl : NetworkBehaviour
 
     // --- ClientRPCs ---
 
-    [ClientRpc]
-    void PlayFireSoundClientRpc()
+    [Rpc(SendTo.ClientsAndHost)]
+    void ClientPlayFireSoundRpc()
     {
         fireSound.Play();
     }
     // --- ServerRPCs ---
 
-    [ServerRpc]
-    public void ThrustServerRpc(float thrusting, int spin)
+    [Rpc(SendTo.Server)]
+    public void ServerThrustRpc(float thrusting, int spin)
     {
         m_Thrust = thrusting;
         m_Spin = spin;
     }
 
-    [ServerRpc]
-    public void FireServerRpc()
+    [Rpc(SendTo.Server)]
+    public void ServerFireRpc()
     {
         if (Energy.Value >= 10)
         {
@@ -549,8 +549,8 @@ public class ShipControl : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
-    public void SetNameServerRpc(string name)
+    [Rpc(SendTo.Server)]
+    public void ServerSetNameRpc(FixedString32Bytes name)
     {
         PlayerName.Value = name;
     }
