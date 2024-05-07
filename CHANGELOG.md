@@ -39,7 +39,6 @@
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
 
-
 ## [1.5.0] 2023-12-15
 
 ### Bitesize Samples Repository
