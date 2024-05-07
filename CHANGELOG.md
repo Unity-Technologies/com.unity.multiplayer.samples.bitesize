@@ -15,6 +15,14 @@
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
 - Upgraded to Unity 2022.3.27f1 (#170)
+  - upgraded to Burst v1.8.13
+  - added Jsonserialize v1.0.0
+  - upgraded to Render-pipelines core v14.0.11
+  - upgraded to Shadergraph v14.0.11
+  - upgraded to Authentication v2.7.4
+  - upgraded to Qos v1.3.0
+  - upgraded to Transport v1.4.1
+  - upgraded to Unity Services core v1.12.5
 
 #### Fixed
 - Reset values and buffs after respawn of ship (#167)
