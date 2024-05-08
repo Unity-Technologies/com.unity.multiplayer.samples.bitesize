@@ -26,9 +26,9 @@ public class ServerIngredientSpawner : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        enabled = IsServer;
         if (!IsServer)
         {
-            enabled = false;
             return;
         }
 
@@ -38,11 +38,12 @@ public class ServerIngredientSpawner : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         m_SpawnWaves = 0;
+        enabled = false;
     }
 
     void FixedUpdate()
     {
-        if (NetworkManager != null && !NetworkManager.IsListening && !IsServer)
+        if (NetworkManager == null || !NetworkManager.IsListening || !IsServer)
         {
             return;
         }

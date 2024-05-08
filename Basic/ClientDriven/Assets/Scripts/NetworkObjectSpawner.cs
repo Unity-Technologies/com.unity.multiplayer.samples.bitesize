@@ -36,7 +36,9 @@ namespace Unity.Multiplayer.Samples.ClientDriven
         void SpawnIngredient()
         {
             // Note: this will be converted to NetworkObject.InstantiateAndSpawn(), but a current limitation on Netcode
-            // for GameObjects invoking this method on OnServerStarted prevents this API upgrade
+            // for GameObjects invoking this method on OnServerStarted prevents this API upgrade.
+            // Specifically, if you were to spawn a Rigidbody with Rigidbody Interpolation enabled, you would need to
+            // update the Rigidbody's position immediately after invoking NetworkObject.InstantitateAndSpawn().
             NetworkObject instantiatedNetworkObject = Instantiate(m_PrefabReference, transform.position, transform.rotation, null);
             instantiatedNetworkObject.Spawn();
         }
