@@ -35,6 +35,12 @@
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#175)
+  - com.unity.render-pipelines.core upgraded to 14.0.11
+  - com.unity.services.authentication upgraded to v2.7.4
+  - com.unity.services.core upgraded to v1.12.5
+  - com.unity.services.qos upgraded to v1.3.0
+  - com.unity.transport upgraded to v1.4.1
 
 #### Fixed
 - Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
