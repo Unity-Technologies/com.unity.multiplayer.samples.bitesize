@@ -14,6 +14,16 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#170)
+  - upgraded to com.unity.burst v1.8.13
+  - added com.unity.modules.jsonserialize v1.0.0
+  - upgraded to com.unity.render-pipelines.core v14.0.11
+  - upgraded to com.unity.render-pipelines.universal-config v14.0.10
+  - upgraded to com.unity.shadergraph v14.0.11
+  - upgraded to com.unity.services.authentication v2.7.4
+  - upgraded to com.unity.services.qos v1.3.0
+  - upgraded to com.unity.transport v1.4.1
+  - upgraded to com.unity.services.core v1.12.5
 
 #### Fixed
 - Reset values and buffs after respawn of ship (#167)
@@ -38,6 +48,7 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#169)
 
 ## [1.5.0] 2023-12-15
 
