@@ -34,6 +34,7 @@
 - Upgraded to Netcode for GameObjects v1.8.1 (#164)
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+  - Upgraded to use NetworkObject.InstantiateAndSpawn() API where appropriate (#173)
 - Upgraded to IDE Rider v3.0.28 (#166)
 
 #### Fixed
