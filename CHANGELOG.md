@@ -24,6 +24,9 @@
   - upgraded to com.unity.services.qos v1.3.0
   - upgraded to com.unity.transport v1.4.1
   - upgraded to com.unity.services.core v1.12.5
+- Upgraded to Netcode for GameObjects v1.8.1 (#174)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to newer API for Connection Events, OnConnectionEvent
 
 #### Fixed
 - Reset values and buffs after respawn of ship (#167)
