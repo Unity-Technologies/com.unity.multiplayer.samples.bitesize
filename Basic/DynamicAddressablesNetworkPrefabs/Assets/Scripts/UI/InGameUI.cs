@@ -68,7 +68,6 @@ namespace Game.UI
             Client = 2
         }
 
-        // internal enum used for testing
         public enum LoadStatus
         {
             Loaded,
@@ -144,7 +143,7 @@ namespace Game.UI
 
         void OnDestroy()
         {
-            // un-register UI elements from methods using callbacks for when they're clicked 
+            // un-register UI elements from methods using callbacks for when they're clicked
             m_LoadAllAsyncButton.clickable.clicked -= OnLoadAllPrefabsAsyncPressed;
             m_SpawnSynchronouslyButton.clickable.clicked -= OnTrySpawnSynchronouslyPressed;
             m_SpawnWithVisibilityButton.clickable.clicked -= OnSpawnUsingVisibilityPressed;

@@ -116,10 +116,10 @@ namespace Game
         public static async Task<GameObject> LoadDynamicPrefab(AddressableGUID guid, int artificialDelayMilliseconds,
             bool recomputeHash = true)
         {
-            if (s_LoadedDynamicPrefabResourceHandles.ContainsKey(guid))
+            if (s_LoadedDynamicPrefabResourceHandles.TryGetValue(guid, out var handle))
             {
                 Debug.Log($"Prefab has already been loaded, skipping loading this time | {guid}");
-                return s_LoadedDynamicPrefabResourceHandles[guid].Result;
+                return handle.Result;
             }
 
             Debug.Log($"Loading dynamic prefab {guid.Value}");

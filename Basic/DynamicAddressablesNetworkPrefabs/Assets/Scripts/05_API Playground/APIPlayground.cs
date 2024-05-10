@@ -75,7 +75,7 @@ namespace Game.APIPlayground
 
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            Debug.Log("Client is trying to connect " + request.ClientNetworkId);
+            Debug.Log($"Client {request.ClientNetworkId} is trying to connect");
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
 
@@ -142,7 +142,7 @@ namespace Game.APIPlayground
 
             // A note: sending large strings through Netcode is not ideal -- you'd usually want to use REST services to
             // accomplish this instead. UGS services like Lobby can be a useful alternative. Another route may be to
-            // set ConnectionApprovalResponse's Pending flag to true, and send a CustomMessage containing the array of 
+            // set ConnectionApprovalResponse's Pending flag to true, and send a CustomMessage containing the array of
             // GUIDs to a client, which the client would load and reattempt a reconnection.
 
             void Approve()
@@ -233,7 +233,7 @@ namespace Game.APIPlayground
                 }
 
                 Debug.Log("Loading dynamic prefab on the clients...");
-                LoadAddressableClientRpc(assetGuid);
+                ClientLoadAddressableRpc(assetGuid, RpcTarget.ClientsAndHost);
 
                 await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
 
@@ -283,7 +283,7 @@ namespace Game.APIPlayground
                 m_SynchronousSpawnTimeoutTimer = 0;
 
                 Debug.Log("Loading dynamic prefab on the clients...");
-                LoadAddressableClientRpc(assetGuid);
+                ClientLoadAddressableRpc(assetGuid, RpcTarget.ClientsAndHost);
 
                 // server is starting to load a prefab, update UI
                 m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
@@ -327,8 +327,7 @@ namespace Game.APIPlayground
                     return null;
                 }
 
-                var obj = Instantiate(prefab.Result, position, rotation).GetComponent<NetworkObject>();
-                obj.Spawn();
+                var obj = prefab.Result.GetComponent<NetworkObject>().InstantiateAndSpawn(m_NetworkManager, position: position, rotation: rotation);
                 Debug.Log("Spawned dynamic prefab");
 
                 // every client loaded dynamic prefab, their respective ClientUIs in case they loaded first
@@ -412,8 +411,8 @@ namespace Game.APIPlayground
                     // client is loading a prefab, update UI
                     m_InGameUI.ClientLoadedPrefabStatusChanged(clientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
 
-                    //otherwise the client need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
-                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new ulong[] { clientId } } });
+                    //otherwise the client need to load the prefab, and after they ack - the ShowHiddenObjectsToClient
+                    ClientLoadAddressableRpc(assetGuid, RpcTarget.Group(new[] { clientId }, RpcTargetUse.Temp));
                     return false;
                 };
 
@@ -437,8 +436,8 @@ namespace Game.APIPlayground
             }
         }
 
-        [ClientRpc]
-        void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
+        [Rpc(SendTo.SpecifiedInParams)]
+        void ClientLoadAddressableRpc(AddressableGUID guid, RpcParams rpcParams = default)
         {
             if (!IsHost)
             {
@@ -457,12 +456,12 @@ namespace Game.APIPlayground
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
 
-                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
+                ServerAcknowledgeSuccessfulPrefabLoadRpc(assetGuid.GetHashCode());
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
+        [Rpc(SendTo.Server, RequireOwnership = false)]
+        void ServerAcknowledgeSuccessfulPrefabLoadRpc(int prefabHash, RpcParams rpcParams = default)
         {
             m_SynchronousSpawnAckCount++;
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
@@ -474,8 +473,8 @@ namespace Game.APIPlayground
             {
                 // Note: there's a potential security risk here if this technique is tied with gameplay that uses
                 // a NetworkObject's Show() and Hide() methods. For example, a malicious player could invoke a similar
-                // ServerRpc with the guids of enemy players, and it would make those enemies visible (network side
-                // and/or visually) to that player, giving them a potential advantage.
+                // server-bound Rpc with the guids of enemy players, and it would make those enemies visible (network
+                // side and/or visually) to that player, giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
 

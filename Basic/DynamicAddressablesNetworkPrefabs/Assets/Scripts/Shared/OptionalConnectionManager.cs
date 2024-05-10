@@ -49,28 +49,28 @@ namespace Game
 
             m_CurrentState = m_Offline;
 
-            m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
-            m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
+            m_NetworkManager.OnConnectionEvent += OnConnectionEvent;
             m_NetworkManager.OnServerStarted += OnServerStarted;
             m_NetworkManager.OnTransportFailure += OnTransportFailure;
         }
 
         void OnDestroy()
         {
-            m_NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
-            m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+            m_NetworkManager.OnConnectionEvent -= OnConnectionEvent;
             m_NetworkManager.OnServerStarted -= OnServerStarted;
             m_NetworkManager.OnTransportFailure -= OnTransportFailure;
         }
 
-        void OnClientConnectedCallback(ulong clientId)
+        void OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
-            m_CurrentState.OnClientConnected(clientId);
-        }
-
-        void OnClientDisconnectCallback(ulong clientId)
-        {
-            m_CurrentState.OnClientDisconnect(clientId);
+            if (arg2.EventType == ConnectionEvent.ClientConnected)
+            {
+                m_CurrentState.OnClientConnected(arg2.ClientId);
+            }
+            else if (arg2.EventType == ConnectionEvent.ClientDisconnected)
+            {
+                m_CurrentState.OnClientDisconnect(arg2.ClientId);
+            }
         }
 
         void OnServerStarted()

@@ -34,8 +34,7 @@ namespace Game
             m_IPMenuUI.ResetUI();
             m_InGameUI.Hide();
 
-            m_NetworkManager.OnClientConnectedCallback += OnClientConnected;
-            m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnect;
+            m_NetworkManager.OnConnectionEvent += OnConnectionEvent;
 
             m_IPMenuUI.HostButtonPressed += StartHost;
             m_IPMenuUI.ClientButtonPressed += StartClient;
@@ -44,8 +43,7 @@ namespace Game
 
         void OnDestroy()
         {
-            m_NetworkManager.OnClientConnectedCallback -= OnClientConnected;
-            m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnect;
+            m_NetworkManager.OnConnectionEvent -= OnConnectionEvent;
 
             if (m_IPMenuUI)
             {
@@ -55,39 +53,58 @@ namespace Game
             }
         }
 
-        void OnClientConnected(ulong clientId)
+        void OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
-            m_IPMenuUI.HideIPConnectionMenu();
-
-            // for host
-            if (m_NetworkManager.IsHost)
+            if (arg2.EventType == ConnectionEvent.ClientConnected)
             {
-                if (clientId == m_NetworkManager.LocalClientId)
+                m_IPMenuUI.HideIPConnectionMenu();
+
+                // for host
+                if (m_NetworkManager.IsHost)
                 {
-                    m_IPMenuUI.HostStarted();
-                    m_InGameUI.Show(InGameUI.ButtonVisibility.Server);
-                    m_InGameUI.AddConnectionUIInstance(clientId, new int[] { }, new string[] { });
+                    if (arg2.ClientId == m_NetworkManager.LocalClientId)
+                    {
+                        m_IPMenuUI.HostStarted();
+                        m_InGameUI.Show(InGameUI.ButtonVisibility.Server);
+                        m_InGameUI.AddConnectionUIInstance(arg2.ClientId, new int[] { }, new string[] { });
+                    }
+                    else
+                    {
+                        // grab all loaded prefabs and represent that on the newly joined client
+                        var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
+
+                        m_InGameUI.AddConnectionUIInstance(arg2.ClientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
+                    }
+                }
+                else if (m_NetworkManager.IsClient)
+                {
+                    // for clients that are not host
+                    if (arg2.ClientId == m_NetworkManager.LocalClientId)
+                    {
+                        m_IPMenuUI.ClientStarted();
+                        m_InGameUI.Show(InGameUI.ButtonVisibility.Client);
+
+                        // grab all locally loaded prefabs and represent that on local client
+                        var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
+
+                        m_InGameUI.AddConnectionUIInstance(arg2.ClientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
+                    }
+                }
+            }
+            else if (arg2.EventType == ConnectionEvent.ClientDisconnected)
+            {
+                // when a connected client disconnects, remove their UI
+                if (m_NetworkManager.IsServer && arg2.ClientId != NetworkManager.ServerClientId)
+                {
+                    // if a connected client disconnects on the host
+                    m_InGameUI.RemoveConnectionUIInstance(arg2.ClientId);
                 }
                 else
                 {
-                    // grab all loaded prefabs and represent that on the newly joined client
-                    var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
-
-                    m_InGameUI.AddConnectionUIInstance(clientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
-                }
-            }
-            else if (m_NetworkManager.IsClient)
-            {
-                // for clients that are not host
-                if (clientId == m_NetworkManager.LocalClientId)
-                {
-                    m_IPMenuUI.ClientStarted();
-                    m_InGameUI.Show(InGameUI.ButtonVisibility.Client);
-
-                    // grab all locally loaded prefabs and represent that on local client
-                    var loadedPrefabs = GetLoadedPrefabsHashesAndNames();
-
-                    m_InGameUI.AddConnectionUIInstance(clientId, loadedPrefabs.Item1, loadedPrefabs.Item2);
+                    // show connection UI only when the local client disconnects
+                    m_IPMenuUI.ResetUI();
+                    m_InGameUI.RemoveConnectionUIInstance(m_NetworkManager.LocalClientId);
+                    m_InGameUI.Hide();
                 }
             }
         }
@@ -105,23 +122,6 @@ namespace Game
             }
 
             return Tuple.Create(loadedHashes, loadedNames);
-        }
-
-        void OnClientDisconnect(ulong clientId)
-        {
-            // when a connected client disconnects, remove their UI
-            if (m_NetworkManager.IsServer && clientId != NetworkManager.ServerClientId)
-            {
-                // if a connected client disconnects on the host
-                m_InGameUI.RemoveConnectionUIInstance(clientId);
-            }
-            else
-            {
-                // show connection UI only when the local client disconnects
-                m_IPMenuUI.ResetUI();
-                m_InGameUI.RemoveConnectionUIInstance(m_NetworkManager.LocalClientId);
-                m_InGameUI.Hide();
-            }
         }
 
         void StartHost()

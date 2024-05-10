@@ -11,9 +11,9 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
 {
     /// <summary>
     /// A dynamic prefab loading use-case where the server instructs all clients to load a single network prefab via a
-    /// ClientRpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible
-    /// only to clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it
-    /// sends an acknowledgement ServerRpc, and the server will mark that spawned NetworkObject as network-visible to
+    /// Rpc, will spawn said prefab as soon as it is loaded on the server, and will mark it as network-visible only to
+    /// clients that have already loaded that same prefab. As soon as a client loads the prefab locally, it sends an
+    /// acknowledgement Rpc to the server, and the server will mark that spawned NetworkObject as network-visible to
     /// that client.
     /// </summary>
     /// <remarks>
@@ -50,7 +50,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             // connection payload, and either approve or deny connection to the joining client.
             // Note: we will define a very simplistic connection approval below, which will effectively deny all
             // late-joining clients unless the server has not loaded any dynamic prefabs. You could choose to not define
-            // a connection approval callback, but late-joining clients will have mismatching NetworkConfigs (and  
+            // a connection approval callback, but late-joining clients will have mismatching NetworkConfigs (and
             // potentially different world versions if the server has spawned a dynamic prefab).
             m_NetworkManager.NetworkConfig.ConnectionApproval = true;
 
@@ -80,7 +80,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
 
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            Debug.Log("Client is trying to connect " + request.ClientNetworkId);
+            Debug.Log($"Client {request.ClientNetworkId} is trying to connect ");
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
 
@@ -213,8 +213,8 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                     // client is loading a prefab, update UI
                     m_InGameUI.ClientLoadedPrefabStatusChanged(clientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
 
-                    //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
-                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new ulong[] { clientId } } });
+                    //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient
+                    ClientLoadAddressableRpc(assetGuid, RpcTarget.Group(new[] { clientId }, RpcTargetUse.Temp));
                     return false;
                 };
 
@@ -238,8 +238,8 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             }
         }
 
-        [ClientRpc]
-        void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
+        [Rpc(SendTo.SpecifiedInParams)]
+        void ClientLoadAddressableRpc(AddressableGUID guid, RpcParams rpcParams = default)
         {
             if (!IsHost)
             {
@@ -258,12 +258,12 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
 
-                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
+                ServerAcknowledgeSuccessfulPrefabLoadRpc(assetGuid.GetHashCode());
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
+        [Rpc(SendTo.Server, RequireOwnership = false)]
+        void ServerAcknowledgeSuccessfulPrefabLoadRpc(int prefabHash, RpcParams rpcParams = default)
         {
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash,
@@ -274,8 +274,8 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             {
                 // Note: there's a potential security risk here if this technique is tied with gameplay that uses
                 // a NetworkObject's Show() and Hide() methods. For example, a malicious player could invoke a similar
-                // ServerRpc with the guids of enemy players, and it would make those enemies visible (network side
-                // and/or visually) to that player, giving them a potential advantage.
+                // server-bound Rpc with the guids of enemy players, and it would make those enemies visible (network
+                // side and/or visually) to that player, giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
 

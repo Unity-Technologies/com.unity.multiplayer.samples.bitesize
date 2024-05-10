@@ -41,7 +41,7 @@ namespace Game.ServerAuthoritativeLoadAllAsync
             // connection payload, and either approve or deny connection to the joining client.
             // Note: we will define a very simplistic connection approval below, which will effectively deny all
             // late-joining clients unless the server has not loaded any dynamic prefabs. You could choose to not define
-            // a connection approval callback, but late-joining clients will have mismatching NetworkConfigs (and  
+            // a connection approval callback, but late-joining clients will have mismatching NetworkConfigs (and
             // potentially different world versions if the server has spawned a dynamic prefab).
             m_NetworkManager.NetworkConfig.ConnectionApproval = true;
 
@@ -71,7 +71,7 @@ namespace Game.ServerAuthoritativeLoadAllAsync
 
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
-            Debug.Log("Client is trying to connect " + request.ClientNetworkId);
+            Debug.Log($"Client {request.ClientNetworkId} is trying to connect");
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
 
@@ -170,7 +170,7 @@ namespace Game.ServerAuthoritativeLoadAllAsync
                 }
 
                 Debug.Log("Loading dynamic prefab on the clients...");
-                LoadAddressableClientRpc(assetGuid);
+                ClientLoadAddressableRpc(assetGuid);
 
                 await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
 
@@ -188,8 +188,8 @@ namespace Game.ServerAuthoritativeLoadAllAsync
             }
         }
 
-        [ClientRpc]
-        void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
+        [Rpc(SendTo.ClientsAndHost)]
+        void ClientLoadAddressableRpc(AddressableGUID guid)
         {
             if (!IsHost)
             {
@@ -208,12 +208,12 @@ namespace Game.ServerAuthoritativeLoadAllAsync
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
 
-                AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
+                ServerAcknowledgeSuccessfulPrefabLoadRpc(assetGuid.GetHashCode());
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
+        [Rpc(SendTo.Server, RequireOwnership = false)]
+        void ServerAcknowledgeSuccessfulPrefabLoadRpc(int prefabHash, RpcParams rpcParams = default)
         {
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
             DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, rpcParams.Receive.SenderClientId);

@@ -7,7 +7,7 @@ namespace Game
 {
     /// <summary>
     /// A class that captures the value of an Addressable's AssetGUID into a string that is serializable/deserializable
-    /// by Netcode for GameObjects. This is heavily involved in ClientRpcs/ServerRpcs containing Addressable AssetGUIDs.
+    /// by Netcode for GameObjects. This is heavily involved in Rpcs containing Addressable AssetGUIDs.
     /// </summary>
     public struct AddressableGUID : INetworkSerializable
     {
