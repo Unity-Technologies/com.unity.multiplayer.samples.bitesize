@@ -14,6 +14,16 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#170)
+  - upgraded to com.unity.burst v1.8.13
+  - added com.unity.modules.jsonserialize v1.0.0
+  - upgraded to com.unity.render-pipelines.core v14.0.11
+  - upgraded to com.unity.render-pipelines.universal-config v14.0.10
+  - upgraded to com.unity.shadergraph v14.0.11
+  - upgraded to com.unity.services.authentication v2.7.4
+  - upgraded to com.unity.services.qos v1.3.0
+  - upgraded to com.unity.transport v1.4.1
+  - upgraded to com.unity.services.core v1.12.5
 
 #### Fixed
 - Reset values and buffs after respawn of ship (#167)
@@ -24,7 +34,14 @@
 - Upgraded to Netcode for GameObjects v1.8.1 (#164)
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+  - Upgraded to use NetworkObject.InstantiateAndSpawn() API where appropriate (#173)
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#175)
+  - com.unity.render-pipelines.core upgraded to v14.0.11
+  - com.unity.services.authentication upgraded to v2.7.4
+  - com.unity.services.core upgraded to v1.12.5
+  - com.unity.services.qos upgraded to v1.3.0
+  - com.unity.transport upgraded to v1.4.1
 
 #### Fixed
 - Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
