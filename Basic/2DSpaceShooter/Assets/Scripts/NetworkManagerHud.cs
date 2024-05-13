@@ -80,10 +80,10 @@ public class NetworkManagerHud : MonoBehaviour
         ShowInGameUI(false);
         ShowStatusText(false);
 
-        NetworkManager.Singleton.OnConnectionEvent += SingletonOnOnConnectionEvent;
+        NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
     }
 
-    void SingletonOnOnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
+    void OnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
         if (connectionEventData.EventType == ConnectionEvent.ClientConnected)
         {
@@ -264,6 +264,6 @@ public class NetworkManagerHud : MonoBehaviour
         {
             m_ShutdownButton.clickable.clickedWithEventInfo -= ShutdownButtonClicked;
         }
-        m_NetworkManager.OnConnectionEvent -= SingletonOnOnConnectionEvent;
+        m_NetworkManager.OnConnectionEvent -= OnConnectionEvent;
     }
 }
