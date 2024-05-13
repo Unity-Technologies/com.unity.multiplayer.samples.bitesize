@@ -186,11 +186,11 @@ public class PlayerControl : NetworkBehaviour
                 transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) ShootServerRPC();
+        if (Input.GetKeyDown(KeyCode.Space)) ServerShootRpc();
     }
 
     [Rpc(SendTo.Server)]
-    private void ShootServerRPC()
+    private void ServerShootRpc()
     {
         if (!m_IsAlive)
             return;

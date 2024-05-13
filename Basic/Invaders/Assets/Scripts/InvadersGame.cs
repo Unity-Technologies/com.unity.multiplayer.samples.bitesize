@@ -201,7 +201,7 @@ public class InvadersGame : NetworkBehaviour
         if (m_ReplicatedTimeSent)
         {
             // Send the RPC only to the newly connected client
-            ClientSetReplicatedTimeRemainingRPC(m_TimeRemaining, RpcTarget.Single(connectionEventData.ClientId, RpcTargetUse.Temp));
+            ClientSetReplicatedTimeRemainingRpc(m_TimeRemaining, RpcTarget.Single(connectionEventData.ClientId, RpcTargetUse.Temp));
         }
     }
 
@@ -221,7 +221,7 @@ public class InvadersGame : NetworkBehaviour
             //While we are counting down, continually set the replicated time remaining value for clients (client should only receive the update once)
             if (m_CountdownStarted.Value && !m_ReplicatedTimeSent)
             {
-                ClientSetReplicatedTimeRemainingRPC(m_DelayedStartTime, RpcTarget.ClientsAndHost);
+                ClientSetReplicatedTimeRemainingRpc(m_DelayedStartTime, RpcTarget.ClientsAndHost);
                 m_ReplicatedTimeSent = true;
             }
 
@@ -238,7 +238,7 @@ public class InvadersGame : NetworkBehaviour
     /// <param name="delayedStartTime"></param>
     /// <param name="rpcParams"></param>
     [Rpc(SendTo.SpecifiedInParams)]
-    private void ClientSetReplicatedTimeRemainingRPC(float delayedStartTime, RpcParams rpcParams)
+    private void ClientSetReplicatedTimeRemainingRpc(float delayedStartTime, RpcParams rpcParams)
     {
         // See the ShouldStartCountDown method for when the server updates the value
         if (m_TimeRemaining == 0)

@@ -50,7 +50,7 @@ public class PlayerBullet : NetworkBehaviour
             // Only the server can despawn a NetworkObject
             hitEnemy.NetworkObject.Despawn();
 
-            ClientSpawnExplosionVFXRPC(transform.position, Quaternion.identity);
+            ClientSpawnExplosionVFXRpc(transform.position, Quaternion.identity);
 
             NetworkObject.Despawn();
 
@@ -66,7 +66,7 @@ public class PlayerBullet : NetworkBehaviour
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    void ClientSpawnExplosionVFXRPC(Vector3 spawnPosition, Quaternion spawnRotation)
+    void ClientSpawnExplosionVFXRpc(Vector3 spawnPosition, Quaternion spawnRotation)
     {
         // this instantiates at the position of the bullet, there is an offset in the Y axis on the
         // particle systems in the prefab so it looks like it spawns in the middle of the enemy
