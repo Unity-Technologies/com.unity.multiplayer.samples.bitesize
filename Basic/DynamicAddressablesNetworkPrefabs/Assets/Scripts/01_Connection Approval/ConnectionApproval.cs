@@ -13,7 +13,7 @@ namespace Game.ConnectionApproval
     /// after the server has loaded a prefab dynamically, whereas this one enables that functionality. To see it all in
     /// harmony, see <see cref="APIPlayground"/>, where all post-connection techniques are showcased in one scene.
     /// </summary>
-    public sealed class ConnectionApproval : NetworkBehaviour
+    public sealed class ConnectionApproval : MonoBehaviour
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
@@ -53,6 +53,7 @@ namespace Game.ConnectionApproval
 
         async void LoadAPrefab()
         {
+            m_NetworkManager.SceneManager.SetClientSynchronizationMode(UnityEngine.SceneManagement.LoadSceneMode.Additive);
             var assetGuid = new AddressableGUID() { Value = m_AssetReferenceGameObject.AssetGUID };
 
             // server is starting to load a prefab, update UI
@@ -68,12 +69,11 @@ namespace Game.ConnectionApproval
             m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
         }
 
-        public override void OnDestroy()
+        private void OnDestroy()
         {
             m_NetworkManager.ConnectionApprovalCallback -= ConnectionApprovalCallback;
             m_NetworkManager.OnServerStarted -= LoadAPrefab;
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
-            base.OnDestroy();
         }
 
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
