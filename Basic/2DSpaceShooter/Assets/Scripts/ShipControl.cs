@@ -67,7 +67,7 @@ public class ShipControl : NetworkBehaviour
 
     bool m_IsBuffed;
 
-    public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes());
+    public NetworkVariable<FixedString32Bytes> PlayerName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes(""));
 
     [SerializeField]
     ParticleSystem m_Friction;
@@ -141,8 +141,7 @@ public class ShipControl : NetworkBehaviour
         if (IsServer)
         {
             LatestShipColor.Value = m_ShipGlowDefaultColor;
-            var playerNameString = PlayerName.Value.ToString();
-            playerNameString = $"Player {OwnerClientId}";
+            PlayerName.Value = $"Player {OwnerClientId}";
 
             if (!IsHost)
             {
