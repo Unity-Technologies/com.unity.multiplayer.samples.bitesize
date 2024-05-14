@@ -53,7 +53,6 @@ namespace Game.ConnectionApproval
 
         async void LoadAPrefab()
         {
-            m_NetworkManager.SceneManager.SetClientSynchronizationMode(UnityEngine.SceneManagement.LoadSceneMode.Additive);
             var assetGuid = new AddressableGUID() { Value = m_AssetReferenceGameObject.AssetGUID };
 
             // server is starting to load a prefab, update UI
