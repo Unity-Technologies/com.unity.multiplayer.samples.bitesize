@@ -52,12 +52,12 @@ public class Bullet : NetworkBehaviour
         {
             var bulletRb = GetComponent<Rigidbody2D>();
             bulletRb.velocity = velocity;
-            SetVelocityClientRpc(velocity);
+            ClientSetVelocityRpc(velocity);
         }
     }
 
-    [ClientRpc]
-    void SetVelocityClientRpc(Vector2 velocity)
+    [Rpc(SendTo.ClientsAndHost)]
+    void ClientSetVelocityRpc(Vector2 velocity)
     {
         if (!IsHost)
         {
