@@ -14,18 +14,16 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         void Start()
         {
             Refreshlabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+            NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
         }
 
         void OnDestroy()
         {
             if (NetworkManager.Singleton)
             {
-                NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+                NetworkManager.Singleton.OnConnectionEvent -= OnConnectionEvent;
                 NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
-                NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
             }
         }
 
@@ -34,18 +32,24 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             Refreshlabels(true);
         }
 
-        void OnClientConnectedCallback(ulong obj)
+        void OnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
         {
-            if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer)
+            if (connectionEventData.EventType == ConnectionEvent.ClientConnected)
             {
-                return; //you don't want to do actions twice when playing as a host
-            }
-            Refreshlabels(true);
-        }
+                if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer)
+                {
+                    return; //you don't want to do actions twice when playing as a host
+                }
 
-        void OnClientDisconnectCallback(ulong obj)
-        {
-            Refreshlabels(false);
+                Refreshlabels(true);
+            }
+
+            else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
+            {
+                {
+                    Refreshlabels(false);
+                }
+            }
         }
 
         void Refreshlabels(bool isConnected)
