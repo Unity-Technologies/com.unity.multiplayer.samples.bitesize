@@ -90,7 +90,6 @@ public class NetworkManagerHud : MonoBehaviour
             ShowMainMenuUI(false);
             ShowInGameUI(true);
         }
-
         else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
         {
             if ((NetworkManager.Singleton.IsServer && connectionEventData.ClientId != NetworkManager.ServerClientId))
