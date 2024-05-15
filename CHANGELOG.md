@@ -53,6 +53,8 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#176)
+  - com.unity.transport upgraded to v1.4.1
 
 ### Invaders
 
