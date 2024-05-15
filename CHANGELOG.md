@@ -24,6 +24,9 @@
   - upgraded to com.unity.services.qos v1.3.0
   - upgraded to com.unity.transport v1.4.1
   - upgraded to com.unity.services.core v1.12.5
+- Upgraded to Netcode for GameObjects v1.8.1 (#174)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to newer API for Connection Events, OnConnectionEvent
 
 #### Fixed
 - Reset values and buffs after respawn of ship (#167)
@@ -34,6 +37,7 @@
 - Upgraded to Netcode for GameObjects v1.8.1 (#164)
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+  - Upgraded to use NetworkObject.InstantiateAndSpawn() API where appropriate (#173)
 - Upgraded to IDE Rider v3.0.28 (#166)
 - Upgraded to Unity 2022.3.27f1 (#175)
   - com.unity.render-pipelines.core upgraded to v14.0.11
@@ -49,6 +53,8 @@
 
 #### Changed
 - Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#176)
+  - com.unity.transport upgraded to v1.4.1
 
 ### Invaders
 
