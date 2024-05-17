@@ -146,9 +146,9 @@ public class InvadersGame : NetworkBehaviour
         {
             m_Enemies.Clear();
             m_Shields.Clear();
-        }
 
-        NetworkManager.Singleton.OnConnectionEvent -= OnClientConnected;
+            NetworkManager.Singleton.OnConnectionEvent -= ServerOnConnectionEvent;
+        }
     }
 
     internal static event Action OnSingletonReady;
@@ -187,13 +187,13 @@ public class InvadersGame : NetworkBehaviour
 
         if (IsServer)
         {
-            NetworkManager.Singleton.OnConnectionEvent += OnClientConnected;
+            NetworkManager.Singleton.OnConnectionEvent += ServerOnConnectionEvent;
         }
 
         base.OnNetworkSpawn();
     }
 
-    private void OnClientConnected(NetworkManager networkManager, ConnectionEventData connectionEventData)
+    private void ServerOnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
         if (connectionEventData.EventType != ConnectionEvent.ClientConnected)
             return;

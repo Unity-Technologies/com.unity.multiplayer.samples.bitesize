@@ -34,7 +34,7 @@ public class LobbyControl : NetworkBehaviour
             m_AllPlayersInLobby = false;
 
             //Server will be notified when a client connects
-            NetworkManager.OnConnectionEvent += OnClientConnectedCallback;
+            NetworkManager.Singleton.OnConnectionEvent += ServerOnConnectionEvent;
             SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
         }
 
@@ -114,7 +114,7 @@ public class LobbyControl : NetworkBehaviour
     /// </summary>
     /// <param name="networkManager"></param>
     /// <param name="connectionEventData">Connection event to check for which player id is connecting.</param>
-    private void OnClientConnectedCallback(NetworkManager networkManager, ConnectionEventData connectionEventData)
+    private void ServerOnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
         if (connectionEventData.EventType != ConnectionEvent.ClientConnected)
             return;
@@ -166,7 +166,7 @@ public class LobbyControl : NetworkBehaviour
             if (allPlayersAreReady)
             {
                 //Remove our client connected callback
-                NetworkManager.Singleton.OnConnectionEvent -= OnClientConnectedCallback;
+                NetworkManager.Singleton.OnConnectionEvent -= ServerOnConnectionEvent;
 
                 //Remove our scene loaded callback
                 SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene -= ClientLoadedScene;

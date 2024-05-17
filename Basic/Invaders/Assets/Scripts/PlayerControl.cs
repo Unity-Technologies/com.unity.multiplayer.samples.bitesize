@@ -218,7 +218,7 @@ public class PlayerControl : NetworkBehaviour
             m_MoveX.Value = 0;
             m_Lives.Value = 0;
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
-            ClientNotifyGameOverRpc(GameOverReason.Death);//, m_OwnerRPCParams);
+            ClientNotifyGameOverRpc(GameOverReason.Death);
             Instantiate(m_ExplosionParticleSystem, transform.position, quaternion.identity);
 
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
