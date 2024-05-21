@@ -1,7 +1,7 @@
 using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRPC
+namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRpc
 {
     /// <summary>
     /// Toggles an object when the local player is close enough

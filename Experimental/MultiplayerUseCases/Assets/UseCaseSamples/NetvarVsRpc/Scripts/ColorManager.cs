@@ -1,7 +1,7 @@
 using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
 
-namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRPC
+namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRpc
 {
     /// <summary>
     /// Manages the color of a Networked object
@@ -68,7 +68,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRPC
             ServerChangeColorRpc();
         }
 
-        [Rpc(SendTo.Server, RequireOwnership = false)] //note: please refer to RPCs documentation to learn more about the pros and cons of the RequireOwnership parameter
+        [Rpc(SendTo.Server, RequireOwnership = false)] //note: please refer to Rpcs documentation to learn more about the pros and cons of the RequireOwnership parameter
         void ServerChangeColorRpc()
         {
             Color32 newColor = MultiplayerUseCasesUtilities.GetRandomColor();

@@ -13,7 +13,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void Start()
         {
-            Refreshlabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
+            RefreshLabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
             NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
         }
@@ -29,7 +29,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void OnServerStarted()
         {
-            Refreshlabels(true);
+            RefreshLabels(true);
         }
 
         void OnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
@@ -40,19 +40,18 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
                 {
                     return; //you don't want to do actions twice when playing as a host
                 }
-
-                Refreshlabels(true);
+                RefreshLabels(true);
             }
 
             else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
             {
                 {
-                    Refreshlabels(false);
+                    RefreshLabels(false);
                 }
             }
         }
 
-        void Refreshlabels(bool isConnected)
+        void RefreshLabels(bool isConnected)
         {
             startupLabel.gameObject.SetActive(!isConnected);
             controlsLabel.gameObject.SetActive(isConnected);
