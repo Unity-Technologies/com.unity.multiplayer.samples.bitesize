@@ -56,6 +56,9 @@
 - Upgraded to Unity 2022.3.27f1 (#176)
   - com.unity.transport upgraded to v1.4.1
 
+#### Fixed
+- Releasing an Addressables handle on OnDestroy inside Preloading scene to prevent releasing loaded dynamic prefab from memory (#179)
+
 ### Invaders
 
 #### Changed
