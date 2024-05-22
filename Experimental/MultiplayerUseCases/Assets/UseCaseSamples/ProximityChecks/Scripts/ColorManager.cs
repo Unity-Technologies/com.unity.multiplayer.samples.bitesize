@@ -62,7 +62,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Proximity
             ServerChangeColorRpc();
         }
 
-        [Rpc(SendTo.Server,RequireOwnership = false)]
+        [Rpc(SendTo.Server)]
         void ServerChangeColorRpc()
         {
             m_NetworkedColor.Value = MultiplayerUseCasesUtilities.GetRandomColor();
