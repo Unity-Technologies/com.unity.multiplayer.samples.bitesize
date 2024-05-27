@@ -45,9 +45,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
             else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
             {
-                {
                     RefreshLabels(false);
-                }
             }
         }
 
