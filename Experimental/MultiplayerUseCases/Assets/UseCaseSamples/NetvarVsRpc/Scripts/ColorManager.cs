@@ -68,7 +68,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRpc
             ServerChangeColorRpc();
         }
 
-        [Rpc(SendTo.Server, RequireOwnership = false)] //note: please refer to Rpcs documentation to learn more about the pros and cons of the RequireOwnership parameter
+        [Rpc(SendTo.Server)]
         void ServerChangeColorRpc()
         {
             Color32 newColor = MultiplayerUseCasesUtilities.GetRandomColor();
