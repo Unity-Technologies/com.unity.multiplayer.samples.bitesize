@@ -13,42 +13,43 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void Start()
         {
-            Refreshlabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+            RefreshLabels(NetworkManager.Singleton && (NetworkManager.Singleton.IsClient || NetworkManager.Singleton.IsServer));
+            NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
             NetworkManager.Singleton.OnServerStarted += OnServerStarted;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
         }
 
         void OnDestroy()
         {
             if (NetworkManager.Singleton)
             {
-                NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+                NetworkManager.Singleton.OnConnectionEvent -= OnConnectionEvent;
                 NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
-                NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
             }
         }
 
         void OnServerStarted()
         {
-            Refreshlabels(true);
+            RefreshLabels(true);
         }
 
-        void OnClientConnectedCallback(ulong obj)
+        void OnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
         {
-            if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer)
+            if (connectionEventData.EventType == ConnectionEvent.ClientConnected)
             {
-                return; //you don't want to do actions twice when playing as a host
+                if (NetworkManager.Singleton && NetworkManager.Singleton.IsServer)
+                {
+                    return; //you don't want to do actions twice when playing as a host
+                }
+                RefreshLabels(true);
             }
-            Refreshlabels(true);
+
+            else if (connectionEventData.EventType == ConnectionEvent.ClientDisconnected)
+            {
+                    RefreshLabels(false);
+            }
         }
 
-        void OnClientDisconnectCallback(ulong obj)
-        {
-            Refreshlabels(false);
-        }
-
-        void Refreshlabels(bool isConnected)
+        void RefreshLabels(bool isConnected)
         {
             startupLabel.gameObject.SetActive(!isConnected);
             controlsLabel.gameObject.SetActive(isConnected);
