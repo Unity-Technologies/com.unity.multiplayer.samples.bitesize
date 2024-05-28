@@ -36,18 +36,18 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.RPC
             if (m_ElapsedSecondsSinceLastChange >= m_SecondsBetweenDataChanges)
             {
                 m_ElapsedSecondsSinceLastChange = 0;
-                OnServerMoodMessageReceivedServerRpc(s_ChatMessages[Random.Range(0, s_ChatMessages.Length)]);
+                ServerMoodMessageReceivedRpc(s_ChatMessages[Random.Range(0, s_ChatMessages.Length)]);
             }
         }
 
-        [ServerRpc]
-        void OnServerMoodMessageReceivedServerRpc(string message)
+        [Rpc(SendTo.Server)]
+        void ServerMoodMessageReceivedRpc(string message)
         {
             /* Here's an example of the type of operation you could do on the server to prevent malicious actions
              * from bad actors.
              */
             string redactedMessage = OnServerFilterBadWords(message);
-            OnClientMoodMessageReceivedClientRpc(redactedMessage);
+            ClientMoodMessageReceivedRpc(redactedMessage);
         }
 
         string OnServerFilterBadWords(string message)
@@ -55,8 +55,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.RPC
             return MultiplayerUseCasesUtilities.FilterBadWords(message);
         }
 
-        [ClientRpc]
-        void OnClientMoodMessageReceivedClientRpc(string message)
+        [Rpc(SendTo.ClientsAndHost)]
+        void ClientMoodMessageReceivedRpc(string message)
         {
             if (!m_SpeechBubble)
             {
