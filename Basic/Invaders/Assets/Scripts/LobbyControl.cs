@@ -34,7 +34,7 @@ public class LobbyControl : NetworkBehaviour
             m_AllPlayersInLobby = false;
 
             //Server will be notified when a client connects
-            NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
+            NetworkManager.Singleton.OnConnectionEvent += ServerOnConnectionEvent;
             SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene += ClientLoadedScene;
         }
 
@@ -77,11 +77,12 @@ public class LobbyControl : NetworkBehaviour
 
         foreach (var clientLobbyStatus in m_ClientsInLobby)
         {
-            SendClientReadyStatusUpdatesClientRpc(clientLobbyStatus.Key, clientLobbyStatus.Value);
+            ClientSendReadyStatusUpdatesRpc(clientLobbyStatus.Key, clientLobbyStatus.Value);
             if (!NetworkManager.Singleton.ConnectedClients.ContainsKey(clientLobbyStatus.Key))
-
+            {
                 //If some clients are still loading into the lobby scene then this is false
                 m_AllPlayersInLobby = false;
+            }
         }
 
         CheckForAllPlayersReady();
@@ -111,27 +112,30 @@ public class LobbyControl : NetworkBehaviour
     ///     Since we are entering a lobby and Netcode's NetworkManager is spawning the player,
     ///     the server can be configured to only listen for connected clients at this stage.
     /// </summary>
-    /// <param name="clientId">client that connected</param>
-    private void OnClientConnectedCallback(ulong clientId)
+    /// <param name="networkManager"></param>
+    /// <param name="connectionEventData">Connection event to check for which player id is connecting.</param>
+    private void ServerOnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
-        if (IsServer)
-        {
-            if (!m_ClientsInLobby.ContainsKey(clientId)) m_ClientsInLobby.Add(clientId, false);
-            GenerateUserStatsForLobby();
+        if (connectionEventData.EventType != ConnectionEvent.ClientConnected)
+            return;
 
-            UpdateAndCheckPlayersInLobby();
-        }
+        var clientId = connectionEventData.ClientId;
+        if (!m_ClientsInLobby.ContainsKey(clientId))
+            m_ClientsInLobby.Add(clientId, false);
+
+        GenerateUserStatsForLobby();
+        UpdateAndCheckPlayersInLobby();
     }
 
     /// <summary>
-    ///     SendClientReadyStatusUpdatesClientRpc
+    ///     ClientSendReadyStatusUpdatesRpc
     ///     Sent from the server to the client when a player's status is updated.
     ///     This also populates the connected clients' (excluding host) player state in the lobby
     /// </summary>
     /// <param name="clientId"></param>
     /// <param name="isReady"></param>
-    [ClientRpc]
-    private void SendClientReadyStatusUpdatesClientRpc(ulong clientId, bool isReady)
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ClientSendReadyStatusUpdatesRpc(ulong clientId, bool isReady)
     {
         if (!IsServer)
         {
@@ -162,7 +166,7 @@ public class LobbyControl : NetworkBehaviour
             if (allPlayersAreReady)
             {
                 //Remove our client connected callback
-                NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+                NetworkManager.Singleton.OnConnectionEvent -= ServerOnConnectionEvent;
 
                 //Remove our scene loaded callback
                 SceneTransitionHandler.sceneTransitionHandler.OnClientLoadedScene -= ClientLoadedScene;
@@ -186,7 +190,7 @@ public class LobbyControl : NetworkBehaviour
         }
         else
         {
-            OnClientIsReadyServerRpc(NetworkManager.Singleton.LocalClientId);
+            ServerOnClientIsReadyRpc(NetworkManager.Singleton.LocalClientId);
         }
 
         GenerateUserStatsForLobby();
@@ -197,8 +201,8 @@ public class LobbyControl : NetworkBehaviour
     ///     Sent to the server when the player clicks the ready button
     /// </summary>
     /// <param name="clientid">clientId that is ready</param>
-    [ServerRpc(RequireOwnership = false)]
-    private void OnClientIsReadyServerRpc(ulong clientid)
+    [Rpc(SendTo.Server)]
+    private void ServerOnClientIsReadyRpc(ulong clientid)
     {
         if (m_ClientsInLobby.ContainsKey(clientid))
         {
