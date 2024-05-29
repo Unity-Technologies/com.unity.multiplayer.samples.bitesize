@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game.Preloading
 {
@@ -24,6 +25,8 @@ namespace Game.Preloading
 
         [SerializeField] NetworkManager m_NetworkManager;
 
+        AsyncOperationHandle<GameObject> m_AsyncOperationHandle;
+
         async void Start()
         {
             await PreloadDynamicPlayerPrefab();
@@ -35,9 +38,8 @@ namespace Game.Preloading
         async Task PreloadDynamicPlayerPrefab()
         {
             Debug.Log($"Started to load addressable with GUID: {m_DynamicPrefabReference.AssetGUID}");
-            var op = Addressables.LoadAssetAsync<GameObject>(m_DynamicPrefabReference);
-            var prefab = await op.Task;
-            Addressables.Release(op);
+            m_AsyncOperationHandle = Addressables.LoadAssetAsync<GameObject>(m_DynamicPrefabReference);
+            var prefab = await m_AsyncOperationHandle.Task;
 
             //it's important to actually add the player prefab to the list of network prefabs - it doesn't happen
             //automatically
@@ -51,8 +53,13 @@ namespace Game.Preloading
             // prefabs to NetworkManager's NetworkPrefabs list pre-connection time guarantees that all players will have
             // matching NetworkConfigs. This is why NetworkManager.ForceSamePrefabs is set to true. We let Netcode for
             // GameObjects validate the matching NetworkConfigs between clients and the server. If this is set to false
-            // on the server, clients may join with a mismatching NetworkPrefabs list from the server. 
+            // on the server, clients may join with a mismatching NetworkPrefabs list from the server.
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = true;
+        }
+
+        void OnDestroy()
+        {
+            Addressables.Release(m_AsyncOperationHandle);
         }
     }
 }
