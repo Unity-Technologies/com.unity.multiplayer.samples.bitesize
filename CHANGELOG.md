@@ -56,6 +56,9 @@
 - Upgraded to Unity 2022.3.27f1 (#176)
   - com.unity.transport upgraded to v1.4.1
 
+#### Fixed
+- Releasing an Addressables handle on OnDestroy inside Preloading scene to prevent releasing loaded dynamic prefab from memory (#179)
+
 ### Invaders
 
 #### Changed
@@ -65,6 +68,9 @@
   - Upgraded to the newer API for Rpcs, Universal Rpcs
   - Upgraded to the newer API for NetworkObject spawning to use NetworkObject.InstantiateAndSpawn
   - Upgraded usage of NetworkManager.OnClientConnectedCallback to the new NetworkManager.OnConnectionEvent 
+
+#### Fixed
+- Optimized NetworkTransform on all networked prefabs so the Clients objects movements are closer to the Host ones (#168)
 
 ## [1.5.0] 2023-12-15
 

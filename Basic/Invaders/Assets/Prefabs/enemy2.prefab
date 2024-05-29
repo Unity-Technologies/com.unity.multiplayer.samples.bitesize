@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 400000}
   - component: {fileID: 21200000}
+  - component: {fileID: 1361474663871475650}
   - component: {fileID: 11400000}
   - component: {fileID: 6100000}
   - component: {fileID: 5000000}
   - component: {fileID: 8401436849663568366}
-  - component: {fileID: 1361474663871475650}
   m_Layer: 0
   m_Name: enemy2
   m_TagString: Untagged
@@ -192,13 +192,13 @@ MonoBehaviour:
   UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncPositionZ: 0
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0
   RotAngleThreshold: 0
   ScaleThreshold: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
-  Interpolate: 1
+  Interpolate: 0
   SlerpPosition: 0
 --- !u!114 &1361474663871475650
 MonoBehaviour:
