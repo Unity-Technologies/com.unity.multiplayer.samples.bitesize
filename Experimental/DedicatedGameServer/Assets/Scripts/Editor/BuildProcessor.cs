@@ -132,7 +132,6 @@ namespace Unity.DedicatedGameServerSample.Editor
         {
             Debug.Log($"Building {target} server");
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Server, BuildTarget.StandaloneLinux64);
-            EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Server, MultiplayerRoleFlags.Server);
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
@@ -151,7 +150,6 @@ namespace Unity.DedicatedGameServerSample.Editor
             Debug.Log($"Building {target} client");
             
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, target);
-            EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Standalone, MultiplayerRoleFlags.Client);
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
