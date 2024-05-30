@@ -1,5 +1,77 @@
 # Changelog
 
+## [1.6.0] 2024-05-30
+
+### Bitesize Samples Repository
+
+#### Cleanup
+- Formatted .cs files inside the Bitesize Samples repository to adhere to coding standards (#156) Internal testing job definition files were added in order for internal processes to execute.
+
+### 2D Space Shooter
+
+#### Added
+- Added local pooling for explosionParticles to optimize performance and showcase built-in pooling component (#167)
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#170)
+  - upgraded to com.unity.burst v1.8.13
+  - added com.unity.modules.jsonserialize v1.0.0
+  - upgraded to com.unity.render-pipelines.core v14.0.11
+  - upgraded to com.unity.render-pipelines.universal-config v14.0.10
+  - upgraded to com.unity.shadergraph v14.0.11
+  - upgraded to com.unity.services.authentication v2.7.4
+  - upgraded to com.unity.services.qos v1.3.0
+  - upgraded to com.unity.transport v1.4.1
+  - upgraded to com.unity.services.core v1.12.5
+- Upgraded to Netcode for GameObjects v1.8.1 (#174)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to newer API for Connection Events, OnConnectionEvent
+
+#### Fixed
+- Reset values and buffs after respawn of ship (#167)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.8.1 (#164)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+  - Upgraded to use NetworkObject.InstantiateAndSpawn() API where appropriate (#173)
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#175)
+  - com.unity.render-pipelines.core upgraded to v14.0.11
+  - com.unity.services.authentication upgraded to v2.7.4
+  - com.unity.services.core upgraded to v1.12.5
+  - com.unity.services.qos upgraded to v1.3.0
+  - com.unity.transport upgraded to v1.4.1
+
+#### Fixed
+- Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#176)
+  - com.unity.transport upgraded to v1.4.1
+
+#### Fixed
+- Releasing an Addressables handle on OnDestroy inside Preloading scene to prevent releasing loaded dynamic prefab from memory (#179)
+
+### Invaders
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#169)
+- Upgraded to Netcode for GameObjects v1.8.1 (#172)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to the newer API for NetworkObject spawning to use NetworkObject.InstantiateAndSpawn
+  - Upgraded usage of NetworkManager.OnClientConnectedCallback to the new NetworkManager.OnConnectionEvent 
+
+#### Fixed
+- Optimized NetworkTransform on all networked prefabs so the Clients objects movements are closer to the Host ones (#168)
+
 ## [1.5.0] 2023-12-15
 
 ### Bitesize Samples Repository
@@ -73,13 +145,6 @@
 #### Changed
 - Upgraded to Netcode for GameObjects v1.6.0 (#134)
 - Upgraded sample to 2022.3.9f1 LTS (#134)
-
-## [Unreleased]
-
-### Dedicated Game Server
-todo: the changelog entry for this sample will be updated with subsequent PRs before being merged when ready
-
-- New Dedicated Game Server sample. (#1) This sample's goal is to demonstrate how to use the different tools and packages available to create a game using the dedicated server approach. It requires editor version 2023.3.
 
 ## [1.3.0] - 2023-07-07
 

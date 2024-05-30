@@ -1,11 +1,11 @@
-﻿using Unity.Netcode;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Asteroid : NetworkBehaviour
 {
     static string s_ObjectPoolTag = "ObjectPool";
-    
+
     public static int numAsteroids = 0;
 
     NetworkObjectPool m_ObjectPool;
@@ -14,7 +14,7 @@ public class Asteroid : NetworkBehaviour
 
     [SerializeField]
     private int m_NumCreates = 3;
-    
+
     [HideInInspector]
     public GameObject asteroidPrefab;
 
@@ -42,9 +42,9 @@ public class Asteroid : NetworkBehaviour
             return;
         }
         Assert.IsTrue(NetworkManager.IsServer);
-        
+
         numAsteroids -= 1;
-        
+
         var newSize = Size.Value - 1;
 
         if (newSize > 0)
@@ -56,9 +56,9 @@ public class Asteroid : NetworkBehaviour
                 int dx = Random.Range(0, 4) - 2;
                 int dy = Random.Range(0, 4) - 2;
                 Vector3 diff = new Vector3(dx * 0.3f, dy * 0.3f, 0);
-                
+
                 var go = m_ObjectPool.GetNetworkObject(asteroidPrefab, transform.position + diff, Quaternion.identity);
-                
+
                 var asteroid = go.GetComponent<Asteroid>();
                 asteroid.Size = new NetworkVariable<int>(newSize);
                 asteroid.asteroidPrefab = asteroidPrefab;
@@ -66,7 +66,7 @@ public class Asteroid : NetworkBehaviour
                 go.GetComponent<Rigidbody2D>().AddForce(diff * 10, ForceMode2D.Impulse);
             }
         }
-        
+
         NetworkObject.Despawn(true);
     }
 }

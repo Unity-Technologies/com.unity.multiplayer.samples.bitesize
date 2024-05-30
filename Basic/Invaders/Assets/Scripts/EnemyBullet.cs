@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -74,15 +74,15 @@ public class EnemyBullet : NetworkBehaviour
         var hitShield = collider.gameObject.GetComponent<Shield>();
         if (hitShield != null)
         {
-            SpawnExplosionVFXClientRpc(transform.position, Quaternion.identity);
+            ClientSpawnExplosionVFXRpc(transform.position, Quaternion.identity);
 
             Destroy(hitShield.gameObject);
             NetworkObject.Despawn();
         }
     }
 
-    [ClientRpc]
-    void SpawnExplosionVFXClientRpc(Vector3 spawnPosition, Quaternion spawnRotation)
+    [Rpc(SendTo.ClientsAndHost)]
+    void ClientSpawnExplosionVFXRpc(Vector3 spawnPosition, Quaternion spawnRotation)
     {
         Instantiate(m_ShieldExplosionParticle, spawnPosition, spawnRotation);
     }

@@ -30,22 +30,22 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
     {
         [SerializeField]
         NetworkManager m_NetworkManager;
-        
+
         [SerializeField] List<AssetReferenceGameObject> m_DynamicPrefabReferences;
-        
+
         [SerializeField] InGameUI m_InGameUI;
-        
+
         const int k_MaxConnectedClientCount = 4;
-        
+
         const int k_MaxConnectPayload = 1024;
-        
+
         //A storage where we keep association between prefab (hash of it's GUID) and the spawned network objects that use it
         Dictionary<int, HashSet<NetworkObject>> m_PrefabHashToNetworkObjectId = new Dictionary<int, HashSet<NetworkObject>>();
 
         void Start()
         {
             DynamicPrefabLoadingUtilities.Init(m_NetworkManager);
-            
+
             // In the use-cases where connection approval is implemented, the server can begin to validate a user's
             // connection payload, and either approve or deny connection to the joining client.
             // Note: we will define a very simplistic connection approval below, which will effectively deny all
@@ -53,20 +53,20 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             // a connection approval callback, but late-joining clients will have mismatching NetworkConfigs (and  
             // potentially different world versions if the server has spawned a dynamic prefab).
             m_NetworkManager.NetworkConfig.ConnectionApproval = true;
-            
+
             // Here, we keep ForceSamePrefabs disabled. This will allow us to dynamically add network prefabs to Netcode
             // for GameObject after establishing a connection.
             m_NetworkManager.NetworkConfig.ForceSamePrefabs = false;
-            
+
             // This is a simplistic use-case of a connection approval callback. To see how a connection approval should
             // be used to validate a user's connection payload, see the connection approval use-case, or the
             // APIPlayground, where all post-connection techniques are used in harmony.
             m_NetworkManager.ConnectionApprovalCallback += ConnectionApprovalCallback;
-            
+
             // hooking up UI callbacks
             m_InGameUI.SpawnUsingVisibilityButtonPressed += OnClickedTrySpawnInvisible;
         }
-        
+
         public override void OnDestroy()
         {
             m_NetworkManager.ConnectionApprovalCallback -= ConnectionApprovalCallback;
@@ -77,27 +77,27 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             DynamicPrefabLoadingUtilities.UnloadAndReleaseAllDynamicPrefabs();
             base.OnDestroy();
         }
-        
+
         void ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             Debug.Log("Client is trying to connect " + request.ClientNetworkId);
             var connectionData = request.Payload;
             var clientId = request.ClientNetworkId;
-            
+
             if (clientId == m_NetworkManager.LocalClientId)
             {
                 // allow the host to connect
                 Approve();
                 return;
             }
-            
+
             // A sample-specific denial on clients after k_MaxConnectedClientCount clients have been connected
             if (m_NetworkManager.ConnectedClientsList.Count >= k_MaxConnectedClientCount)
             {
                 ImmediateDeny();
                 return;
             }
-            
+
             if (connectionData.Length > k_MaxConnectPayload)
             {
                 // If connectionData is too big, deny immediately to avoid wasting time on the server. This is intended as
@@ -105,7 +105,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 ImmediateDeny();
                 return;
             }
-            
+
             // simple approval if the server has not loaded any dynamic prefabs yet
             if (DynamicPrefabLoadingUtilities.LoadedPrefabCount == 0)
             {
@@ -115,14 +115,14 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             {
                 ImmediateDeny();
             }
-            
+
             void Approve()
             {
                 Debug.Log($"Client {clientId} approved");
                 response.Approved = true;
                 response.CreatePlayerObject = false; //we're not going to spawn a player object for this sample
             }
-            
+
             void ImmediateDeny()
             {
                 Debug.Log($"Client {clientId} denied connection");
@@ -130,7 +130,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 response.CreatePlayerObject = false;
             }
         }
-        
+
         // invoked by UI
         void OnClickedTrySpawnInvisible()
         {
@@ -138,7 +138,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             {
                 return;
             }
-            
+
             TrySpawnInvisible();
         }
 
@@ -147,7 +147,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             var randomPrefab = m_DynamicPrefabReferences[Random.Range(0, m_DynamicPrefabReferences.Count)];
             await SpawnImmediatelyAndHideUntilPrefabIsLoadedOnClient(randomPrefab.AssetGUID, Random.insideUnitCircle * 5, Quaternion.identity);
         }
-        
+
         /// <summary>
         /// This call spawns an addressable prefab by it's guid. It does not ensure that all the clients have loaded the
         /// prefab before spawning it. All spawned objects are network-invisible to clients that don't have the prefab
@@ -164,7 +164,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 {
                     Value = guid
                 };
-                
+
                 return await Spawn(assetGuid);
             }
 
@@ -174,56 +174,56 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             {
                 // server is starting to load a prefab, update UI
                 m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
-                
-                var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, 
+
+                var prefab = await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid,
                     m_InGameUI.ArtificialDelayMilliseconds);
-                
+
                 // server loaded a prefab, update UI with the loaded asset's name
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(NetworkManager.ServerClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
-                
+
                 var obj = Instantiate(prefab, position, rotation).GetComponent<NetworkObject>();
-                
+
                 if (m_PrefabHashToNetworkObjectId.TryGetValue(assetGuid.GetHashCode(), out var networkObjectIds))
                 {
                     networkObjectIds.Add(obj);
                 }
                 else
                 {
-                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() {obj});
+                    m_PrefabHashToNetworkObjectId.Add(assetGuid.GetHashCode(), new HashSet<NetworkObject>() { obj });
                 }
 
                 // This gets called on spawn and makes sure clients currently syncing and receiving spawns have the
                 // appropriate network visibility settings automatically. This can happen on late join, on spawn, on
                 // scene switch, etc.
-                obj.CheckObjectVisibility = (clientId) => 
+                obj.CheckObjectVisibility = (clientId) =>
                 {
                     if (clientId == NetworkManager.ServerClientId)
                     {
                         // object is loaded on the server, no need to validate for visibility
                         return true;
                     }
-                    
+
                     //if the client has already loaded the prefab - we can make the object network-visible to them
                     if (DynamicPrefabLoadingUtilities.HasClientLoadedPrefab(clientId, assetGuid.GetHashCode()))
                     {
                         return true;
                     }
-                    
+
                     // client is loading a prefab, update UI
                     m_InGameUI.ClientLoadedPrefabStatusChanged(clientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
-                    
+
                     //otherwise the clients need to load the prefab, and after they ack - the ShowHiddenObjectsToClient 
-                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams(){Send = new ClientRpcSendParams(){TargetClientIds = new ulong[]{clientId}}});
+                    LoadAddressableClientRpc(assetGuid, new ClientRpcParams() { Send = new ClientRpcSendParams() { TargetClientIds = new ulong[] { clientId } } });
                     return false;
                 };
-                
+
                 obj.Spawn();
 
                 return obj;
             }
         }
-        
+
         void ShowHiddenObjectsToClient(int prefabHash, ulong clientId)
         {
             if (m_PrefabHashToNetworkObjectId.TryGetValue(prefabHash, out var networkObjects))
@@ -237,7 +237,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 }
             }
         }
-        
+
         [ClientRpc]
         void LoadAddressableClientRpc(AddressableGUID guid, ClientRpcParams rpcParams = default)
         {
@@ -250,25 +250,25 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
             {
                 // loading prefab as a client, update UI
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), "Undefined", InGameUI.LoadStatus.Loading);
-                
+
                 Debug.Log("Loading dynamic prefab on the client...");
                 await DynamicPrefabLoadingUtilities.LoadDynamicPrefab(assetGuid, m_InGameUI.ArtificialDelayMilliseconds);
                 Debug.Log("Client loaded dynamic prefab");
-                
+
                 DynamicPrefabLoadingUtilities.TryGetLoadedGameObjectFromGuid(assetGuid, out var loadedGameObject);
                 m_InGameUI.ClientLoadedPrefabStatusChanged(m_NetworkManager.LocalClientId, assetGuid.GetHashCode(), loadedGameObject.Result.name, InGameUI.LoadStatus.Loaded);
-                
+
                 AcknowledgeSuccessfulPrefabLoadServerRpc(assetGuid.GetHashCode());
             }
         }
-        
+
         [ServerRpc(RequireOwnership = false)]
         void AcknowledgeSuccessfulPrefabLoadServerRpc(int prefabHash, ServerRpcParams rpcParams = default)
         {
             Debug.Log($"Client acknowledged successful prefab load with hash: {prefabHash}");
-            DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash, 
+            DynamicPrefabLoadingUtilities.RecordThatClientHasLoadedAPrefab(prefabHash,
                 rpcParams.Receive.SenderClientId);
-           
+
             //the server has all the objects network-visible, no need to do anything
             if (rpcParams.Receive.SenderClientId != m_NetworkManager.LocalClientId)
             {
@@ -278,7 +278,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 // and/or visually) to that player, giving them a potential advantage.
                 ShowHiddenObjectsToClient(prefabHash, rpcParams.Receive.SenderClientId);
             }
-            
+
             // a quick way to grab a matching prefab reference's name via its prefabHash
             var loadedPrefabName = "Undefined";
             foreach (var prefabReference in m_DynamicPrefabReferences)
@@ -288,7 +288,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                 {
                     // found the matching prefab reference
                     if (DynamicPrefabLoadingUtilities.LoadedDynamicPrefabResourceHandles.TryGetValue(
-                            prefabReferenceGuid, 
+                            prefabReferenceGuid,
                             out var loadedGameObject))
                     {
                         // if it is loaded on the server, update the name on the ClientUI
@@ -297,7 +297,7 @@ namespace Game.ServerAuthoritativeNetworkVisibilitySpawning
                     break;
                 }
             }
-            
+
             // client has successfully loaded a prefab, update UI
             m_InGameUI.ClientLoadedPrefabStatusChanged(rpcParams.Receive.SenderClientId, prefabHash, loadedPrefabName, InGameUI.LoadStatus.Loaded);
         }

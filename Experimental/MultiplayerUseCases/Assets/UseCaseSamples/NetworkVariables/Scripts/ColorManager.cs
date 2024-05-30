@@ -65,7 +65,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
             m_ElapsedSecondsSinceLastChange += Time.deltaTime;
 
             if (m_ElapsedSecondsSinceLastChange >= m_SecondsBetweenColorChanges)
-            {  
+            {
                 m_ElapsedSecondsSinceLastChange = 0;
                 OnServerChangeColor();
             }

@@ -14,30 +14,30 @@ public class HostJoinUI : MonoBehaviour
     UIDocument m_InGameUIDocument;
 
     VisualElement m_MainMenuRootVisualElement;
-    
+
     VisualElement m_InGameRootVisualElement;
-    
+
     Button m_HostButton;
-    
+
     Button m_ServerButton;
-    
+
     Button m_ClientButton;
 
     TextField m_IPAddressTextField;
-    
+
     TextField m_PortTextField;
-    
+
     void Awake()
     {
         m_MainMenuRootVisualElement = m_MainMenuUIDocument.rootVisualElement;
         m_InGameRootVisualElement = m_InGameUIDocument.rootVisualElement;
-        
+
         m_HostButton = m_MainMenuRootVisualElement.Query<Button>("HostButton");
         m_ClientButton = m_MainMenuRootVisualElement.Query<Button>("ClientButton");
         m_ServerButton = m_MainMenuRootVisualElement.Query<Button>("ServerButton");
         m_IPAddressTextField = m_MainMenuRootVisualElement.Query<TextField>("IPAddressField");
         m_PortTextField = m_MainMenuRootVisualElement.Query<TextField>("PortField");
-        
+
         m_HostButton.clickable.clickedWithEventInfo += StartHost;
         m_ServerButton.clickable.clickedWithEventInfo += StartServer;
         m_ClientButton.clickable.clickedWithEventInfo += StartClient;
@@ -93,7 +93,7 @@ public class HostJoinUI : MonoBehaviour
     {
         m_MainMenuRootVisualElement.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
     }
-    
+
     void ToggleInGameUI(bool isVisible)
     {
         m_InGameRootVisualElement.style.display = isVisible ? DisplayStyle.Flex : DisplayStyle.None;
@@ -105,11 +105,11 @@ public class HostJoinUI : MonoBehaviour
         var sanitizedPortText = Sanitize(m_PortTextField.text);
 
         ushort.TryParse(sanitizedPortText, out var port);
-        
+
         var utp = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
         utp.SetConnectionData(sanitizedIPText, port);
     }
-    
+
     /// <summary>
     /// Sanitize user port InputField box allowing only alphanumerics and '.'
     /// </summary>

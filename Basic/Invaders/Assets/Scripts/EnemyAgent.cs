@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,7 +11,7 @@ public class EnemyAgent : NetworkBehaviour
     private const float k_ShootTimer = 1.25f;
     [Header("Enemy Settings")]
     public int score = 50;
-    public GameObject bulletPrefab;
+    public NetworkObject bulletPrefab;
     public float GraceShootingPeriod = 1.0f; // A period of time in which the enemy will not shoot at the start
 
     public bool canShoot { get; set; }
@@ -61,7 +62,7 @@ public class EnemyAgent : NetworkBehaviour
             // Wait for the grace shooting period to pass
             return;
         }
-        
+
         bool bCanShootThisFrame = false;
         if (IsServer && canShoot)
             if (Random.Range(0, 1.0f) > k_ShootingRandomThreshold)
@@ -80,8 +81,9 @@ public class EnemyAgent : NetworkBehaviour
 
     private void SpawnBullet()
     {
-        var myBullet = Instantiate(bulletPrefab, transform.position - Vector3.up, Quaternion.identity);
-        myBullet.GetComponent<NetworkObject>().Spawn();
+        bulletPrefab.InstantiateAndSpawn(NetworkManager.Singleton,
+            position: transform.position - Vector3.up,
+            rotation: quaternion.identity);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -49,11 +49,11 @@ public class PlayerBullet : NetworkBehaviour
 
             // Only the server can despawn a NetworkObject
             hitEnemy.NetworkObject.Despawn();
-            
-            SpawnExplosionVFXClientRPC(transform.position, Quaternion.identity);
-            
+
+            ClientSpawnExplosionVFXRpc(transform.position, Quaternion.identity);
+
             NetworkObject.Despawn();
-            
+
             return;
         }
 
@@ -65,10 +65,10 @@ public class PlayerBullet : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    void SpawnExplosionVFXClientRPC(Vector3 spawnPosition, Quaternion spawnRotation)
+    [Rpc(SendTo.ClientsAndHost)]
+    void ClientSpawnExplosionVFXRpc(Vector3 spawnPosition, Quaternion spawnRotation)
     {
-        // this instantiates at the position of the bullet, there is an offset in the Y axis on the 
+        // this instantiates at the position of the bullet, there is an offset in the Y axis on the
         // particle systems in the prefab so it looks like it spawns in the middle of the enemy
         Instantiate(m_EnemyExplosionParticle, spawnPosition, spawnRotation);
     }

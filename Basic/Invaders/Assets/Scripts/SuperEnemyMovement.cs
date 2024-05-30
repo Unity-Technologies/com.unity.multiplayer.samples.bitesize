@@ -1,4 +1,4 @@
-﻿using Unity.Netcode;
+using Unity.Netcode;
 using UnityEngine;
 
 public class SuperEnemyMovement : NetworkBehaviour
@@ -14,7 +14,7 @@ public class SuperEnemyMovement : NetworkBehaviour
     private void Update()
     {
         if (!IsServer) return;
-        
+
         if (transform.position.x > k_YBoundary)
         {
             if (IsServer) NetworkObject.Despawn();

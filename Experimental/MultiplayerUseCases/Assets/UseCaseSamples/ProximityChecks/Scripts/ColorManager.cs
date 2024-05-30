@@ -59,11 +59,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Proximity
 
         void OnClientRequestColorChange()
         {
-            OnServerChangeColorServerRpc();
+            ServerChangeColorRpc();
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        void OnServerChangeColorServerRpc()
+        [Rpc(SendTo.Server)]
+        void ServerChangeColorRpc()
         {
             m_NetworkedColor.Value = MultiplayerUseCasesUtilities.GetRandomColor();
         }

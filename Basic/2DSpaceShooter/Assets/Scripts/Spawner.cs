@@ -1,11 +1,11 @@
-﻿using Unity.Netcode;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField]
     NetworkObjectPool m_ObjectPool;
-    
+
     [SerializeField]
     private int m_Amount = 4;
 
@@ -15,13 +15,13 @@ public class Spawner : MonoBehaviour
     private GameObject m_AsteroidPrefab;
     [SerializeField]
     private GameObject m_ObstaclePrefab;
-    [SerializeField] 
+    [SerializeField]
     private GameObject m_ObstaclePrefab2;
-    [SerializeField] 
+    [SerializeField]
     private GameObject m_ObstaclePrefab3;
-    [SerializeField] 
+    [SerializeField]
     private GameObject m_ObstacleCornerPrefab;
-    
+
     // to easily visualize, search for "0". Blocks are spawned as shown below, but flipped horizontally. 
     static int[] s_Obstacles = new int[]
     {
@@ -95,11 +95,11 @@ public class Spawner : MonoBehaviour
             asteroid.NetworkObject.Spawn(true);
         }
     }
-    
+
     void SpawnObstacles()
     {
         // Obstacles are not networked we just spawn them as static objects on each peer
-        
+
         int y = 0;
         int x = 0;
         for (int i = 0; i < s_Obstacles.Length; i++)
@@ -108,17 +108,17 @@ public class Spawner : MonoBehaviour
             {
                 Instantiate(m_ObstaclePrefab, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
             }
-            
+
             if (s_Obstacles[i] == 2)
             {
                 Instantiate(m_ObstacleCornerPrefab, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
             }
-            
+
             if (s_Obstacles[i] == 3)
             {
                 Instantiate(m_ObstaclePrefab2, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);
             }
-            
+
             if (s_Obstacles[i] == 4)
             {
                 Instantiate(m_ObstaclePrefab3, new Vector3(-40 + x * 2, -40 + y * 2, 0), Quaternion.identity);

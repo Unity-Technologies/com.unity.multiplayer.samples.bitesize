@@ -29,7 +29,7 @@ namespace Game
             return Value.ToString();
         }
     }
-    
+
     /// <summary>
     /// A class that implements IEqualityComparer, for AddressableGUID comparisons that don't allocate memory since it
     /// compares integer values instead of strings.

@@ -44,7 +44,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
             if (IsClient)
             {
                 /*
-                 * We call the color change method manually when we connect to ensure that our color is correctly initialized. 
+                 * We call the color change method manually when we connect to ensure that our color is correctly initialized.
                  * This is helpful for when a client joins mid-game and needs to catch up with the current state of the game.
                  */
                 OnClientCustomDataChanged(m_SyncedCustomData.Value, m_SyncedCustomData.Value);
@@ -72,7 +72,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
             if (!IsServer)
             {
                 /*
-                 * By default, only the server is allowed to change the value of NetworkVariables. 
+                 * By default, only the server is allowed to change the value of NetworkVariables.
                  * This can be changed through the NetworkVariable's constructor.
                  */
                 return;
@@ -99,9 +99,9 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
 
         void OnClientHealthChanged(int previousHealth, int newHealth)
         {
-            m_HealthBarImage.rectTransform.localScale = new Vector3((float) newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
+            m_HealthBarImage.rectTransform.localScale = new Vector3((float)newHealth / 100.0f, 1);//(float)newHealth / 100.0f;
             OnClientUpdateHealthBarColor(newHealth);
-            //note: you could use the previousHealth to play an healing/damage animation
+            //note: you could use the previousHealth to play a healing/damage animation
         }
 
         void OnClientUpdateHealthBarColor(int newHealth)

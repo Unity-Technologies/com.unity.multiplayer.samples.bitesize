@@ -27,11 +27,11 @@ namespace Game.UI
 
         public string IpAddress { get; private set; } = "127.0.0.1";
         public ushort Port { get; private set; } = 9998;
-                
+
         public event Action HostButtonPressed;
-        
+
         public event Action ClientButtonPressed;
-        
+
         public event Action DisconnectButtonPressed;
 
         void Awake()
@@ -62,17 +62,17 @@ namespace Game.UI
             m_IPInputField.value = IpAddress;
             m_PortInputField.value = Port.ToString();
         }
-        
+
         void OnHostButtonPressed()
         {
             HostButtonPressed?.Invoke();
         }
-        
+
         void OnClientButtonPressed()
         {
             ClientButtonPressed?.Invoke();
         }
-        
+
         void OnDisconnectButtonPressed()
         {
             DisconnectButtonPressed?.Invoke();
@@ -87,7 +87,7 @@ namespace Game.UI
         {
             SwitchToInGameUI("Client");
         }
-        
+
         public void HideIPConnectionMenu()
         {
             SetUIElementVisibility(m_IPMenuUIRoot, false);
