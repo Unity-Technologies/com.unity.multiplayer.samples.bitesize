@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] yyyy-mm-dd
+## [1.6.0] 2024-05-30
 
 ### Bitesize Samples Repository
 
