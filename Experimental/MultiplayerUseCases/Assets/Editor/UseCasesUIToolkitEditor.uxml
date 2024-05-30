@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UseCasesStyleClass.uss?fileID=7433441132597879392&amp;guid=cac46a420be955345b18ac0d5d2d9e37&amp;type=3#UseCasesStyleClass" />
+    <ui:VisualElement name="Background" focusable="true" style="flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; overflow: visible; height: 318px; width: 280px; align-self: auto; justify-content: center; align-items: auto; position: absolute; opacity: 1; background-color: rgba(64, 64, 64, 0); top: auto; -unity-background-scale-mode: stretch-to-fill; flex-shrink: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; display: flex; visibility: visible;">
+        <ui:Button text="Server" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ServerButton" class="button UseCasebutton" />
+        <ui:Button text="Host" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HostButton" class="button UseCasebutton" />
+        <ui:Button text="Client" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClientButton" class="button UseCasebutton" />
+        <ui:Button text="Disconnect" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DisconnectButton" class="button UseCasebutton" />
+        <ui:Button text="Quit Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitSceneButton" class="button UseCasebutton" />
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1; border-left-color: rgba(255, 0, 0, 0); border-right-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); border-bottom-color: rgba(255, 0, 0, 0); width: 319px; height: 377px; opacity: 1;" />
+</ui:UXML>
