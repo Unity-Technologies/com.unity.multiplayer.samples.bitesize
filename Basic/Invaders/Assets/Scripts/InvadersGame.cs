@@ -39,11 +39,11 @@ public class InvadersGame : NetworkBehaviour
     private const float k_BottomBoundaryOffset = 1.25f;
 
     [Header("Prefab settings")]
-    public GameObject enemy1Prefab;
-    public GameObject enemy2Prefab;
-    public GameObject enemy3Prefab;
-    public GameObject superEnemyPrefab;
-    public GameObject shieldPrefab;
+    public NetworkObject enemy1Prefab;
+    public NetworkObject enemy2Prefab;
+    public NetworkObject enemy3Prefab;
+    public NetworkObject superEnemyPrefab;
+    public NetworkObject shieldPrefab;
 
     [Header("UI Settings")]
     public TMP_Text gameTimerText;
@@ -82,7 +82,7 @@ public class InvadersGame : NetworkBehaviour
     // the timer should only be synced at the beginning
     // and then let the client update it in a predictive manner
     private bool m_ReplicatedTimeSent = false;
-    private GameObject m_Saucer;
+    private NetworkObject m_Saucer;
     private List<Shield> m_Shields = new List<Shield>();
     private float m_TimeRemaining;
 
@@ -146,9 +146,9 @@ public class InvadersGame : NetworkBehaviour
         {
             m_Enemies.Clear();
             m_Shields.Clear();
-        }
 
-        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnConnectionEvent -= ServerOnConnectionEvent;
+        }
     }
 
     internal static event Action OnSingletonReady;
@@ -187,18 +187,21 @@ public class InvadersGame : NetworkBehaviour
 
         if (IsServer)
         {
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnConnectionEvent += ServerOnConnectionEvent;
         }
 
         base.OnNetworkSpawn();
     }
 
-    private void OnClientConnected(ulong clientId)
+    private void ServerOnConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
     {
+        if (connectionEventData.EventType != ConnectionEvent.ClientConnected)
+            return;
+
         if (m_ReplicatedTimeSent)
         {
             // Send the RPC only to the newly connected client
-            SetReplicatedTimeRemainingClientRPC(m_TimeRemaining, new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new List<ulong>() { clientId } } });
+            ClientSetReplicatedTimeRemainingRpc(m_TimeRemaining, RpcTarget.Single(connectionEventData.ClientId, RpcTargetUse.Temp));
         }
     }
 
@@ -218,7 +221,7 @@ public class InvadersGame : NetworkBehaviour
             //While we are counting down, continually set the replicated time remaining value for clients (client should only receive the update once)
             if (m_CountdownStarted.Value && !m_ReplicatedTimeSent)
             {
-                SetReplicatedTimeRemainingClientRPC(m_DelayedStartTime);
+                ClientSetReplicatedTimeRemainingRpc(m_DelayedStartTime, RpcTarget.ClientsAndHost);
                 m_ReplicatedTimeSent = true;
             }
 
@@ -233,9 +236,9 @@ public class InvadersGame : NetworkBehaviour
     ///     will deal with updating it. For that, we use a ClientRPC
     /// </summary>
     /// <param name="delayedStartTime"></param>
-    /// <param name="clientRpcParams"></param>
-    [ClientRpc]
-    private void SetReplicatedTimeRemainingClientRPC(float delayedStartTime, ClientRpcParams clientRpcParams = new ClientRpcParams())
+    /// <param name="rpcParams"></param>
+    [Rpc(SendTo.SpecifiedInParams)]
+    private void ClientSetReplicatedTimeRemainingRpc(float delayedStartTime, RpcParams rpcParams)
     {
         // See the ShouldStartCountDown method for when the server updates the value
         if (m_TimeRemaining == 0)
@@ -432,7 +435,7 @@ public class InvadersGame : NetworkBehaviour
         if (reason != GameOverReason.Death)
         {
             this.isGameOver.Value = true;
-            BroadcastGameOverClientRpc(reason); // Notify our clients!
+            ClientBroadcastGameOverRpc(reason); // Notify our clients!
             return;
         }
 
@@ -449,8 +452,8 @@ public class InvadersGame : NetworkBehaviour
         this.isGameOver.Value = true;
     }
 
-    [ClientRpc]
-    public void BroadcastGameOverClientRpc(GameOverReason reason)
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ClientBroadcastGameOverRpc(GameOverReason reason)
     {
         var localPlayerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
         Assert.IsNotNull(localPlayerObject);
@@ -528,7 +531,7 @@ public class InvadersGame : NetworkBehaviour
         SceneTransitionHandler.sceneTransitionHandler.ExitAndLoadStartMenu();
     }
 
-    private void CreateShield(GameObject prefab, int posX, int posY)
+    private void CreateShield(NetworkObject prefab, int posX, int posY)
     {
         Assert.IsTrue(IsServer, "Create Shield should be called server-side only!");
 
@@ -547,10 +550,10 @@ public class InvadersGame : NetworkBehaviour
                     continue;
                 }
 
-                var shield = Instantiate(prefab, new Vector3(x - 1, y, 0), Quaternion.identity);
-
                 // Spawn the Networked Object, this should notify the clients
-                shield.GetComponent<NetworkObject>().Spawn();
+                prefab.InstantiateAndSpawn(NetworkManager.Singleton,
+                    position: new Vector3(x - 1, y, 0),
+                    rotation: Quaternion.identity);
                 xcount += 1;
             }
 
@@ -570,22 +573,21 @@ public class InvadersGame : NetworkBehaviour
     {
         Assert.IsTrue(IsServer, "Create Saucer should be called server-side only!");
 
-        m_Saucer = Instantiate(superEnemyPrefab, saucerSpawnPoint.position, Quaternion.identity);
-
         // Spawn the Networked Object, this should notify the clients
-        m_Saucer.GetComponent<NetworkObject>().Spawn();
+        m_Saucer = superEnemyPrefab.InstantiateAndSpawn(NetworkManager.Singleton,
+            position: saucerSpawnPoint.position,
+            rotation: Quaternion.identity);
     }
 
-    private void CreateEnemy(GameObject prefab, float posX, float posY)
+    private void CreateEnemy(NetworkObject prefab, float posX, float posY)
     {
         Assert.IsTrue(IsServer, "Create Enemy should be called server-side only!");
 
-        var enemy = Instantiate(prefab);
-        enemy.transform.position = new Vector3(posX, posY, 0.0f);
-        enemy.GetComponent<EnemyAgent>().Setup(Mathf.RoundToInt(posX), Mathf.RoundToInt(posY));
-
         // Spawn the Networked Object, this should notify the clients
-        enemy.GetComponent<NetworkObject>().Spawn();
+        var enemy = prefab.InstantiateAndSpawn(NetworkManager.Singleton,
+            position: new Vector3(posX, posY, 0.0f),
+            rotation: Quaternion.identity);
+        enemy.GetComponent<EnemyAgent>().Setup(Mathf.RoundToInt(posX), Mathf.RoundToInt(posY));
     }
 
     public void CreateEnemies()

@@ -3,12 +3,11 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Rendering.VirtualTexturing;
 
 public class PlayerControl : NetworkBehaviour
 {
     [Header("Weapon Settings")]
-    public GameObject bulletPrefab;
+    public NetworkObject bulletPrefab;
 
     [Header("Movement Settings")]
     [SerializeField]
@@ -32,8 +31,7 @@ public class PlayerControl : NetworkBehaviour
 
     private NetworkVariable<int> m_MoveX = new NetworkVariable<int>(0);
 
-    private GameObject m_MyBullet;
-    private ClientRpcParams m_OwnerRPCParams;
+    private NetworkObject m_MyBullet;
 
     [SerializeField]
     private SpriteRenderer m_PlayerVisual;
@@ -114,7 +112,6 @@ public class PlayerControl : NetworkBehaviour
         m_Lives.OnValueChanged += OnLivesChanged;
         m_Score.OnValueChanged += OnScoreChanged;
 
-        if (IsServer) m_OwnerRPCParams = new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = new[] { OwnerClientId } } };
 
         if (!InvadersGame.Singleton)
             InvadersGame.OnSingletonReady += SubscribeToDelegatesAndUpdateValues;
@@ -189,20 +186,21 @@ public class PlayerControl : NetworkBehaviour
                 transform.position + newMovement, m_MoveSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) ShootServerRPC();
+        if (Input.GetKeyDown(KeyCode.Space)) ServerShootRpc();
     }
 
-    [ServerRpc]
-    private void ShootServerRPC()
+    [Rpc(SendTo.Server)]
+    private void ServerShootRpc()
     {
         if (!m_IsAlive)
             return;
 
         if (m_MyBullet == null)
         {
-            m_MyBullet = Instantiate(bulletPrefab, transform.position + Vector3.up, Quaternion.identity);
+            m_MyBullet = bulletPrefab.InstantiateAndSpawn(NetworkManager.Singleton,
+                position: transform.position + Vector3.up,
+                rotation: Quaternion.identity);
             m_MyBullet.GetComponent<PlayerBullet>().owner = this;
-            m_MyBullet.GetComponent<NetworkObject>().Spawn();
         }
     }
 
@@ -220,7 +218,7 @@ public class PlayerControl : NetworkBehaviour
             m_MoveX.Value = 0;
             m_Lives.Value = 0;
             InvadersGame.Singleton.SetGameEnd(GameOverReason.Death);
-            NotifyGameOverClientRpc(GameOverReason.Death, m_OwnerRPCParams);
+            ClientNotifyGameOverRpc(GameOverReason.Death);
             Instantiate(m_ExplosionParticleSystem, transform.position, quaternion.identity);
 
             // Hide graphics of this player object server-side. Note we don't want to destroy the object as it
@@ -233,8 +231,8 @@ public class PlayerControl : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    private void NotifyGameOverClientRpc(GameOverReason reason, ClientRpcParams clientParams)
+    [Rpc(SendTo.Owner)]
+    private void ClientNotifyGameOverRpc(GameOverReason reason)
     {
         NotifyGameOver(reason);
     }
