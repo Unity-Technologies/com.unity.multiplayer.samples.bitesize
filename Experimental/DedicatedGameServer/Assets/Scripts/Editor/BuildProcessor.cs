@@ -130,36 +130,37 @@ namespace Unity.DedicatedGameServerSample.Editor
 
         internal static void BuildServer(BuildTarget target, string locationPathName, bool exitApplicationOnFailure = false)
         {
-            Debug.Log($"Building {target} server in: {locationPathName}");
+            Debug.Log($"Building {target} server");
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Server, BuildTarget.StandaloneLinux64);
-            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
-            {
-                scenes = GetScenePaths(),
-                locationPathName = locationPathName,
-                target = target,
-                subtarget = (int)StandaloneBuildSubtarget.Server,
-            });
-            if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
-            {
-                EditorApplication.Exit(1);
-            }
+            //var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            //{
+            //    scenes = GetScenePaths(),
+            //    locationPathName = locationPathName,
+            //    target = target,
+            //    subtarget = (int) StandaloneBuildSubtarget.Server,
+            //});
+            //if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
+            //{
+            //    EditorApplication.Exit(1);
+            //}
         }
 
         internal static void BuildClient(BuildTarget target, string locationPathName, bool exitApplicationOnFailure = false)
         {
-            Debug.Log($"Building {target} client in: {locationPathName}");
+            Debug.Log($"Building {target} client");
+            
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, target);
-            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
-            {
-                scenes = GetScenePaths(),
-                locationPathName = locationPathName,
-                target = target,
-                subtarget = (int)StandaloneBuildSubtarget.Player,
-            });
-            if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
-            {
-                EditorApplication.Exit(1);
-            }
+            //var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            //{
+            //    scenes = GetScenePaths(),
+            //    locationPathName = locationPathName,
+            //    target = target,
+            //    subtarget = (int) StandaloneBuildSubtarget.Player,
+            //});
+            //if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
+            //{
+            //    EditorApplication.Exit(1);
+            //}
         }
 
         static string[] GetScenePaths()
