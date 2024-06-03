@@ -150,17 +150,17 @@ namespace Unity.DedicatedGameServerSample.Editor
             Debug.Log($"Building {target} client");
             
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, target);
-            var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
-            {
-                scenes = GetScenePaths(),
-                locationPathName = locationPathName,
-                target = target,
-                subtarget = (int) StandaloneBuildSubtarget.Player,
-            });
-            if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
-            {
-                EditorApplication.Exit(1);
-            }
+            //var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
+            //{
+            //    scenes = GetScenePaths(),
+            //    locationPathName = locationPathName,
+            //    target = target,
+            //    subtarget = (int) StandaloneBuildSubtarget.Player,
+            //});
+            //if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
+            //{
+            //    EditorApplication.Exit(1);
+            //}
         }
 
         static string[] GetScenePaths()

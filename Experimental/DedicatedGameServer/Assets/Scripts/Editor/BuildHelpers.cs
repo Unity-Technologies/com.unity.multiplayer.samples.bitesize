@@ -131,7 +131,7 @@ namespace Unity.DedicatedGameServerSample.Editor
 
             var buildPathRoot = Path.Combine("Builds", "Server");
 
-            //DeleteOutputFolder("Server/");
+            DeleteOutputFolder("Server/");
 
             if (buildMacOS)
             {
@@ -166,7 +166,7 @@ namespace Unity.DedicatedGameServerSample.Editor
 
             var buildPathRoot = Path.Combine("Builds", "Client");
 
-            //DeleteOutputFolder("Client/");
+            DeleteOutputFolder("Client/");
 
             if (buildMacOS)
             {
