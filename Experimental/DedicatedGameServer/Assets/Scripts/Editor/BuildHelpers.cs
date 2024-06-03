@@ -197,7 +197,7 @@ namespace Unity.DedicatedGameServerSample.Editor
             ToggleAllClients();
             ToggleAllServers();
             s_ExitApplicationOnFailure = true;
-            BuildEnabledServersAndClients();
+            //BuildEnabledServersAndClients();
             s_ExitApplicationOnFailure = false;
         }
 
