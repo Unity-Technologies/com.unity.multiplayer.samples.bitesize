@@ -15,24 +15,24 @@ namespace Unity.DedicatedGameServerSample.Editor
         const string k_BuildClientAndServer = k_MenuRoot + "Build Client(s) and Server(s)";
 
         const string k_ToggleAllName = k_MenuRoot + "Toggle All clients and servers";
-        
+
         const string k_ClientToggleName = k_MenuRoot + "Toggle All clients";
         const string k_ClientMacOSToggleName = k_MenuRoot + "Toggle MacOS client";
         const string k_ClientWindowsToggleName = k_MenuRoot + "Toggle Windows client";
         const string k_ClientLinuxToggleName = k_MenuRoot + "Toggle Linux client";
-        
+
         const string k_ServerToggleName = k_MenuRoot + "Toggle All servers";
         const string k_ServerMacOSToggleName = k_MenuRoot + "Toggle MacOS server";
         const string k_ServerWindowsToggleName = k_MenuRoot + "Toggle Windows server";
         const string k_ServerLinuxToggleName = k_MenuRoot + "Toggle Linux server";
-        
+
         const int k_MenuGroupingBuild = 0; // to add separator in menus
         const int k_MenuGroupingToggles = 11;
         const int k_MenuGroupingClientPlatforms = 22;
         const int k_MenuGroupingServerPlatforms = 33;
 
         static bool s_ExitApplicationOnFailure = false;
-        
+
         [MenuItem(k_ToggleAllName, false, k_MenuGroupingToggles)]
         static void ToggleAllClientsAndServers()
         {
@@ -46,7 +46,7 @@ namespace Unity.DedicatedGameServerSample.Editor
             ToggleMenu(k_ServerWindowsToggleName, newValue);
             ToggleMenu(k_ServerLinuxToggleName, newValue);
         }
-        
+
         [MenuItem(k_ClientToggleName, false, k_MenuGroupingToggles)]
         static void ToggleAllClients()
         {
@@ -55,25 +55,25 @@ namespace Unity.DedicatedGameServerSample.Editor
             ToggleMenu(k_ClientWindowsToggleName, newValue);
             ToggleMenu(k_ClientLinuxToggleName, newValue);
         }
-        
+
         [MenuItem(k_ClientMacOSToggleName, false, k_MenuGroupingClientPlatforms)]
         static void ToggleClientMacOS()
         {
             ToggleMenu(k_ClientMacOSToggleName);
         }
-        
+
         [MenuItem(k_ClientWindowsToggleName, false, k_MenuGroupingClientPlatforms)]
         static void ToggleClientWindows()
         {
             ToggleMenu(k_ClientWindowsToggleName);
         }
-        
+
         [MenuItem(k_ClientLinuxToggleName, false, k_MenuGroupingClientPlatforms)]
         static void ToggleClientLinux()
         {
             ToggleMenu(k_ClientLinuxToggleName);
         }
-        
+
         [MenuItem(k_ServerToggleName, false, k_MenuGroupingToggles)]
         static void ToggleAllServers()
         {
@@ -82,25 +82,25 @@ namespace Unity.DedicatedGameServerSample.Editor
             ToggleMenu(k_ServerWindowsToggleName, newValue);
             ToggleMenu(k_ServerLinuxToggleName, newValue);
         }
-        
+
         [MenuItem(k_ServerMacOSToggleName, false, k_MenuGroupingServerPlatforms)]
         static void ToggleServerMacOS()
         {
             ToggleMenu(k_ServerMacOSToggleName);
         }
-        
+
         [MenuItem(k_ServerWindowsToggleName, false, k_MenuGroupingServerPlatforms)]
         static void ToggleServerWindows()
         {
             ToggleMenu(k_ServerWindowsToggleName);
         }
-        
+
         [MenuItem(k_ServerLinuxToggleName, false, k_MenuGroupingServerPlatforms)]
         static void ToggleServerLinux()
         {
             ToggleMenu(k_ServerLinuxToggleName);
         }
-        
+
         [MenuItem(k_BuildClientAndServer, true)]
         static bool CanBuildServerAndClient()
         {
@@ -113,7 +113,7 @@ namespace Unity.DedicatedGameServerSample.Editor
             BuildAllEnabledServers();
             BuildAllEnabledClients();
         }
-        
+
         [MenuItem(k_BuildServer, true)]
         static bool CanBuildServer()
         {
@@ -129,7 +129,7 @@ namespace Unity.DedicatedGameServerSample.Editor
             bool buildWindows = Menu.GetChecked(k_ServerWindowsToggleName);
             bool buildLinux = Menu.GetChecked(k_ServerLinuxToggleName);
 
-            var buildPathRoot = Path.Combine("Builds", "Server");
+            var buildPathRoot = Path.Combine(Application.dataPath, "..", "Builds", "Server");
 
             DeleteOutputFolder("Server/");
 
@@ -148,7 +148,7 @@ namespace Unity.DedicatedGameServerSample.Editor
                 BuildProcessor.BuildServer(BuildTarget.StandaloneLinux64, Path.Combine(buildPathRoot, "Linux64", "Game.x86_64"), s_ExitApplicationOnFailure);
             }
         }
-        
+
         [MenuItem(k_BuildClient, true)]
         static bool CanBuildClient()
         {
@@ -164,7 +164,7 @@ namespace Unity.DedicatedGameServerSample.Editor
             bool buildWindows = Menu.GetChecked(k_ClientWindowsToggleName);
             bool buildLinux = Menu.GetChecked(k_ClientLinuxToggleName);
 
-            var buildPathRoot = Path.Combine("Builds", "Client");
+            var buildPathRoot = Path.Combine(Application.dataPath, "..", "Builds", "Client");
 
             DeleteOutputFolder("Client/");
 
@@ -183,7 +183,7 @@ namespace Unity.DedicatedGameServerSample.Editor
                 BuildProcessor.BuildClient(BuildTarget.StandaloneLinux64, Path.Combine(buildPathRoot, "Linux64", "Game.x86_64"), s_ExitApplicationOnFailure);
             }
         }
-        
+
         /// <summary>
         /// Toggles everything on and builds a client and a server for each platform. This is used in the continuous integration flow.
         /// </summary>
@@ -192,7 +192,7 @@ namespace Unity.DedicatedGameServerSample.Editor
             // setting menus unchecked so toggling afterwards will check everything
             ToggleMenu(k_ClientToggleName, false);
             ToggleMenu(k_ServerToggleName, false);
-            
+
             // toggling on every platform
             ToggleAllClients();
             ToggleAllServers();
