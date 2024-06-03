@@ -466,6 +466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4094115448901536955}
   - component: {fileID: 4094115448901536954}
+  - component: {fileID: 2483323223037369002}
   m_Layer: 5
   m_Name: NetworkManagerUI
   m_TagString: Untagged
@@ -506,28 +507,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf0178146f3274418c7d97c8fd17cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ServerButton: {fileID: 4094115448395180757}
-  m_HostButton: {fileID: 4094115448970590322}
-  m_ClientButton: {fileID: 4094115449129362177}
-  m_DisconnectButton: {fileID: 2491492533863992151}
-  m_QuitSceneButton: {fileID: 8656192160641236839}
   m_HighlightedButtonColor:
     serializedVersion: 2
     rgba: 4285971024
   m_DisabledButtonColor:
     serializedVersion: 2
     rgba: 4285878835
-  m_ButtonOutlineColor:
-    serializedVersion: 2
-    rgba: 2046808472
-  m_ButtonOutlineHighlightedColor:
-    serializedVersion: 2
-    rgba: 4287817571
-  m_ButtonOutlineDisabledColor:
-    serializedVersion: 2
-    rgba: 4289429077
   m_SelectionScreenSceneName: SelectionScreen
   m_ServerOnlyOverlay: {fileID: 5831250524098789844}
+  m_IPAddressInputField: {fileID: 0}
+--- !u!114 &2483323223037369002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094115448901536952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: bb97c42b0da64184d8f6ef64e0c20845, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 54eac630072f2954eab32aa476089063, type: 3}
+  m_SortingOrder: 0
 --- !u!1 &4094115448903201489
 GameObject:
   m_ObjectHideFlags: 0
