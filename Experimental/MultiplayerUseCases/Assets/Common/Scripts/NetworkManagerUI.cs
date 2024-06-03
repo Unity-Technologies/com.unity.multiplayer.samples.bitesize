@@ -11,14 +11,14 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
     [RequireComponent(typeof(UIDocument))]
     public class NetworkManagerUI : MonoBehaviour
     {
-        static readonly Regex s_IPRegex = new Regex("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}\\b");
         const string k_DefaultIP = "127.0.0.1";
         const string k_DefaultServerListenAddress = "0.0.0.0"; //note: this is not safe for real world usage and would limit you to IPv4-only addresses, but this goes out the scope of this sample.
+        const ushort k_DefaultPort = 7979;
 
         static class UIElementNames
         {
-            public const string addressInputField = "IPAddressTextField";
-            public const string portInputField = "PorttextField";
+            public const string addressInputField = "IPAddressField";
+            public const string portInputField = "PortField";
             public const string serverButton = "ServerButton";
             public const string hostButton = "HostButton";
             public const string clientButton = "ClientButton";
@@ -35,21 +35,19 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         Button m_DisconnectButton;
         Button m_QuitSceneButton;
 
-        [SerializeField] Color32 m_HighlightedButtonColor;
-        [SerializeField] Color32 m_DisabledButtonColor;
         [SerializeField] string m_SelectionScreenSceneName;
         [SerializeField] GameObject m_ServerOnlyOverlay;
-        [SerializeField] TMPro.TMP_InputField m_IPAddressInputField;
-        //[SerializeField] RectTransform m_LayoutToRebuild;
-        //Button[] m_Buttons;
 
         void Awake()
         {
             var uiDocument = GetComponent<UIDocument>();
             m_Root = uiDocument.rootVisualElement;
 
-            //m_AddressInputField = m_Root.Q<TextField>(UIElementNames.addressInputField);
-            //m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
+            m_AddressInputField = m_Root.Q<TextField>(UIElementNames.addressInputField);
+            m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
+
+            m_PortInputField = m_Root.Q<TextField>(UIElementNames.portInputField);
+            m_PortInputField.SetValueWithoutNotify(k_DefaultPort.ToString());
 
             m_ServerButton = m_Root.Q<Button>(UIElementNames.serverButton);
             m_ServerButton.RegisterCallback<ClickEvent>(StartServer);
@@ -65,48 +63,32 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
             m_QuitSceneButton = m_Root.Q<Button>(UIElementNames.quitSceneButton);
             m_QuitSceneButton.RegisterCallback<ClickEvent>(QuitScene);
-
-
-            //m_Buttons = new Button[] { m_ServerButton, m_HostButton, m_ClientButton };
-            //m_IPAddressInputField.text = k_DefaultIP;
-            //m_IPAddressInputField.onSubmit.AddListener(ValidateIP);
-            //m_IPAddressInputField.onEndEdit.AddListener(ValidateIP);
-
-            m_AddressInputField.value = k_DefaultIP;
-            m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
         }
 
         void Start()
         {
-
-            //SetButtonStateAndColor(m_DisconnectButton, false, false);
             m_ServerOnlyOverlay.gameObject.SetActive(false);
-            //LayoutRebuilder.ForceRebuildLayoutImmediate(m_LayoutToRebuild); //nested layout groups need to be rebuilt at startup to work properly in UGUI.
         }
 
         void StartServer(ClickEvent evt)
         {
+            SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress = m_AddressInputField.value;
             NetworkManager.Singleton.StartServer();
-            //EnableAndHighlightButtons(m_ServerButton, false);
-            //SetButtonStateAndColor(m_DisconnectButton, false, true);
             m_ServerOnlyOverlay.gameObject.SetActive(true);
         }
 
         void StartHost(ClickEvent evt)
         {
-            NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress = m_AddressInputField.value;
+            SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.StartHost();
-            //EnableAndHighlightButtons(m_HostButton, false);
-            //SetButtonStateAndColor(m_DisconnectButton, false, true);
         }
 
         void StartClient(ClickEvent evt)
         {
+            SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = m_AddressInputField.value;
             NetworkManager.Singleton.StartClient();
-            //EnableAndHighlightButtons(m_ClientButton, false);
-            //SetButtonStateAndColor(m_DisconnectButton, false, true);
         }
 
         void Disconnect(ClickEvent evt)
@@ -119,8 +101,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
                 }
             }
             NetworkManager.Singleton.Shutdown();
-            //EnableAndHighlightButtons(null, true);
-            //SetButtonStateAndColor(m_DisconnectButton, false, false);
             m_ServerOnlyOverlay.gameObject.SetActive(false);
         }
 
@@ -143,30 +123,14 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             }
         }
 
-        /*void EnableAndHighlightButtons(Button buttonToHighlight, bool enable)
+        void SetNetworkPortAndAddress(ushort port, string address, string serverListenAddress)
         {
-            foreach (var button in m_Buttons)
+            var transport = GetComponent<UnityTransport>();
+            if (transport == null) //happens during Play Mode Tests
             {
-                SetButtonStateAndColor(button, button == buttonToHighlight, enable);
+                return;
             }
-        }*/
-
-        /*void SetButtonStateAndColor(Button button, bool highlight, bool enable)
-        {
-            ColorBlock colors = button.colors;
-            colors.disabledColor = highlight ? m_HighlightedButtonColor
-                                             : m_DisabledButtonColor;
-            button.colors = colors;
-            button.interactable = enable;
-        }*/
-
-        void ValidateIP(string newIP)
-        {
-            if (string.IsNullOrEmpty(newIP) || !s_IPRegex.IsMatch(newIP))
-            {
-                Debug.LogError($"'{newIP}' is not a valid IP address, reverting to {k_DefaultIP}");
-                m_IPAddressInputField.text = k_DefaultIP;
-            }
+            transport.SetConnectionData(address, port, serverListenAddress);
         }
 
     }
