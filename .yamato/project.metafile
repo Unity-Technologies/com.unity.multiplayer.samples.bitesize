@@ -16,6 +16,34 @@ test_platforms:
 # The test-editors field is for editors where tests will happen. The first entry of this array is also used
 # for validation. Therefore, **do not** put an older V1-lifecycle ver. like 2020.x or 2019.x on top of 'test_editors'
 projects:
+  - name: 2dspaceshooter
+    path: Basic/2DSpaceShooter
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
+  - name: invaders
+    path: Basic/Invaders
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
+  - name: clientdriven
+    path: Basic/ClientDriven
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
+  - name: dynamicaddressablesnetworkprefabs
+    path: Basic/DynamicAddressablesNetworkPrefabs
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool false
+    run_playmode_tests: !!bool false
+    test_filter: 
   - name: dedicatedgameserver
     path: Experimental/DedicatedGameServer
     test_editors:
@@ -23,3 +51,9 @@ projects:
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool true
     test_filter: Unity.DedicatedGameServerSample.Tests
+  - name: multiplayerusecases
+    path: Experimental/MultiplayerUseCases
+    test_editors:
+      - 2022.3
+    run_editor_tests: !!bool true
+    run_playmode_tests: !!bool false
