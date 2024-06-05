@@ -56,7 +56,7 @@ public class ServerIngredientSpawner : NetworkBehaviour
                     position: spawnPoint.transform.position + new Vector3(UnityEngine.Random.Range(-0.25f, 0.25f), 0, UnityEngine.Random.Range(-0.25f, 0.25f)),
                     rotation: spawnPoint.transform.rotation);
                 var ingredient = newIngredientObject.GetComponent<ServerIngredient>();
-                ingredient.currentIngredientType.Value = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
+                ingredient.IngredientType = (IngredientType)m_RandomGenerator.Next((int)IngredientType.MAX);
             }
             m_SpawnWaves++;
 

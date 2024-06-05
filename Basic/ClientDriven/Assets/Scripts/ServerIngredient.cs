@@ -16,7 +16,10 @@ public enum IngredientType
 
 public class ServerObjectWithIngredientType : NetworkBehaviour
 {
-    public NetworkVariable<IngredientType> currentIngredientType;
+    [HideInInspector]    
+    public NetworkVariable<IngredientType> currentIngredientType = new NetworkVariable<IngredientType>();
+
+    public IngredientType IngredientType;
 
     public event Action ingredientDespawned;
 
@@ -27,6 +30,10 @@ public class ServerObjectWithIngredientType : NetworkBehaviour
         {
             enabled = false;
             return;
+        }
+        else
+        {
+            currentIngredientType.Value = IngredientType;           
         }
     }
 
