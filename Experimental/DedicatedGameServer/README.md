@@ -2,7 +2,7 @@
 
 # Dedicated Game Server
 
-[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2023.3.017a%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/alpha/2023.3.0a17)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-6000.0.3f1%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/6000.0.3)
 [![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.8.0-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/current/about)
 <br><br>
 
