@@ -86,20 +86,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void StartClient(ClickEvent evt)
         {
-            SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
-            NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = m_AddressInputField.value;
             NetworkManager.Singleton.StartClient();
         }
 
         void Disconnect(ClickEvent evt)
         {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                foreach (var item in NetworkManager.Singleton.SpawnManager.SpawnedObjectsList.ToList())
-                {
-                    item.Despawn(false);
-                }
-            }
             NetworkManager.Singleton.Shutdown();
             m_ServerOnlyOverlay.gameObject.SetActive(false);
         }
