@@ -86,6 +86,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void StartClient(ClickEvent evt)
         {
+            SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.StartClient();
         }
 
