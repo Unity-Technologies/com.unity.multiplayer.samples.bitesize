@@ -15,17 +15,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         const string k_DefaultServerListenAddress = "0.0.0.0"; //note: this is not safe for real world usage and would limit you to IPv4-only addresses, but this goes out the scope of this sample.
         const ushort k_DefaultPort = 7979;
 
-        static class UIElementNames
-        {
-            public const string addressInputField = "IPAddressField";
-            public const string portInputField = "PortField";
-            public const string serverButton = "ServerButton";
-            public const string hostButton = "HostButton";
-            public const string clientButton = "ClientButton";
-            public const string disconnectButton = "DisconnectButton";
-            public const string quitSceneButton = "QuitSceneButton";
-        }
-
         VisualElement m_Root;
         TextField m_AddressInputField;
         TextField m_PortInputField;
@@ -43,25 +32,25 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             var uiDocument = GetComponent<UIDocument>();
             m_Root = uiDocument.rootVisualElement;
 
-            m_AddressInputField = m_Root.Q<TextField>(UIElementNames.addressInputField);
+            m_AddressInputField = m_Root.Q<TextField>("IPAddressField");
             m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
 
-            m_PortInputField = m_Root.Q<TextField>(UIElementNames.portInputField);
+            m_PortInputField = m_Root.Q<TextField>("PortField");
             m_PortInputField.SetValueWithoutNotify(k_DefaultPort.ToString());
 
-            m_ServerButton = m_Root.Q<Button>(UIElementNames.serverButton);
+            m_ServerButton = m_Root.Q<Button>("ServerButton");
             m_ServerButton.RegisterCallback<ClickEvent>(StartServer);
 
-            m_HostButton = m_Root.Q<Button>(UIElementNames.hostButton);
+            m_HostButton = m_Root.Q<Button>("HostButton");
             m_HostButton.RegisterCallback<ClickEvent>(StartHost);
 
-            m_ClientButton = m_Root.Q<Button>(UIElementNames.clientButton);
+            m_ClientButton = m_Root.Q<Button>("ClientButton");
             m_ClientButton.RegisterCallback<ClickEvent>(StartClient);
 
-            m_DisconnectButton = m_Root.Q<Button>(UIElementNames.disconnectButton);
+            m_DisconnectButton = m_Root.Q<Button>("DisconnectButton");
             m_DisconnectButton.RegisterCallback<ClickEvent>(Disconnect);
 
-            m_QuitSceneButton = m_Root.Q<Button>(UIElementNames.quitSceneButton);
+            m_QuitSceneButton = m_Root.Q<Button>("QuitSceneButton");
             m_QuitSceneButton.RegisterCallback<ClickEvent>(QuitScene);
         }
 
