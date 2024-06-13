@@ -27,7 +27,7 @@ pull_request_trigger:
           - "/^sample\//"
     - paths:
           include:
-            - "./Experimental/DedicatedGameServer/**" # Replace with your specific folder
+            - "Experimental/DedicatedGameServer/**" # Replace with your specific folder
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
