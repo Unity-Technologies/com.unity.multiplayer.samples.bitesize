@@ -1,10 +1,9 @@
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UIElements.Button;
 
 namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 {
@@ -23,6 +22,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         Button m_ClientButton;
         Button m_DisconnectButton;
         Button m_QuitSceneButton;
+        Button[] m_Buttons;
+
 
         [SerializeField] string m_SelectionScreenSceneName;
         [SerializeField] GameObject m_ServerOnlyOverlay;
@@ -38,20 +39,12 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             m_PortInputField = m_Root.Q<TextField>("PortField");
             m_PortInputField.SetValueWithoutNotify(k_DefaultPort.ToString());
 
-            m_ServerButton = m_Root.Q<Button>("ServerButton");
-            m_ServerButton.RegisterCallback<ClickEvent>(StartServer);
-
-            m_HostButton = m_Root.Q<Button>("HostButton");
-            m_HostButton.RegisterCallback<ClickEvent>(StartHost);
-
-            m_ClientButton = m_Root.Q<Button>("ClientButton");
-            m_ClientButton.RegisterCallback<ClickEvent>(StartClient);
-
-            m_DisconnectButton = m_Root.Q<Button>("DisconnectButton");
-            m_DisconnectButton.RegisterCallback<ClickEvent>(Disconnect);
-
-            m_QuitSceneButton = m_Root.Q<Button>("QuitSceneButton");
-            m_QuitSceneButton.RegisterCallback<ClickEvent>(QuitScene);
+            m_ServerButton = UIElementsUtils.SetupButton("ServerButton", StartServer, true, m_Root, "Server", "Starts the Server");
+            m_HostButton = UIElementsUtils.SetupButton("HostButton", StartHost, true, m_Root, "Host", "Starts the Host");
+            m_ClientButton = UIElementsUtils.SetupButton("ClientButton", StartClient, true, m_Root, "Client", "Starts the Client");
+            m_DisconnectButton = UIElementsUtils.SetupButton("DisconnectButton", Disconnect, false, m_Root, "Disconnect", "Disconnects participant from session");
+            UIElementsUtils.SetupButton("QuitSceneButton", QuitScene, true, m_Root, "Quit Scene", "Quits scene and brings you back to the scene selection screen");
+            m_Buttons = new Button[] { m_ServerButton, m_HostButton, m_ClientButton };
         }
 
         void Start()
@@ -59,35 +52,50 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             m_ServerOnlyOverlay.gameObject.SetActive(false);
         }
 
-        void StartServer(ClickEvent evt)
+        void StartServer()
         {
             SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress = m_AddressInputField.value;
             NetworkManager.Singleton.StartServer();
             m_ServerOnlyOverlay.gameObject.SetActive(true);
+            m_ClientButton.SetEnabled(false);
+            m_HostButton.SetEnabled(false);
+            m_DisconnectButton.SetEnabled(true);
         }
 
-        void StartHost(ClickEvent evt)
+        void StartHost()
         {
             SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.StartHost();
+            m_ClientButton.SetEnabled(false);
+            m_ServerButton.SetEnabled(false);
+            m_DisconnectButton.SetEnabled(true);
+            //m_HostButton accessing highlighted color somehow?;
+            //EnableButtons(new List<Button>(m_ClientButton, m_ServerButton), false);
         }
 
-        void StartClient(ClickEvent evt)
+        void StartClient()
         {
             SetNetworkPortAndAddress(k_DefaultPort, m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.StartClient();
+            m_HostButton.SetEnabled(false);
+            m_ServerButton.SetEnabled(false);
+            m_DisconnectButton.SetEnabled(true);
         }
 
-        void Disconnect(ClickEvent evt)
+        void Disconnect()
         {
             NetworkManager.Singleton.Shutdown();
             m_ServerOnlyOverlay.gameObject.SetActive(false);
+            m_HostButton.SetEnabled(true);
+            m_ServerButton.SetEnabled(true);
+            m_ClientButton.SetEnabled(true);
+            m_DisconnectButton.SetEnabled(false);
         }
 
-        void QuitScene(ClickEvent evt)
+        void QuitScene()
         {
-            Disconnect(evt);
+            Disconnect();
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene(m_SelectionScreenSceneName, LoadSceneMode.Single);
         }
@@ -112,6 +120,14 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
                 return;
             }
             transport.SetConnectionData(address, port, serverListenAddress);
+        }
+
+        void EnableButtons(List<Button> buttonsToEnable, bool enabled)
+        {
+            foreach (var button in buttonsToEnable )
+            {
+                button.SetEnabled(enabled);
+            }
         }
 
     }
