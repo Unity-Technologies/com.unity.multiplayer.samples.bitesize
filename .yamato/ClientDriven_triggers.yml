@@ -3,9 +3,10 @@
 
 # Run all relevant tasks when a pull request targets the develop / main or a sample branch
 pull_request_trigger:
-  name: Pull Request Trigger (main, develop, & sample branches)
+  name: ClientDriven Pull Request Trigger (main, develop, & sample branches)
   dependencies:
 {% for project in projects -%}
+{% if project.name =="clientdriven" -%}
 {% for editor in project.test_editors -%}
 {% for platform in test_platforms -%}
     - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
@@ -14,6 +15,7 @@ pull_request_trigger:
 {% endif -%}
 {% endfor -%}
 {% endfor -%}
+{% endif -%}
 {% endfor -%}
   triggers:
     cancel_old_ci: true
@@ -23,6 +25,9 @@ pull_request_trigger:
           - "main"
           - "develop"
           - "/^sample\//"
+    - paths:
+          include:
+            - "./Basic/ClientDriven/**" # Replace with your specific folder
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
