@@ -19,15 +19,12 @@ pull_request_trigger:
 {% endfor -%}
   triggers:
     cancel_old_ci: true
-    pull_requests:
-    - targets:
-        only:
-          - "main"
-          - "develop"
-          - "/^sample\//"
-    - paths:
-          include:
-            - "Experimental/MultiplayerUseCases/**" # Replace with your specific folder
+    expression: |-
+     (pull_request.target eq "main" OR
+      pull_request.target eq "develop" OR
+      pull_request.target match "/^sample\//") AND
+      NOT pull_request.draft AND
+      pull_request.changes.any match "Experimental/MultiplayerUseCases/**"
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
