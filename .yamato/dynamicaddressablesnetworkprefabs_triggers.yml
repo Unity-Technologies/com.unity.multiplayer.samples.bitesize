@@ -22,7 +22,6 @@ pull_request_trigger:
     expression: |-
      (pull_request.target eq "main" OR
       pull_request.target eq "develop" OR
-      pull_request.target match "/^sample\//") AND
       NOT pull_request.draft AND
       pull_request.changes.any match "Basic/DynamicAddressablesNetworkPrefabs/**"
 
