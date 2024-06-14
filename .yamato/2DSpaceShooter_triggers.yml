@@ -25,8 +25,8 @@ pull_request_trigger:
           - "main"
           - "develop"
           - "/^sample\//"
-    - paths:
-          include:
+    - changes:
+          only:
             - "Basic/2DSpaceShooter/**" # Replace with your specific folder
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
