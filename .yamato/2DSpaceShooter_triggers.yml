@@ -24,7 +24,7 @@ pull_request_trigger:
       pull_request.target eq "develop" OR
       NOT pull_request.draft AND
       pull_request.changes.any match "Basic/2DSpaceShooter/**" OR
-      pull_request.push.changes.any match "Basic/2DSpaceShooter/**"
+      
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
