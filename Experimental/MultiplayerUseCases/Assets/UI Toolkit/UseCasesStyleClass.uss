@@ -132,3 +132,35 @@
     border-top-color: rgb(81, 121, 164);
     border-bottom-color: rgb(81, 121, 164);
 }
+
+.UseCaseVisualHighlight {
+    flex-grow: 1;
+    opacity: 0.53;
+    background-color: rgb(76, 178, 113);
+    border-left-color: rgb(96, 225, 141);
+    border-right-color: rgb(96, 225, 141);
+    border-top-color: rgb(96, 225, 141);
+    border-bottom-color: rgb(96, 225, 141);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    display: flex;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    width: 120px;
+    height: 24px;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: center;
+    transform-origin: center;
+    translate: -2px -2px;
+    visibility: visible;
+    margin-top: 7px;
+    margin-right: 7px;
+    margin-bottom: 7px;
+    margin-left: 7px;
+    position: absolute;
+}
