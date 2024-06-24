@@ -23,8 +23,8 @@ pull_request_trigger:
       pull_request.target match "/^sample\//" OR
       pull_request.target eq "mtt-8638-yamatojobtriggers") AND
       NOT pull_request.draft AND
-      (NOT pull_request.changes.all match "Basic/**/*" OR 
-       NOT pull_request.changes.all match "Experimental/**/*")
+      (NOT pull_request.changes.any match "Basic/**/*" AND 
+       NOT pull_request.changes.any match "Experimental/**/*")
       
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
