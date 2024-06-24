@@ -23,12 +23,9 @@ pull_request_trigger:
       pull_request.target match "/^sample\//" OR
       pull_request.target eq "mtt-8638-yamatojobtriggers") AND
       NOT pull_request.draft AND
-      (NOT pull_request.changes.any match "Basic/ClientDriven/**/*" OR
-       NOT pull_request.changes.any match "Experimental/MultiplayerUseCases/**/*" OR
-       NOT pull_request.changes.any match "Experimental/DedicatedGameServer/**/*" OR
-       NOT pull_request.changes.any match "Basic/Invaders/**/*" OR
-       NOT pull_request.changes.any match "Basic/DynamicAddressablesNetworkPrefabs/**/*" OR
-       NOT pull_request.changes.any match "Basic/2DSpaceShooter/**/*")
+      (NOT pull_request.changes.any in ["Basic/ClientDriven/**/*","Experimental/MultiplayerUseCases/**/*",
+       "Experimental/DedicatedGameServer/**/*","Basic/Invaders/**/*","Basic/DynamicAddressablesNetworkPrefabs/**/*",
+       "Basic/2DSpaceShooter/**/*"])
       
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
