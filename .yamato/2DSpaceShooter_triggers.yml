@@ -21,7 +21,8 @@ pull_request_trigger:
     cancel_old_ci: true
     expression: |-
      (pull_request.target eq "main" OR
-      pull_request.target eq "develop") AND
+      pull_request.target eq "develop" OR
+      pull_request.target eq "mtt-8638-yamatojobtriggers") AND
       NOT pull_request.draft AND
       pull_request.changes.any match "Basic/2DSpaceShooter/**/*"
       
