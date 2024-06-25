@@ -1,5 +1,6 @@
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -25,7 +26,13 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         Button m_ClientButton;
         Button m_DisconnectButton;
         Button m_QuitSceneButton;
+        Button[] m_Buttons;
 
+        [SerializeField] Color m_ButtonHighlightedColor;
+        [SerializeField] Color m_DisabledButtonColor;
+        [SerializeField] Color m_ButtonOutlineHighlightedColor;
+        [SerializeField] Color m_ButtonOutlineDisabledColor;
+        [SerializeField] Color m_ButtonOutlineColor;
         [SerializeField] string m_SelectionScreenSceneName;
         [SerializeField] GameObject m_ServerOnlyOverlay;
 
@@ -47,6 +54,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             m_ClientButton = UIElementsUtils.SetupButton("ClientButton", StartClient, true, m_Root, "Client", "Starts the Client");
             m_DisconnectButton = UIElementsUtils.SetupButton("DisconnectButton", Disconnect, false, m_Root, "Disconnect", "Disconnects participant from session");
             UIElementsUtils.SetupButton("QuitSceneButton", QuitScene, true, m_Root, "Quit Scene", "Quits scene and brings you back to the scene selection screen");
+            m_Buttons = new Button[] { m_ServerButton, m_HostButton, m_ClientButton };
         }
 
         void Start()
@@ -56,15 +64,16 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void StartServer()
         {
+            EnableAndHighlightButtons(m_ServerButton, false);
             SetNetworkPortAndAddress(ushort.Parse(m_PortInputField.value), m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress = m_AddressInputField.value;
             NetworkManager.Singleton.StartServer();
             m_ServerOnlyOverlay.gameObject.SetActive(true);
-
-            Button[] buttons = new Button[] {m_ClientButton, m_HostButton};
-            EnableButtons(buttons, false);
             m_DisconnectButton.SetEnabled(true);
-            m_ServerVisualHighlight.visible = true;
+
+            /*Button[] buttons = new Button[] {m_ClientButton, m_HostButton};
+            EnableButtons(buttons, false);
+            m_ServerVisualHighlight.visible = true;*/
         }
 
         void StartHost()
@@ -89,6 +98,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void Disconnect()
         {
+            EnableAndHighlightButtons(null, true);
             NetworkManager.Singleton.Shutdown();
             m_ServerOnlyOverlay.gameObject.SetActive(false);
             m_ServerVisualHighlight.visible = false;
@@ -143,6 +153,27 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             {
                 button.SetEnabled(enabled);
             }
+        }
+
+        void EnableAndHighlightButtons(Button buttonToHighlight, bool enable)
+        {
+            foreach (var button in m_Buttons)
+            {
+                SetButtonStateAndColor(button, button == buttonToHighlight, enable);
+            }
+        }
+
+        void SetButtonStateAndColor(Button button, bool highlight, bool enable)
+        {
+            StyleColor colors = button.style.backgroundColor;
+            colors = highlight ? m_ButtonHighlightedColor
+                : m_DisabledButtonColor;
+            button.style.backgroundColor = colors;
+            button.SetEnabled(enable);
+
+            var buttonOutline = button.style.borderBottomColor;
+            buttonOutline= enable ? m_ButtonOutlineColor : m_ButtonOutlineDisabledColor;
+            buttonOutline = highlight ? m_ButtonOutlineHighlightedColor : buttonOutline;
         }
     }
 }
