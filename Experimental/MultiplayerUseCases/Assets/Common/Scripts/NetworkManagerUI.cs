@@ -1,8 +1,11 @@
+using System;
+using System.Linq;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
 
@@ -16,9 +19,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         const ushort k_DefaultPort = 7979;
 
         VisualElement m_Root;
-        VisualElement m_ServerVisualHighlight;
-        VisualElement m_HostVisualHighlight;
-        VisualElement m_ClientVisualHighlight;
         TextField m_AddressInputField;
         TextField m_PortInputField;
         Button m_ServerButton;
@@ -28,22 +28,27 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         Button m_QuitSceneButton;
         Button[] m_Buttons;
 
-        [SerializeField] Color m_ButtonHighlightedColor;
-        [SerializeField] Color m_DisabledButtonColor;
-        [SerializeField] Color m_ButtonOutlineHighlightedColor;
-        [SerializeField] Color m_ButtonOutlineDisabledColor;
-        [SerializeField] Color m_ButtonOutlineColor;
-        [SerializeField] string m_SelectionScreenSceneName;
-        [SerializeField] GameObject m_ServerOnlyOverlay;
+        [SerializeField]
+        Color m_ButtonColor;
+        [SerializeField]
+        Color m_ButtonHighlightedColor;
+        [SerializeField]
+        Color m_DisabledButtonColor;
+        [SerializeField]
+        Color m_ButtonOutlineHighlightedColor;
+        [SerializeField]
+        Color m_ButtonOutlineDisabledColor;
+        [SerializeField]
+        Color m_ButtonHoverColor;
+        [SerializeField]
+        string m_SelectionScreenSceneName;
+        [SerializeField]
+        GameObject m_ServerOnlyOverlay;
 
         void Awake()
         {
             var uiDocument = GetComponent<UIDocument>();
             m_Root = uiDocument.rootVisualElement;
-
-            m_ServerVisualHighlight = m_Root.Q<VisualElement>("ServerVisualHighlight");
-            m_HostVisualHighlight = m_Root.Q<VisualElement>("HostVisualHighlight");
-            m_ClientVisualHighlight = m_Root.Q<VisualElement>("ClientVisualHighlight");
             m_AddressInputField = m_Root.Q<TextField>("IPAddressField");
             m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
             m_PortInputField = m_Root.Q<TextField>("PortField");
@@ -64,49 +69,36 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void StartServer()
         {
-            EnableAndHighlightButtons(m_ServerButton, false);
             SetNetworkPortAndAddress(ushort.Parse(m_PortInputField.value), m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress = m_AddressInputField.value;
             NetworkManager.Singleton.StartServer();
+            EnableAndHighlightButtons(m_ServerButton, false);
+            SetButtonStateAndColor(m_DisconnectButton, false, true);
             m_ServerOnlyOverlay.gameObject.SetActive(true);
-            m_DisconnectButton.SetEnabled(true);
-
-            /*Button[] buttons = new Button[] {m_ClientButton, m_HostButton};
-            EnableButtons(buttons, false);
-            m_ServerVisualHighlight.visible = true;*/
         }
 
         void StartHost()
         {
             SetNetworkPortAndAddress(ushort.Parse(m_PortInputField.value), m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.StartHost();
-            Button[] buttons = new Button[] { m_ClientButton, m_ServerButton };
-            EnableButtons(buttons, false);
-            m_DisconnectButton.SetEnabled(true);
-            m_HostVisualHighlight.visible = true;
+            EnableAndHighlightButtons(m_HostButton, false);
+            SetButtonStateAndColor(m_DisconnectButton, false, true);
         }
 
         void StartClient()
         {
             SetNetworkPortAndAddress(ushort.Parse(m_PortInputField.value), m_AddressInputField.value, k_DefaultServerListenAddress);
             NetworkManager.Singleton.StartClient();
-            Button[ ] buttons = new Button[]{m_HostButton, m_ServerButton};
-            EnableButtons(buttons, false);
-            m_DisconnectButton.SetEnabled(true);
-            m_ClientVisualHighlight.visible = true;
+            EnableAndHighlightButtons(m_ClientButton, false);
+            SetButtonStateAndColor(m_DisconnectButton, false, true);
         }
 
         void Disconnect()
         {
-            EnableAndHighlightButtons(null, true);
             NetworkManager.Singleton.Shutdown();
+            EnableAndHighlightButtons(null, true);
+            SetButtonStateAndColor(m_DisconnectButton, false, false);
             m_ServerOnlyOverlay.gameObject.SetActive(false);
-            m_ServerVisualHighlight.visible = false;
-            m_HostVisualHighlight.visible = false;
-            m_ClientVisualHighlight.visible = false;
-            Button[ ] buttons = new Button[]{m_HostButton, m_ServerButton, m_ClientButton};
-            EnableButtons(buttons, true);
-            m_DisconnectButton.SetEnabled(false);
         }
 
         void QuitScene()
@@ -144,12 +136,13 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             {
                 return;
             }
+
             transport.SetConnectionData(address, port, serverListenAddress);
         }
 
         void EnableButtons(Button[] buttonsToEnable, bool enabled)
         {
-            foreach (var button in buttonsToEnable )
+            foreach (var button in buttonsToEnable)
             {
                 button.SetEnabled(enabled);
             }
@@ -166,14 +159,29 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         void SetButtonStateAndColor(Button button, bool highlight, bool enable)
         {
             StyleColor colors = button.style.backgroundColor;
-            colors = highlight ? m_ButtonHighlightedColor
+            colors = highlight
+                ? m_ButtonHighlightedColor
                 : m_DisabledButtonColor;
+            colors = enable ? m_ButtonColor : colors;
             button.style.backgroundColor = colors;
             button.SetEnabled(enable);
 
-            var buttonOutline = button.style.borderBottomColor;
-            buttonOutline= enable ? m_ButtonOutlineColor : m_ButtonOutlineDisabledColor;
+            var buttonOutline = button.style.borderTopColor;
+            buttonOutline = enable ? m_ButtonHoverColor : m_ButtonOutlineDisabledColor;
             buttonOutline = highlight ? m_ButtonOutlineHighlightedColor : buttonOutline;
+            Debug.Log("Button Outline: " + buttonOutline);
+
+            // this does not work properly yet (it enables hover color for every button atm)
+            /*m_Buttons.Where(button => button.enabledInHierarchy).ToList().ForEach(button =>
+            {
+                button.RegisterCallback<MouseEnterEvent>(evt => button.style.backgroundColor = m_ButtonHoverColor);
+                button.RegisterCallback<MouseLeaveEvent>(evt => button.style.backgroundColor = m_ButtonColor);
+            });
+            if (m_DisconnectButton.enabledInHierarchy)
+            {
+                m_DisconnectButton.RegisterCallback<MouseEnterEvent>(evt => m_DisconnectButton.style.backgroundColor = m_ButtonHoverColor);
+                m_DisconnectButton.RegisterCallback<MouseLeaveEvent>(evt => m_DisconnectButton.style.backgroundColor = m_ButtonColor);
+            }*/
         }
     }
 }
