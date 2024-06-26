@@ -36,7 +36,7 @@ namespace Unity.DedicatedGameServerSample.Editor
         /// <param name="report">The generated build report.</param>
         public void OnPreprocessBuild(BuildReport report)
         {
-            AssetDatabase.SaveAssets();
+            DisableBurstCompiler();
             ApplyChangesToMetagameApplication();
 
             string definesString = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup));
@@ -55,12 +55,22 @@ namespace Unity.DedicatedGameServerSample.Editor
             PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup), string.Join(";", allDefines.ToArray()));
         }
 
+        void DisableBurstCompiler()
+        {
+            //unfortunately we can't use burst compilation due to a 
+            //bug in its latest version, so we need to disable it.
+            //It annoyingly re-enables every time you switch platform...
+            Burst.BurstCompiler.Options.EnableBurstCompilation = false;
+            AssetDatabase.SaveAssets();
+        }
+
         /// <summary>
         /// Called at the end of the build process
         /// </summary>
         /// <param name="report">The generated build report.</param>
         public void OnPostprocessBuild(BuildReport report)
         {
+            DisableBurstCompiler();
             RevertChangesToMetagameApplication();
             string definesString = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(EditorUserBuildSettings.selectedBuildTargetGroup));
             List<string> allDefines = definesString.Split(';').ToList();
@@ -130,15 +140,14 @@ namespace Unity.DedicatedGameServerSample.Editor
 
         internal static void BuildServer(BuildTarget target, string locationPathName, bool exitApplicationOnFailure = false)
         {
-            Debug.Log($"Building {target} server");
+            Debug.Log($"Building {target} server in {locationPathName}");
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Server, BuildTarget.StandaloneLinux64);
-            EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Server, MultiplayerRoleFlags.Server);
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
                 locationPathName = locationPathName,
                 target = target,
-                subtarget = (int) StandaloneBuildSubtarget.Server,
+                subtarget = (int)StandaloneBuildSubtarget.Server,
             });
             if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
             {
@@ -148,16 +157,15 @@ namespace Unity.DedicatedGameServerSample.Editor
 
         internal static void BuildClient(BuildTarget target, string locationPathName, bool exitApplicationOnFailure = false)
         {
-            Debug.Log($"Building {target} client");
+            Debug.Log($"Building {target} client in {locationPathName}");
             
             EditorUserBuildSettings.SwitchActiveBuildTarget(NamedBuildTarget.Standalone, target);
-            EditorMultiplayerRolesManager.SetMultiplayerRoleForBuildTarget(NamedBuildTarget.Standalone, MultiplayerRoleFlags.Client);
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = GetScenePaths(),
                 locationPathName = locationPathName,
                 target = target,
-                subtarget = (int) StandaloneBuildSubtarget.Player,
+                subtarget = (int)StandaloneBuildSubtarget.Player,
             });
             if (exitApplicationOnFailure && report.summary.result != BuildResult.Succeeded)
             {
