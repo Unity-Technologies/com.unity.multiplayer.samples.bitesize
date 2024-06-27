@@ -2,10 +2,8 @@ using System;
 using System.Linq;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UIElements.Button;
 
@@ -49,11 +47,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         {
             var uiDocument = GetComponent<UIDocument>();
             m_Root = uiDocument.rootVisualElement;
-            m_AddressInputField = m_Root.Q<TextField>("IPAddressField");
-            m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
-            m_PortInputField = m_Root.Q<TextField>("PortField");
-            m_PortInputField.SetValueWithoutNotify(k_DefaultPort.ToString());
-
+            m_AddressInputField = UIElementsUtils.SetupStringField("IPAddressField", string.Empty, k_DefaultIP, OnAddressChanged, m_Root);
+            m_PortInputField = UIElementsUtils.SetupStringField("PortField", string.Empty, k_DefaultPort.ToString(), OnPortChanged, m_Root);
             m_ServerButton = UIElementsUtils.SetupButton("ServerButton", StartServer, true, m_Root, "Server", "Starts the Server");
             m_HostButton = UIElementsUtils.SetupButton("HostButton", StartHost, true, m_Root, "Host", "Starts the Host");
             m_ClientButton = UIElementsUtils.SetupButton("ClientButton", StartClient, true, m_Root, "Client", "Starts the Client");
@@ -120,23 +115,39 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             }
         }
 
-        void SetNetworkPortAndAddress(ushort port, string address, string serverListenAddress)
+        void OnAddressChanged(ChangeEvent<string> evt)
         {
-            if (string.IsNullOrEmpty(address) || !NetworkEndPoint.TryParse(address, port, out NetworkEndPoint networkEndPoint))
+            string newAddress = evt.newValue;
+            ushort currentPort = ushort.Parse(m_PortInputField.value);
+
+            if (string.IsNullOrEmpty(newAddress) || !NetworkEndPoint.TryParse(newAddress, currentPort, out NetworkEndPoint networkEndPoint))
             {
-                Debug.LogError($"IP address '{address}' or port '{port}', are not valid. Reverting IP address to {k_DefaultIP} and reverting port to {k_DefaultPort}");
-                address = k_DefaultIP;
-                port = k_DefaultPort;
-                m_AddressInputField.SetValueWithoutNotify(k_DefaultIP);
-                m_PortInputField.SetValueWithoutNotify(k_DefaultPort.ToString());
+                Debug.LogError($"IP address '{newAddress}', is not valid. Reverting IP address to {k_DefaultIP}");
+                m_AddressInputField.value = k_DefaultIP;
+                return;
             }
 
-            var transport = GetComponent<UnityTransport>();
+            SetNetworkPortAndAddress(currentPort, newAddress, k_DefaultServerListenAddress);
+        }
+
+        void OnPortChanged(ChangeEvent<string> evt)
+        {
+            if (!ushort.TryParse(evt.newValue, out ushort newPort) || !NetworkEndPoint.TryParse(m_AddressInputField.value, newPort, out NetworkEndPoint networkEndPoint))
+            {
+                Debug.LogError($"Port '{evt.newValue}' is not valid. Reverting port to {k_DefaultPort}");
+                m_PortInputField.value = k_DefaultPort.ToString();
+                return;
+            }
+            SetNetworkPortAndAddress(newPort, m_AddressInputField.value, k_DefaultServerListenAddress);
+        }
+
+        static void SetNetworkPortAndAddress(ushort port, string address, string serverListenAddress)
+        {
+            var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
             if (transport == null) //happens during Play Mode Tests
             {
                 return;
             }
-
             transport.SetConnectionData(address, port, serverListenAddress);
         }
 
