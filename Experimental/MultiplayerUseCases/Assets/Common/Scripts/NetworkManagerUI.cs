@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport;
 using UnityEngine;
@@ -33,6 +32,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         [SerializeField]
         Color m_DisabledButtonColor;
         [SerializeField]
+        Color m_ButtonOutlineColor;
+        [SerializeField]
         Color m_ButtonOutlineHighlightedColor;
         [SerializeField]
         Color m_ButtonOutlineDisabledColor;
@@ -65,7 +66,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         void StartServer()
         {
             SetNetworkPortAndAddress(ushort.Parse(m_PortInputField.value), m_AddressInputField.value, k_DefaultServerListenAddress);
-            NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.ServerListenAddress = m_AddressInputField.value;
             NetworkManager.Singleton.StartServer();
             EnableAndHighlightButtons(m_ServerButton, false);
             SetButtonStateAndColor(m_DisconnectButton, false, true);
@@ -138,6 +138,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
                 m_PortInputField.value = k_DefaultPort.ToString();
                 return;
             }
+
             SetNetworkPortAndAddress(newPort, m_AddressInputField.value, k_DefaultServerListenAddress);
         }
 
@@ -148,15 +149,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             {
                 return;
             }
-            transport.SetConnectionData(address, port, serverListenAddress);
-        }
 
-        void EnableButtons(Button[] buttonsToEnable, bool enabled)
-        {
-            foreach (var button in buttonsToEnable)
-            {
-                button.SetEnabled(enabled);
-            }
+            transport.SetConnectionData(address, port, serverListenAddress);
         }
 
         void EnableAndHighlightButtons(Button buttonToHighlight, bool enable)
@@ -169,30 +163,49 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void SetButtonStateAndColor(Button button, bool highlight, bool enable)
         {
-            StyleColor colors = button.style.backgroundColor;
-            colors = highlight
-                ? m_ButtonHighlightedColor
-                : m_DisabledButtonColor;
-            colors = enable ? m_ButtonColor : colors;
-            button.style.backgroundColor = colors;
+            button.UnregisterCallback<MouseEnterEvent>(OnHoverEnter);
+            button.UnregisterCallback<MouseLeaveEvent>(OnHoverExit);
+
+            StyleColor backgroundColor;
+            StyleColor outlineColor;
+            if (enable)
+            {
+                backgroundColor = m_ButtonColor;
+                outlineColor = m_ButtonOutlineColor;
+                button.RegisterCallback<MouseEnterEvent>(OnHoverEnter);
+                button.RegisterCallback<MouseLeaveEvent>(OnHoverExit);
+            }
+            else
+            {
+                backgroundColor = highlight
+                    ? m_ButtonHighlightedColor
+                    : m_DisabledButtonColor;
+                outlineColor = highlight
+                    ? m_ButtonOutlineHighlightedColor
+                    : m_ButtonOutlineDisabledColor;
+            }
+            button.style.backgroundColor = backgroundColor;
+            button.style.borderTopColor = outlineColor;
+            button.style.borderRightColor = outlineColor;
+            button.style.borderBottomColor = outlineColor;
+            button.style.borderLeftColor = outlineColor;
             button.SetEnabled(enable);
+        }
 
-            var buttonOutline = button.style.borderTopColor;
-            buttonOutline = enable ? m_ButtonHoverColor : m_ButtonOutlineDisabledColor;
-            buttonOutline = highlight ? m_ButtonOutlineHighlightedColor : buttonOutline;
-            Debug.Log("Button Outline: " + buttonOutline);
+        void OnHoverEnter(MouseEnterEvent evt)
+        {
+            if (evt.target is Button button)
+            {
+                button.style.backgroundColor = m_ButtonHoverColor;
+            }
+        }
 
-            // this does not work properly yet (it enables hover color for every button atm)
-            /*m_Buttons.Where(button => button.enabledInHierarchy).ToList().ForEach(button =>
+        void OnHoverExit(MouseLeaveEvent evt)
+        {
+            if (evt.target is Button button)
             {
-                button.RegisterCallback<MouseEnterEvent>(evt => button.style.backgroundColor = m_ButtonHoverColor);
-                button.RegisterCallback<MouseLeaveEvent>(evt => button.style.backgroundColor = m_ButtonColor);
-            });
-            if (m_DisconnectButton.enabledInHierarchy)
-            {
-                m_DisconnectButton.RegisterCallback<MouseEnterEvent>(evt => m_DisconnectButton.style.backgroundColor = m_ButtonHoverColor);
-                m_DisconnectButton.RegisterCallback<MouseLeaveEvent>(evt => m_DisconnectButton.style.backgroundColor = m_ButtonColor);
-            }*/
+                button.style.backgroundColor = m_ButtonColor;
+            }
         }
     }
 }
