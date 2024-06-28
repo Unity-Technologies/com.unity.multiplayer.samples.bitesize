@@ -26,20 +26,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         Button[] m_Buttons;
 
         [SerializeField]
-        Color m_ButtonColor;
-        [SerializeField]
-        Color m_ButtonHighlightedColor;
-        [SerializeField]
-        Color m_DisabledButtonColor;
-        [SerializeField]
-        Color m_ButtonOutlineColor;
-        [SerializeField]
-        Color m_ButtonOutlineHighlightedColor;
-        [SerializeField]
-        Color m_ButtonOutlineDisabledColor;
-        [SerializeField]
-        Color m_ButtonHoverColor;
-        [SerializeField]
         string m_SelectionScreenSceneName;
         [SerializeField]
         GameObject m_ServerOnlyOverlay;
@@ -163,49 +149,19 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void SetButtonStateAndColor(Button button, bool highlight, bool enable)
         {
-            button.UnregisterCallback<MouseEnterEvent>(OnHoverEnter);
-            button.UnregisterCallback<MouseLeaveEvent>(OnHoverExit);
-
-            StyleColor backgroundColor;
-            StyleColor outlineColor;
             if (enable)
             {
-                backgroundColor = m_ButtonColor;
-                outlineColor = m_ButtonOutlineColor;
-                button.RegisterCallback<MouseEnterEvent>(OnHoverEnter);
-                button.RegisterCallback<MouseLeaveEvent>(OnHoverExit);
+                button.RemoveFromClassList("UseCaseButtonHighlight");
+                button.AddToClassList("UseCaseButton");
             }
+
             else
             {
-                backgroundColor = highlight
-                    ? m_ButtonHighlightedColor
-                    : m_DisabledButtonColor;
-                outlineColor = highlight
-                    ? m_ButtonOutlineHighlightedColor
-                    : m_ButtonOutlineDisabledColor;
+                button.RemoveFromClassList("UseCaseButton");
+                button.AddToClassList(highlight ? "UseCaseButtonHighlight" : "UseCaseButton");
             }
-            button.style.backgroundColor = backgroundColor;
-            button.style.borderTopColor = outlineColor;
-            button.style.borderRightColor = outlineColor;
-            button.style.borderBottomColor = outlineColor;
-            button.style.borderLeftColor = outlineColor;
+
             button.SetEnabled(enable);
-        }
-
-        void OnHoverEnter(MouseEnterEvent evt)
-        {
-            if (evt.target is Button button)
-            {
-                button.style.backgroundColor = m_ButtonHoverColor;
-            }
-        }
-
-        void OnHoverExit(MouseLeaveEvent evt)
-        {
-            if (evt.target is Button button)
-            {
-                button.style.backgroundColor = m_ButtonColor;
-            }
         }
     }
 }

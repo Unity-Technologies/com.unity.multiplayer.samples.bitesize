@@ -1,25 +1,40 @@
-.UseCasebutton {
+.UseCaseButton {
     background-color: rgb(79, 120, 168);
-    border-left-color: rgb(127, 179, 224);
-    border-right-color: rgb(127, 179, 224);
-    border-top-color: rgb(127, 179, 224);
-    border-bottom-color: rgb(127, 179, 224);
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
+    border-color: rgb(127, 179, 224);
+    border-width: 2px;
+    color: rgb(255, 255, 255);
+    -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
+    font-size: 12px;
+    border-radius: 5px;
+    margin: 4px;
+    padding: 10px;
+    width: 100%;
+    height: 10%;
+    align-self: center;
+    justify-content: flex-start;
+    align-items: stretch;
+    -unity-font-definition: none;
+}
+
+.UseCaseButton:hover {
+    background-color: rgb(101, 151, 210);
+}
+
+.UseCaseButton:disabled {
+    background-color: rgb(47, 79, 112);
+    border-color: rgb(81, 121, 164);
+}
+
+.UseCaseButtonHighlight {
+    background-color: rgb(76, 178, 113);
+    border-color: rgb(96, 225, 141);
+    border-width: 2px;
     color: rgb(255, 255, 255);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
     -unity-font-style: normal;
     font-size: 12px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    margin-top: 4px;
-    margin-right: 4px;
-    margin-bottom: 4px;
-    margin-left: 4px;
+    border-radius: 5px;
+    margin: 4px;
     display: flex;
     opacity: 1;
     visibility: visible;
@@ -28,10 +43,7 @@
     -unity-text-outline-color: rgba(255, 255, 255, 0);
     text-overflow: clip;
     white-space: nowrap;
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
+    padding: 10px;
     width: 100%;
     height: 10%;
     flex-direction: column;
@@ -41,27 +53,9 @@
     -unity-font-definition: none;
 }
 
-.UseCasebutton:hover {
-    background-color: rgb(101, 151, 210);
-}
-
-.UseCasebutton:active {
-    background-color: rgb(76, 178, 113);
-    border-left-color: rgb(96, 225, 141);
-    border-right-color: rgb(96, 225, 141);
-    border-top-color: rgb(96, 225, 141);
-    border-bottom-color: rgb(96, 225, 141);
-}
-
 .unity-text-field {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 2px;
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    margin: 0 0 2px;
+    padding: 2px;
     font-size: 12px;
     width: 105%;
     height: 25px;
@@ -69,53 +63,28 @@
     align-items: auto;
     align-self: center;
     flex-direction: row;
-    border-left-color: rgb(127, 179, 224);
-    border-right-color: rgb(127, 179, 224);
-    border-top-color: rgb(127, 179, 224);
-    border-bottom-color: rgb(127, 179, 224);
+    border-color: rgb(127, 179, 224);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
 }
 
 .unity-text-field__input {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+    border-radius: 5px;
+    padding: 0;
     background-color: rgb(45, 81, 123);
     -unity-text-align: middle-center;
     color: rgb(213, 236, 255);
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
+    border-width: 2px;
     align-self: center;
     max-width: 245px;
     -unity-font-definition: none;
-    border-left-color: rgb(127, 179, 224);
-    border-right-color: rgb(127, 179, 224);
-    border-top-color: rgb(127, 179, 224);
-    border-bottom-color: rgb(127, 179, 224);
+    border-color: rgb(127, 179, 224);
     font-size: 12px;
 }
 
 .labelText {
     font-size: 13px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    padding: 0;
+    margin: 5px;
     flex-direction: row;
     -unity-text-align: upper-left;
     color: rgb(255, 255, 255);
@@ -123,44 +92,4 @@
     -unity-font-definition: none;
     align-self: center;
     -unity-font-style: normal;
-}
-
-.UseCasebutton:disabled {
-    background-color: rgb(47, 79, 112);
-    border-left-color: rgb(81, 121, 164);
-    border-right-color: rgb(81, 121, 164);
-    border-top-color: rgb(81, 121, 164);
-    border-bottom-color: rgb(81, 121, 164);
-}
-
-.UseCaseVisualHighlight {
-    flex-grow: 1;
-    opacity: 0.53;
-    background-color: rgb(76, 178, 113);
-    border-left-color: rgb(96, 225, 141);
-    border-right-color: rgb(96, 225, 141);
-    border-top-color: rgb(96, 225, 141);
-    border-bottom-color: rgb(96, 225, 141);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    display: flex;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
-    width: 120px;
-    height: 24px;
-    align-items: center;
-    justify-content: flex-end;
-    align-self: center;
-    transform-origin: center;
-    translate: -2px -2px;
-    visibility: visible;
-    margin-top: 7px;
-    margin-right: 7px;
-    margin-bottom: 7px;
-    margin-left: 7px;
-    position: absolute;
 }
