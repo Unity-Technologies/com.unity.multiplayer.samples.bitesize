@@ -9,11 +9,13 @@
     margin: 4px;
     padding: 10px;
     width: 100%;
-    height: 10%;
     align-self: center;
     justify-content: flex-start;
     align-items: stretch;
     -unity-font-definition: none;
+    height: 24px;
+    max-height: 24px;
+    min-height: 24px;
 }
 
 .UseCaseButton:hover {
@@ -45,26 +47,27 @@
     white-space: nowrap;
     padding: 10px;
     width: 100%;
-    height: 10%;
+    height: 24px;
     flex-direction: column;
     align-self: center;
     justify-content: flex-start;
     align-items: stretch;
     -unity-font-definition: none;
+    max-height: 24px;
+    min-height: 24px;
 }
 
 .unity-text-field {
     margin: 0 0 2px;
     padding: 2px;
     font-size: 12px;
-    width: 105%;
+    width: 100%;
     height: 25px;
-    -unity-text-align: middle-left;
-    align-items: auto;
-    align-self: center;
+    -unity-text-align: middle-center;
     flex-direction: row;
     border-color: rgb(127, 179, 224);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
+    align-self: center;
 }
 
 .unity-text-field__input {
@@ -82,14 +85,12 @@
 }
 
 .labelText {
-    font-size: 13px;
     padding: 0;
-    margin: 5px;
+    margin: 2px;
     flex-direction: row;
-    -unity-text-align: upper-left;
+    -unity-text-align: upper-center;
     color: rgb(255, 255, 255);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
-    -unity-font-definition: none;
-    align-self: center;
     -unity-font-style: normal;
+    font-size: 12px;
 }
