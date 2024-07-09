@@ -3,7 +3,7 @@
 
 # Run all relevant tasks when a pull request targets the develop / main or a sample branch
 pull_request_trigger:
-  name: Shared Pull Request Trigger (main, develop, & sample branches)
+  name:Pull Request Trigger (main, develop, & sample branches)
   dependencies:
 {% for project in projects -%}
 {% for editor in project.test_editors -%}
