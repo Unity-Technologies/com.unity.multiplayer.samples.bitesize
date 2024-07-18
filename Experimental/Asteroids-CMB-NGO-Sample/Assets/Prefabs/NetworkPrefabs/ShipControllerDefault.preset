@@ -1,0 +1,347 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShipControllerDefault
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: fe02357821fe70d4e9a5396745c52d45, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseUnreliableDeltas
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncPositionX
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncPositionY
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncPositionZ
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncRotAngleX
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncRotAngleY
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncRotAngleZ
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncScaleX
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncScaleY
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SyncScaleZ
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PositionThreshold
+    value: 0.1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: RotAngleThreshold
+    value: 0.1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ScaleThreshold
+    value: 0.01
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseQuaternionSynchronization
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseQuaternionCompression
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseHalfFloatPrecision
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: InLocalSpace
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: Interpolate
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: SlerpPosition
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsPooled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: CollisionType
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: CollisionDamage
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: DebugBoundaryCheck
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: DebugCollisions
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: IsPhysicsBody
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: EnabledBoundaryWrapping
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxAngularVelocity
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaxVelocity
+    value: 90
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: StartingMass
+    value: 25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: RemoteCollisionForceDecay
+    value: 0.6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: AngularCollisionMultiplier
+    value: 1.74
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: LinearCollisionMultiplier
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MinMaxStartnigTorque.Min
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MinMaxStartnigTorque.Max
+    value: 15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MinMaxStartnigForce.Min
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MinMaxStartnigForce.Max
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: VelocityRate
+    value: 40
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: RotationRate
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: RotationDecay
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.size
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[0].FXObject
+    value: 
+    objectReference: {fileID: 47, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[0].PositionNode
+    value: 
+    objectReference: {fileID: 38, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[0].Position
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[0].ThrusterFX
+    value: 
+    objectReference: {fileID: 173, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[0].IsActive
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[1].FXObject
+    value: 
+    objectReference: {fileID: 43, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[1].PositionNode
+    value: 
+    objectReference: {fileID: 40, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[1].Position
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[1].ThrusterFX
+    value: 
+    objectReference: {fileID: 176, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[1].IsActive
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[2].FXObject
+    value: 
+    objectReference: {fileID: 41, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[2].PositionNode
+    value: 
+    objectReference: {fileID: 45, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[2].Position
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[2].ThrusterFX
+    value: 
+    objectReference: {fileID: 174, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[2].IsActive
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[3].FXObject
+    value: 
+    objectReference: {fileID: 39, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[3].PositionNode
+    value: 
+    objectReference: {fileID: 35, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[3].Position
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[3].ThrusterFX
+    value: 
+    objectReference: {fileID: 175, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[3].IsActive
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[4].FXObject
+    value: 
+    objectReference: {fileID: 36, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[4].PositionNode
+    value: 
+    objectReference: {fileID: 46, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[4].Position
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[4].ThrusterFX
+    value: 
+    objectReference: {fileID: 172, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ShipThrusters.Array.data[4].IsActive
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: TractorBeam
+    value: 
+    objectReference: {fileID: 5697511713667507061, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: TractorBeamDistance
+    value: 64
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: LaserProjectile
+    value: 
+    objectReference: {fileID: 8913476639236117869, guid: 8cfadedf88842be4497047b257ee9f72, type: 3}
+  - target: {fileID: 0}
+    propertyPath: LaserGunBarrelLeft
+    value: 
+    objectReference: {fileID: 44, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: LaserGunBarrelRight
+    value: 
+    objectReference: {fileID: 42, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: TargetingSystem
+    value: 
+    objectReference: {fileID: 8866477739551806087, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: MineCarryPoint
+    value: 
+    objectReference: {fileID: 1173227045318997189, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: InterestVisualizer
+    value: 
+    objectReference: {fileID: 2648957347618441168, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: InterestCameraAnchor
+    value: 
+    objectReference: {fileID: 5720783176571833497, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ForwardThrusterLight
+    value: 
+    objectReference: {fileID: 6597849799688383711, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: LeftThrusterLight
+    value: 
+    objectReference: {fileID: 6768958515203227223, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: RightThrusterLight
+    value: 
+    objectReference: {fileID: 3263730474026180157, guid: 3da7f97baf479f446a01060fde79b828, type: 3}
+  - target: {fileID: 0}
+    propertyPath: ForwardThrusterLightIntensity
+    value: 60
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: RightLeftThrusterLightIntensity
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: MaximumCollisionVelocity
+    value: 20
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []
