@@ -283,6 +283,7 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
     public Action<StartModes> OnStarted;
 
     public Action OnExiting;
+    public Action OnShuttingDown;
 
     private float[] m_DeltaTimes = new float[60];
     private int[] m_DeltaTicks = new int[60];
@@ -624,6 +625,7 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
             GUILayout.BeginArea(new Rect(Display.main.renderingWidth - 40, 10, 30, 30));
             if (GUILayout.Button("X"))
             {
+                OnShuttingDown?.Invoke();
                 m_NetworkManager.Shutdown();
                 m_SelectedSessionType = false;
                 m_SessionType = SessionTypes.None;

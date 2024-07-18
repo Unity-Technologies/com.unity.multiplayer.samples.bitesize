@@ -17,7 +17,12 @@ public class SceneLoadingUI : MonoBehaviour
     [SerializeField]
     private string m_TransitionToScene;
 
+    [HideInInspector]
+    [SerializeField]
+    private string m_EndSessionScene;
+
 #if UNITY_EDITOR
+    public SceneAsset EndSessionScene;
     public SceneAsset TransistionToScene;
     public List<SceneAsset> ScenesToLoad;
     private void OnValidate()
@@ -31,6 +36,10 @@ public class SceneLoadingUI : MonoBehaviour
         {
             m_TransitionToScene = TransistionToScene.name;
         }
+        if (EndSessionScene != null)
+        {
+            m_EndSessionScene = EndSessionScene.name;
+        }
     }
 #endif
 
@@ -39,27 +48,41 @@ public class SceneLoadingUI : MonoBehaviour
 
     private void Start()
     {
+        NetworkManagerHelper.Instance.OnShuttingDown -= OnShuttingDownNetworkManager;
+        NetworkManagerHelper.Instance.OnShuttingDown += OnShuttingDownNetworkManager;
+        NetworkManager.Singleton.OnSessionOwnerPromoted -= OnSessionOwnerPromoted;
+        NetworkManager.Singleton.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         if (NetworkManager.Singleton.IsListening)
         {
-            if (NetworkManager.Singleton.IsConnectedClient)
-            {
-                NetworkManager.Singleton.OnClientStopped += OnClientStopped;
-                NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
-            }
-            else
-            {
-                NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
-            }
+            AddSceneManagerCallbacks();
+            NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+            NetworkManager.Singleton.OnClientStopped += OnClientStopped;
         }
         else
         {
+            NetworkManager.Singleton.OnClientStarted -= OnClientStarted;
             NetworkManager.Singleton.OnClientStarted += OnClientStarted;
         }
+    }
+
+    private void OnSessionOwnerPromoted(ulong sessionOwnerPromotedId)
+    {
+        if (NetworkManager.Singleton.LocalClientId == sessionOwnerPromotedId)
+        {
+            AddSceneManagerCallbacks();
+        }
+    }
+
+    private void OnShuttingDownNetworkManager()
+    {
+        RemoveAllCallbacks();
+        NetworkManager.Singleton.OnClientStarted += OnClientStarted;
     }
 
     private void UpdateSynchronizedScenes()
     {
         var scenesLoaded = NetworkManager.Singleton.SceneManager.GetSynchronizedScenes();
+        m_ScenesLoaded.Clear();
         foreach (var scene in scenesLoaded)
         {
             if (!m_ScenesLoaded.ContainsKey(scene.name))
@@ -69,11 +92,26 @@ public class SceneLoadingUI : MonoBehaviour
         }
     }
 
-    private void OnClientConnectedCallback(ulong clientId)
+    private void AddSceneManagerCallbacks()
+    {
+        if (NetworkManager.Singleton.LocalClient.IsSessionOwner)
+        {
+            NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Additive);
+        }
+        NetworkManager.Singleton.SceneManager.PostSynchronizationSceneUnloading = true;
+        NetworkManager.Singleton.SceneManager.OnSynchronizeComplete -= OnSynchronizeComplete;
+        NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += OnSynchronizeComplete;
+        NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+        NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
+    }
+
+    private void OnSynchronizeComplete(ulong clientId)
     {
         if (NetworkManager.Singleton.LocalClientId == clientId)
         {
-            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+            NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+            NetworkManager.Singleton.OnClientStopped += OnClientStopped;
+            NetworkManager.Singleton.SceneManager.OnSynchronizeComplete -= OnSynchronizeComplete;
             UpdateSynchronizedScenes();
         }
     }
@@ -81,17 +119,24 @@ public class SceneLoadingUI : MonoBehaviour
     private void OnClientStarted()
     {
         NetworkManager.Singleton.OnClientStarted -= OnClientStarted;
+        NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
         NetworkManager.Singleton.OnClientStopped += OnClientStopped;
 
-        NetworkManager.Singleton.SceneManager.OnSceneEvent += OnSceneEvent;
-
-
+        AddSceneManagerCallbacks();
     }
 
     private void OnSceneEvent(SceneEvent sceneEvent)
     {
         switch (sceneEvent.SceneEventType)
         {
+            case SceneEventType.Load:
+                {
+                    if (sceneEvent.ClientId == NetworkManager.Singleton.LocalClientId && sceneEvent.LoadSceneMode == LoadSceneMode.Single && !NetworkManager.Singleton.LocalClient.IsSessionOwner)
+                    {
+                        RemoveAllCallbacks();
+                    }
+                    break;
+                }
             case SceneEventType.LoadComplete:
                 {
                     if (sceneEvent.ClientId == NetworkManager.Singleton.LocalClientId)
@@ -119,12 +164,25 @@ public class SceneLoadingUI : MonoBehaviour
 
     private void OnClientStopped(bool wasHost)
     {
-        NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+        NetworkManager.Singleton.OnClientStarted -= OnClientStarted;
         NetworkManager.Singleton.OnClientStarted += OnClientStarted;
-
     }
 
-    private Vector2 m_ScrollPosition = Vector2.zero;
+    private void RemoveAllCallbacks()
+    {
+        m_ScenesLoaded.Clear();
+        if (!NetworkManager.Singleton)
+        {
+            return;
+        }
+        NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+        if (NetworkManager.Singleton.SceneManager != null)
+        {
+            NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+            NetworkManager.Singleton.SceneManager.OnSynchronizeComplete -= OnSynchronizeComplete;
+        }
+        NetworkManager.Singleton.OnClientStarted -= OnClientStarted;
+    }
 
     private void OnGUI()
     {
@@ -137,8 +195,7 @@ public class SceneLoadingUI : MonoBehaviour
         {
             if (GUILayout.Button($"[SingleMode] {m_TransitionToScene}"))
             {
-                NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
-                NetworkManager.Singleton.SceneManager.OnSceneEvent -= OnSceneEvent;
+                RemoveAllCallbacks();
                 NetworkManager.Singleton.SceneManager.LoadScene(m_TransitionToScene, LoadSceneMode.Single);
             }
         }
@@ -179,23 +236,6 @@ public class SceneLoadingUI : MonoBehaviour
                 {
                     SceneManager.MoveGameObjectToScene(NetworkManager.Singleton.LocalClient.PlayerObject.gameObject, SceneManager.GetActiveScene());
                 }
-            }
-        }
-
-        if (NetworkManager.Singleton.DAHost)
-        {
-            if (NetworkManager.Singleton.ConnectedClientsIds.Count > 1 || !NetworkManager.Singleton.LocalClient.IsSessionOwner)
-            {
-                GUILayout.Label("Promote To Session Owner:");
-                m_ScrollPosition = GUILayout.BeginScrollView(m_ScrollPosition, GUILayout.Width(140), GUILayout.Height(100));
-                foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
-                {
-                    if (clientId == NetworkManager.Singleton.CurrentSessionOwner)
-                    {
-                        continue;
-                    }
-                }
-                GUILayout.EndScrollView();
             }
         }
         GUILayout.EndArea();
