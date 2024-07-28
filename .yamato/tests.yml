@@ -16,7 +16,7 @@ test_{{ project.name }}_{{ editor }}_{{ platform.name }}:
     - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple
     - unity-downloader-cli -u {{ editor }} -c editor -w --fast
 {% if platform.name == "win" -%} #windows
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
+    - curl -s https://artifactory-slo.bf.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
 {% if project.run_editor_tests -%} # Only run editor tests for projects where relevant
     - utr --suite=editor --editor-location=.Editor --testproject={{ project.path }} --testfilter={{ project.test_filter }} --artifacts-path=testlogs
 {% endif -%}
@@ -24,7 +24,7 @@ test_{{ project.name }}_{{ editor }}_{{ platform.name }}:
     - utr --suite=playmode --editor-location=.Editor --testproject={{ project.path }} --testfilter={{ project.test_filter }} --artifacts-path=testlogs
 {% endif -%}
 {% else -%}
-    - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
+    - curl -s https://artifactory-slo.bf.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
     - chmod +x utr
 {% if project.run_editor_tests -%} # Only run editor tests for projects where relevant
     - ./utr --suite=editor --editor-location=.Editor --testproject={{ project.path }} --testfilter={{ project.test_filter }} --artifacts-path=testlogs
