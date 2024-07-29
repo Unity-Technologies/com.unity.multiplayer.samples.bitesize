@@ -8,14 +8,14 @@ using UnityEditor;
 /// The custom editor for the <see cref="AvatarTransform"/> component.
 /// </summary>
 [CustomEditor(typeof(AvatarTransform), true)]
-public class AvatarTransformEditor : PhysicsObjectMotionEditor
+public class AvatarTransformEditor : BaseObjectMotionHandlerEditor
 {
     SerializedProperty m_PlayerInput;
     SerializedProperty m_AvatarInputs;
     SerializedProperty m_WalkSpeed;
     SerializedProperty m_SprintSpeed;
     SerializedProperty m_Acceleration;
-    SerializedProperty m_Deceleration;
+    SerializedProperty m_DragCoefficient;
     SerializedProperty m_AirControlFactor;
     SerializedProperty m_JumpImpulse;
     SerializedProperty m_CustomGravityMultiplier;
@@ -29,7 +29,7 @@ public class AvatarTransformEditor : PhysicsObjectMotionEditor
         m_WalkSpeed = serializedObject.FindProperty(nameof(AvatarTransform.WalkSpeed));
         m_SprintSpeed = serializedObject.FindProperty(nameof(AvatarTransform.SprintSpeed));
         m_Acceleration = serializedObject.FindProperty(nameof(AvatarTransform.Acceleration));
-        m_Deceleration = serializedObject.FindProperty(nameof(AvatarTransform.Deceleration));
+        m_DragCoefficient = serializedObject.FindProperty(nameof(AvatarTransform.DragCoefficient));
         m_AirControlFactor = serializedObject.FindProperty(nameof(AvatarTransform.AirControlFactor));
         m_JumpImpulse = serializedObject.FindProperty(nameof(AvatarTransform.JumpImpusle));
         m_CustomGravityMultiplier = serializedObject.FindProperty(nameof(AvatarTransform.CustomGravityMultiplier));
@@ -51,7 +51,7 @@ public class AvatarTransformEditor : PhysicsObjectMotionEditor
             EditorGUILayout.PropertyField(m_WalkSpeed);
             EditorGUILayout.PropertyField(m_SprintSpeed);
             EditorGUILayout.PropertyField(m_Acceleration);
-            EditorGUILayout.PropertyField(m_Deceleration);
+            EditorGUILayout.PropertyField(m_DragCoefficient);
             EditorGUILayout.PropertyField(m_AirControlFactor);
             EditorGUILayout.PropertyField(m_JumpImpulse);
             EditorGUILayout.PropertyField(m_CustomGravityMultiplier);
@@ -69,7 +69,7 @@ public class AvatarTransformEditor : PhysicsObjectMotionEditor
 #endif
 
 [RequireComponent(typeof(Rigidbody))]
-public class AvatarTransform : PhysicsObjectMotion
+public class AvatarTransform : BaseObjectMotionHandler
 {
 #if UNITY_EDITOR
     public bool PropertiesVisible = false;
@@ -80,7 +80,7 @@ public class AvatarTransform : PhysicsObjectMotion
     public float WalkSpeed;
     public float SprintSpeed;
     public float Acceleration;
-    public float Deceleration;
+    public float DragCoefficient;
     public float AirControlFactor;
     public float JumpImpusle;
     public float CustomGravityMultiplier;
@@ -102,26 +102,27 @@ public class AvatarTransform : PhysicsObjectMotion
     {
         base.OnNetworkSpawn();
 
-        if (!IsOwner)
+        if (!HasAuthority)
         {
-            //enabled = false;
             return;
         }
 
         PlayerInput.enabled = true;
 
+        Rigidbody.isKinematic = false;
+
         // Freeze rotation on the x and z axes to prevent toppling
         Rigidbody.freezeRotation = true;
 
-        transform.SetPositionAndRotation(position: Vector3.up, rotation: Quaternion.identity);
-        Rigidbody.position = Vector3.up;
-        UpdateVelocity(Vector3.zero);
-        UpdateAngularVelocity(Vector3.zero);
+        var spawnPosition = new Vector3(0f, 1.5f, 0f);
+        transform.SetPositionAndRotation(position: spawnPosition, rotation: Quaternion.identity);
+        Rigidbody.position = spawnPosition;
+        SetObjectVelocity(Vector3.zero);
     }
 
     void Update()
     {
-        if (!IsOwner)
+        if (!HasAuthority)
         {
             return;
         }
@@ -145,6 +146,11 @@ public class AvatarTransform : PhysicsObjectMotion
 
     void ApplyMovement()
     {
+        if (Mathf.Approximately(m_Movement.magnitude, 0f))
+        {
+            return;
+        }
+
         var velocity = GetObjectVelocity();
         var desiredVelocity = m_Movement * (AvatarInputs.sprint ? SprintSpeed : WalkSpeed);
         var targetVelocity = new Vector3(desiredVelocity.x, velocity.y, desiredVelocity.z);
@@ -155,12 +161,6 @@ public class AvatarTransform : PhysicsObjectMotion
             // Apply force proportional to acceleration while grounded
             var force = velocityChange * Acceleration;
             Rigidbody.AddForce(force, ForceMode.Acceleration);
-
-            if (m_Jump)
-            {
-                Rigidbody.AddForce(Vector3.up * JumpImpusle, ForceMode.Impulse);
-                m_Jump = false;
-            }
         }
         else
         {
@@ -168,8 +168,15 @@ public class AvatarTransform : PhysicsObjectMotion
             var force = velocityChange * (Acceleration * AirControlFactor);
             Rigidbody.AddForce(force, ForceMode.Acceleration);
         }
+    }
 
-        ApplyDeceleration();
+    void ApplyJump()
+    {
+        if (m_IsGrounded && m_Jump)
+        {
+            Rigidbody.AddForce(Vector3.up * JumpImpusle, ForceMode.Impulse);
+            m_Jump = false;
+        }
     }
 
     void UpdateGroundedStatus()
@@ -185,15 +192,10 @@ public class AvatarTransform : PhysicsObjectMotion
         return Physics.RaycastNonAlloc(m_Ray, m_RaycastHits, GroundCheckDistance) > 0;
     }
 
-    /// <summary>
-    /// This applies the local player's thruster values to the ship in both
-    /// linear and angular velocity values
-    /// </summary>
-    protected override void FixedUpdate()
+    void FixedUpdate()
     {
         if (!IsSpawned || !HasAuthority || Rigidbody != null && Rigidbody.isKinematic)
         {
-            base.FixedUpdate();
             return;
         }
 
@@ -201,20 +203,22 @@ public class AvatarTransform : PhysicsObjectMotion
 
         ApplyMovement();
 
-        ApplyCustomGravity();
+        ApplyJump();
 
-        base.FixedUpdate();
+        ApplyDrag();
+
+        ApplyCustomGravity();
     }
 
-    void ApplyDeceleration()
+    void ApplyDrag()
     {
-        var velocity = GetObjectVelocity();
-        if (m_Movement.magnitude < 0.1f && velocity.magnitude > 0)
+        var groundVelocity = GetObjectVelocity();
+        groundVelocity.y = 0f;
+        if (groundVelocity.magnitude > 0f)
         {
             // Apply deceleration force to stop movement
-            var horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
-            var decelerationForce = -horizontalVelocity.normalized * Deceleration;
-            Rigidbody.AddForce(decelerationForce, ForceMode.Acceleration);
+            var dragForce = -DragCoefficient * groundVelocity.magnitude * groundVelocity;
+            Rigidbody.AddForce(dragForce, ForceMode.Acceleration);
         }
     }
 

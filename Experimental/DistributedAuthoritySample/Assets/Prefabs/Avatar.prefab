@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3001504883
+  GlobalObjectIdHash: 2473698027
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -337,10 +337,10 @@ MonoBehaviour:
   PropertiesVisible: 1
   PlayerInput: {fileID: 4903152183366241606}
   AvatarInputs: {fileID: 8197190117666738524}
-  WalkSpeed: 5
+  WalkSpeed: 6
   SprintSpeed: 10
   Acceleration: 50
-  Deceleration: 25
+  DragCoefficient: 4
   AirControlFactor: 0.5
   JumpImpusle: 7
   CustomGravityMultiplier: 2
@@ -369,7 +369,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
