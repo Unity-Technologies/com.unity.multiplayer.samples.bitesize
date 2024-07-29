@@ -158,6 +158,10 @@ public class ObjectSpawner : NetworkBehaviour
 
     private void UpdateInput()
     {
+        if (!Input.GetMouseButtonDown(0))
+        {
+            return;
+        }
         var selection = MouseSelectObject.SelectObject<MoverScript>();
         if (selection == null)
         {
