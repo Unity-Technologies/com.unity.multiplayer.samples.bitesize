@@ -6,6 +6,7 @@ using Unity.Multiplayer.Tools.NetStatsMonitor;
 #endif
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ManagementInput : NetworkBehaviour
 {
@@ -22,7 +23,7 @@ public class ManagementInput : NetworkBehaviour
     private void Awake()
     {
 #if MULTIPLAYER_TOOLS
-        RuntimeNetStatsMonitor?.gameObject.SetActive(false);
+        RuntimeNetStatsMonitor.Visible = false;
 #endif
     }
 
@@ -34,7 +35,32 @@ public class ManagementInput : NetworkBehaviour
         {
             InterestOverlayHandler.Singleton.SetPlayerColor(PlayerColor.GetPlayerColor(NetworkManager.LocalClientId));
         }
+        NetworkManager.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         base.OnNetworkSpawn();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        NetworkManager.OnSessionOwnerPromoted -= OnSessionOwnerPromoted;
+        base.OnNetworkDespawn();
+    }
+
+    private void OnSessionOwnerPromoted(ulong sessionOwnerPromoted)
+    {
+        if (NetworkManager.LocalClientId == sessionOwnerPromoted && !IsOwner)
+        {
+            NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
+        }
+    }
+
+    protected override void OnOwnershipChanged(ulong previous, ulong current)
+    {
+        if (IsSessionOwner && current != NetworkManager.LocalClientId)
+        {
+            NetworkManagerHelper.Instance.LogMessage($"[{name}] In-Scene placed NetworkObject changed ownership to Client-{current} who is not the session owner! (Reverting)");
+            NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
+        }
+        base.OnOwnershipChanged(previous, current);
     }
 
     private void OnObjectOwnerInstancesAreActiveChanged(bool previous, bool newValue)
@@ -99,6 +125,7 @@ public class ManagementInput : NetworkBehaviour
             m_SpawnCountForQuery = NetworkManager.SpawnManager.SpawnedObjects.Count;
             m_SpawnCountClientCount = NetworkManager.ConnectedClientsIds.Count;
             QuerySpawnCountRpc(m_SpawnCountForQuery);
+            CheckSpawnCount();
         }
 
         if (Input.GetKeyDown(KeyCode.P))
@@ -118,7 +145,7 @@ public class ManagementInput : NetworkBehaviour
         // Toggle the RNSM tool
         if (Input.GetKeyDown(KeyCode.N) || Input.GetKeyDown(KeyCode.Tab))
         {
-            RuntimeNetStatsMonitor?.gameObject.SetActive(!RuntimeNetStatsMonitor.gameObject.activeInHierarchy);
+            RuntimeNetStatsMonitor.Visible = !RuntimeNetStatsMonitor.Visible;
         }
 #endif
     }
@@ -128,6 +155,29 @@ public class ManagementInput : NetworkBehaviour
     private int m_SpawnCountClientCount;
     private Dictionary<ulong, int> m_RemoteSpawnCount = new Dictionary<ulong, int>();
     private Dictionary<ulong, List<ulong>> m_RemoteInvalidSpawnCount = new Dictionary<ulong, List<ulong>>();
+
+    private void CheckSpawnCount()
+    {
+        var clientSpawnedObjects = new Dictionary<ulong, List<NetworkObject>>();
+        var totalSpawnedObjects = 0;
+        foreach(var clientId in NetworkManager.ConnectedClientsIds)
+        {
+            var spawnedObjects = NetworkManager.SpawnManager.GetClientOwnedObjects(clientId).ToList();
+            totalSpawnedObjects += spawnedObjects.Count;
+            clientSpawnedObjects.Add(clientId, spawnedObjects);
+        }
+
+        if (totalSpawnedObjects != NetworkManager.SpawnManager.SpawnedObjectsList.Count)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"[Client-{NetworkManager.LocalClientId}] Spawned Object Count By Client:");
+            foreach(var entry in clientSpawnedObjects)
+            {
+                builder.AppendLine($"[Client-{entry.Key}] Spawned Object Count: {entry.Value.Count}");
+            }
+        }
+
+    }
 
     [Rpc(SendTo.NotMe)]
     private void QuerySpawnCountRpc(int count, RpcParams rpcParams = default)

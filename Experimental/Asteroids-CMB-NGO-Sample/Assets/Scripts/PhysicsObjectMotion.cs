@@ -248,7 +248,9 @@ public partial class PhysicsObjectMotion : BaseObjectMotionHandler
             // Since state can be preserved during a CMB service connection when there are no clients connected,
             // this section determines whether we need to initialize the physics object or just apply the last
             // known velocities.
+#if SESSION_STORE_ENABLED
             if (!BeenInitialized.Value)
+#endif
             {
                 BeenInitialized.Value = true;
                 var torque = GetRandomVector3(MinMaxStartingTorque, Vector3.one, true);
@@ -259,11 +261,13 @@ public partial class PhysicsObjectMotion : BaseObjectMotionHandler
                 Rigidbody.AddForce(force, ForceMode.Impulse);
                 UpdateImpulseForce(force);
             }
+#if SESSION_STORE_ENABLED
             else
             {
                 Rigidbody.angularVelocity = Vector3.ClampMagnitude(GetObjectAngularVelocity(), MaxAngularVelocity);
                 SetObjectVelocity(Vector3.ClampMagnitude(GetObjectVelocity(), MaxVelocity));
             }
+#endif
         }
     }
 

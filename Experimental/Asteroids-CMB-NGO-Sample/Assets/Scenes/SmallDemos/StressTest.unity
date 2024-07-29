@@ -346,7 +346,7 @@ MonoBehaviour:
     PlayerPrefab: {fileID: 4336973376521349599, guid: d27ec9cc51a46614192af1bd95321d2c, type: 3}
     Prefabs:
       NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 3e3ce682a26375d40a565c5dedca3d05, type: 2}
+      - {fileID: 11400000, guid: ee9589984c5b900469c9b451c0fbd909, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -365,7 +365,7 @@ MonoBehaviour:
     NetworkTopology: 1
     UseCMBService: 1
     AutoSpawnPlayerPrefabClientSide: 1
-    NetworkMessageMetrics: 0
+    NetworkMessageMetrics: 1
     NetworkProfilingMetrics: 0
     OldPrefabList: []
   RunInBackground: 1
@@ -626,6 +626,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4454842426221127108, guid: c66c065828bdfe34bae0d3f7479fc521, type: 3}
+      propertyPath: m_Visible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4454842426221127108, guid: c66c065828bdfe34bae0d3f7479fc521, type: 3}
       propertyPath: <Configuration>k__BackingField
       value: 
       objectReference: {fileID: 11400000, guid: 03031231403f0524aaf3b35382577439, type: 2}
@@ -639,7 +643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4454842426221127109, guid: c66c065828bdfe34bae0d3f7479fc521, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4454842426221127111, guid: c66c065828bdfe34bae0d3f7479fc521, type: 3}
       propertyPath: m_LocalScale.x

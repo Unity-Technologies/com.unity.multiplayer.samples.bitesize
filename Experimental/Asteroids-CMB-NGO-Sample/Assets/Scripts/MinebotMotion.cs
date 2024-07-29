@@ -94,6 +94,10 @@ public class MinebotMotion : PhysicsObjectMotion
     public override void OnNetworkObjectParentChanged(NetworkObject parentNetworkObject)
     {
         base.OnNetworkObjectParentChanged(parentNetworkObject);
+        if (!IsSpawned)
+        {
+            return;
+        }
 
         if (parentNetworkObject != null)
         {
