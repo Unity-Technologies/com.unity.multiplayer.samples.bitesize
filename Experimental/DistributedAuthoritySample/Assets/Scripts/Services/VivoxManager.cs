@@ -16,6 +16,7 @@ namespace Services
         public static VivoxManager Instance { get; private set; }
 
         public static string PlayerProfileName { get; private set; }
+        public string SessionName { get; set; }
 
         private void Awake()
         {
@@ -45,13 +46,11 @@ namespace Services
             options.EnableTTS = false;
             VivoxService.Instance.LoggedIn += LoggedInToVivox;
             await VivoxService.Instance.LoginAsync(options);
-
-            // TODO change the channel name
-            JoinChannel("GeneralChat");
         }
 
-        async void JoinChannel(string channelName)
+        public async void JoinChannel(string channelName)
         {
+            SessionName = channelName;
             var channelOptions = new ChannelOptions();
             await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
             Debug.Log("Joined Text Channel");

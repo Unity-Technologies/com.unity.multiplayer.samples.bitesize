@@ -10,8 +10,7 @@ namespace Services
         public Text m_ChatDisplay;
         public Button m_SendButton;
 
-        // TODO: Randomize a channel name
-        private string currentChannel = "GeneralChat";
+        private string currentChannel = VivoxManager.Instance.SessionName;
 
         void Start()
         {

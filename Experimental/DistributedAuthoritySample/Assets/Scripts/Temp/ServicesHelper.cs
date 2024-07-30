@@ -113,6 +113,9 @@ public class ServicesHelper : MonoBehaviour
 
             LoadHubScene();
 
+            // TODO: Channel name
+            VivoxManager.Instance.JoinChannel(sessionName);
+
             // DA TODO: m_NetworkManager.OnClientStopped += OnNetworkManagerStopped;
         }
         catch (Exception e)
