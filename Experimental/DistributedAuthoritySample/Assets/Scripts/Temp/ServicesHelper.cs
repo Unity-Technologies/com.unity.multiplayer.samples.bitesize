@@ -25,6 +25,8 @@ public class ServicesHelper : MonoBehaviour
 
     ISession m_LastSession;
 
+    public string PlayerProfileName { get; private set; }
+
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -38,9 +40,10 @@ public class ServicesHelper : MonoBehaviour
 
             if (!AuthenticationService.Instance.IsSignedIn)
             {
+                PlayerProfileName = GetRandomString(5);
                 AuthenticationService.Instance.SignInFailed += SignInFailed;
                 AuthenticationService.Instance.SignedIn += SignedIn;
-                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
+                AuthenticationService.Instance.SwitchProfile(PlayerProfileName);
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
         }
@@ -80,7 +83,7 @@ public class ServicesHelper : MonoBehaviour
             await Task.Yield();
         }
 
-        await VivoxManager.Instance.InitializeVivoxAsync();
+        await VivoxManager.Instance.InitializeVivoxAsync(PlayerProfileName);
     }
 
     static string GetRandomString(int length)

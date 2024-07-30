@@ -9,11 +9,13 @@ namespace Services
 {
     public class VivoxManager : MonoBehaviour
     {
-        public static VivoxManager Instance { get; private set; }
-
         private List<RosterItem> m_RosterItems = new List<RosterItem>();
         public GameObject m_ParticipantPrefab; // Assign this in the Inspector
         public Transform m_ParticipantListParent; // Assign this in the Inspector
+
+        public static VivoxManager Instance { get; private set; }
+
+        public static string PlayerProfileName { get; private set; }
 
         private void Awake()
         {
@@ -28,13 +30,9 @@ namespace Services
             }
         }
 
-        private void Start()
+        public async Task InitializeVivoxAsync(string playerName)
         {
-            InitializeVivoxAsync();
-        }
-
-        public async Task InitializeVivoxAsync()
-        {
+            PlayerProfileName = playerName;
             await VivoxService.Instance.InitializeAsync();
             await LoginToVivoxAsync();
         }
@@ -42,7 +40,8 @@ namespace Services
         private async Task LoginToVivoxAsync()
         {
             LoginOptions options = new LoginOptions();
-            options.DisplayName = "Player_" + AuthenticationService.Instance.PlayerId;
+            //options.DisplayName = "Player_" + AuthenticationService.Instance.PlayerId;
+            options.DisplayName = "Player_" + PlayerProfileName;
             options.EnableTTS = false;
             VivoxService.Instance.LoggedIn += LoggedInToVivox;
             await VivoxService.Instance.LoginAsync(options);
@@ -54,7 +53,7 @@ namespace Services
         async void JoinChannel(string channelName)
         {
             var channelOptions = new ChannelOptions();
-            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextOnly, channelOptions);
+            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
             Debug.Log("Joined Text Channel");
         }
 
