@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Services;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -50,12 +51,12 @@ public class ServicesHelper : MonoBehaviour
         Debug.LogWarning($"{nameof(SignedIn)} obj.ErrorCode {obj.ErrorCode}");
     }
 
-    void SignedIn()
+    async void SignedIn()
     {
         Debug.Log(nameof(SignedIn));
         if (m_InitiateVivoxOnAuthentication)
         {
-            Login();
+            await LoginToVivox();
         }
 
         LoadMenuScene();
@@ -71,22 +72,15 @@ public class ServicesHelper : MonoBehaviour
         SceneManager.LoadScene("HubScene");
     }
 
-    async void Login()
+    async Task LoginToVivox()
     {
-        await VivoxService.Instance.InitializeAsync();
-
-        var options = new LoginOptions
+        // Wait until VivoxManager.Instance is not null
+        while (VivoxManager.Instance == null)
         {
-            DisplayName = AuthenticationService.Instance.Profile,
-            EnableTTS = true
-        };
-        VivoxService.Instance.LoggedIn += LoggedInToVivox;
-        await VivoxService.Instance.LoginAsync(options);
-    }
+            await Task.Yield();
+        }
 
-    void LoggedInToVivox()
-    {
-        Debug.Log(nameof(LoggedInToVivox));
+        await VivoxManager.Instance.InitializeVivoxAsync();
     }
 
     static string GetRandomString(int length)
