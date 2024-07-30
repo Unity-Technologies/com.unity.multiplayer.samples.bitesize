@@ -137,6 +137,8 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
         {
             base.OnNetworkSpawn();
 
+            gameObject.name = $"[Client-{OwnerClientId}]{name}";
+
             if (!HasAuthority)
             {
                 return;
