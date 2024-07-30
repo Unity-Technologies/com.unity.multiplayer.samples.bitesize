@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 370971123281630519}
   - component: {fileID: 3081239909905841813}
   - component: {fileID: 5988919140179887555}
-  - component: {fileID: 1049656444021924520}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -87,27 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1049656444021924520
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2971605785670457434}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3998769334658168242
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,40 +290,19 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
-  BaseObjectMotionHandlerPropertiesVisible: 1
-  NetworkTransformPropertiesVisible: 1
-  IsPooled: 1
-  CollisionType: 0
-  CollisionDamage: 0
-  DebugBoundaryCheck: 0
-  DebugCollisions: 0
-  DebugDamage: 0
-  IsPhysicsBody: 0
-  EnableBoundary: 1
-  Colliders: []
-  PhysicsObjectMotionPropertiesVisible: 1
-  CollisionImpulseEntries: []
-  MaxAngularVelocity: 30
-  MaxVelocity: 30
-  StartingMass: 1
-  MinMaxStartingTorque:
-    Min: 5
-    Max: 15
-  MinMaxStartingForce:
-    Min: 5
-    Max: 30
   PropertiesVisible: 1
-  PlayerInput: {fileID: 4903152183366241606}
-  AvatarInputs: {fileID: 8197190117666738524}
-  WalkSpeed: 6
-  SprintSpeed: 10
-  Acceleration: 50
-  DragCoefficient: 4
-  AirControlFactor: 0.5
-  JumpImpusle: 7
-  CustomGravityMultiplier: 2
-  RotationSpeed: 700
-  GroundCheckDistance: 1.1
+  m_Rigidbody: {fileID: 4745766379562620470}
+  m_PlayerInput: {fileID: 4903152183366241606}
+  m_AvatarInputs: {fileID: 8197190117666738524}
+  m_WalkSpeed: 6
+  m_SprintSpeed: 10
+  m_Acceleration: 50
+  m_DragCoefficient: 4
+  m_AirControlFactor: 0.5
+  m_JumpImpusle: 7
+  m_CustomGravityMultiplier: 2
+  m_RotationSpeed: 700
+  m_GroundCheckDistance: 1.1
 --- !u!54 &4745766379562620470
 Rigidbody:
   m_ObjectHideFlags: 0
