@@ -1,3 +1,4 @@
+using System;
 using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,8 @@ namespace Services
         public Text m_ChatDisplay;
         public Button m_SendButton;
 
-        private string currentChannel = VivoxManager.Instance.SessionName;
+        private readonly string currentChannel = VivoxManager.Instance.SessionName;
+        private bool isChatActive = true;
 
         void Start()
         {
@@ -18,6 +20,17 @@ namespace Services
             m_ChatInputField.onEndEdit.AddListener(OnChatInputEndEdit);
 
             BindSessionEvents(true);
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Slash))
+            {
+                isChatActive = !isChatActive;
+                m_ChatInputField.enabled = isChatActive;
+                m_SendButton.enabled = isChatActive;
+                Debug.Log("Chat: " + (isChatActive ? "Activated" : "Disabled"));
+            }
         }
 
         private async void SendMessage()

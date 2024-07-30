@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using Unity.Services.Authentication;
 using Unity.Services.Vivox;
 
 namespace Services
@@ -41,7 +39,6 @@ namespace Services
         private async Task LoginToVivoxAsync()
         {
             LoginOptions options = new LoginOptions();
-            //options.DisplayName = "Player_" + AuthenticationService.Instance.PlayerId;
             options.DisplayName = "Player_" + PlayerProfileName;
             options.EnableTTS = false;
             VivoxService.Instance.LoggedIn += LoggedInToVivox;
@@ -53,7 +50,7 @@ namespace Services
             SessionName = channelName;
             var channelOptions = new ChannelOptions();
             await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
-            Debug.Log("Joined Text Channel");
+            Debug.Log("Joined text and audio channel");
         }
 
         void LoggedInToVivox()
