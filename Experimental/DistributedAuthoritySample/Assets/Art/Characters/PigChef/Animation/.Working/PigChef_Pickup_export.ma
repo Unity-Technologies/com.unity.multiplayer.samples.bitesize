@@ -1,6 +1,6 @@
 //Maya ASCII 2023 scene
 //Name: PigChef_Pickup_export.ma
-//Last modified: Tue, Jul 30, 2024 03:10:33 PM
+//Last modified: Tue, Jul 30, 2024 03:39:47 PM
 //Codeset: 1252
 requires maya "2023";
 requires "stereoCamera" "10.0";
@@ -11,12 +11,12 @@ fileInfo "product" "Maya 2023";
 fileInfo "version" "2023";
 fileInfo "cutIdentifier" "202405151550-05a853e76d";
 fileInfo "osv" "Windows 11 Pro v2009 (Build: 22631)";
-fileInfo "UUID" "39A8199E-4310-05A1-0D29-F5A123CFC4F7";
+fileInfo "UUID" "6C4D833C-4C97-9B16-E3D8-8D855CA1A91C";
 createNode transform -s -n "persp";
 	rename -uid "C5B426ED-455A-531B-6770-FEB692D9F872";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" -218.28677629720448 84.525676600842843 99.949413385077207 ;
-	setAttr ".r" -type "double3" -12.338352589619074 4971.0000000044474 0 ;
+	setAttr ".t" -type "double3" -16.555445282420912 43.578067487418494 234.43983060075755 ;
+	setAttr ".r" -type "double3" -3.3383525896267092 5035.800000004424 2.4914993230566003e-17 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "97756CD1-4EDB-96B6-DC50-729FAD28C8AF";
 	setAttr -k off ".v" no;
