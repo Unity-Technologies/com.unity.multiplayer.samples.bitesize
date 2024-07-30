@@ -14,6 +14,10 @@ pull_request_trigger:
 {% endif -%}
 {% endfor -%}
 {% endfor -%}
+    # iOS
+    - .yamato/mobile-build-and-run.yml#mobile_test_ios_{{ project.name }}_{{ editor }}
+    # Android
+    - .yamato/mobile-build-and-run.yml#mobile_test_android_{{ project.name }}_{{ editor }}
 {% endfor -%}
   triggers:
     cancel_old_ci: true
