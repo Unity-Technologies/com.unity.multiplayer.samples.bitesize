@@ -1,6 +1,6 @@
 //Maya ASCII 2023 scene
-//Name: PigChef_Throw.ma
-//Last modified: Wed, Jul 31, 2024 11:05:06 AM
+//Name: PigChef_Throw_export.ma
+//Last modified: Wed, Jul 31, 2024 11:07:55 AM
 //Codeset: 1252
 requires maya "2023";
 requires "stereoCamera" "10.0";
@@ -10,17 +10,17 @@ fileInfo "product" "Maya 2023";
 fileInfo "version" "2023";
 fileInfo "cutIdentifier" "202405151550-05a853e76d";
 fileInfo "osv" "Windows 11 Pro v2009 (Build: 22631)";
-fileInfo "UUID" "0AB4047B-4DBD-3928-A41E-4DBBE606E57D";
+fileInfo "UUID" "B41922DB-45F9-7BA5-5565-B280B5897FBE";
 createNode transform -s -n "persp";
 	rename -uid "C5B426ED-455A-531B-6770-FEB692D9F872";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 218.28380407553928 129.60666524467592 239.67200766078133 ;
-	setAttr ".r" -type "double3" -18.338352631354745 5084.6000000022441 2.2334538880243465e-15 ;
+	setAttr ".t" -type "double3" -362.039735303638 131.72246358659334 48.477349489679334 ;
+	setAttr ".r" -type "double3" -16.538352631592367 5315.4000000017495 1.6898372568167237e-14 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "97756CD1-4EDB-96B6-DC50-729FAD28C8AF";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999993;
-	setAttr ".coi" 333.01123247344418;
+	setAttr ".coi" 375.50592865649725;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -13918,7 +13918,7 @@ createNode orientConstraint -n "LeftHeel_orientConstraint1" -p "LeftHeel";
 	setAttr -k off ".sy";
 	setAttr -k off ".sz";
 	setAttr ".erp" yes;
-	setAttr ".lr" -type "double3" -36.862882427599807 22.781768855747096 8.42684389564252 ;
+	setAttr ".lr" -type "double3" -5.7780257413541243 0.083000110183612724 13.778641535236867 ;
 	setAttr ".o" -type "double3" -9.8620582195632931 7.8413160818526215 0.45078709296912667 ;
 	setAttr ".rsrr" -type "double3" -15.695207595825199 7.9296078681945765 13.432669639587404 ;
 	setAttr -k on ".w0";
@@ -38392,6 +38392,7 @@ createNode parentConstraint -n "ikHandle2_parentConstraint1" -p "ikHandle2";
 	setAttr -k on ".w0";
 createNode transform -n "PickupWorldLocation";
 	rename -uid "F052C426-4B79-8BF2-51BA-A78EDE5AE7E0";
+	setAttr ".v" no;
 	setAttr ".t" -type "double3" -0.068287022720853408 0.61743510144199831 45.376907103033403 ;
 	setAttr ".s" -type "double3" 10 10 10 ;
 	setAttr ".dsp" yes;
@@ -48537,10 +48538,12 @@ createNode place2dTexture -n "place2dTexture4";
 	rename -uid "FABC3E6B-4FCE-0901-EF1F-8EA2E3E005D6";
 createNode displayLayer -n "Chest_lyr";
 	rename -uid "4D2AC14F-4296-B589-2C14-DA8365CEE563";
+	setAttr ".v" no;
 	setAttr ".ufem" -type "stringArray" 0  ;
 	setAttr ".do" 1;
 createNode displayLayer -n "Pottery_lyr";
 	rename -uid "6B630C42-41DF-FB65-1B7D-48AF0B6FDD07";
+	setAttr ".v" no;
 	setAttr ".ufem" -type "stringArray" 0  ;
 	setAttr ".do" 2;
 createNode animCurveTL -n "PickupLocation_translateX";
@@ -48612,8 +48615,8 @@ createNode animCurveTA -n "ikHandle2_twist";
 	setAttr ".wgt" no;
 	setAttr -s 2 ".ktv[0:1]"  1 0 4 37.815214478634331;
 select -ne :time1;
-	setAttr ".o" 30;
-	setAttr ".unw" 30;
+	setAttr ".o" 1;
+	setAttr ".unw" 1;
 select -ne :hardwareRenderingGlobals;
 	setAttr ".otfna" -type "stringArray" 22 "NURBS Curves" "NURBS Surfaces" "Polygons" "Subdiv Surface" "Particles" "Particle Instance" "Fluids" "Strokes" "Image Planes" "UI" "Lights" "Cameras" "Locators" "Joints" "IK Handles" "Deformers" "Motion Trails" "Components" "Hair Systems" "Follicles" "Misc. UI" "Ornaments"  ;
 	setAttr ".otfva" -type "Int32Array" 22 0 1 1 1 1 1
@@ -50346,4 +50349,4 @@ connectAttr "chest_bot_lowShape.iog" ":initialShadingGroup.dsm" -na;
 connectAttr "Pottery_lowShape.iog" ":initialShadingGroup.dsm" -na;
 connectAttr "PickupWorldLocationShape.iog" ":initialShadingGroup.dsm" -na;
 connectAttr "ikRPsolver.msg" ":ikSystem.sol" -na;
-// End of PigChef_Throw.ma
+// End of PigChef_Throw_export.ma
