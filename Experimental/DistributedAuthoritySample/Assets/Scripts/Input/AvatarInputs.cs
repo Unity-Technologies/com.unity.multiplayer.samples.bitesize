@@ -3,28 +3,35 @@ using UnityEngine.InputSystem;
 
 namespace com.unity.multiplayer.samples.distributed_authority.input
 {
-    public class AvatarInputs : MonoBehaviour
+    class AvatarInputs : MonoBehaviour
     {
         [Header("Character Input Values")]
-        public Vector2 move;
-        public Vector2 look;
-        public bool jump;
-        public bool sprint;
+        [SerializeField]
+        internal Vector2 move;
+        [SerializeField]
+        internal Vector2 look;
+        [SerializeField]
+        internal bool jump;
+        [SerializeField]
+        internal bool sprint;
 
         [Header("Movement Settings")]
-        public bool analogMovement;
+        [SerializeField]
+        internal bool analogMovement;
 
         [Header("Mouse Cursor Settings")]
-        public bool cursorLocked = true;
-        public bool cursorInputForLook = true;
+        [SerializeField]
+        internal bool cursorLocked = true;
+        [SerializeField]
+        internal bool cursorInputForLook = true;
 
 #if ENABLE_INPUT_SYSTEM
-        public void OnMove(InputValue value)
+        void OnMove(InputValue value)
         {
             MoveInput(value.Get<Vector2>());
         }
 
-        public void OnLook(InputValue value)
+        void OnLook(InputValue value)
         {
             if (cursorInputForLook)
             {
@@ -32,33 +39,33 @@ namespace com.unity.multiplayer.samples.distributed_authority.input
             }
         }
 
-        public void OnJump(InputValue value)
+        void OnJump(InputValue value)
         {
             JumpInput(value.isPressed);
         }
 
-        public void OnSprint(InputValue value)
+        void OnSprint(InputValue value)
         {
             SprintInput(value.isPressed);
         }
 #endif
 
-        public void MoveInput(Vector2 newMoveDirection)
+        void MoveInput(Vector2 newMoveDirection)
         {
             move = newMoveDirection;
         }
 
-        public void LookInput(Vector2 newLookDirection)
+        void LookInput(Vector2 newLookDirection)
         {
             look = newLookDirection;
         }
 
-        public void JumpInput(bool newJumpState)
+        void JumpInput(bool newJumpState)
         {
             jump = newJumpState;
         }
 
-        public void SprintInput(bool newSprintState)
+        void SprintInput(bool newSprintState)
         {
             sprint = newSprintState;
         }
