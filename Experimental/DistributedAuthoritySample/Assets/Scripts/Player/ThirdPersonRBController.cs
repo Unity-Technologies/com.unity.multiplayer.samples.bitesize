@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,14 +10,19 @@ public class ThirdPersonRBController : MonoBehaviour
     public float jumpForce = 4f;
     public float gravityScale = 2f;
     public float pickupRange = 2f;  // Maximum distance to pick up an item
-    [FormerlySerializedAs("pickupLocChildTransform")]
+    public float maximumThrowTime = 5f;
+    public float minimumThrowForce = 5f;
+    public float maximumThrowForce = 15f;
     public GameObject pickupLocChild;
+    public GameObject leftHandContact;
+    public GameObject rightHandContact;
 
     private Rigidbody rb;
     private Animator animator;
     private new Collider collider;
     private GameObject currentPickupItem;
     private FixedJoint pickupLocfixedJoint;
+    private float dropTime = .1f;
 
     void Start()
     {
@@ -59,34 +66,101 @@ public class ThirdPersonRBController : MonoBehaviour
         // grabbing item
         if (Input.GetButtonDown("Fire1"))
         {
-            PickupAction();
+            // Find closest pickup item within range
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRange);
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("PickUpItem"))
+                {
+                    // Execute logic for picking up the item
+                    currentPickupItem = hitCollider.gameObject;
+                    // Rotate the player to face the item smoothly
+                    StartCoroutine(SmoothLookAt(currentPickupItem.transform));
+                    animator.SetTrigger("Pickup");
+                }
+            }
+        }
+
+        // throwing or dropping item
+        if (currentPickupItem != null && Input.GetButtonDown("Fire2"))
+        {
+            StartCoroutine(ThrowOrDropItem());
         }
     }
 
-    private void PickupAction()
+    public void PickupAction()
     {
-        // Find closest pickup item within range
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRange);
-        foreach (var hitCollider in hitColliders)
+        // Create FixedJoint and connect it to the player's hand
+        currentPickupItem.GetComponent<Rigidbody>().detectCollisions = false;
+        currentPickupItem.transform.position = pickupLocChild.transform.position;
+        currentPickupItem.transform.rotation = pickupLocChild.transform.rotation;
+        pickupLocfixedJoint.connectedBody = currentPickupItem.GetComponent<Rigidbody>();
+        // get prop hands location
+        CarryableObject carryableObject = currentPickupItem.GetComponent<CarryableObject>();
+        var leftHand = carryableObject.LeftHand;
+        var rightHand = carryableObject.RightHand;
+        // align hand contacts with prop hands
+        leftHandContact.transform.position = leftHand.transform.position;
+        rightHandContact.transform.position = rightHand.transform.position;
+        leftHandContact.transform.rotation = leftHand.transform.rotation;
+        rightHandContact.transform.rotation = rightHand.transform.rotation;
+
+        Debug.Log("Picked up: " + currentPickupItem.name);
+    }
+
+    private IEnumerator SmoothLookAt(Transform target)
+    {
+        Quaternion initialRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
+        var elapsedTime = 0f;
+        var duration = 0.23f; // Duration of the rotation in seconds
+        var rotation = transform.rotation;
+        while (elapsedTime < duration)
         {
-            if (hitCollider.CompareTag("PickUpItem"))
-            {
-                // Execute logic for picking up the item
-                currentPickupItem = hitCollider.gameObject;
-
-                // Create FixedJoint and connect it to the player's hand
-                currentPickupItem.GetComponent<Rigidbody>().detectCollisions = false;
-                currentPickupItem.transform.position = pickupLocChild.transform.position;
-                currentPickupItem.transform.rotation = pickupLocChild.transform.rotation;
-                /*var currentRotation = currentPickupItem.transform.localEulerAngles;
-                currentPickupItem.transform.localEulerAngles = new Vector3(currentRotation.x + 90, currentRotation.y, currentRotation.z);*/
-                pickupLocfixedJoint.connectedBody = currentPickupItem.GetComponent<Rigidbody>();
-
-                Debug.Log("Picked up: " + currentPickupItem.name);
-                animator.SetTrigger("Pickup");
-                break;
-            }
+            rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / duration);
+            rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0); // Keep only the y-axis rotation
+            transform.rotation = rotation;
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        // Ensure the final rotation is exactly towards the target
+        rotation = targetRotation;
+        rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0); // Keep only the y-axis rotation
+    }
+
+    private IEnumerator ThrowOrDropItem()
+    {
+        float startTime = Time.time;
+        yield return new WaitUntil(() => Input.GetButtonUp("Fire2"));
+        float heldTime = Time.time - startTime;
+        if (heldTime <= dropTime)
+        {
+            DropItem();
+        }
+        else
+        {
+            float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
+            ThrowItem(throwForce);
+        }
+    }
+
+    private void DropItem()
+    {
+        animator.SetTrigger("Drop");
+        pickupLocfixedJoint.connectedBody = null;
+        currentPickupItem.GetComponent<Rigidbody>().detectCollisions = true;
+        currentPickupItem = null;
+    }
+
+    private void ThrowItem(float force)
+    {
+        animator.SetTrigger("Throw");
+        pickupLocfixedJoint.connectedBody = null;
+        Rigidbody itemRb = currentPickupItem.GetComponent<Rigidbody>();
+        itemRb.detectCollisions = true;
+        itemRb.AddForce(transform.forward * force, ForceMode.Impulse);
+        currentPickupItem = null;
     }
 
     void OnDrawGizmos()
