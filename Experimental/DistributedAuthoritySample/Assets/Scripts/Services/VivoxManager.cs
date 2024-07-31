@@ -16,6 +16,9 @@ namespace Services
         public static string PlayerProfileName { get; private set; }
         public string SessionName { get; set; }
 
+        [SerializeField] private int ProxyAudibleDistance = 10, ConversationalDistance = 10;
+        [SerializeField] private float AudioFadeIntensityByDistanceAudio = 10.0f;
+
         private void Awake()
         {
             if (Instance == null)
@@ -49,7 +52,18 @@ namespace Services
         {
             SessionName = channelName;
             var channelOptions = new ChannelOptions();
-            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
+            //await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
+
+            // TODO: proxy chat
+            await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.TextAndAudio,
+                new Channel3DProperties(
+                    ProxyAudibleDistance,
+                    ConversationalDistance,
+                    AudioFadeIntensityByDistanceAudio,
+                    AudioFadeModel.ExponentialByDistance
+                ),
+                channelOptions);
+
             Debug.Log("Joined text and audio channel");
         }
 
