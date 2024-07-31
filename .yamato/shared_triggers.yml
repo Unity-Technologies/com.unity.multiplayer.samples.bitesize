@@ -14,9 +14,9 @@ pull_request_trigger:
 {% endif -%}
 {% endfor -%}
     # iOS
-    - .yamato/mobile-build-and-run.yml#mobile_test_ios_{{ project.name }}_{{ editor }}
+    - .yamato/mobile-build-and-run.yml#Build_Player_With_Tests_iOS_{{ project.name }}_{{ editor }}
     # Android
-    - .yamato/mobile-build-and-run.yml#mobile_test_android_{{ project.name }}_{{ editor }}
+    - .yamato/mobile-build-and-run.yml#Build_Player_With_Tests_Android_{{ project.name }}_{{ editor }}
 {% endfor -%}
 {% endfor -%}
   triggers:
