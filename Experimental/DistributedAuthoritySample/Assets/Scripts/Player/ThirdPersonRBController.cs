@@ -9,13 +9,14 @@ public class ThirdPersonRBController : MonoBehaviour
     public float turnSpeed = 7f;
     public float jumpForce = 4f;
     public float gravityScale = 2f;
-    public float pickupRange = 2f;  // Maximum distance to pick up an item
+    public float pickupRange = 1f;  // Maximum distance to pick up an item
     public float maximumThrowTime = 5f;
     public float minimumThrowForce = 5f;
     public float maximumThrowForce = 15f;
     public GameObject pickupLocChild;
     public GameObject leftHandContact;
     public GameObject rightHandContact;
+    public float pickupAngleThreshold = 0.342f; // Cosine of 70 degrees for a 140-degree cone
 
     private Rigidbody rb;
     private Animator animator;
@@ -64,19 +65,28 @@ public class ThirdPersonRBController : MonoBehaviour
         rb.AddForce(new Vector3(0, -1, 0) * gravityScale);
 
         // grabbing item
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && currentPickupItem == null)
         {
             // Find closest pickup item within range
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRange);
+            Collider[] hitColliders = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), new Vector3(pickupRange/2, pickupRange/2, pickupRange/2));
             foreach (var hitCollider in hitColliders)
             {
                 if (hitCollider.CompareTag("PickUpItem"))
                 {
-                    // Execute logic for picking up the item
-                    currentPickupItem = hitCollider.gameObject;
-                    // Rotate the player to face the item smoothly
-                    StartCoroutine(SmoothLookAt(currentPickupItem.transform));
-                    animator.SetTrigger("Pickup");
+                    // Calculate direction to the item
+                    Vector3 directionToItem = (hitCollider.transform.position - transform.position).normalized;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToItem);
+
+                    // Check if the item is within the field of view
+                    if (dotProduct > pickupAngleThreshold)
+                    {
+                        // Execute logic for picking up the item
+                        currentPickupItem = hitCollider.gameObject;
+                        // Rotate the player to face the item smoothly
+                        StartCoroutine(SmoothLookAt(currentPickupItem.transform));
+                        animator.SetTrigger("Pickup");
+                        break; // Exit the loop after picking up the first item
+                    }
                 }
             }
         }
@@ -86,6 +96,13 @@ public class ThirdPersonRBController : MonoBehaviour
         {
             StartCoroutine(ThrowOrDropItem());
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        // Visualize the pickup range in the editor
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), new Vector3(pickupRange, pickupRange, pickupRange));
     }
 
     public void PickupAction()
@@ -162,12 +179,6 @@ public class ThirdPersonRBController : MonoBehaviour
         itemRb.AddForce(transform.forward * force, ForceMode.Impulse);
         currentPickupItem = null;
     }
-
-    void OnDrawGizmos()
-    {
-        // Visualize the pickup range in the editor
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, pickupRange);
-    }
 }
+
 
