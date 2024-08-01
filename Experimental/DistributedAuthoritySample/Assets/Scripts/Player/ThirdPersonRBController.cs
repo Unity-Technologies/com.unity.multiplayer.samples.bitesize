@@ -12,7 +12,7 @@ public class ThirdPersonRBController : MonoBehaviour
     public float pickupRange = 1f;  // Maximum distance to pick up an item
     public float maximumThrowTime = 5f;
     public float minimumThrowForce = 5f;
-    public float maximumThrowForce = 15f;
+    public float maximumThrowForce = 25f;
     public GameObject pickupLocChild;
     public GameObject leftHandContact;
     public GameObject rightHandContact;
@@ -23,7 +23,8 @@ public class ThirdPersonRBController : MonoBehaviour
     private new Collider collider;
     private GameObject currentPickupItem;
     private FixedJoint pickupLocfixedJoint;
-    private float dropTime = .1f;
+    private float dropTime = .2f;
+    private float heldTime = 0f;
 
     void Start()
     {
@@ -150,19 +151,18 @@ public class ThirdPersonRBController : MonoBehaviour
     {
         float startTime = Time.time;
         yield return new WaitUntil(() => Input.GetButtonUp("Fire2"));
-        float heldTime = Time.time - startTime;
+        heldTime = Time.time - startTime;
         if (heldTime <= dropTime)
         {
-            DropItem();
+            DropAction();
         }
         else
         {
-            float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
-            ThrowItem(throwForce);
+            animator.SetTrigger("Throw");
         }
     }
 
-    private void DropItem()
+    private void DropAction()
     {
         animator.SetTrigger("Drop");
         pickupLocfixedJoint.connectedBody = null;
@@ -170,13 +170,13 @@ public class ThirdPersonRBController : MonoBehaviour
         currentPickupItem = null;
     }
 
-    private void ThrowItem(float force)
+    private void ThrowAction()
     {
-        animator.SetTrigger("Throw");
         pickupLocfixedJoint.connectedBody = null;
         Rigidbody itemRb = currentPickupItem.GetComponent<Rigidbody>();
         itemRb.detectCollisions = true;
-        itemRb.AddForce(transform.forward * force, ForceMode.Impulse);
+        float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
+        itemRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
         currentPickupItem = null;
     }
 }
