@@ -53,6 +53,8 @@ namespace Services
             await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.TextAndAudio,
                 new Channel3DProperties(), channelOptions);
 
+            VivoxService.Instance.Set3DPosition(m_ParticipantPrefab, channelName);
+
             Debug.Log("Joined text and audio channel");
         }
 
