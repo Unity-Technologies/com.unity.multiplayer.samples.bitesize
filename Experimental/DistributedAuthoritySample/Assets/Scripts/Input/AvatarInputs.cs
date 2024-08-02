@@ -7,23 +7,23 @@ namespace com.unity.multiplayer.samples.distributed_authority.input
     {
         [Header("Character Input Values")]
         [SerializeField]
-        internal Vector2 move;
+        internal Vector2 Move;
         [SerializeField]
-        internal Vector2 look;
+        internal Vector2 Look;
         [SerializeField]
-        internal bool jump;
+        internal bool Jump;
         [SerializeField]
-        internal bool sprint;
+        internal bool Sprint;
 
         [Header("Movement Settings")]
         [SerializeField]
-        internal bool analogMovement;
+        internal bool AnalogMovement;
 
         [Header("Mouse Cursor Settings")]
         [SerializeField]
-        internal bool cursorLocked = true;
+        internal bool CursorLocked = true;
         [SerializeField]
-        internal bool cursorInputForLook = true;
+        internal bool CursorInputForLook = true;
 
 #if ENABLE_INPUT_SYSTEM
         void OnMove(InputValue value)
@@ -33,7 +33,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.input
 
         void OnLook(InputValue value)
         {
-            if (cursorInputForLook)
+            if (CursorInputForLook)
             {
                 LookInput(value.Get<Vector2>());
             }
@@ -52,27 +52,27 @@ namespace com.unity.multiplayer.samples.distributed_authority.input
 
         void MoveInput(Vector2 newMoveDirection)
         {
-            move = newMoveDirection;
+            Move = newMoveDirection;
         }
 
         void LookInput(Vector2 newLookDirection)
         {
-            look = newLookDirection;
+            Look = newLookDirection;
         }
 
         void JumpInput(bool newJumpState)
         {
-            jump = newJumpState;
+            Jump = newJumpState;
         }
 
         void SprintInput(bool newSprintState)
         {
-            sprint = newSprintState;
+            Sprint = newSprintState;
         }
 
         void OnApplicationFocus(bool hasFocus)
         {
-            SetCursorState(cursorLocked);
+            SetCursorState(CursorLocked);
         }
 
         void SetCursorState(bool newState)

@@ -71,7 +71,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
                 return;
             }
 
-            m_Movement = new Vector3(m_AvatarInputs.move.x, 0, m_AvatarInputs.move.y).normalized;
+            m_Movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
 
             // Handle rotation based on input direction
             if (m_Movement.magnitude >= 0.1f)
@@ -81,10 +81,10 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * m_RotationSpeed);
             }
 
-            if (IsGrounded() && m_AvatarInputs.jump)
+            if (IsGrounded() && m_AvatarInputs.Jump)
             {
                 m_Jump = true;
-                m_AvatarInputs.jump = false;
+                m_AvatarInputs.Jump = false;
             }
         }
 
@@ -96,7 +96,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             }
 
             var velocity = m_Rigidbody.linearVelocity;
-            var desiredVelocity = m_Movement * (m_AvatarInputs.sprint ? m_SprintSpeed : m_WalkSpeed);
+            var desiredVelocity = m_Movement * (m_AvatarInputs.Sprint ? m_SprintSpeed : m_WalkSpeed);
             var targetVelocity = new Vector3(desiredVelocity.x, velocity.y, desiredVelocity.z);
             var velocityChange = targetVelocity - velocity;
 
