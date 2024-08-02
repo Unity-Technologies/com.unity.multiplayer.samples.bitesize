@@ -2,20 +2,17 @@ using System;
 using Unity.Netcode;
 using Unity.Services.Vivox;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class AudioIOController : NetworkBehaviour
 {
     private Boolean InputMuted, OutputMuted;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         InputMuted = false;
         OutputMuted = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (IsOwner)
@@ -26,10 +23,12 @@ public class AudioIOController : NetworkBehaviour
                 if (InputMuted)
                 {
                     VivoxService.Instance.UnmuteInputDevice();
+                    Debug.Log("Input Unmuted");
                 }
                 else
                 {
                     VivoxService.Instance.MuteInputDevice();
+                    Debug.Log("Input Muted");
                 }
 
                 InputMuted = !InputMuted;
@@ -41,10 +40,12 @@ public class AudioIOController : NetworkBehaviour
                 if (OutputMuted)
                 {
                     VivoxService.Instance.UnmuteOutputDevice();
+                    Debug.Log("Output Unmuted");
                 }
                 else
                 {
                     VivoxService.Instance.MuteOutputDevice();
+                    Debug.Log("Output Muted");
                 }
 
                 OutputMuted = !OutputMuted;
