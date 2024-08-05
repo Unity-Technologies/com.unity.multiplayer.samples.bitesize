@@ -25,38 +25,26 @@ namespace Misc
         void Update()
         {
             // RNSM
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
             {
-                if (Input.GetKeyDown(KeyCode.LeftShift))
-                {
-                    isRnsmOverlayActive = !isRnsmOverlayActive;
-                    m_Rnsm.Visible = isRnsmOverlayActive;
-                }
+                isRnsmOverlayActive = !isRnsmOverlayActive;
+                m_Rnsm.Visible = isRnsmOverlayActive;
             }
 
             // Network Simulator
-            if (Input.GetKeyDown(KeyCode.N))
+            if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
             {
-                if (Input.GetKeyDown(KeyCode.LeftShift))
-                {
-                    ToggleNetworkSimulator();
-                }
+                ToggleNetworkSimulator();
             }
 
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
             {
-                if (Input.GetKeyDown(KeyCode.LeftShift))
-                {
-                    TriggerLagSpike(500);
-                }
+                TriggerLagSpike(500);
             }
 
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
             {
-                if (Input.GetKeyDown(KeyCode.LeftShift))
-                {
-                    SetNetworkDisconnect(true);
-                }
+                SetNetworkDisconnect(true);
             }
 
         }
