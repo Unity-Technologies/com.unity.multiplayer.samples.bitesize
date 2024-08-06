@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Services;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -24,6 +25,8 @@ public class ServicesHelper : MonoBehaviour
 
     ISession m_LastSession;
 
+    public string PlayerProfileName { get; private set; }
+
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -37,9 +40,10 @@ public class ServicesHelper : MonoBehaviour
 
             if (!AuthenticationService.Instance.IsSignedIn)
             {
+                PlayerProfileName = GetRandomString(5);
                 AuthenticationService.Instance.SignInFailed += SignInFailed;
                 AuthenticationService.Instance.SignedIn += SignedIn;
-                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
+                AuthenticationService.Instance.SwitchProfile(PlayerProfileName);
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
         }
@@ -50,12 +54,12 @@ public class ServicesHelper : MonoBehaviour
         Debug.LogWarning($"{nameof(SignedIn)} obj.ErrorCode {obj.ErrorCode}");
     }
 
-    void SignedIn()
+    async void SignedIn()
     {
         Debug.Log(nameof(SignedIn));
         if (m_InitiateVivoxOnAuthentication)
         {
-            Login();
+            await LoginToVivox();
         }
 
         LoadMenuScene();
@@ -71,22 +75,15 @@ public class ServicesHelper : MonoBehaviour
         SceneManager.LoadScene("HubScene");
     }
 
-    async void Login()
+    async Task LoginToVivox()
     {
-        await VivoxService.Instance.InitializeAsync();
-
-        var options = new LoginOptions
+        // Wait until VivoxManager.Instance is not null
+        while (VivoxManager.Instance == null)
         {
-            DisplayName = AuthenticationService.Instance.Profile,
-            EnableTTS = true
-        };
-        VivoxService.Instance.LoggedIn += LoggedInToVivox;
-        await VivoxService.Instance.LoginAsync(options);
-    }
+            await Task.Yield();
+        }
 
-    void LoggedInToVivox()
-    {
-        Debug.Log(nameof(LoggedInToVivox));
+        await VivoxManager.Instance.InitializeVivoxAsync(PlayerProfileName);
     }
 
     static string GetRandomString(int length)
@@ -115,6 +112,9 @@ public class ServicesHelper : MonoBehaviour
             }
 
             LoadHubScene();
+
+            // TODO: Channel name
+            VivoxManager.Instance.JoinChannel(sessionName);
 
             // DA TODO: m_NetworkManager.OnClientStopped += OnNetworkManagerStopped;
         }
