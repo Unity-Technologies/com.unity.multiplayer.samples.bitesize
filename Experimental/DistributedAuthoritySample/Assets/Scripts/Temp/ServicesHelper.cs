@@ -99,15 +99,15 @@ public class ServicesHelper : MonoBehaviour
     {
         try
         {
-            var options = new CreateSessionOptions(100)
+            var options = new SessionOptions()
             {
                 Name = sessionName,
-                MaxPlayers = 100,
-            };
+                MaxPlayers = 64,
+            }.WithDistributedAuthorityNetwork();
 
             if (m_LastSession == null)
             {
-                m_LastSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options.WithDistributedConnection());
+                m_LastSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
             }
             else
             {
