@@ -56,8 +56,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             }
 
             m_CurrentState = m_Offline;
-            NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
-            NetworkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
+            NetworkManager.OnConnectionEvent += OnConnectionEvent;
             NetworkManager.OnServerStarted += OnServerStarted;
             NetworkManager.ConnectionApprovalCallback += ApprovalCheck;
             NetworkManager.OnTransportFailure += OnTransportFailure;
@@ -66,8 +65,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         void OnDestroy()
         {
-            NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
-            NetworkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+            NetworkManager.OnConnectionEvent -= OnConnectionEvent;
             NetworkManager.OnServerStarted -= OnServerStarted;
             NetworkManager.ConnectionApprovalCallback -= ApprovalCheck;
             NetworkManager.OnTransportFailure -= OnTransportFailure;
@@ -87,14 +85,19 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             m_CurrentState.Enter();
         }
 
-        void OnClientDisconnectCallback(ulong clientId)
+        void OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
-            m_CurrentState.OnClientDisconnect(clientId);
-        }
-
-        void OnClientConnectedCallback(ulong clientId)
-        {
-            m_CurrentState.OnClientConnected(clientId);
+            switch (arg2.EventType)
+            {
+                case Netcode.ConnectionEvent.ClientConnected:
+                    m_CurrentState.OnClientConnected(arg2.ClientId);
+                    break;
+                case Netcode.ConnectionEvent.ClientDisconnected:
+                    m_CurrentState.OnClientDisconnect(arg2.ClientId);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(arg2.EventType), arg2.EventType, "Unhandled ConnectionEvent encountered.");
+            }
         }
 
         void OnServerStarted()
