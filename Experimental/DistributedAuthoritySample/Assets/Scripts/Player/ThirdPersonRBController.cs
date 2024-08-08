@@ -150,35 +150,62 @@ public class ThirdPersonRBController : MonoBehaviour
     private IEnumerator ThrowOrDropItem()
     {
         float startTime = Time.time;
-        yield return new WaitUntil(() => Input.GetButtonUp("Fire2"));
-        heldTime = Time.time - startTime;
-        if (heldTime <= dropTime)
+        bool throwTriggered = false;
+
+        // Coroutine to handle the button release scenario
+        StartCoroutine(HandleButtonRelease(startTime, throwTriggered));
+
+        // Continuously check if heldTime reaches dropTime
+        while (!throwTriggered)
         {
-            DropAction();
+            heldTime = Time.time - startTime;
+            if (heldTime >= dropTime)
+            {
+                animator.SetTrigger("Throw");
+                throwTriggered = true;
+            }
+            yield return null; // Wait for the next frame
         }
-        else
+    }
+
+    private IEnumerator HandleButtonRelease(float startTime, bool throwTriggered)
+    {
+        yield return new WaitUntil(() => Input.GetButtonUp("Fire2") || throwTriggered);
+        if (!throwTriggered)
         {
-            animator.SetTrigger("Throw");
+            heldTime = Time.time - startTime;
+            if (heldTime < dropTime)
+            {
+                DropAction();
+            }
+
+            // If throwTriggered is true, Activate ThrowAction here
+            else
+            {
+                ThrowAction();
+            }
         }
+
     }
 
     private void DropAction()
-    {
-        animator.SetTrigger("Drop");
-        pickupLocfixedJoint.connectedBody = null;
-        currentPickupItem.GetComponent<Rigidbody>().detectCollisions = true;
-        currentPickupItem = null;
-    }
+        {
+            animator.SetTrigger("Drop");
+            pickupLocfixedJoint.connectedBody = null;
+            currentPickupItem.GetComponent<Rigidbody>().detectCollisions = true;
+            currentPickupItem = null;
+        }
 
-    private void ThrowAction()
-    {
-        pickupLocfixedJoint.connectedBody = null;
-        Rigidbody itemRb = currentPickupItem.GetComponent<Rigidbody>();
-        itemRb.detectCollisions = true;
-        float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
-        itemRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
-        currentPickupItem = null;
-    }
+        private void ThrowAction()
+        {
+            animator.SetTrigger("ThrowRelease");
+            pickupLocfixedJoint.connectedBody = null;
+            Rigidbody itemRb = currentPickupItem.GetComponent<Rigidbody>();
+            itemRb.detectCollisions = true;
+            float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
+            itemRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
+            currentPickupItem = null;
+        }
 }
 
 
