@@ -186,6 +186,7 @@ public class ThirdPersonRBController : MonoBehaviour
             // If throwTriggered is true, Activate ThrowAction here
             else
             {
+                heldTime = Time.time - startTime;
                 ThrowAction();
             }
         }
