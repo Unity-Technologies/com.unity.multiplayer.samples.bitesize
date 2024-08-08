@@ -164,6 +164,10 @@ public class ThirdPersonRBController : MonoBehaviour
                 animator.SetTrigger("Throw");
                 throwTriggered = true;
             }
+            if (currentPickupItem == null)
+            {
+                break;
+            }
             yield return null; // Wait for the next frame
         }
     }
