@@ -38,8 +38,6 @@ public class ThirdPersonRBController : MonoBehaviour
 {
     // player input
     Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-    Debug.Log($"moveInput: {moveInput}");
-
     if (Input.GetKey(KeyCode.LeftShift))
     {
         moveInput.y = 2f;
@@ -104,11 +102,8 @@ public class ThirdPersonRBController : MonoBehaviour
         StartCoroutine(ThrowOrDropItem());
     }
 
-    // Monitor Rigidbody properties for debugging
-    Debug.Log($"Velocity: {rb.velocity}, Angular Velocity: {rb.angularVelocity}");
-
     // Apply a dead zone to the angular velocity to zero out small values
-    if (Mathf.Abs(rb.angularVelocity.y) < 0.01f)
+    if (Mathf.Abs(rb.angularVelocity.y) < 0.7f)
     {
         rb.angularVelocity = new Vector3(rb.angularVelocity.x, 0, rb.angularVelocity.z);
     }
