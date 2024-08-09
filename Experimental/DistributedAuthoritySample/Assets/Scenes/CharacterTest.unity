@@ -126,6 +126,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4634949050256877846, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 8353930243667998089, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
       propertyPath: m_Name
       value: PigChef_RigSetup
@@ -470,7 +474,7 @@ GameObject:
   - component: {fileID: 1625914605}
   - component: {fileID: 1625914604}
   - component: {fileID: 1625914608}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
