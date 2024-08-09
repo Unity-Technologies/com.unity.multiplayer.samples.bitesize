@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ThirdPersonRBController : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class ThirdPersonRBController : MonoBehaviour
     public float turnSpeed = 7f;
     public float jumpForce = 4f;
     public float gravityScale = 2f;
-    public float pickupRange = 1f;  // Maximum distance to pick up an item
+    public float pickupRange = 1f; // Maximum distance to pick up an item
     public float maximumThrowTime = 5f;
     public float minimumThrowForce = 5f;
     public float maximumThrowForce = 25f;
@@ -38,6 +37,7 @@ public class ThirdPersonRBController : MonoBehaviour
     {
         // player input
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             moveInput.y = 2f;
@@ -53,8 +53,11 @@ public class ThirdPersonRBController : MonoBehaviour
         rb.MovePosition(transform.position + transform.forward * moveInput.y * moveSpeed * Time.deltaTime);
 
         // turning
-        Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, moveInput.x * turnSpeed * 30f, 0) * Time.deltaTime);
-        rb.MoveRotation(rb.rotation * deltaRotation);
+        if (Mathf.Abs(moveInput.x) > 0.01f) // Only rotate if moveInput.x is significantly non-zero
+        {
+            Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, moveInput.x * turnSpeed * 30f, 0) * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRotation);
+        }
 
         // jumping
         if (Input.GetButtonDown("Jump") && grounded)
@@ -69,7 +72,7 @@ public class ThirdPersonRBController : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && currentPickupItem == null)
         {
             // Find closest pickup item within range
-            Collider[] hitColliders = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), new Vector3(pickupRange/2, pickupRange/2, pickupRange/2));
+            Collider[] hitColliders = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), new Vector3(pickupRange / 2, pickupRange / 2, pickupRange / 2));
             foreach (var hitCollider in hitColliders)
             {
                 if (hitCollider.CompareTag("PickUpItem"))
@@ -83,6 +86,7 @@ public class ThirdPersonRBController : MonoBehaviour
                     {
                         // Execute logic for picking up the item
                         currentPickupItem = hitCollider.gameObject;
+
                         // Rotate the player to face the item smoothly
                         StartCoroutine(SmoothLookAt(currentPickupItem.transform));
                         animator.SetTrigger("Pickup");
@@ -96,6 +100,12 @@ public class ThirdPersonRBController : MonoBehaviour
         if (currentPickupItem != null && Input.GetButtonDown("Fire2"))
         {
             StartCoroutine(ThrowOrDropItem());
+        }
+
+        // Apply a dead zone to the angular velocity to zero out small values
+        if (Mathf.Abs(rb.angularVelocity.y) < 0.7f)
+        {
+            rb.angularVelocity = new Vector3(rb.angularVelocity.x, 0, rb.angularVelocity.z);
         }
     }
 
@@ -113,10 +123,12 @@ public class ThirdPersonRBController : MonoBehaviour
         currentPickupItem.transform.position = pickupLocChild.transform.position;
         currentPickupItem.transform.rotation = pickupLocChild.transform.rotation;
         pickupLocfixedJoint.connectedBody = currentPickupItem.GetComponent<Rigidbody>();
+
         // get prop hands location
         CarryableObject carryableObject = currentPickupItem.GetComponent<CarryableObject>();
         var leftHand = carryableObject.LeftHand;
         var rightHand = carryableObject.RightHand;
+
         // align hand contacts with prop hands
         leftHandContact.transform.position = leftHand.transform.position;
         rightHandContact.transform.position = rightHand.transform.position;
@@ -164,10 +176,12 @@ public class ThirdPersonRBController : MonoBehaviour
                 animator.SetTrigger("Throw");
                 throwTriggered = true;
             }
+
             if (currentPickupItem == null)
             {
                 break;
             }
+
             yield return null; // Wait for the next frame
         }
     }
@@ -190,27 +204,24 @@ public class ThirdPersonRBController : MonoBehaviour
                 ThrowAction();
             }
         }
-
     }
 
     private void DropAction()
-        {
-            animator.SetTrigger("Drop");
-            pickupLocfixedJoint.connectedBody = null;
-            currentPickupItem.GetComponent<Rigidbody>().detectCollisions = true;
-            currentPickupItem = null;
-        }
+    {
+        animator.SetTrigger("Drop");
+        pickupLocfixedJoint.connectedBody = null;
+        currentPickupItem.GetComponent<Rigidbody>().detectCollisions = true;
+        currentPickupItem = null;
+    }
 
-        private void ThrowAction()
-        {
-            animator.SetTrigger("ThrowRelease");
-            pickupLocfixedJoint.connectedBody = null;
-            Rigidbody itemRb = currentPickupItem.GetComponent<Rigidbody>();
-            itemRb.detectCollisions = true;
-            float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
-            itemRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
-            currentPickupItem = null;
-        }
+    private void ThrowAction()
+    {
+        animator.SetTrigger("ThrowRelease");
+        pickupLocfixedJoint.connectedBody = null;
+        Rigidbody itemRb = currentPickupItem.GetComponent<Rigidbody>();
+        itemRb.detectCollisions = true;
+        float throwForce = Mathf.Lerp(minimumThrowForce, maximumThrowForce, heldTime / maximumThrowTime);
+        itemRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
+        currentPickupItem = null;
+    }
 }
-
-
