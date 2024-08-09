@@ -45,7 +45,7 @@ public class ThirdPersonRBController : MonoBehaviour
 
         // check grounded
         bool grounded = Physics.CheckCapsule(collider.bounds.center,
-            new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.1f, collider.bounds.center.z), 0.02f);
+            new Vector3(collider.bounds.center.x, collider.bounds.min.y - 0.1f, collider.bounds.center.z), 0.2f);
         animator.SetBool("Grounded", grounded);
 
         // forward movement
@@ -62,8 +62,8 @@ public class ThirdPersonRBController : MonoBehaviour
         // jumping
         if (Input.GetButtonDown("Jump") && grounded)
         {
-            animator.SetTrigger("Jump");
-            rb.AddForce(new Vector3(0, 1, 0) * jumpForce * 100f);
+                animator.SetTrigger("Jump");
+                rb.AddForce(new Vector3(0, 1, 0) * (jumpForce * 100f));
         }
 
         rb.AddForce(new Vector3(0, -1, 0) * gravityScale);
