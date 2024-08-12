@@ -21,7 +21,9 @@ Each scene comes with an in-editor tutorial that will help you explore the main 
 
 ---
 ### 💡 Documentation
-Check out the in-editor tutorials bundled with the sample for a more in-depth technical breakdown of our engineering decisions and why the sample works the way it does.
+Check out the in-editor tutorials bundled with the sample for a more in-depth technical breakdown of our engineering decisions, why the sample works the way it does, and to learn core Netcode For GameObejcts concepts.
+
+You can always access both the Tutorials window and the Welcome Dialog from the *Tutorials* menu.
 
 ---
 <br>
