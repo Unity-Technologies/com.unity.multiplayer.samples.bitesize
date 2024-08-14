@@ -1483,7 +1483,9 @@ PrefabInstance:
       value: -1.6761255
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7403457892506547677, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
+    - {fileID: 6220984856482385868, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1083073290189785667, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
       insertIndex: -1
@@ -1862,6 +1864,9 @@ MonoBehaviour:
   leftHandContact: {fileID: 3721660875845472093}
   rightHandContact: {fileID: 150371580926074530}
   pickupAngleThreshold: 0.342
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &4589486523240472741
 MonoBehaviour:
   m_ObjectHideFlags: 0
