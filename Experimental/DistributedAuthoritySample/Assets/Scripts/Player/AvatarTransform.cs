@@ -1,9 +1,8 @@
 using Unity.Netcode.Components;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using com.unity.multiplayer.samples.distributed_authority.input;
+using com.unity.multiplayer.samples.socialhub.input;
 
-namespace com.unity.multiplayer.samples.distributed_authority.gameplay
+namespace com.unity.multiplayer.samples.socialhub.player
 {
     [RequireComponent(typeof(Rigidbody))]
     public class AvatarTransform : NetworkTransform
@@ -11,7 +10,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
         [SerializeField]
         Rigidbody m_Rigidbody;
         [SerializeField]
-        PlayerInput m_PlayerInput;
+        MonoBehaviour m_PlayerInput;
         [SerializeField]
         AvatarInputs m_AvatarInputs;
         [SerializeField]

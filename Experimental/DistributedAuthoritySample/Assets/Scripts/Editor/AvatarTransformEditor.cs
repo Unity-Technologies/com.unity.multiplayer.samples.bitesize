@@ -1,10 +1,10 @@
-using com.unity.multiplayer.samples.distributed_authority.gameplay;
+using com.unity.multiplayer.samples.socialhub.player;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace com.unity.multiplayer.samples.distributed_authority.editor
+namespace com.unity.multiplayer.samples.socialhub.editor
 {
     [CustomEditor(typeof(AvatarTransform))]
     class DerivedComponentEditor : Editor

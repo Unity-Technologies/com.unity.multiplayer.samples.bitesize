@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace com.unity.multiplayer.samples.distributed_authority.input
+[assembly: InternalsVisibleTo("com.unity.multiplayer.samples.socialhub.player")]
+namespace com.unity.multiplayer.samples.socialhub.input
 {
     class AvatarInputs : MonoBehaviour
     {
