@@ -1,8 +1,8 @@
 using Unity.Netcode.Components;
 using UnityEngine;
-using com.unity.multiplayer.samples.socialhub.input;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 
-namespace com.unity.multiplayer.samples.socialhub.player
+namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
     public class AvatarTransform : NetworkTransform
