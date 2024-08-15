@@ -1,6 +1,7 @@
 using Unity.Netcode.Components;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
+using UnityEngine.InputSystem;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
@@ -10,7 +11,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         Rigidbody m_Rigidbody;
         [SerializeField]
-        MonoBehaviour m_PlayerInput;
+        PlayerInput m_PlayerInput;
         [SerializeField]
         AvatarInputs m_AvatarInputs;
         [SerializeField]
@@ -52,6 +53,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             m_PlayerInput.enabled = true;
+            m_AvatarInputs.enabled = true;
             m_Rigidbody.isKinematic = false;
 
             // Freeze rotation on the x and z axes to prevent toppling
