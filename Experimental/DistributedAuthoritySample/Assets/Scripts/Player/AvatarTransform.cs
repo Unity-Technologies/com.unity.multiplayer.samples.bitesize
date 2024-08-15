@@ -52,6 +52,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             m_PlayerInput.enabled = true;
+            m_AvatarInputs.enabled = true;
             m_Rigidbody.isKinematic = false;
 
             // Freeze rotation on the x and z axes to prevent toppling
