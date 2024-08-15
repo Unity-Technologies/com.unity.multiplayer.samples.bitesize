@@ -9,37 +9,38 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
     public class AvatarTransform : NetworkTransform
     {
         [SerializeField]
-        Rigidbody m_Rigidbody;
+        private Rigidbody m_Rigidbody;
         [SerializeField]
-        PlayerInput m_PlayerInput;
+        private PlayerInput m_PlayerInput;
         [SerializeField]
-        AvatarInputs m_AvatarInputs;
+        private AvatarInputs m_AvatarInputs;
         [SerializeField]
-        float m_WalkSpeed;
+        private float m_WalkSpeed;
         [SerializeField]
-        float m_SprintSpeed;
+        private float m_SprintSpeed;
         [SerializeField]
-        float m_Acceleration;
+        private float m_Acceleration;
         [SerializeField]
-        float m_DragCoefficient;
+        private float m_DragCoefficient;
         [SerializeField]
-        float m_AirControlFactor;
+        private float m_AirControlFactor;
         [SerializeField]
-        float m_JumpImpusle;
+        private float m_JumpImpulse; // Fixed typo from "Impusle" to "Impulse"
         [SerializeField]
-        float m_CustomGravityMultiplier;
+        private float m_CustomGravityMultiplier;
         [SerializeField]
-        float m_RotationSpeed;
+        private float m_RotationSpeed;
         [SerializeField]
-        float m_GroundCheckDistance;
+        private float m_GroundCheckDistance;
 
-        Vector3 m_Movement;
-        // grab jump state from input and clear after consumed
-        bool m_Jump;
-        // cached grounded check
-        bool m_IsGrounded;
-        RaycastHit[] m_RaycastHits = new RaycastHit[1];
-        Ray m_Ray;
+        [SerializeField]
+        private TransformAnchor protagonistTransformAnchor; // Added the TransformAnchor
+
+        private Vector3 m_Movement;
+        private bool m_Jump;
+        private bool m_IsGrounded;
+        private RaycastHit[] m_RaycastHits = new RaycastHit[1];
+        private Ray m_Ray;
 
         public override void OnNetworkSpawn()
         {
@@ -55,16 +56,18 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             m_PlayerInput.enabled = true;
             m_Rigidbody.isKinematic = false;
 
-            // Freeze rotation on the x and z axes to prevent toppling
             m_Rigidbody.freezeRotation = true;
 
             var spawnPosition = new Vector3(0f, 1.5f, 0f);
-            transform.SetPositionAndRotation(position: spawnPosition, rotation: Quaternion.identity);
+            transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
             m_Rigidbody.position = spawnPosition;
             m_Rigidbody.linearVelocity = Vector3.zero;
+
+            // Set the protagonist's transform anchor for camera follow
+            protagonistTransformAnchor.Provide(transform);
         }
 
-        void Update()
+        private void Update()
         {
             if (!IsSpawned || !HasAuthority)
             {
@@ -73,7 +76,6 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
 
             m_Movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
 
-            // Handle rotation based on input direction
             if (m_Movement.magnitude >= 0.1f)
             {
                 var targetAngle = Mathf.Atan2(m_Movement.x, m_Movement.z) * Mathf.Rad2Deg;
@@ -88,7 +90,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             }
         }
 
-        void ApplyMovement()
+        private void ApplyMovement()
         {
             if (Mathf.Approximately(m_Movement.magnitude, 0f))
             {
@@ -102,73 +104,64 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
 
             if (m_IsGrounded)
             {
-                // Apply force proportional to acceleration while grounded
                 var force = velocityChange * m_Acceleration;
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
             }
             else
             {
-                // Apply reduced force in the air for air control
                 var force = velocityChange * (m_Acceleration * m_AirControlFactor);
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
             }
         }
 
-        void ApplyJump()
+        private void ApplyJump()
         {
             if (m_IsGrounded && m_Jump)
             {
-                m_Rigidbody.AddForce(Vector3.up * m_JumpImpusle, ForceMode.Impulse);
+                m_Rigidbody.AddForce(Vector3.up * m_JumpImpulse, ForceMode.Impulse);
                 m_Jump = false;
             }
         }
 
-        void UpdateGroundedStatus()
+        private void UpdateGroundedStatus()
         {
             m_IsGrounded = IsGrounded();
         }
 
-        bool IsGrounded()
+        private bool IsGrounded()
         {
-            // Perform a raycast to check if the character is grounded
             m_Ray.origin = m_Rigidbody.worldCenterOfMass;
             m_Ray.direction = Vector3.down;
             return Physics.RaycastNonAlloc(m_Ray, m_RaycastHits, m_GroundCheckDistance) > 0;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            if (!IsSpawned || !HasAuthority || m_Rigidbody != null && m_Rigidbody.isKinematic)
+            if (!IsSpawned || !HasAuthority || m_Rigidbody.isKinematic)
             {
                 return;
             }
 
             UpdateGroundedStatus();
-
             ApplyMovement();
-
             ApplyJump();
-
             ApplyDrag();
-
             ApplyCustomGravity();
         }
 
-        void ApplyDrag()
+        private void ApplyDrag()
         {
             var groundVelocity = m_Rigidbody.linearVelocity;
             groundVelocity.y = 0f;
             if (groundVelocity.magnitude > 0f)
             {
-                // Apply deceleration force to stop movement
                 var dragForce = -m_DragCoefficient * groundVelocity.magnitude * groundVelocity;
                 m_Rigidbody.AddForce(dragForce, ForceMode.Acceleration);
             }
         }
 
-        void ApplyCustomGravity()
+        private void ApplyCustomGravity()
         {
-            // custom gravity
             if (!m_IsGrounded)
             {
                 var customGravity = Physics.gravity * (m_CustomGravityMultiplier - 1);
