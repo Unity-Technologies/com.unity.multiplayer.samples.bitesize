@@ -3,23 +3,18 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "Game/Input Reader")]
-public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameInput.IDialoguesActions, GameInput.IMenusActions, GameInput.ICheatsActions
+public class InputReader : DescriptionBaseSO
 {
 	[Space]
 	[SerializeField] private GameStateSO _gameStateManager;
-	
+
 	// Assign delegate{} to events to initialise them with an empty delegate
 	// so we can skip the null check when we use them
 
 	// Gameplay
 	public event UnityAction JumpEvent = delegate { };
 	public event UnityAction JumpCanceledEvent = delegate { };
-	public event UnityAction AttackEvent = delegate { };
-	public event UnityAction AttackCanceledEvent = delegate { };
 	public event UnityAction InteractEvent = delegate { }; // Used to talk, pickup objects, interact with tools like the cooking cauldron
-	public event UnityAction InventoryActionButtonEvent = delegate { };
-	public event UnityAction SaveActionButtonEvent = delegate { };
-	public event UnityAction ResetActionButtonEvent = delegate { };
 	public event UnityAction<Vector2> MoveEvent = delegate { };
 	public event UnityAction<Vector2, bool> CameraMoveEvent = delegate { };
 	public event UnityAction EnableMouseControlCameraEvent = delegate { };
@@ -30,17 +25,12 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 	// Shared between menus and dialogues
 	public event UnityAction MoveSelectionEvent = delegate { };
 
-	// Dialogues
-	public event UnityAction AdvanceDialogueEvent = delegate { };
-
 	// Menus
 	public event UnityAction MenuMouseMoveEvent = delegate { };
 	public event UnityAction MenuClickButtonEvent = delegate { };
 	public event UnityAction MenuUnpauseEvent = delegate { };
 	public event UnityAction MenuPauseEvent = delegate { };
 	public event UnityAction MenuCloseEvent = delegate { };
-	public event UnityAction OpenInventoryEvent = delegate { }; // Used to bring up the inventory
-	public event UnityAction CloseInventoryEvent = delegate { }; // Used to bring up the inventory
 	public event UnityAction<float> TabSwitched = delegate { };
 
 	// Cheats (has effect only in the Editor)
@@ -53,11 +43,6 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 		if (_gameInput == null)
 		{
 			_gameInput = new GameInput();
-
-			_gameInput.Menus.SetCallbacks(this);
-			_gameInput.Gameplay.SetCallbacks(this);
-			_gameInput.Dialogues.SetCallbacks(this);
-			_gameInput.Cheats.SetCallbacks(this);
 		}
 
 #if UNITY_EDITOR
@@ -70,46 +55,10 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 		DisableAllInput();
 	}
 
-	public void OnAttack(InputAction.CallbackContext context)
-	{
-		switch (context.phase)
-		{
-			case InputActionPhase.Performed:
-				AttackEvent.Invoke();
-				break;
-			case InputActionPhase.Canceled:
-				AttackCanceledEvent.Invoke();
-				break;
-		}
-	}
-
-	public void OnOpenInventory(InputAction.CallbackContext context)
-	{
-		if (context.phase == InputActionPhase.Performed)
-			OpenInventoryEvent.Invoke();
-	}
 	public void OnCancel(InputAction.CallbackContext context)
 	{
 		if (context.phase == InputActionPhase.Performed)
 			MenuCloseEvent.Invoke();
-	}
-
-	public void OnInventoryActionButton(InputAction.CallbackContext context)
-	{
-		if (context.phase == InputActionPhase.Performed)
-			InventoryActionButtonEvent.Invoke();
-	}
-
-	public void OnSaveActionButton(InputAction.CallbackContext context)
-	{
-		if (context.phase == InputActionPhase.Performed)
-			SaveActionButtonEvent.Invoke();
-	}
-
-	public void OnResetActionButton(InputAction.CallbackContext context)
-	{
-		if (context.phase == InputActionPhase.Performed)
-			ResetActionButtonEvent.Invoke();
 	}
 
 	public void OnInteract(InputAction.CallbackContext context)
@@ -174,13 +123,6 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 			MoveSelectionEvent.Invoke();
 	}
 
-	public void OnAdvanceDialogue(InputAction.CallbackContext context)
-	{
-
-		if (context.phase == InputActionPhase.Performed)
-			AdvanceDialogueEvent.Invoke();
-	}
-
 	public void OnConfirm(InputAction.CallbackContext context)
 	{
 		if (context.phase == InputActionPhase.Performed)
@@ -210,21 +152,17 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 	{
 		_gameInput.Menus.Enable();
 		_gameInput.Gameplay.Disable();
-		_gameInput.Dialogues.Enable();
 	}
 
 	public void EnableGameplayInput()
 	{
 		_gameInput.Menus.Disable();
-		_gameInput.Dialogues.Disable();
 		_gameInput.Gameplay.Enable();
 	}
 
 	public void EnableMenuInput()
 	{
-		_gameInput.Dialogues.Disable();
 		_gameInput.Gameplay.Disable();
-
 		_gameInput.Menus.Enable();
 	}
 
@@ -232,7 +170,6 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 	{
 		_gameInput.Gameplay.Disable();
 		_gameInput.Menus.Disable();
-		_gameInput.Dialogues.Disable();
 	}
 
 	public void OnChangeTab(InputAction.CallbackContext context)
@@ -257,7 +194,7 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 	{
 
 	}
-	
+
 	public void OnRightClick(InputAction.CallbackContext context)
 	{
 
@@ -268,8 +205,4 @@ public class InputReader : DescriptionBaseSO, GameInput.IGameplayActions, GameIn
 
 	}
 
-	public void OnCloseInventory(InputAction.CallbackContext context)
-	{
-		CloseInventoryEvent.Invoke();
-	}
 }

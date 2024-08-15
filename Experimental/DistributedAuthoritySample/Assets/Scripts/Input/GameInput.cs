@@ -47,15 +47,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
-                    ""type"": ""Button"",
-                    ""id"": ""65a85ccc-c121-43d5-b6c9-83674e675ddc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""d0d85176-6fc5-486b-bc5c-36cdd4cb6a54"",
@@ -68,15 +59,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""f788c753-f77b-43bf-b5b7-bc98b77814ec"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""OpenInventory"",
-                    ""type"": ""Button"",
-                    ""id"": ""1b6ae4df-f5e6-42fc-92b6-3dcc2e126563"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1802,10 +1784,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
-        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
-        m_Gameplay_OpenInventory = m_Gameplay.FindAction("OpenInventory", throwIfNotFound: true);
         m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
         m_Gameplay_MouseControlCamera = m_Gameplay.FindAction("MouseControlCamera", throwIfNotFound: true);
         m_Gameplay_Run = m_Gameplay.FindAction("Run", throwIfNotFound: true);
@@ -1904,10 +1884,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Jump;
-    private readonly InputAction m_Gameplay_Attack;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_Pause;
-    private readonly InputAction m_Gameplay_OpenInventory;
     private readonly InputAction m_Gameplay_RotateCamera;
     private readonly InputAction m_Gameplay_MouseControlCamera;
     private readonly InputAction m_Gameplay_Run;
@@ -1917,10 +1895,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public GameplayActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
-        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
-        public InputAction @OpenInventory => m_Wrapper.m_Gameplay_OpenInventory;
         public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
         public InputAction @MouseControlCamera => m_Wrapper.m_Gameplay_MouseControlCamera;
         public InputAction @Run => m_Wrapper.m_Gameplay_Run;
@@ -1939,18 +1915,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
-            @OpenInventory.started += instance.OnOpenInventory;
-            @OpenInventory.performed += instance.OnOpenInventory;
-            @OpenInventory.canceled += instance.OnOpenInventory;
             @RotateCamera.started += instance.OnRotateCamera;
             @RotateCamera.performed += instance.OnRotateCamera;
             @RotateCamera.canceled += instance.OnRotateCamera;
@@ -1970,18 +1940,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
-            @OpenInventory.started -= instance.OnOpenInventory;
-            @OpenInventory.performed -= instance.OnOpenInventory;
-            @OpenInventory.canceled -= instance.OnOpenInventory;
             @RotateCamera.started -= instance.OnRotateCamera;
             @RotateCamera.performed -= instance.OnRotateCamera;
             @RotateCamera.canceled -= instance.OnRotateCamera;
@@ -2079,9 +2043,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @ChangeTab.started += instance.OnChangeTab;
             @ChangeTab.performed += instance.OnChangeTab;
             @ChangeTab.canceled += instance.OnChangeTab;
-            @InventoryActionButton.started += instance.OnInventoryActionButton;
-            @InventoryActionButton.performed += instance.OnInventoryActionButton;
-            @InventoryActionButton.canceled += instance.OnInventoryActionButton;
             @SaveActionButton.started += instance.OnSaveActionButton;
             @SaveActionButton.performed += instance.OnSaveActionButton;
             @SaveActionButton.canceled += instance.OnSaveActionButton;
@@ -2128,9 +2089,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @ChangeTab.started -= instance.OnChangeTab;
             @ChangeTab.performed -= instance.OnChangeTab;
             @ChangeTab.canceled -= instance.OnChangeTab;
-            @InventoryActionButton.started -= instance.OnInventoryActionButton;
-            @InventoryActionButton.performed -= instance.OnInventoryActionButton;
-            @InventoryActionButton.canceled -= instance.OnInventoryActionButton;
             @SaveActionButton.started -= instance.OnSaveActionButton;
             @SaveActionButton.performed -= instance.OnSaveActionButton;
             @SaveActionButton.canceled -= instance.OnSaveActionButton;
@@ -2190,9 +2148,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @MoveSelection.started += instance.OnMoveSelection;
             @MoveSelection.performed += instance.OnMoveSelection;
             @MoveSelection.canceled += instance.OnMoveSelection;
-            @AdvanceDialogue.started += instance.OnAdvanceDialogue;
-            @AdvanceDialogue.performed += instance.OnAdvanceDialogue;
-            @AdvanceDialogue.canceled += instance.OnAdvanceDialogue;
         }
 
         private void UnregisterCallbacks(IDialoguesActions instance)
@@ -2200,9 +2155,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @MoveSelection.started -= instance.OnMoveSelection;
             @MoveSelection.performed -= instance.OnMoveSelection;
             @MoveSelection.canceled -= instance.OnMoveSelection;
-            @AdvanceDialogue.started -= instance.OnAdvanceDialogue;
-            @AdvanceDialogue.performed -= instance.OnAdvanceDialogue;
-            @AdvanceDialogue.canceled -= instance.OnAdvanceDialogue;
         }
 
         public void RemoveCallbacks(IDialoguesActions instance)
@@ -2279,10 +2231,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnOpenInventory(InputAction.CallbackContext context);
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnMouseControlCamera(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
@@ -2297,7 +2247,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnMouseMove(InputAction.CallbackContext context);
         void OnUnpause(InputAction.CallbackContext context);
         void OnChangeTab(InputAction.CallbackContext context);
-        void OnInventoryActionButton(InputAction.CallbackContext context);
         void OnSaveActionButton(InputAction.CallbackContext context);
         void OnResetActionButton(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
@@ -2308,7 +2257,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     public interface IDialoguesActions
     {
         void OnMoveSelection(InputAction.CallbackContext context);
-        void OnAdvanceDialogue(InputAction.CallbackContext context);
     }
     public interface ICheatsActions
     {
