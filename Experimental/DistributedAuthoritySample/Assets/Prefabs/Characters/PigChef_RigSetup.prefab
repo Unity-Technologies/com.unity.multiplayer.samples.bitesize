@@ -1154,6 +1154,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 50.569973
       objectReference: {fileID: 0}
+    - target: {fileID: 6236864711762602263, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ce36dbfd88ee9684bace1dc69291c6b5, type: 2}
     - target: {fileID: 6238229487294904517, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -3.0670633
@@ -1852,7 +1856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773f019e80151034aa8663326cf3a1ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  moveSpeed: 5
   turnSpeed: 7
   jumpForce: 4
   gravityScale: 2
