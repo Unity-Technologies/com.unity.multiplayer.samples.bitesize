@@ -1,13 +1,13 @@
-using com.unity.multiplayer.samples.distributed_authority.gameplay;
+using Unity.Multiplayer.Samples.SocialHub.Player;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace com.unity.multiplayer.samples.distributed_authority.editor
+namespace Unity.Multiplayer.Samples.SocialHub.Editor
 {
     [CustomEditor(typeof(AvatarTransform))]
-    class DerivedComponentEditor : Editor
+    class DerivedComponentEditor : UnityEditor.Editor
     {
         public override VisualElement CreateInspectorGUI()
         {
