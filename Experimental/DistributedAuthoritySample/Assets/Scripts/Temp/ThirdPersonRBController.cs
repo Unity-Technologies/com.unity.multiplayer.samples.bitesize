@@ -35,79 +35,80 @@ public class ThirdPersonRBController : MonoBehaviour
     }
 
     void LateUpdate()
-{
-    // player input
-    Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-    if (Input.GetKey(KeyCode.LeftShift))
     {
-        moveInput.y = 2f;
-    }
-
-    // check grounded
-    Vector3 capsuleBottom = new Vector3(collider.bounds.center.x, collider.bounds.min.y, collider.bounds.center.z);
-    Vector3 capsuleTop = new Vector3(collider.bounds.center.x, collider.bounds.min.y + 0.1f, collider.bounds.center.z);
-    bool grounded = Physics.CheckCapsule(capsuleBottom, capsuleTop, 0.1f, groundLayer);
-    animator.SetBool("Grounded", grounded);
-
-    // forward movement
-    animator.SetFloat("Move", moveInput.y);
-    rb.MovePosition(transform.position + transform.forward * moveInput.y * moveSpeed * Time.deltaTime);
-
-    // turning
-    if (Mathf.Abs(moveInput.x) > 0.01f)  // Only rotate if moveInput.x is significantly non-zero
-    {
-        Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, moveInput.x * turnSpeed * 30f, 0) * Time.deltaTime);
-        rb.MoveRotation(rb.rotation * deltaRotation);
-    }
-
-    // jumping
-    if (Input.GetButtonDown("Jump") && grounded)
-    {
-        animator.SetTrigger("Jump");
-        rb.AddForce(new Vector3(0, 1, 0) * jumpForce * 100f);
-    }
-
-    rb.AddForce(new Vector3(0, -1, 0) * gravityScale);
-
-    // grabbing item
-    if (Input.GetButtonDown("Fire1") && currentPickupItem == null)
-    {
-        // Find closest pickup item within range
-        Collider[] hitColliders = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), new Vector3(pickupRange / 2, pickupRange / 2, pickupRange / 2));
-        foreach (var hitCollider in hitColliders)
+        // player input
+        Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (hitCollider.CompareTag("PickUpItem"))
-            {
-                // Calculate direction to the item
-                Vector3 directionToItem = (hitCollider.transform.position - transform.position).normalized;
-                float dotProduct = Vector3.Dot(transform.forward, directionToItem);
+            moveInput.y = 2f;
+        }
 
-                // Check if the item is within the field of view
-                if (dotProduct > pickupAngleThreshold)
+        // check grounded
+        Vector3 capsuleBottom = new Vector3(collider.bounds.center.x, collider.bounds.min.y, collider.bounds.center.z);
+        Vector3 capsuleTop = new Vector3(collider.bounds.center.x, collider.bounds.min.y + 0.1f, collider.bounds.center.z);
+        bool grounded = Physics.CheckCapsule(capsuleBottom, capsuleTop, 0.1f, groundLayer);
+        animator.SetBool("Grounded", grounded);
+
+        // forward movement
+        animator.SetFloat("Move", moveInput.y);
+        rb.MovePosition(transform.position + transform.forward * moveInput.y * moveSpeed * Time.deltaTime);
+
+        // turning
+        if (Mathf.Abs(moveInput.x) > 0.01f) // Only rotate if moveInput.x is significantly non-zero
+        {
+            Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, moveInput.x * turnSpeed * 30f, 0) * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRotation);
+        }
+
+        // jumping
+        if (Input.GetButtonDown("Jump") && grounded)
+        {
+            animator.SetTrigger("Jump");
+            rb.AddForce(new Vector3(0, 1, 0) * jumpForce * 100f);
+        }
+
+        rb.AddForce(new Vector3(0, -1, 0) * gravityScale);
+
+        // grabbing item
+        if (Input.GetButtonDown("Fire1") && currentPickupItem == null)
+        {
+            // Find closest pickup item within range
+            Collider[] hitColliders = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.5f), new Vector3(pickupRange / 2, pickupRange / 2, pickupRange / 2));
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("PickUpItem"))
                 {
-                    // Execute logic for picking up the item
-                    currentPickupItem = hitCollider.gameObject;
-                    // Rotate the player to face the item smoothly
-                    StartCoroutine(SmoothLookAt(currentPickupItem.transform));
-                    animator.SetTrigger("Pickup");
-                    break; // Exit the loop after picking up the first item
+                    // Calculate direction to the item
+                    Vector3 directionToItem = (hitCollider.transform.position - transform.position).normalized;
+                    float dotProduct = Vector3.Dot(transform.forward, directionToItem);
+
+                    // Check if the item is within the field of view
+                    if (dotProduct > pickupAngleThreshold)
+                    {
+                        // Execute logic for picking up the item
+                        currentPickupItem = hitCollider.gameObject;
+
+                        // Rotate the player to face the item smoothly
+                        StartCoroutine(SmoothLookAt(currentPickupItem.transform));
+                        animator.SetTrigger("Pickup");
+                        break; // Exit the loop after picking up the first item
+                    }
                 }
             }
         }
-    }
 
-    // throwing or dropping item
-    if (currentPickupItem != null && Input.GetButtonDown("Fire2"))
-    {
-        StartCoroutine(ThrowOrDropItem());
-    }
+        // throwing or dropping item
+        if (currentPickupItem != null && Input.GetButtonDown("Fire2"))
+        {
+            StartCoroutine(ThrowOrDropItem());
+        }
 
-    // Apply a dead zone to the angular velocity to zero out small values
-    if (Mathf.Abs(rb.angularVelocity.y) < 0.7f)
-    {
-        rb.angularVelocity = new Vector3(rb.angularVelocity.x, 0, rb.angularVelocity.z);
+        // Apply a dead zone to the angular velocity to zero out small values
+        if (Mathf.Abs(rb.angularVelocity.y) < 0.7f)
+        {
+            rb.angularVelocity = new Vector3(rb.angularVelocity.x, 0, rb.angularVelocity.z);
+        }
     }
-}
 
     void OnDrawGizmos()
     {
