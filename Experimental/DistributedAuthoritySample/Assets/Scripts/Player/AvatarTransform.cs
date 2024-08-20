@@ -1,9 +1,9 @@
 using Unity.Netcode.Components;
 using UnityEngine;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine.InputSystem;
-using com.unity.multiplayer.samples.distributed_authority.input;
 
-namespace com.unity.multiplayer.samples.distributed_authority.gameplay
+namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
     public class AvatarTransform : NetworkTransform
@@ -53,6 +53,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             }
 
             m_PlayerInput.enabled = true;
+            m_AvatarInputs.enabled = true;
             m_Rigidbody.isKinematic = false;
 
             // Freeze rotation on the x and z axes to prevent toppling
