@@ -64,7 +64,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             m_Rigidbody.linearVelocity = Vector3.zero;
 
             // Set the protagonist's transform anchor for camera follow
-            protagonistTransformAnchor.Provide(transform);
+            //protagonistTransformAnchor.Provide(transform);
         }
 
         private void Update()
