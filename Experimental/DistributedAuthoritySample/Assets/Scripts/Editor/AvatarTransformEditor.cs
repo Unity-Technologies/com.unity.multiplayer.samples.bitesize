@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using Unity.Multiplayer.Samples.SocialHub.Player;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -30,3 +31,4 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor
         }
     }
 }
+#endif

@@ -6,6 +6,11 @@ public class CarryableObjectMP : NetworkBehaviour
     public GameObject LeftHand;
     public GameObject RightHand;
 
+    public Transform LeftHandContact;
+    public Transform RightHandContact;
+
+    public bool IfPickedUp;
+
     public bool PickUp()
     {
         if (!IsSpawned)
@@ -26,5 +31,16 @@ public class CarryableObjectMP : NetworkBehaviour
         NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
 
         return true;
+    }
+
+    public void OnUpdate()
+    {
+        if (!IsSpawned || !IfPickedUp)
+        {
+            return;
+        }
+
+        LeftHandContact.position = LeftHand.transform.position;
+        RightHandContact.position = RightHand.transform.position;
     }
 }
