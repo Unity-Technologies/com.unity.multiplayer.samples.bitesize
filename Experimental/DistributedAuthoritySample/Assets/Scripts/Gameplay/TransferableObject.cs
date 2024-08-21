@@ -1,11 +1,10 @@
 using System;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    class EnvironmentTransform : NetworkTransform, IOwnershipRequestable, IGameplayEventInvokable
+    class TransferableObject : NetworkBehaviour, IOwnershipRequestable, IGameplayEventInvokable
     {
         public event Action<NetworkObject, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
 
