@@ -13,6 +13,10 @@ public class NetworkAvatarManager : MonoBehaviour
 
     private void OnDisable()
     {
+        if(NetworkManager.Singleton == null)
+        {
+            return;
+        }
         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
     }
 
@@ -33,7 +37,7 @@ public class NetworkAvatarManager : MonoBehaviour
             AvatarTransform avatarTransform = FindFirstObjectByType<AvatarTransform>();
             if (avatarTransform != null)
             {
-                cameraControl.SetAvatarTransform(avatarTransform);
+                //cameraControl.SetAvatarTransform(avatarTransform);
             }
             else
             {

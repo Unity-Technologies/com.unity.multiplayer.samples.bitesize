@@ -1,32 +1,41 @@
+using System.Collections;
 using com.unity.multiplayer.samples.distributed_authority.gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
+using Unity.Netcode;
 
 public class CameraControl : MonoBehaviour
 {
     public Camera mainCamera; // Reference to the main camera
-    public float zoomSpeed = 10f;
-    public float rotationSpeed = 1f;
-    public float minFoV = 15f;
-    public float maxFoV = 90f;
-    public float minDistance = 2f;
-    public float maxDistance = 10f;
+    public CinemachineFreeLook freeLookVCam; // Reference to the Cinemachine FreeLook virtual camera
+    public float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
 
     private AvatarActions playerInputActions;
-    private AvatarTransform avatarTransform;
+    private AvatarTransform avatarTransform; // This will be assigned at runtime
     private float distance;
     private bool isRotating = false;
+    private bool _cameraMovementLock = false;
+    private bool _isRMBPressed = false; // To track the right mouse button press
 
     private void Awake()
     {
         playerInputActions = new AvatarActions();
-        playerInputActions.Player.Zoom.performed += OnZoom;
-        playerInputActions.Player.Rotate.started += context => isRotating = true;
-        playerInputActions.Player.Rotate.canceled += context => isRotating = false;
+
+        // Setup input event handlers
+        playerInputActions.Player.Rotate.started += OnRotateStarted;
+        playerInputActions.Player.Rotate.canceled += OnRotateCanceled;
+        playerInputActions.Player.Look.performed += OnLookPerformed;
 
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
+        }
+
+        // Register the client connected callback
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
     }
 
@@ -38,73 +47,126 @@ public class CameraControl : MonoBehaviour
     private void OnDisable()
     {
         playerInputActions.Disable();
-    }
 
-    private void Update()
-    {
-        if (isRotating && avatarTransform != null)
+        // Unregister the client connected callback
+        if (NetworkManager.Singleton != null)
         {
-            RotateCamera();
-        }
-        else if (avatarTransform != null)
-        {
-            UpdateCameraPosition();
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
         }
     }
 
-    private void OnZoom(InputAction.CallbackContext context)
+    private void OnClientConnected(ulong clientId)
     {
-        if (avatarTransform == null) return;
-
-        float scrollValue = context.ReadValue<float>();
-
-        // Adjust the camera field of view for zooming
-        float fov = mainCamera.fieldOfView;
-        fov -= scrollValue * zoomSpeed;
-        fov = Mathf.Clamp(fov, minFoV, maxFoV);
-        mainCamera.fieldOfView = fov;
-
-        // Adjust the distance from the avatar
-        distance -= scrollValue * zoomSpeed * Time.deltaTime;
-        distance = Mathf.Clamp(distance, minDistance, maxDistance);
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            OnAvatarSpawned(clientId);
+        }
     }
 
-    private void RotateCamera()
+    private void OnAvatarSpawned(ulong clientId)
     {
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        Debug.Log("Avatar spawned for client: " + clientId);
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            // Find the AvatarTransform component on the locally controlled avatar
+            GameObject avatar = FindLocalPlayerAvatar();
+            if (avatar != null)
+            {
+                avatarTransform = avatar.GetComponent<AvatarTransform>();
+                if (avatarTransform != null)
+                {
+                    // Calculate the initial distance based on the avatar's position
+                    distance = Vector3.Distance(mainCamera.transform.position, avatarTransform.transform.position);
+                    UpdateCameraPosition(); // Update camera position to look at the new avatar
+                    SetupProtagonistVirtualCamera(); // Setup the virtual camera
 
-        float horizontalRotation = mouseDelta.x * rotationSpeed;
-        float verticalRotation = -mouseDelta.y * rotationSpeed;
+                    // Unregister the avatar spawned callback to avoid redundancy
+                    NetworkManager.Singleton.OnClientConnectedCallback -= OnAvatarSpawned;
+                }
+            }
+        }
+    }
 
-        // Calculate the rotation angles
-        mainCamera.transform.RotateAround(avatarTransform.transform.position, Vector3.up, horizontalRotation);
-        mainCamera.transform.RotateAround(avatarTransform.transform.position, mainCamera.transform.right, verticalRotation);
+    private GameObject FindLocalPlayerAvatar()
+    {
+        // Implement your logic to find the local player's avatar
+        // This could be based on tags, layers, or specific naming conventions
+        // Here is an example where avatars are tagged as "Player"
 
-        // Ensure the camera maintains the correct distance
-        UpdateCameraPosition();
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in players)
+        {
+            // Check if this player belongs to the local client
+            // You can add more conditions if required based on your networking setup
+            if (player.GetComponent<NetworkObject>().IsLocalPlayer)
+            {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    private void OnRotateStarted(InputAction.CallbackContext context)
+    {
+        _isRMBPressed = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        StartCoroutine(DisableMouseControlForFrame());
+    }
+
+    private void OnRotateCanceled(InputAction.CallbackContext context)
+    {
+        _isRMBPressed = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Clear input values
+        freeLookVCam.m_XAxis.m_InputAxisValue = 0;
+        freeLookVCam.m_YAxis.m_InputAxisValue = 0;
+    }
+
+    private IEnumerator DisableMouseControlForFrame()
+    {
+        _cameraMovementLock = true;
+        yield return new WaitForEndOfFrame();
+        _cameraMovementLock = false;
+    }
+
+    private void OnLookPerformed(InputAction.CallbackContext context)
+    {
+        Vector2 cameraMovement = context.ReadValue<Vector2>();
+        bool isDeviceMouse = context.control.device == Mouse.current;
+
+        if (_cameraMovementLock)
+            return;
+
+        if (isDeviceMouse && !_isRMBPressed)
+            return;
+
+        float deviceMultiplier = isDeviceMouse ? 0.02f : Time.deltaTime;
+
+        freeLookVCam.m_XAxis.m_InputAxisValue = cameraMovement.x * deviceMultiplier * _speedMultiplier;
+        freeLookVCam.m_YAxis.m_InputAxisValue = cameraMovement.y * deviceMultiplier * _speedMultiplier;
+    }
+
+    public void SetupProtagonistVirtualCamera()
+    {
+            Transform target = avatarTransform.transform;
+            freeLookVCam.Follow = target;
+            freeLookVCam.LookAt = target;
+            freeLookVCam.OnTargetObjectWarped(target, target.position - freeLookVCam.transform.position);
     }
 
     private void UpdateCameraPosition()
     {
-        // Maintain the camera's position behind the avatar using the current rotation and distance
+        if (avatarTransform == null) return;
+
         Vector3 direction = mainCamera.transform.position - avatarTransform.transform.position;
-        direction.Normalize();
+        direction.Normalize(); // Normalize the direction vector to ensure proper positioning
 
         mainCamera.transform.position = avatarTransform.transform.position - direction * distance;
-    }
-
-    // Method to set the reference to the AvatarTransform
-    public void SetAvatarTransform(AvatarTransform newAvatarTransform)
-    {
-        avatarTransform = newAvatarTransform;
-        if (avatarTransform != null)
-        {
-            // Calculate the initial distance based on the avatar's position
-            distance = Vector3.Distance(mainCamera.transform.position, avatarTransform.transform.position);
-        }
+        mainCamera.transform.LookAt(avatarTransform.transform); // Ensure the camera looks at the avatar
     }
 }
-
-
-
 

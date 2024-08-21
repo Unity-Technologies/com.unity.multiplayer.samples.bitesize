@@ -2,6 +2,7 @@ using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using com.unity.multiplayer.samples.distributed_authority.input;
+using UnityEngine.Serialization;
 
 namespace com.unity.multiplayer.samples.distributed_authority.gameplay
 {
@@ -9,38 +10,38 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
     public class AvatarTransform : NetworkTransform
     {
         [SerializeField]
-        private Rigidbody m_Rigidbody;
+        Rigidbody m_Rigidbody;
         [SerializeField]
-        private PlayerInput m_PlayerInput;
+        PlayerInput m_PlayerInput;
         [SerializeField]
-        private AvatarInputs m_AvatarInputs;
+        AvatarInputs m_AvatarInputs;
         [SerializeField]
-        private float m_WalkSpeed;
+        float m_WalkSpeed;
         [SerializeField]
-        private float m_SprintSpeed;
+        float m_SprintSpeed;
         [SerializeField]
-        private float m_Acceleration;
+        float m_Acceleration;
         [SerializeField]
-        private float m_DragCoefficient;
+        float m_DragCoefficient;
         [SerializeField]
-        private float m_AirControlFactor;
+        float m_AirControlFactor;
+        [FormerlySerializedAs("m_JumpImpusle")]
         [SerializeField]
-        private float m_JumpImpulse; // Fixed typo from "Impusle" to "Impulse"
+        float m_JumpImpulse;
         [SerializeField]
-        private float m_CustomGravityMultiplier;
+        float m_CustomGravityMultiplier;
         [SerializeField]
-        private float m_RotationSpeed;
+        float m_RotationSpeed;
         [SerializeField]
-        private float m_GroundCheckDistance;
+        float m_GroundCheckDistance;
 
-        [SerializeField]
-        private TransformAnchor protagonistTransformAnchor; // Added the TransformAnchor
-
-        private Vector3 m_Movement;
-        private bool m_Jump;
-        private bool m_IsGrounded;
-        private RaycastHit[] m_RaycastHits = new RaycastHit[1];
-        private Ray m_Ray;
+        Vector3 m_Movement;
+        // grab jump state from input and clear after consumed
+        bool m_Jump;
+        // cached grounded check
+        bool m_IsGrounded;
+        RaycastHit[] m_RaycastHits = new RaycastHit[1];
+        Ray m_Ray;
 
         public override void OnNetworkSpawn()
         {
@@ -54,20 +55,19 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             }
 
             m_PlayerInput.enabled = true;
+            m_AvatarInputs.enabled = true;
             m_Rigidbody.isKinematic = false;
 
+            // Freeze rotation on the x and z axes to prevent toppling
             m_Rigidbody.freezeRotation = true;
 
             var spawnPosition = new Vector3(0f, 1.5f, 0f);
-            transform.SetPositionAndRotation(spawnPosition, Quaternion.identity);
+            transform.SetPositionAndRotation(position: spawnPosition, rotation: Quaternion.identity);
             m_Rigidbody.position = spawnPosition;
             m_Rigidbody.linearVelocity = Vector3.zero;
-
-            // Set the protagonist's transform anchor for camera follow
-            //protagonistTransformAnchor.Provide(transform);
         }
 
-        private void Update()
+        void Update()
         {
             if (!IsSpawned || !HasAuthority)
             {
@@ -76,6 +76,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
 
             m_Movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
 
+            // Handle rotation based on input direction
             if (m_Movement.magnitude >= 0.1f)
             {
                 var targetAngle = Mathf.Atan2(m_Movement.x, m_Movement.z) * Mathf.Rad2Deg;
@@ -90,7 +91,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             }
         }
 
-        private void ApplyMovement()
+        void ApplyMovement()
         {
             if (Mathf.Approximately(m_Movement.magnitude, 0f))
             {
@@ -104,17 +105,19 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
 
             if (m_IsGrounded)
             {
+                // Apply force proportional to acceleration while grounded
                 var force = velocityChange * m_Acceleration;
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
             }
             else
             {
+                // Apply reduced force in the air for air control
                 var force = velocityChange * (m_Acceleration * m_AirControlFactor);
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
             }
         }
 
-        private void ApplyJump()
+        void ApplyJump()
         {
             if (m_IsGrounded && m_Jump)
             {
@@ -123,45 +126,52 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
             }
         }
 
-        private void UpdateGroundedStatus()
+        void UpdateGroundedStatus()
         {
             m_IsGrounded = IsGrounded();
         }
 
-        private bool IsGrounded()
+        bool IsGrounded()
         {
+            // Perform a raycast to check if the character is grounded
             m_Ray.origin = m_Rigidbody.worldCenterOfMass;
             m_Ray.direction = Vector3.down;
             return Physics.RaycastNonAlloc(m_Ray, m_RaycastHits, m_GroundCheckDistance) > 0;
         }
 
-        private void FixedUpdate()
+        void FixedUpdate()
         {
-            if (!IsSpawned || !HasAuthority || m_Rigidbody.isKinematic)
+            if (!IsSpawned || !HasAuthority || m_Rigidbody != null && m_Rigidbody.isKinematic)
             {
                 return;
             }
 
             UpdateGroundedStatus();
+
             ApplyMovement();
+
             ApplyJump();
+
             ApplyDrag();
+
             ApplyCustomGravity();
         }
 
-        private void ApplyDrag()
+        void ApplyDrag()
         {
             var groundVelocity = m_Rigidbody.linearVelocity;
             groundVelocity.y = 0f;
             if (groundVelocity.magnitude > 0f)
             {
+                // Apply deceleration force to stop movement
                 var dragForce = -m_DragCoefficient * groundVelocity.magnitude * groundVelocity;
                 m_Rigidbody.AddForce(dragForce, ForceMode.Acceleration);
             }
         }
 
-        private void ApplyCustomGravity()
+        void ApplyCustomGravity()
         {
+            // custom gravity
             if (!m_IsGrounded)
             {
                 var customGravity = Physics.gravity * (m_CustomGravityMultiplier - 1);
