@@ -60,19 +60,49 @@ void AdditionalLights_float(float Smoothness, float3 WorldPosition, float3 World
     float3 specularColor = 0;
     float4 White = 1;
 
-#if !defined(SHADERGRAPH_PREVIEW)
+    #if !defined(SHADERGRAPH_PREVIEW)
+
+    #if defined(_ADDITIONAL_LIGHTS)
     Smoothness = exp2(10 * Smoothness + 1);
     WorldNormal = normalize(WorldNormal);
     WorldView = SafeNormalize(WorldView);
-    int pixelLightCount = GetAdditionalLightsCount();
-    for (int i = 0; i < pixelLightCount; ++i)
+    uint pixelLightCount = GetAdditionalLightsCount();
+
+    #if USE_FORWARD_PLUS
+    [loop] for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
     {
-        Light light = GetAdditionalLight(i, WorldPosition);
+        FORWARD_PLUS_SUBTRACTIVE_LIGHT_CHECK
+
+        Light light = GetAdditionalLight(lightIndex, WorldPosition);
         half3 attenuatedLightColor = light.color * (light.distanceAttenuation * light.shadowAttenuation);
         diffuseColor += LightingLambert(attenuatedLightColor, light.direction, WorldNormal);
         specularColor += LightingSpecular(attenuatedLightColor, light.direction, WorldNormal, WorldView, White, Smoothness);
     }
-#endif
+    #endif
+
+    //InputData is used in the LIGHT_LOOP_BEGIN macro define in RealtimeLights.hlsl
+    InputData inputData;
+    inputData.positionWS = WorldPosition;
+    inputData.normalWS = 0;
+    inputData.viewDirectionWS = 0;
+    inputData.shadowCoord = 0;
+    inputData.fogCoord = 0;
+    inputData.vertexLighting = 0;
+    inputData.bakedGI = 0;
+    float4 screenPos = ComputeScreenPos(TransformWorldToHClip(WorldPosition));
+    inputData.normalizedScreenSpaceUV = screenPos.xy / screenPos.w;
+    inputData.shadowMask = 0;
+
+    LIGHT_LOOP_BEGIN(pixelLightCount)
+    Light light = GetAdditionalLight(lightIndex, WorldPosition);
+    half3 attenuatedLightColor = light.color * (light.distanceAttenuation * light.shadowAttenuation);
+    diffuseColor += LightingLambert(attenuatedLightColor, light.direction, WorldNormal);
+    specularColor += LightingSpecular(attenuatedLightColor, light.direction, WorldNormal, WorldView, White, Smoothness);
+    LIGHT_LOOP_END
+
+    #endif
+
+    #endif
 
     Diffuse = diffuseColor;
     Specular = specularColor;
