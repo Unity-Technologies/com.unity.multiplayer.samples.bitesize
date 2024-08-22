@@ -7,16 +7,15 @@ using Unity.Netcode;
 
 public class CameraControl : MonoBehaviour
 {
-    public Camera mainCamera; // Reference to the main camera
-    public CinemachineFreeLook freeLookVCam; // Reference to the Cinemachine FreeLook virtual camera
+    public Camera mainCamera;
+    public CinemachineFreeLook freeLookVCam;
     public float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
 
     private AvatarActions playerInputActions;
     private AvatarTransform avatarTransform; // This will be assigned at runtime
     private float distance;
-    private bool isRotating = false;
     private bool _cameraMovementLock = false;
-    private bool _isRMBPressed = false; // To track the right mouse button press
+    private bool _isRMBPressed = false;
 
     private void Awake()
     {

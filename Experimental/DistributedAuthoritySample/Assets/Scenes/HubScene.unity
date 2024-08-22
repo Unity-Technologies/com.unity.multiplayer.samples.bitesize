@@ -462,62 +462,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1504129995 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2964538699308551913, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
-  m_PrefabInstance: {fileID: 997564436}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82463f0bf3615684483dd531854bcd9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1764561623
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1764561625}
-  - component: {fileID: 1764561624}
-  m_Layer: 0
-  m_Name: NetworkAvatarManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1764561624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1764561623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c4788f85f5d75847964258f85379440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraControl: {fileID: 1504129995}
---- !u!4 &1764561625
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1764561623}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 76.236946, y: 17.726944, z: 118.50775}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1888825843
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,6 +590,5 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1888825847}
   - {fileID: 1305680751}
-  - {fileID: 1764561625}
   - {fileID: 62351400}
   - {fileID: 997564436}
