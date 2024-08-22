@@ -175,17 +175,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0193228de87741d40a42e561901c9083, type: 3}
---- !u!114 &62351401 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1676734517288307196, guid: 0193228de87741d40a42e561901c9083, type: 3}
-  m_PrefabInstance: {fileID: 62351400}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,15 +355,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 203267159508449512, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.641814
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 203267159508449512, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 203267159508449512, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.490666
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 203267159508449512, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
       propertyPath: m_LocalRotation.w
@@ -408,10 +397,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 203267159508449519, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
+      propertyPath: field of view
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 203267159508449519, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
+      propertyPath: far clip plane
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 203267159508449519, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 2964538699308551913, guid: 36b3ee75677a1544191c0ddaaadd8140, type: 3}
       propertyPath: freeLookVCam
       value: 
-      objectReference: {fileID: 62351401}
+      objectReference: {fileID: 1995730424}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -626,6 +627,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1995730424 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1676734517288307196, guid: 0193228de87741d40a42e561901c9083, type: 3}
+  m_PrefabInstance: {fileID: 62351400}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
