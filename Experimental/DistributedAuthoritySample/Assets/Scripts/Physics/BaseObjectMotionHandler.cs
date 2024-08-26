@@ -242,8 +242,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         /// <param name="averagedCollisionStayNormal"></param>
         public void ContactEvent(ulong eventId, Vector3 averageNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
         {
-            Debug.Log($"{nameof(OnContactEvent)} {gameObject.name} isKinematic {this.Rigidbody.isKinematic} collidingBody {collidingBody.gameObject.name} isKinematic {collidingBody.isKinematic}");
-
             if (!IsSpawned)
             {
                 return;
