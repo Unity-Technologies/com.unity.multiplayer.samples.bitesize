@@ -212,9 +212,10 @@ GameObject:
   - component: {fileID: -8100831418301897270}
   - component: {fileID: 4903152183366241606}
   - component: {fileID: 8197190117666738524}
+  - component: {fileID: 539700041658036575}
   m_Layer: 0
   m_Name: Avatar
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -233,6 +234,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 527982249900556139}
+  - {fileID: 3820763517226122587}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2864305741433477372
@@ -247,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2473698027
+  GlobalObjectIdHash: 3001504883
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -298,7 +300,7 @@ MonoBehaviour:
   m_Acceleration: 50
   m_DragCoefficient: 4
   m_AirControlFactor: 0.5
-  m_JumpImpulse: 7
+  m_JumpImpusle: 7
   m_CustomGravityMultiplier: 2
   m_RotationSpeed: 700
   m_GroundCheckDistance: 1.1
@@ -356,7 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: dcd1b4eb76b964f40afe6c0a3ca65c82, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: dcd1b4eb76b964f40afe6c0a3ca65c82,
+    type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -381,7 +384,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478015027486214707}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e9f71718dd134b14b300e378e98c718, type: 3}
   m_Name: 
@@ -393,3 +396,77 @@ MonoBehaviour:
   AnalogMovement: 0
   CursorLocked: 1
   CursorInputForLook: 1
+  m_InteractActionReference: {fileID: 1781555164194001046, guid: dcd1b4eb76b964f40afe6c0a3ca65c82,
+    type: 3}
+--- !u!114 &539700041658036575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478015027486214707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MainCollider: {fileID: 817796967242824188}
+  m_AvatarInputs: {fileID: 8197190117666738524}
+  m_NetworkRigidbody: {fileID: -8100831418301897270}
+  m_HoldTransform: {fileID: 3820763517226122587}
+  m_InteractCollider: {fileID: 4881592427634173612}
+  m_MinTossForce: 5
+  m_MaxTossForce: 10
+--- !u!1 &9009864878170659705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3820763517226122587}
+  - component: {fileID: 4881592427634173612}
+  m_Layer: 0
+  m_Name: InteractCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3820763517226122587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9009864878170659705}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 378099091213283077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4881592427634173612
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9009864878170659705}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

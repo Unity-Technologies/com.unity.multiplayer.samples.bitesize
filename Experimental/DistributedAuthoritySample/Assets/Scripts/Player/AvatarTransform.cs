@@ -1,10 +1,9 @@
 using Unity.Netcode.Components;
 using UnityEngine;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine.InputSystem;
-using com.unity.multiplayer.samples.distributed_authority.input;
-using UnityEngine.Serialization;
 
-namespace com.unity.multiplayer.samples.distributed_authority.gameplay
+namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
     public class AvatarTransform : NetworkTransform
@@ -25,9 +24,8 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
         float m_DragCoefficient;
         [SerializeField]
         float m_AirControlFactor;
-        [FormerlySerializedAs("m_JumpImpusle")]
         [SerializeField]
-        float m_JumpImpulse;
+        float m_JumpImpusle;
         [SerializeField]
         float m_CustomGravityMultiplier;
         [SerializeField]
@@ -36,7 +34,9 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
         float m_GroundCheckDistance;
 
         Vector3 m_Movement;
+        // grab jump state from input and clear after consumed
         bool m_Jump;
+        // cached grounded check
         bool m_IsGrounded;
         RaycastHit[] m_RaycastHits = new RaycastHit[1];
         Ray m_Ray;
@@ -72,19 +72,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
                 return;
             }
 
-            // Ensure movement is relative to the camera orientation
-            Camera mainCamera = Camera.main;
-            Vector3 forward = mainCamera.transform.forward;
-            Vector3 right = mainCamera.transform.right;
-
-            // Project forward and right onto the x-z plane (horizontal plane)
-            forward.y = 0f;
-            right.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-
-            Vector3 desiredMoveDirection = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
-            m_Movement = desiredMoveDirection.normalized;
+            m_Movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
 
             // Handle rotation based on input direction
             if (m_Movement.magnitude >= 0.1f)
@@ -131,7 +119,7 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
         {
             if (m_IsGrounded && m_Jump)
             {
-                m_Rigidbody.AddForce(Vector3.up * m_JumpImpulse, ForceMode.Impulse);
+                m_Rigidbody.AddForce(Vector3.up * m_JumpImpusle, ForceMode.Impulse);
                 m_Jump = false;
             }
         }
@@ -190,4 +178,3 @@ namespace com.unity.multiplayer.samples.distributed_authority.gameplay
         }
     }
 }
-
