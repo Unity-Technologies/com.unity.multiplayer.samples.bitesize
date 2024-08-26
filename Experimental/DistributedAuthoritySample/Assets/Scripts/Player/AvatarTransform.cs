@@ -72,7 +72,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            m_Movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
+            // Ensure movement is relative to the camera orientation
+            Camera mainCamera = Camera.main;
+            Vector3 forward = mainCamera.transform.forward;
+            Vector3 right = mainCamera.transform.right;
+
+            // Project forward and right onto the x-z plane (horizontal plane)
+            forward.y = 0f;
+            right.y = 0f;
+            forward.Normalize();
+            right.Normalize();
+
+            Vector3 desiredMoveDirection = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
+            m_Movement = desiredMoveDirection.normalized;
 
             // Handle rotation based on input direction
             if (m_Movement.magnitude >= 0.1f)

@@ -1,8 +1,8 @@
 using System.Collections;
-using com.unity.multiplayer.samples.distributed_authority.gameplay;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using Unity.Multiplayer.Samples.SocialHub.Player;
 using Unity.Netcode;
 
 public class CameraControl : MonoBehaviour
