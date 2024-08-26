@@ -3,71 +3,63 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using Unity.Multiplayer.Samples.SocialHub.Utils;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
-    public partial class PhysicsObjectMotion : BaseObjectMotionHandler
+    class PhysicsObjectMotion : BaseObjectMotionHandler
     {
-#if UNITY_EDITOR
-        public bool PhysicsObjectMotionPropertiesVisible = false;
-#endif
-
         [Serializable]
         public struct CollisionImpulseMultiplierEntry
         {
-            public CollisionTypes CollisionType;
+            public CollisionType CollisionType;
             public float MaxCollisionForce;
         }
 
-        public List<CollisionImpulseMultiplierEntry> CollisionImpulseEntries;
-        private Dictionary<CollisionTypes, CollisionImpulseMultiplierEntry> CollisionImpulseTable;
+        [SerializeField]
+        List<CollisionImpulseMultiplierEntry> m_CollisionImpulseEntries;
+        Dictionary<CollisionType, CollisionImpulseMultiplierEntry> m_CollisionImpulseTable;
 
-        public float MaxAngularVelocity = 30;
-        public float MaxVelocity = 30;
-        [HideInInspector]
-        public float StartingMass = 1.0f;
+        [SerializeField]
+        float m_MaxAngularVelocity = 30;
+        [SerializeField]
+        float m_MaxVelocity = 30;
 
-        public const float MaxMass = 5.0f;
-        public const float MinMass = 0.10f;
+        List<RemoteForce> m_RemoteAppliedForce = new List<RemoteForce>();
 
-        public MinMaxVector2Physics MinMaxStartingTorque = new MinMaxVector2Physics(5.0f, 15.0f);
-        public MinMaxVector2Physics MinMaxStartingForce = new MinMaxVector2Physics(5.0f, 30.0f);
-
-        protected NetworkVariable<bool> BeenInitialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        protected NetworkVariable<bool> m_IsInitialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         /// <summary>
         /// All of the below values keep the physics objects synchronized between clients so when ownership changes the local Rigidbody can be configured to mirror
         /// the last known physics related states.
         /// </summary>
-        protected NetworkVariable<float> Mass = new NetworkVariable<float>(1.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> AngularVelocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> Velocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> Torque = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> Force = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        protected NetworkVariable<float> m_Mass = new NetworkVariable<float>(1.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        protected NetworkVariable<Vector3> m_AngularVelocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        protected NetworkVariable<Vector3> m_Velocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        protected NetworkVariable<Vector3> m_Torque = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        protected NetworkVariable<Vector3> m_Force = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         protected override void Awake()
         {
             base.Awake();
-            CollisionImpulseTable = new Dictionary<CollisionTypes, CollisionImpulseMultiplierEntry>();
-            foreach (var entry in CollisionImpulseEntries)
+            m_CollisionImpulseTable = new Dictionary<CollisionType, CollisionImpulseMultiplierEntry>();
+            foreach (var entry in m_CollisionImpulseEntries)
             {
-                if (!CollisionImpulseTable.ContainsKey(entry.CollisionType))
+                if (!m_CollisionImpulseTable.ContainsKey(entry.CollisionType))
                 {
-                    CollisionImpulseTable.Add(entry.CollisionType, entry);
+                    m_CollisionImpulseTable.Add(entry.CollisionType, entry);
                 }
                 else
                 {
                     Debug.LogWarning($"[Duplicate Entry] A duplicate {nameof(CollisionImpulseMultiplierEntry)} of type {entry.CollisionType} was detected! Ignoring entry.");
                 }
             }
-
-            StartingMass = Rigidbody.mass;
         }
 
         protected override Vector3 OnGetObjectVelocity(bool getReference = false)
         {
             if (getReference)
             {
-                return Velocity.Value;
+                return m_Velocity.Value;
             }
 
             return base.OnGetObjectVelocity(getReference);
@@ -75,7 +67,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected override Vector3 OnGetObjectAngularVelocity()
         {
-            return AngularVelocity.Value;
+            return m_AngularVelocity.Value;
         }
 
         protected void UpdateVelocity(Vector3 velocity, bool updateObjectVelocity = true)
@@ -87,7 +79,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                     SetObjectVelocity(velocity);
                 }
 
-                Velocity.Value = velocity;
+                m_Velocity.Value = velocity;
             }
         }
 
@@ -96,7 +88,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             if (HasAuthority)
             {
                 Rigidbody.angularVelocity = angularVelocity;
-                AngularVelocity.Value = angularVelocity;
+                m_AngularVelocity.Value = angularVelocity;
             }
         }
 
@@ -105,7 +97,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             if (HasAuthority)
             {
                 Rigidbody.AddTorque(torque);
-                Torque.Value = torque;
+                m_Torque.Value = torque;
             }
         }
 
@@ -114,23 +106,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             if (HasAuthority)
             {
                 Rigidbody.AddForce(impulseForce, ForceMode.Impulse);
-                Force.Value = impulseForce;
-            }
-        }
-
-        protected void UpdateMass(float mass)
-        {
-            if (HasAuthority)
-            {
-                if (mass > MinMass && mass < MaxMass)
-                {
-                    Rigidbody.mass = mass;
-                }
-                else
-                {
-                    NetworkLog.LogWarningServer($"[{name}] Trying to assign mass of {mass} which is outside the mass boundary of {MinMass} to {MaxMass}! Clamping.");
-                    Rigidbody.mass = Mathf.Clamp(mass, MinMass, MaxMass);
-                }
+                m_Force.Value = impulseForce;
             }
         }
 
@@ -146,7 +122,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         protected override void OnAuthorityPushTransformState(ref NetworkTransformState networkTransformState)
         {
             // If we haven't already initialized for the first time or haven't initialized previous state values during spawn then exit early
-            if (!BeenInitialized.Value)
+            if (!m_IsInitialized.Value)
             {
                 return;
             }
@@ -173,13 +149,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         public override void OnNetworkSpawn()
         {
-
             // When creating customized NetworkTransform behaviors, you must always invoke the base OnNetworkSpawn
             // method if you override it in any child derive generation (i.e. always assure the NetworkTransform.OnNetworkSpawn
             // method is invoked)
             base.OnNetworkSpawn();
-
-            IsPhysicsBody = true;
 
             // Assure all colliders are enabled (authority and non-authority)
             EnableColliders(true);
@@ -188,11 +161,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             RigidbodyContactEventManager.Instance.RegisterHandler(this);
 
             // Clamp the linear and angular velocities
-            Rigidbody.maxAngularVelocity = MaxAngularVelocity;
-            Rigidbody.maxLinearVelocity = MaxVelocity;
+            Rigidbody.maxAngularVelocity = m_MaxAngularVelocity;
+            Rigidbody.maxLinearVelocity = m_MaxVelocity;
             if (HasAuthority)
             {
-
                 // Assure we are not still in kinematic mode
                 NetworkRigidbody.SetIsKinematic(false);
 
@@ -203,14 +175,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             if (!BeenInitialized.Value)
 #endif
                 {
-                    BeenInitialized.Value = true;
-                    /*var torque = GetRandomVector3(MinMaxStartingTorque, Vector3.one, true);
-                    Rigidbody.AddTorque(torque, ForceMode.Impulse);
-                    UpdateTorque(torque);
-                    var force = GetRandomVector3(MinMaxStartingForce, Vector3.one, true);
-                    force.y = 0f;
-                    Rigidbody.AddForce(force, ForceMode.Impulse);
-                    UpdateImpulseForce(force);*/
+                    m_IsInitialized.Value = true;
                 }
 #if SESSION_STORE_ENABLED
             else
@@ -231,7 +196,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             // If we are pooled and not shutting down, then reset the physics object for re-use later
             // ** Important to do this **
-            if (IsPooled)
+            if (m_IsPooled)
             {
                 EnableColliders(false);
                 if (!Rigidbody.isKinematic)
@@ -241,13 +206,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                     NetworkRigidbody.SetIsKinematic(true);
                 }
 
-                Rigidbody.mass = StartingMass;
-                BeenInitialized.Reset();
-                AngularVelocity.Reset();
-                Velocity.Reset();
-                Torque.Reset();
-                Force.Reset();
-                Mass.Reset();
+                m_IsInitialized.Reset();
+                m_AngularVelocity.Reset();
+                m_Velocity.Reset();
+                m_Torque.Reset();
+                m_Force.Reset();
+                m_Mass.Reset();
             }
         }
 
@@ -260,15 +224,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             if (NetworkManager.LocalClientId == current)
             {
                 NetworkRigidbody.SetIsKinematic(false);
-                if (BeenInitialized.Value)
+                if (m_IsInitialized.Value)
                 {
-                    Rigidbody.angularVelocity = Vector3.ClampMagnitude(GetObjectAngularVelocity(), MaxAngularVelocity);
-                    SetObjectVelocity(Vector3.ClampMagnitude(GetObjectVelocity(true), MaxVelocity));
+                    Rigidbody.angularVelocity = Vector3.ClampMagnitude(GetObjectAngularVelocity(), m_MaxAngularVelocity);
+                    SetObjectVelocity(Vector3.ClampMagnitude(GetObjectVelocity(true), m_MaxVelocity));
                 }
                 else
                 {
-                    Rigidbody.AddTorque(Torque.Value, ForceMode.Impulse);
-                    Rigidbody.AddForce(Force.Value, ForceMode.Impulse);
+                    Rigidbody.AddTorque(m_Torque.Value, ForceMode.Impulse);
+                    Rigidbody.AddForce(m_Force.Value, ForceMode.Impulse);
                 }
             }
             else
@@ -278,16 +242,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             base.OnOwnershipChanged(previous, current);
         }
-
-        private struct RemoteForce
-        {
-            public float EndOfLife;
-            public Vector3 TargetForce;
-            public Vector3 AppliedForce;
-        }
-
-        private List<RemoteForce> m_RemoteAppliedForce = new List<RemoteForce>();
-        private Dictionary<ulong, float> m_CollisionLatency = new Dictionary<ulong, float>();
 
         /// <summary>
         /// Handles queuing up incoming collisions (remote and local) to be processed
@@ -299,10 +253,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 AddForceDirect(collisionMessage.CollisionForce);
             }
 
-            base.OnHandleCollision(collisionMessage);
+            base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
         }
 
-        public void AddForceDirect(Vector3 force)
+        void AddForceDirect(Vector3 force)
         {
             var remoteForce = new RemoteForce()
             {
@@ -310,27 +264,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 AppliedForce = Vector3.zero,
             };
 
-
             m_RemoteAppliedForce.Add(remoteForce);
         }
 
         protected override void OnContactEvent(ulong eventId, Vector3 averagedCollisionNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
         {
-            // TODO: Possibly come up with a better way to route contact events at this level.
-            // For now, since lasers are always kinematic and send damage messages we divert contact events to the LaserMotion child class
             var collidingBaseObjectMotion = collidingBody.GetComponent<BaseObjectMotionHandler>();
             var collidingBodyPhys = collidingBaseObjectMotion as PhysicsObjectMotion;
 
             // If we don't have authority over either object or we are doing a second FixedUpdate pass, then exit early
             if (eventId == LastEventId || collidingBaseObjectMotion == null || (!HasAuthority && !collidingBaseObjectMotion.HasAuthority))
             {
-                return;
-            }
-
-            if (collidingBaseObjectMotion.CollisionType == CollisionTypes.Laser)
-            {
-                //var laserMotion = collidingBaseObjectMotion as LaserMotion;
-                //laserMotion.ContactEvent(eventId, averagedCollisionNormal, Rigidbody, contactPoint);
                 return;
             }
 
@@ -348,11 +292,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             if (!Rigidbody.isKinematic && collidingBody.isKinematic && thisVelocity > 0.01f)
             {
-                CollisionMessage.CollisionForce = thisKineticForce;
-                CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
-                if (DebugCollisions)
+                // our non-kinematic Rigidbody is moving with physics and hit a still kinematic Rigidbody
+
+                m_CollisionMessage.CollisionForce = thisKineticForce;
+                m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
+                if (m_DebugCollisions)
                 {
-                    //NetworkManagerHelper.Instance.LogMessage($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {GetVector3Values(thisKineticForce)} to {collidingBody.name}.");
+                    Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.");
                 }
 
                 // Send collision to owner of kinematic body
@@ -360,23 +306,25 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             }
             else if (Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
             {
-                collidingBodyPhys.CollisionMessage.CollisionForce = otherKineticForce;
-                collidingBodyPhys.CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
+                // our still, kinematic Rigidbody was hit by a non-kinematic physics-moving Rigidbody
+
+                collidingBodyPhys.m_CollisionMessage.CollisionForce = otherKineticForce;
+                collidingBodyPhys.m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
                 collidingBodyPhys.EventCollision(averagedCollisionNormal, this);
-                if (DebugCollisions)
+                if (m_DebugCollisions)
                 {
-                    //NetworkManagerHelper.Instance.LogMessage($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {GetVector3Values(otherKineticForce)} to {name}.");
+                    Debug.Log($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(otherKineticForce)} to {name}.");
                 }
             }
 
-            base.OnContactEvent(eventId, averagedCollisionNormal, collidingBody, contactPoint);
+            base.OnContactEvent(eventId, averagedCollisionNormal, collidingBody, contactPoint, hasCollisionStay, averagedCollisionStayNormal);
         }
 
         /// <summary>
-        /// Accumulatively apply the resultant collision force
+        /// Accumulative-ly apply the resultant collision force
         /// </summary>
-        /// <param name="force"></param>
-        private void ApplyCollisionForce(Vector3 force)
+        /// <param name="force"></param>s
+        void ApplyCollisionForce(Vector3 force)
         {
             Rigidbody.AddForce(force, ForceMode.Impulse);
             Rigidbody.AddTorque(force * 0.25f, ForceMode.Impulse);
@@ -385,7 +333,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         /// <summary>
         /// Processes the queued collisions forces
         /// </summary>
-        private void ProcessRemoteForces()
+        void ProcessRemoteForces()
         {
             if (m_RemoteAppliedForce.Count == 0)
             {
@@ -397,7 +345,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             {
                 var remoteForce = m_RemoteAppliedForce[i];
                 accumulativeForce += remoteForce.TargetForce;
-                if (Approximately(remoteForce.TargetForce, Vector3.zero))
+                if (MathUtils.Approximately(remoteForce.TargetForce, Vector3.zero))
                 {
                     m_RemoteAppliedForce.RemoveAt(i);
                 }
@@ -430,18 +378,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         }
 
         /// <summary>
-        /// When <see cref="BaseObjectMotionHandler.DebugCollisions"/> is enabled, this will log locally
+        /// When <see cref="BaseObjectMotionHandler.m_DebugCollisions"/> is enabled, this will log locally
         /// generated collision info for the <see cref="PhysicsObjectMotion"/> derived component
         /// </summary>
         /// <param name="objectHit">the <see cref="BaseObjectMotionHandler"/> hit</param>
         /// <returns>log string</returns>
         protected override string OnLogCollision(ref BaseObjectMotionHandler objectHit)
         {
-            return $"[CF: {GetVector3Values(ref CollisionMessage.CollisionForce)}]-{base.OnLogCollision(ref objectHit)}";
+            return $"[CF: {MathUtils.GetVector3Values(ref m_CollisionMessage.CollisionForce)}]-{base.OnLogCollision(ref objectHit)}";
         }
 
         /// <summary>
-        /// When <see cref="BaseObjectMotionHandler.DebugCollisions"/> is enabled, this will log remotely
+        /// When <see cref="BaseObjectMotionHandler.m_DebugCollisions"/> is enabled, this will log remotely
         /// received collision info for the <see cref="PhysicsObjectMotion"/> derived component
         /// </summary>
         /// <param name="collisionMessage">the message received</param>
@@ -458,12 +406,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             var resAngularVel = string.Empty;
             if (Rigidbody != null)
             {
-                resLinearVel = GetVector3Values(GetObjectVelocity());
-                resAngularVel = GetVector3Values(Rigidbody.angularVelocity);
+                resLinearVel = MathUtils.GetVector3Values(GetObjectVelocity());
+                resAngularVel = MathUtils.GetVector3Values(Rigidbody.angularVelocity);
             }
 
-            return $"[**Collision-Info**][To: {name}][By:{sourceCollider}][Force:{GetVector3Values(ref collisionMessage.CollisionForce)}]" +
+            return $"[**Collision-Info**][To: {name}][By:{sourceCollider}][Force:{MathUtils.GetVector3Values(ref collisionMessage.CollisionForce)}]" +
                 $"[LinVel: {resLinearVel}][AngVel: {resAngularVel}]-{base.OnLogHandleCollision(ref collisionMessage)}";
         }
+    }
+
+    struct RemoteForce
+    {
+        public float EndOfLife;
+        public Vector3 TargetForce;
+        public Vector3 AppliedForce;
     }
 }

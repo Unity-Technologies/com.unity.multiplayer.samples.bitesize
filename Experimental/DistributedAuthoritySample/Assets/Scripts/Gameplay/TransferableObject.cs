@@ -20,6 +20,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         public override void OnNetworkDespawn()
         {
+            base.OnNetworkDespawn();
             if (NetworkObject)
             {
                 NetworkObject.OnOwnershipRequested -= OnOwnershipRequested;
@@ -27,6 +28,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
 
             OnGameplayEvent?.Invoke(NetworkObject, GameplayEvent.Despawned);
+            OnGameplayEvent = null;
+            OnNetworkObjectOwnershipRequestResponse = null;
         }
 
         protected override void OnOwnershipChanged(ulong previous, ulong current)
