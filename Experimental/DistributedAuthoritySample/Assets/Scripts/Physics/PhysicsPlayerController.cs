@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Physics
@@ -12,13 +13,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         PhysicsPlayerControllerSettings m_PhysicsPlayerControllerSettings;
 
         // cached grounded check
-        bool m_IsGrounded;
+        internal bool Grounded { get; private set; }
+
         RaycastHit[] m_RaycastHits = new RaycastHit[1];
         Ray m_Ray;
 
         Vector3 m_Movement;
         bool m_Jump;
         bool m_Sprint;
+
+        internal event Action PlayerJumped;
 
         void FixedUpdate()
         {
@@ -40,7 +44,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         void UpdateGroundedStatus()
         {
-            m_IsGrounded = IsGrounded();
+            Grounded = IsGrounded();
         }
 
         bool IsGrounded()
@@ -63,7 +67,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             var targetVelocity = new Vector3(desiredVelocity.x, velocity.y, desiredVelocity.z);
             var velocityChange = targetVelocity - velocity;
 
-            if (m_IsGrounded)
+            if (Grounded)
             {
                 // Apply force proportional to acceleration while grounded
                 var force = velocityChange * m_PhysicsPlayerControllerSettings.Acceleration;
@@ -87,9 +91,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         void ApplyJump()
         {
-            if (m_Jump && m_IsGrounded)
+            if (m_Jump && Grounded)
             {
                 m_Rigidbody.AddForce(Vector3.up * m_PhysicsPlayerControllerSettings.JumpImpusle, ForceMode.Impulse);
+                PlayerJumped?.Invoke();
             }
             m_Jump = false;
         }
@@ -109,7 +114,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         void ApplyCustomGravity()
         {
             // custom gravity
-            if (!m_IsGrounded)
+            if (!Grounded)
             {
                 var customGravity = UnityEngine.Physics.gravity * (m_PhysicsPlayerControllerSettings.CustomGravityMultiplier - 1);
                 m_Rigidbody.AddForce(customGravity, ForceMode.Acceleration);
