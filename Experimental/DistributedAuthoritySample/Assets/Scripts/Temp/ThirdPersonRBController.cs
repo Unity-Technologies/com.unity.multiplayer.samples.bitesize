@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 
 public class ThirdPersonRBController : MonoBehaviour
