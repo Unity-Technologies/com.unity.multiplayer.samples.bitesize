@@ -60,8 +60,7 @@ GameObject:
   - component: {fileID: 1676734517288307197}
   - component: {fileID: 3556993396688157473}
   - component: {fileID: 3344782713880715319}
-  - component: {fileID: 6695765171019767151}
-  - component: {fileID: 8120381116071039554}
+  - component: {fileID: 7779069950921544637}
   m_Layer: 0
   m_Name: CMFreeLook
   m_TagString: Untagged
@@ -77,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676734517288307075}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -139,10 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0, y: 0.4, z: 0}
   TrackerSettings:
     BindingMode: 5
-    PositionDamping: {x: 1, y: 4, z: 4}
+    PositionDamping: {x: 1, y: 1, z: 1}
     AngularDampingMode: 0
     RotationDamping: {x: 0, y: 0, z: 0}
     QuaternionDamping: 0
@@ -156,12 +155,12 @@ MonoBehaviour:
       Radius: 9
       Height: 4
     Bottom:
-      Radius: 3
-      Height: 1
+      Radius: 5
+      Height: -0.2
     SplineCurvature: 1
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: 1
+    Value: 0
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -190,7 +189,7 @@ MonoBehaviour:
       Wait: 1
       Time: 2
     Restrictions: 0
---- !u!114 &6695765171019767151
+--- !u!114 &7779069950921544637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -202,30 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LookAtOffset: {x: 0, y: 0, z: 0}
---- !u!114 &8120381116071039554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676734517288307075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a076c17fe76165e4f8ed21498b877bf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Modifiers:
-  - rid: 1518115041925136460
-  references:
-    version: 2
-    RefIds:
-    - rid: 1518115041925136460
-      type: {class: CinemachineFreeLookModifier/PositionDampingModifier, ns: Unity.Cinemachine, asm: Unity.Cinemachine}
-      data:
-        Damping:
-          Top: {x: 1, y: 3, z: 3}
-          Bottom: {x: 1, y: 5, z: 5}
+  LookAtOffset: {x: 0, y: 0.4, z: 0}
 --- !u!1 &2167489802469618434
 GameObject:
   m_ObjectHideFlags: 0

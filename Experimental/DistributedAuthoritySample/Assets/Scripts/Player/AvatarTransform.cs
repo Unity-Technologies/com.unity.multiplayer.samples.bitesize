@@ -56,12 +56,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_AvatarInputs.enabled = true;
             m_Rigidbody.isKinematic = false;
 
-            // Freeze rotation on the x and z axes to prevent toppling
-            m_Rigidbody.freezeRotation = true;
-
             var spawnPosition = new Vector3(0f, 1.5f, 0f);
-            transform.SetPositionAndRotation(position: spawnPosition, rotation: Quaternion.identity);
             m_Rigidbody.position = spawnPosition;
+            m_Rigidbody.rotation = Quaternion.identity;
             m_Rigidbody.linearVelocity = Vector3.zero;
         }
 
@@ -86,14 +83,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             Vector3 desiredMoveDirection = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
             m_Movement = desiredMoveDirection.normalized;
 
-            // Handle rotation based on input direction
-            if (m_Movement.magnitude >= 0.1f)
-            {
-                var targetAngle = Mathf.Atan2(m_Movement.x, m_Movement.z) * Mathf.Rad2Deg;
-                var targetRotation = Quaternion.Euler(0, targetAngle, 0);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * m_RotationSpeed);
-            }
-
             if (IsGrounded() && m_AvatarInputs.Jump)
             {
                 m_Jump = true;
@@ -103,7 +92,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void ApplyMovement()
         {
-            if (Mathf.Approximately(m_Movement.magnitude, 0f))
+            if (Mathf.Approximately(m_Movement.sqrMagnitude, 0f))
             {
                 return;
             }
@@ -125,6 +114,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 var force = velocityChange * (m_Acceleration * m_AirControlFactor);
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
             }
+        }
+
+        void ApplyRotation()
+        {
+            // Rotate to face direction of motion
+            var angularVelocity = Vector3.zero;
+            if (m_Movement.sqrMagnitude > 0.01f)
+            {
+                var delta = Mathf.Atan2(m_Movement.x, m_Movement.z) - m_Rigidbody.rotation.eulerAngles.y * Mathf.Deg2Rad;
+                if (Mathf.Abs(delta) > Mathf.PI)
+                    delta -= 2 * Mathf.PI * Mathf.Sign(delta);
+                angularVelocity = m_RotationSpeed * delta * Vector3.up;
+            }
+            m_Rigidbody.angularVelocity = angularVelocity;
         }
 
         void ApplyJump()
@@ -159,6 +162,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             UpdateGroundedStatus();
 
             ApplyMovement();
+
+            ApplyRotation();
 
             ApplyJump();
 
