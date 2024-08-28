@@ -1,17 +1,25 @@
 using UnityEngine;
-using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
     public class Chest : CarryableObject
     {
-        protected override void OnDestroy()
+        public GameObject rubblePrefab;
+
+        protected override void DestroyObject()
         {
-            // Specific behavior for chest destruction
-            GameObject rubble = Instantiate(Resources.Load("Rubble_Chest")) as GameObject;
-            rubble.transform.position = transform.position;
-            base.OnDestroy(); // Call the base method to propagate the event
+            Vector3 spawnPosition = transform.position; // Store the position before base is called
+            base.DestroyObject(); // Call the base method to propagate the event and play VFX
+
+            SpawnRubble(spawnPosition);
         }
+
+        private void SpawnRubble(Vector3 position)
+        {
+            Instantiate(rubblePrefab, position, Quaternion.identity);
+        }
+
     }
 }
+
 

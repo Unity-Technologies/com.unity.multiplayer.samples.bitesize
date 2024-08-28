@@ -1,13 +1,18 @@
-using Unity.Netcode;
+using System.Collections;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    public class CarryableObject : MonoBehaviour
+    public class CarryableObject : NetworkBehaviour
     {
         public GameObject LeftHand;
         public GameObject RightHand;
         public int Health = 1;
+        public GameObject destructionVFX;
+        public GameObject rubblePrefab;
+
+        private int previousHealth;
 
         // Add health component to object
         public int CurrentHealth
@@ -23,24 +28,113 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
         }
 
-        // Destroy object if health is <= 0
+        private void Start()
+        {
+            previousHealth = Health;
+            if (IsServer && IsOwner)
+            {
+                NetworkObject.Spawn();
+            }
+        }
+
+        private void Update()
+        {
+            // Check if Health value has changed in the Inspector
+            if (previousHealth != Health)
+            {
+                CurrentHealth = Health;
+                previousHealth = Health;
+            }
+        }
+
         protected virtual void DestroyObject()
         {
+            Debug.Log("Object Destroyed");
+            StartCoroutine(DeferredDespawn());
+        }
+
+        protected IEnumerator DeferredDespawn()
+        {
+            Debug.Log("DeferredDespawn started");
+
+            // Disable renderers or the entire game object to visually hide the chest
+            DisableChestVisuals();
+
+            var vfxInstance = Instantiate(destructionVFX, transform.position, Quaternion.identity);
+            var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
+
+            if (particleSystem != null)
+            {
+                particleSystem.Play();
+                float totalWaitTime = particleSystem.main.duration;
+
+                yield return new WaitForSeconds(totalWaitTime);
+            }
+
+            // Inform other clients to play VFX and spawn rubble locally
+            NotifyClientsOfDestruction(transform.position);
+
+            Debug.Log("VFX Destroyed");
+            Destroy(vfxInstance);
             Destroy(gameObject);
         }
 
-        // Method called when object is destroyed
-        protected virtual void OnDestroy()
+        private void DisableChestVisuals()
         {
-            // Send local player's destruction event to server, propagate to other clients
-            /*if (NetworkManager.Singleton.IsServer)
+            // Disable all renderers to hide the chest visually
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
             {
-                NetworkManager.Singleton.ConnectedClients[NetworkManager.Singleton.LocalClientId].PlayerObject
-                    .GetComponent<PlayerObject>()
-                    .SendObjectDestruction(transform.position, gameObject.GetType().Name); // Sending the object type name here
-            }*/
+                renderer.enabled = false;
+            }
+
+            // Disable all colliders to make the chest non-interactive
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                collider.enabled = false;
+            }
+        }
+
+        private void NotifyClientsOfDestruction(Vector3 position)
+        {
+            if (IsOwner)
+            {
+                InformOtherClientsOfDestructionClientRpc(position);
+            }
+        }
+
+        [ClientRpc]
+        private void InformOtherClientsOfDestructionClientRpc(Vector3 position)
+        {
+            if (!IsOwner)
+            {
+                PlayDestructionVFX(position);
+                SpawnRubble(position);
+            }
+        }
+
+        private void PlayDestructionVFX(Vector3 position)
+        {
+            GameObject vfxInstance = Instantiate(destructionVFX, position, Quaternion.identity);
+            var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
+
+            if (particleSystem != null)
+            {
+                particleSystem.Play();
+                float totalWaitTime = particleSystem.main.duration;
+                Destroy(vfxInstance, totalWaitTime);
+            }
+        }
+
+        private void SpawnRubble(Vector3 position)
+        {
+            Instantiate(rubblePrefab, position, Quaternion.identity);
         }
     }
 }
+
+
+
 
 
