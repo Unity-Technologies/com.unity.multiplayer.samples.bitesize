@@ -195,6 +195,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1676734517288307075, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: m_Name
+      value: CMFreeLook
+      objectReference: {fileID: 0}
     - target: {fileID: 2167489802469618434, guid: 0193228de87741d40a42e561901c9083, type: 3}
       propertyPath: m_Name
       value: CMCameraPrefab
@@ -239,20 +243,65 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8105522526621377643, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: m_ControllerManager.Controllers.Array.data[0].Owner
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105522526621377643, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: m_ControllerManager.Controllers.Array.data[1].Owner
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105522526621377643, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: m_ControllerManager.Controllers.Array.data[2].Owner
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: 'Modifiers.Array.data[0]'
+      value: 1518115041925136459
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: 'managedReferences[1518115041925136459]'
+      value: Unity.Cinemachine Unity.Cinemachine.CinemachineFreeLookModifier/PositionDampingModifier
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: managedReferences[1518115041925136459].Damping.Top.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: managedReferences[1518115041925136459].Damping.Top.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: managedReferences[1518115041925136459].Damping.Top.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: managedReferences[1518115041925136459].Damping.Bottom.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: managedReferences[1518115041925136459].Damping.Bottom.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8120381116071039554, guid: 0193228de87741d40a42e561901c9083, type: 3}
+      propertyPath: managedReferences[1518115041925136459].Damping.Bottom.z
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1676734517288307196, guid: 0193228de87741d40a42e561901c9083, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0193228de87741d40a42e561901c9083, type: 3}
 --- !u!114 &51944850 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1676734517288307196, guid: 0193228de87741d40a42e561901c9083, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3556993396688157473, guid: 0193228de87741d40a42e561901c9083, type: 3}
   m_PrefabInstance: {fileID: 51944849}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &373304902

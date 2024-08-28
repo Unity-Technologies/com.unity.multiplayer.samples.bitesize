@@ -1,21 +1,22 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
+using Unity.Cinemachine;
 using Unity.Multiplayer.Samples.SocialHub.Player;
 using Unity.Netcode;
 
 public class CameraControl : MonoBehaviour
 {
-    public Camera mainCamera;
-    public CinemachineFreeLook freeLookVCam;
+    public CinemachineCamera freeLookVCam;
+
     public float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
 
     private AvatarActions playerInputActions;
     private AvatarTransform avatarTransform; // This will be assigned at runtime
-    private float distance;
     private bool _cameraMovementLock = false;
     private bool _isRMBPressed = false;
+
+    private CinemachineOrbitalFollow _orbitalFollow;
 
     private void Awake()
     {
@@ -26,10 +27,8 @@ public class CameraControl : MonoBehaviour
         playerInputActions.Player.Rotate.canceled += OnRotateCanceled;
         playerInputActions.Player.Look.performed += OnLookPerformed;
 
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
+        // Grab CM's orbital follow because we will be driving its axes directly
+        _orbitalFollow = freeLookVCam.GetComponent<CinemachineOrbitalFollow>();
 
         // Register the client connected callback
         if (NetworkManager.Singleton != null)
@@ -74,9 +73,6 @@ public class CameraControl : MonoBehaviour
                 avatarTransform = avatar.GetComponent<AvatarTransform>();
                 if (avatarTransform != null)
                 {
-                    // Calculate the initial distance based on the avatar's position
-                    distance = Vector3.Distance(mainCamera.transform.position, avatarTransform.transform.position);
-                    UpdateCameraPosition(); // Update camera position to look at the new avatar
                     SetupProtagonistVirtualCamera(); // Setup the virtual camera
 
                     // Unregister the avatar spawned callback to avoid redundancy
@@ -119,10 +115,6 @@ public class CameraControl : MonoBehaviour
         _isRMBPressed = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        // Clear input values
-        freeLookVCam.m_XAxis.m_InputAxisValue = 0;
-        freeLookVCam.m_YAxis.m_InputAxisValue = 0;
     }
 
     private IEnumerator DisableMouseControlForFrame()
@@ -143,29 +135,17 @@ public class CameraControl : MonoBehaviour
         if (isDeviceMouse && !_isRMBPressed)
             return;
 
+        // Drive the camera's orbit position based on user input
         float deviceMultiplier = isDeviceMouse ? 0.02f : Time.deltaTime;
-
-        freeLookVCam.m_XAxis.m_InputAxisValue = cameraMovement.x * deviceMultiplier * _speedMultiplier;
-        freeLookVCam.m_YAxis.m_InputAxisValue = cameraMovement.y * deviceMultiplier * _speedMultiplier;
+        _orbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceMultiplier * _speedMultiplier;
+        _orbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceMultiplier * _speedMultiplier * 0.01f; // Y axis units are much smaller
     }
 
     public void SetupProtagonistVirtualCamera()
     {
-            Transform target = avatarTransform.transform;
-            freeLookVCam.Follow = target;
-            freeLookVCam.LookAt = target;
-            freeLookVCam.OnTargetObjectWarped(target, target.position - freeLookVCam.transform.position);
-    }
-
-    private void UpdateCameraPosition()
-    {
-        if (avatarTransform == null) return;
-
-        Vector3 direction = mainCamera.transform.position - avatarTransform.transform.position;
-        direction.Normalize(); // Normalize the direction vector to ensure proper positioning
-
-        mainCamera.transform.position = avatarTransform.transform.position - direction * distance;
-        mainCamera.transform.LookAt(avatarTransform.transform); // Ensure the camera looks at the avatar
+        Transform target = avatarTransform.transform;
+        freeLookVCam.Follow = target;
+        CinemachineCore.ResetCameraState(); // snap to new position
     }
 }
 
