@@ -190,7 +190,7 @@ CapsuleCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -295,12 +295,12 @@ MonoBehaviour:
   SlerpPosition: 0
   m_CollisionType: 1
   m_CollisionDamage: 0
+  m_DebugCollisions: 0
   m_DebugDamage: 0
   m_Colliders:
   - {fileID: 817796967242824188}
-  m_CollisionImpulseEntries: []
-  m_MaxAngularVelocity: 30
-  m_MaxVelocity: 30
+  m_MaxAngularVelocity: 10
+  m_MaxVelocity: 10
   m_PlayerInput: {fileID: 4903152183366241606}
   m_AvatarInputs: {fileID: 8197190117666738524}
   m_AvatarInteractions: {fileID: 539700041658036575}
@@ -413,8 +413,8 @@ MonoBehaviour:
   m_NetworkRigidbody: {fileID: -8100831418301897270}
   m_HoldTransform: {fileID: 3820763517226122587}
   m_InteractCollider: {fileID: 4881592427634173612}
-  m_MinTossForce: 5
-  m_MaxTossForce: 10
+  m_MinTossForce: 500
+  m_MaxTossForce: 1000
 --- !u!114 &4655812346339390596
 MonoBehaviour:
   m_ObjectHideFlags: 0

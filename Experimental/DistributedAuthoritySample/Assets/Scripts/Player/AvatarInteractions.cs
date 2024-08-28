@@ -224,7 +224,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // apply a force to the released object
             float timeHeldClamped = Mathf.Clamp((float)holdDuration, k_MinDurationHeld, k_MaxDurationHeld);
             float tossForce = Mathf.Lerp(m_MinTossForce, m_MaxTossForce, Mathf.Clamp(timeHeldClamped, 0f, 1f));
-            heldRigidbody.AddForce(transform.forward * tossForce, ForceMode.VelocityChange);
+            heldRigidbody.AddForce(transform.forward * tossForce, ForceMode.Impulse);
         }
     }
 }

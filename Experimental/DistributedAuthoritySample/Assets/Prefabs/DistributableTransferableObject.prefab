@@ -108,7 +108,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2069120471
+  GlobalObjectIdHash: 4270425062
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 3
@@ -210,9 +210,9 @@ MonoBehaviour:
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -223,11 +223,12 @@ MonoBehaviour:
   Interpolate: 1
   SlerpPosition: 0
   m_CollisionType: 2
-  m_CollisionDamage: 0
+  m_CollisionDamage: 5
+  m_DebugCollisions: 0
   m_DebugDamage: 0
   m_Colliders:
   - {fileID: 7690746213975220858}
-  m_CollisionImpulseEntries: []
-  m_MaxAngularVelocity: 30
-  m_MaxVelocity: 30
+  m_MaxAngularVelocity: 10
+  m_MaxVelocity: 5
   m_StartingHealth: 100
+  m_IntangibleDurationAfterDamage: 2

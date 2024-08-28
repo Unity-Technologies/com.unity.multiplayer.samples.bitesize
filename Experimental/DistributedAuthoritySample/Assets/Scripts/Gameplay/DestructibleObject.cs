@@ -10,38 +10,37 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         [SerializeField]
         float m_StartingHealth = 100f;
 
-        NetworkVariable<bool> m_Initialized = new NetworkVariable<bool>(false);
+        [SerializeField]
+        float m_IntangibleDurationAfterDamage;
+
+        float m_LastDamageTime;
+
+        NetworkVariable<bool> m_Initialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         NetworkVariable<float> m_Health = new NetworkVariable<float>(0.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         public override void OnNetworkSpawn()
         {
-            m_DebugCollisions = m_DebugDamage = true;
             base.OnNetworkSpawn();
             InitializeDestructible();
             gameObject.name = $"[NetworkObjectId-{NetworkObjectId}]{name}";
         }
 
-        public override void OnNetworkDespawn()
-        {
-            base.OnNetworkDespawn();
-        }
-
-        void OnCollisionEnter(Collision other)
-        {
-            return;
-        }
-
         protected override void OnHandleCollision(CollisionMessageInfo collisionMessage, bool isLocal = false, bool applyImmediately = false)
         {
-            // perhaps add invincible frames? would be a neat showcase
-            Debug.Log(nameof(OnHandleCollision));
-
+            // Avatars don't damage destructible objects
             if (m_Health.Value == 0.0f || collisionMessage.GetCollisionType() == Physics.CollisionType.Avatar)
             {
                 base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
                 return;
             }
+
+            if (Time.realtimeSinceStartup - m_LastDamageTime < m_IntangibleDurationAfterDamage)
+            {
+                base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
+                return;
+            }
+
             var currentHealth = Mathf.Max(0.0f, m_Health.Value - collisionMessage.Damage);
 
             if (currentHealth == 0.0f)
@@ -56,6 +55,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             else
             {
                 m_Health.Value = currentHealth;
+                m_LastDamageTime = Time.realtimeSinceStartup;
             }
 
             base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);

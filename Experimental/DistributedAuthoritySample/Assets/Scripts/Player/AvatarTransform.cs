@@ -24,8 +24,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             gameObject.name = $"[Client-{OwnerClientId}]{name}";
 
-            m_DebugCollisions = m_DebugDamage = true;
-
             if (!HasAuthority)
             {
                 return;
@@ -72,11 +70,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_PhysicsPlayerController.SetMovement(movement);
             m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
-        }
-
-        void OnCollisionEnter(Collision other)
-        {
-            return;
         }
     }
 }

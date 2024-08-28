@@ -13,7 +13,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         [SerializeField]
         CollisionType m_CollisionType;
-        public CollisionType CollisionType => m_CollisionType;
 
         [SerializeField]
         ushort m_CollisionDamage;
@@ -25,6 +24,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         protected NetworkRigidbody NetworkRigidbody { get; private set; }
 
         [Tooltip("Enables/Disables collision logging (based on per derived type)")]
+        [SerializeField]
         protected bool m_DebugCollisions;
 
         [Tooltip("Enables/Disables damage logging (based on per derived type)")]
@@ -186,8 +186,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         [Rpc(SendTo.Authority, RequireOwnership = false)]
         public void HandleCollisionRpc(CollisionMessageInfo collisionMessage, RpcParams rpcParams = default)
         {
-            Debug.Log(nameof(HandleCollisionRpc));
-
             // If authority changes while this message is in flight, forward it to the new authority
             if (!HasAuthority)
             {
@@ -240,6 +238,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         /// <param name="contactPoint"></param>
         /// <param name="hasCollisionStay"></param>
         /// <param name="averagedCollisionStayNormal"></param>
+        /// <remarks> To enable this callback to be triggered, make sure you enable the Provides Contacts toggle on your
+        /// desired <see cref="Collider"/>
+        /// </remarks>
         public void ContactEvent(ulong eventId, Vector3 averageNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
         {
             if (!IsSpawned)
@@ -302,7 +303,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             var distance = Vector3.Distance(transform.position, objectHit.transform.position);
             Debug.Log($"[{Time.realtimeSinceStartup}][LocalCollision][{name}][collided with][{objectHit.name}][Collider:{name}][Distance: {distance}]" +
-                $"{OnLogCollision(ref objectHit)}.");
+                $"{OnLogCollision(ref objectHit)}.", this);
         }
 
         protected virtual string OnLogCollision(CollisionMessageInfo collisionMessage)
@@ -318,7 +319,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             }
 
             var additionalInfo = OnLogCollision(collisionMessage);
-            Debug.Log($"[{name}][++Damaged++][Client-{collisionMessage.TargetOwner}][{collisionMessage.GetCollisionType()}][Dmg:{collisionMessage.Damage}] {additionalInfo}");
+            Debug.Log($"[{name}][++Damaged++][Client-{collisionMessage.TargetOwner}][{collisionMessage.GetCollisionType()}][Dmg:{collisionMessage.Damage}] {additionalInfo}", this);
         }
 
         /// <summary>
@@ -340,7 +341,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             var distStr = distance == -1.0f ? $"{collisionMessage.DestinationNetworkObjId} DNE!!" : $"Distance: {distance}";
             Debug.Log($"[{collisionMessage.CollisionId}][{collisionMessage.Time}][CollisionMessage][IsLocal: {isLocal}][{name}][Src:{collisionMessage.Source}][Dest:{collisionMessage.Destination}]" +
-                $"[NObjId:{collisionMessage.DestinationNetworkObjId}][NBvrId:{collisionMessage.DestinationBehaviourId}][{distStr}]{OnLogHandleCollision(ref collisionMessage)}.");
+                $"[NObjId:{collisionMessage.DestinationNetworkObjId}][NBvrId:{collisionMessage.DestinationBehaviourId}][{distStr}]{OnLogHandleCollision(ref collisionMessage)}.", this);
         }
 
         protected void LogMessage(string msg, bool forceMessage = false, float messageTime = 10.0f)
