@@ -10,7 +10,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         public GameObject RightHand;
         public int Health = 1;
         public GameObject destructionVFX;
-        public GameObject rubblePrefab;
 
         private int previousHealth;
 
@@ -58,7 +57,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             Debug.Log("DeferredDespawn started");
 
             // Disable renderers or the entire game object to visually hide the chest
-            DisableChestVisuals();
+            ChangeChestVisuals(false);
 
             var vfxInstance = Instantiate(destructionVFX, transform.position, Quaternion.identity);
             var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
@@ -76,23 +75,26 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
             Debug.Log("VFX Destroyed");
             Destroy(vfxInstance);
-            Destroy(gameObject);
+
+            // set timer to despawn rubble and reenable chest
+            yield return new WaitForSeconds(5f);
+            ChangeChestVisuals(true);
         }
 
-        private void DisableChestVisuals()
+        private void ChangeChestVisuals(bool enable)
         {
             // Disable all renderers to hide the chest visually
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
             {
-                renderer.enabled = false;
+                renderer.enabled = enable;
             }
 
             // Disable all colliders to make the chest non-interactive
             Collider[] colliders = GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
-                collider.enabled = false;
+                collider.enabled = enable;
             }
         }
 
@@ -127,14 +129,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
         }
 
-        private void SpawnRubble(Vector3 position)
+        protected virtual void SpawnRubble(Vector3 position)
         {
-            Instantiate(rubblePrefab, position, Quaternion.identity);
+           // Instantiate(rubblePrefab, position, Quaternion.identity);
         }
     }
 }
-
-
-
-
-
