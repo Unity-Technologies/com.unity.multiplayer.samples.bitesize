@@ -26,10 +26,39 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             gameObject.name = $"[NetworkObjectId-{NetworkObjectId}]{name}";
         }
 
+        protected override void OnContactEvent(ulong eventId, Vector3 averagedCollisionNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
+        {
+            var collidingBaseObjectMotion = collidingBody.GetComponent<BaseObjectMotionHandler>();
+            var collidingBodyPhys = collidingBaseObjectMotion as PhysicsObjectMotion;
+
+            // overriding this method to catch when a physics collision happens between two non-kinematic objects
+            if (!Rigidbody.isKinematic && !collidingBody.isKinematic && collidingBodyPhys != null && HasAuthority && collidingBodyPhys.HasAuthority)
+            {
+                var collisionMessageInfo = new CollisionMessageInfo();
+                collisionMessageInfo.Damage = collidingBodyPhys.CollisionDamage;
+                collisionMessageInfo.SetFlag(true, (uint)collidingBodyPhys.CollisionType);
+
+                // apply damage to this non-kinematic object
+                OnHandleCollision(collisionMessageInfo);
+
+                collisionMessageInfo.Damage = CollisionDamage;
+                collisionMessageInfo.SetFlag(true, (uint)CollisionType);
+
+                // this can be reworked to an interface, but for now this routes damage directly to another destructible
+                var destructible = collidingBodyPhys.GetComponent<DestructibleObject>();
+                // apply damage to other non-kinematic object
+                destructible.OnHandleCollision(collisionMessageInfo);
+            }
+            else
+            {
+                base.OnContactEvent(eventId, averagedCollisionNormal, collidingBody, contactPoint, hasCollisionStay, averagedCollisionStayNormal);
+            }
+        }
+
         protected override void OnHandleCollision(CollisionMessageInfo collisionMessage, bool isLocal = false, bool applyImmediately = false)
         {
             // Avatars don't damage destructible objects
-            if (m_Health.Value == 0.0f || collisionMessage.GetCollisionType() == Physics.CollisionType.Avatar)
+            if (m_Health.Value == 0.0f || collisionMessage.GetCollisionType() == CollisionType.Avatar)
             {
                 base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
                 return;
@@ -41,7 +70,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 return;
             }
 
-            var currentHealth = Mathf.Max(0.0f, m_Health.Value - collisionMessage.Damage);
+            ApplyCollisionDamage(collisionMessage.Damage);
+
+            base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
+        }
+
+        void ApplyCollisionDamage(float damage)
+        {
+            var currentHealth = Mathf.Max(0.0f, m_Health.Value - damage);
 
             if (currentHealth == 0.0f)
             {
@@ -50,15 +86,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 m_Health.Value = currentHealth;
                 NetworkObject.Despawn();
                 // TODO: Spawn VFX locally + send VFX message
-                return;
             }
             else
             {
                 m_Health.Value = currentHealth;
                 m_LastDamageTime = Time.realtimeSinceStartup;
             }
-
-            base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
         }
 
         void InitializeDestructible()

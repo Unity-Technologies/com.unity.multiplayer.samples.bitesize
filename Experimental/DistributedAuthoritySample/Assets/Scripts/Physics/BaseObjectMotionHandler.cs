@@ -14,8 +14,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         [SerializeField]
         CollisionType m_CollisionType;
 
+        internal CollisionType CollisionType => m_CollisionType;
+
         [SerializeField]
         ushort m_CollisionDamage;
+
+        internal ushort CollisionDamage => m_CollisionDamage;
 
         protected CollisionMessageInfo m_CollisionMessage = new CollisionMessageInfo();
 
