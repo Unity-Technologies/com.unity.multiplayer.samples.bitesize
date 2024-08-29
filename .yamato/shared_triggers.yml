@@ -17,7 +17,12 @@ pull_request_trigger:
 {% endfor -%}
   triggers:
     cancel_old_ci: true
-      
+    pull_requests:
+    - targets:
+        only:
+          - "main"
+          - "develop"
+          - "/^sample\//"
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
