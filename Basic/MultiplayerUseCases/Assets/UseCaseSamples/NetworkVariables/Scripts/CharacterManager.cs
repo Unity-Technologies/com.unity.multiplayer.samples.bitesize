@@ -121,6 +121,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetworkVariables
         {
             OnClientHealthChanged(previousValue.Health, newValue.Health);
             OnClientUsernameChanged(newValue.Username.ToString());
-        }
+        } 
     }
 }
