@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.7.0] 2024-08-31
+
+### Bitesize Samples Repository
+
+#### Added
+- Added a "Deprecated" folder for samples that are no longer supported
+
+### Invaders
+
+#### Changed
+- This sample is now "Deprecated"
+
+### Multiplayer Use Cases
+
+#### Changed
+- This sample is no longer "Experimental", and it has been moved into the "Basic" folder
+- In-game UI now uses UIToolkit instead of UGUI
+- Updated README to provide a clear path to the onboarding resources in case a user closed the Tutorial window 
+
+### Dedicated Game Server
+
+#### Changed
+- Upgraded project to Unity 6000.0.3f1
+- Updated dedicated server packages to 1.1.0
+- Updated Netcode For GameObjects version to 1.8.1, and replaced RPCs using the new workflow provided
+
 ## [1.6.0] 2024-05-30
 
 ### Bitesize Samples Repository
