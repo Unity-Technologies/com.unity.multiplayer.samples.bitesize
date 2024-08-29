@@ -21,9 +21,13 @@ project using [Netcode for GameObjects](https://github.com/Unity-Technologies/co
 The [2D Space Shooter Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/2DSpaceShooter) was a UNET sample that has been converted over to NGO. Check it out to learn more about physics movement and status effects using Netcode `NetworkVariables` and `ObjectPooling`.
 <br><br>
 
-### Invaders Overview
+### Multiplayer Use Cases Overview
 
-The [Invaders Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/Invaders) was a UNET sample that has been converted over to NGO. Learn more about game flow, modes, unconventional networked movement, and using a shared timer in this sample.
+The [Multiplayer Use Cases sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/MultiplayerUseCases) show you how to perform common actions in a multiplayer environment, so that you can build the features of your game with them in mind.
+
+In this sample you'll learn about the core features of Netcode For GameObjects (Netcode) through practical examples that you'll be able to extend and adapt to fit the gameplay logic of your own game. 
+
+Each scene comes with an in-editor tutorial that will help you explore the main scripts and object of each scene, so you know where to look at to find what you're looking for.
 <br><br>
 
 ### Client Driven Overview
