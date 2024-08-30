@@ -34,8 +34,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         float m_GroundCheckDistance;
 
         Vector3 m_Movement;
+
         // grab jump state from input and clear after consumed
         bool m_Jump;
+
         // cached grounded check
         bool m_IsGrounded;
         RaycastHit[] m_RaycastHits = new RaycastHit[1];
@@ -60,6 +62,24 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_Rigidbody.position = spawnPosition;
             m_Rigidbody.rotation = Quaternion.identity;
             m_Rigidbody.linearVelocity = Vector3.zero;
+
+            // Inject the player avatar into the camera system
+            Camera.main.GetComponent<CameraControl>().SetAvatarTransform(this);
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            if (HasAuthority)
+            {
+                m_PlayerInput.enabled = false;
+                m_AvatarInputs.enabled = false;
+                m_Rigidbody.isKinematic = true;
+
+                // Remove the player avatar from the camera system
+                Camera.main.GetComponent<CameraControl>().SetAvatarTransform(null);
+            }
         }
 
         void Update()
@@ -127,6 +147,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                     delta -= 2 * Mathf.PI * Mathf.Sign(delta);
                 angularVelocity = m_RotationSpeed * delta * Vector3.up;
             }
+
             m_Rigidbody.angularVelocity = angularVelocity;
         }
 

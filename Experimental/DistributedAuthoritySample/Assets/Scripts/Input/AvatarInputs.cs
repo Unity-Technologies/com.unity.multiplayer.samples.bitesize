@@ -80,6 +80,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
                 {
                     InteractHeld?.Invoke(context.duration);
                 }
+
                 m_HoldingInteractionPerformed = false;
             }
         }
