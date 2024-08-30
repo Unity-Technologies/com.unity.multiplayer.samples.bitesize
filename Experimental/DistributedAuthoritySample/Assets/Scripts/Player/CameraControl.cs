@@ -57,6 +57,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         public void SetAvatarTransform(AvatarTransform newAvatarTransform)
         {
             avatarTransform = newAvatarTransform;
+
+            if (avatarTransform != null)
+            {
+                Camera camera = Camera.main;
+                if (camera != null)
+                {
+                    avatarTransform.SetCameraReference(camera); // Store the camera reference in the AvatarTransform
+                }
+                else
+                {
+                    Debug.LogWarning("Main Camera not found. Ensure there is a camera tagged as 'Main Camera' in the scene.");
+                }
+            }
+
             SetupProtagonistVirtualCamera();
         }
 

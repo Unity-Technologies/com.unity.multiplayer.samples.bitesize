@@ -8,7 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
     /// Only 15 types are allowed.
     /// Applied to the first byte of <see cref="CollisionMessageInfo.Flags"/>
     /// </summary>
-    enum CollisionType
+    public enum CollisionType
     {
         Avatar = 0x01,
         Destructible = 0x02,
@@ -29,7 +29,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         CollisionPoint = 0x40,
     }
 
-    struct CollisionMessageInfo : INetworkSerializable
+    public struct CollisionMessageInfo : INetworkSerializable
     {
         /// <summary>
         /// Flags are serialized and determine the collision type

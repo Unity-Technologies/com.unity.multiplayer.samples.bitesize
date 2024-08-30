@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
+    public class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
     {
         [SerializeField]
         PlayerInput m_PlayerInput;
@@ -18,6 +18,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         AvatarInteractions m_AvatarInteractions;
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
+
+        private Camera mainCamera;
 
         public override void OnNetworkSpawn()
         {
@@ -47,30 +49,66 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
+
+            // Inject this avatar into the camera control system
+            var cameraControl = Camera.main?.GetComponent<CameraControl>();
+            if (cameraControl != null)
+            {
+                cameraControl.SetAvatarTransform(this);
+                SetCameraReference(Camera.main); // Store the camera reference
+            }
+            else
+            {
+                Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
+            }
         }
 
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-            if (m_AvatarInputs)
+
+            if (m_AvatarInputs != null)
             {
                 m_AvatarInputs.Jumped -= OnJumped;
             }
 
             this.UnregisterAllNetworkUpdates();
+
+            // Undo camera system injection
+            var cameraControl = Camera.main?.GetComponent<CameraControl>();
+            if (cameraControl != null)
+            {
+                cameraControl.SetAvatarTransform(null);
+            }
         }
 
-        void OnJumped()
+        private void OnJumped()
         {
             m_PhysicsPlayerController.SetJump(true);
         }
 
-        void OnTransformUpdate()
+        private void OnTransformUpdate()
         {
-            var movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
+            if (mainCamera != null)
+            {
+                Vector3 forward = mainCamera.transform.forward;
+                Vector3 right = mainCamera.transform.right;
 
-            m_PhysicsPlayerController.SetMovement(movement);
-            m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+                // Project forward and right onto the x-z plane (horizontal plane)
+                forward.y = 0f;
+                right.y = 0f;
+                forward.Normalize();
+                right.Normalize();
+
+                Vector3 movement = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
+                m_PhysicsPlayerController.SetMovement(movement);
+                m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+            }
+        }
+
+        public void SetCameraReference(Camera camera)
+        {
+            mainCamera = camera;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
@@ -86,7 +124,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 default:
                     throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);
             }
-
         }
     }
 }
+
+
