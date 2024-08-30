@@ -20,7 +20,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         bool m_Jump;
         bool m_Sprint;
 
-        void FixedUpdate()
+        internal void OnFixedUpdate()
         {
             if (m_Rigidbody != null && m_Rigidbody.isKinematic)
             {
@@ -108,12 +108,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         void ApplyCustomGravity()
         {
-            // custom gravity
-            if (!m_IsGrounded)
-            {
-                var customGravity = UnityEngine.Physics.gravity * (m_PhysicsPlayerControllerSettings.CustomGravityMultiplier - 1);
-                m_Rigidbody.AddForce(customGravity, ForceMode.Acceleration);
-            }
+            var customGravity = UnityEngine.Physics.gravity * (m_PhysicsPlayerControllerSettings.CustomGravityMultiplier - 1);
+            m_Rigidbody.AddForce(customGravity, ForceMode.Acceleration);
         }
 
         public void SetMovement(Vector3 movement)

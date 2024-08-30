@@ -259,8 +259,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             var thisVelocity = (!Rigidbody.isKinematic ? Rigidbody.linearVelocity.sqrMagnitude : GetObjectVelocity().sqrMagnitude) * 0.5f;
             var otherVelocity = (!collidingBody.isKinematic ? collidingBody.linearVelocity.sqrMagnitude : collidingBodyPhys.GetObjectVelocity().sqrMagnitude) * 0.5f;
-            var thisKineticForce = (Rigidbody.mass/* / collidingBody.mass*/) * -collisionNormal * thisVelocity;
-            var otherKineticForce = (collidingBody.mass/* / Rigidbody.mass*/) * collisionNormal * otherVelocity;
+            var thisKineticForce = (Rigidbody.mass / collidingBody.mass) * -collisionNormal * thisVelocity;
+            var otherKineticForce = (collidingBody.mass / Rigidbody.mass) * collisionNormal * otherVelocity;
 
             if (!Rigidbody.isKinematic && collidingBody.isKinematic && thisVelocity > 0.01f)
             {
