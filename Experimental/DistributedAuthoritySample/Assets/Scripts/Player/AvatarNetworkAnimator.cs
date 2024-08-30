@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(PhysicsPlayerController))]
-    class AvatarAnimator : NetworkAnimator
+    class AvatarNetworkAnimator : NetworkAnimator
     {
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;

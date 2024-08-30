@@ -9,17 +9,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
     class PhysicsObjectMotion : BaseObjectMotionHandler
     {
-        [Serializable]
-        public struct CollisionImpulseMultiplierEntry
-        {
-            public CollisionType CollisionType;
-            public float MaxCollisionForce;
-        }
-
-        [SerializeField]
-        List<CollisionImpulseMultiplierEntry> m_CollisionImpulseEntries;
-        Dictionary<CollisionType, CollisionImpulseMultiplierEntry> m_CollisionImpulseTable;
-
         [SerializeField]
         float m_MaxAngularVelocity = 30;
         [SerializeField]
@@ -37,23 +26,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         protected NetworkVariable<Vector3> m_Velocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         protected NetworkVariable<Vector3> m_Torque = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         protected NetworkVariable<Vector3> m_Force = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-
-        protected override void Awake()
-        {
-            base.Awake();
-            m_CollisionImpulseTable = new Dictionary<CollisionType, CollisionImpulseMultiplierEntry>();
-            foreach (var entry in m_CollisionImpulseEntries)
-            {
-                if (!m_CollisionImpulseTable.ContainsKey(entry.CollisionType))
-                {
-                    m_CollisionImpulseTable.Add(entry.CollisionType, entry);
-                }
-                else
-                {
-                    Debug.LogWarning($"[Duplicate Entry] A duplicate {nameof(CollisionImpulseMultiplierEntry)} of type {entry.CollisionType} was detected! Ignoring entry.");
-                }
-            }
-        }
 
         protected override Vector3 OnGetObjectVelocity(bool getReference = false)
         {
@@ -292,13 +264,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             if (!Rigidbody.isKinematic && collidingBody.isKinematic && thisVelocity > 0.01f)
             {
-                // our non-kinematic Rigidbody is moving with physics and hit a still kinematic Rigidbody
-
                 m_CollisionMessage.CollisionForce = thisKineticForce;
                 m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
                 if (m_DebugCollisions)
                 {
-                    Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.");
+                    Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.", this);
                 }
 
                 // Send collision to owner of kinematic body
@@ -306,14 +276,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             }
             else if (Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
             {
-                // our still, kinematic Rigidbody was hit by a non-kinematic physics-moving Rigidbody
+                // our kinematic Rigidbody was hit by a non-kinematic physics-moving Rigidbody
 
                 collidingBodyPhys.m_CollisionMessage.CollisionForce = otherKineticForce;
                 collidingBodyPhys.m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
                 collidingBodyPhys.EventCollision(averagedCollisionNormal, this);
                 if (m_DebugCollisions)
                 {
-                    Debug.Log($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(otherKineticForce)} to {name}.");
+                    Debug.Log($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(otherKineticForce)} to {name}.", this);
                 }
             }
 

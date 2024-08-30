@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
+using Unity.Netcode;
 using UnityEngine.InputSystem;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    class AvatarTransform : PhysicsObjectMotion
+    class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
     {
         [SerializeField]
         PlayerInput m_PlayerInput;
@@ -23,8 +24,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             base.OnNetworkSpawn();
 
             gameObject.name = $"[Client-{OwnerClientId}]{name}";
-
-            m_DebugCollisions = m_DebugDamage = true;
 
             if (!HasAuthority)
             {
@@ -44,6 +43,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             var spawnPosition = new Vector3(51.4228516f,8.88483906f,-11.031064f);
             Teleport(spawnPosition, Quaternion.identity, Vector3.one);
             Rigidbody.linearVelocity = Vector3.zero;
+
+            this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
+            this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
         }
 
         public override void OnNetworkDespawn()
@@ -53,6 +55,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 m_AvatarInputs.Jumped -= OnJumped;
             }
+
+            this.UnregisterAllNetworkUpdates();
         }
 
         void OnJumped()
@@ -60,22 +64,28 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PhysicsPlayerController.SetJump(true);
         }
 
-        void Update()
+        void OnTransformUpdate()
         {
-            if (!IsSpawned || !HasAuthority)
-            {
-                return;
-            }
-
             var movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
 
             m_PhysicsPlayerController.SetMovement(movement);
             m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
         }
 
-        void OnCollisionEnter(Collision other)
+        public void NetworkUpdate(NetworkUpdateStage updateStage)
         {
-            return;
+            switch (updateStage)
+            {
+                case NetworkUpdateStage.Update:
+                    OnTransformUpdate();
+                    break;
+                case NetworkUpdateStage.FixedUpdate:
+                    m_PhysicsPlayerController.OnFixedUpdate();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);
+            }
+
         }
     }
 }

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8197190117666738524}
   - component: {fileID: 539700041658036575}
   - component: {fileID: 4655812346339390596}
-  - component: {fileID: 9171430309950634001}
+  - component: {fileID: 7543523986693376117}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Untagged
@@ -38,7 +38,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3375298529462504647}
+  - {fileID: 4085133075368149463}
   - {fileID: 3820763517226122587}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -99,12 +99,12 @@ MonoBehaviour:
   SlerpPosition: 0
   m_CollisionType: 1
   m_CollisionDamage: 0
+  m_DebugCollisions: 0
   m_DebugDamage: 0
   m_Colliders:
-  - {fileID: 1650100839172502595}
-  m_CollisionImpulseEntries: []
-  m_MaxAngularVelocity: 30
-  m_MaxVelocity: 30
+  - {fileID: 36137897785899347}
+  m_MaxAngularVelocity: 10
+  m_MaxVelocity: 10
   m_PlayerInput: {fileID: 4903152183366241606}
   m_AvatarInputs: {fileID: 8197190117666738524}
   m_AvatarInteractions: {fileID: 539700041658036575}
@@ -117,7 +117,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478015027486214707}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -212,13 +212,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MainCollider: {fileID: 1650100839172502595}
+  m_MainCollider: {fileID: 36137897785899347}
   m_AvatarInputs: {fileID: 8197190117666738524}
   m_NetworkRigidbody: {fileID: -8100831418301897270}
   m_HoldTransform: {fileID: 3820763517226122587}
   m_InteractCollider: {fileID: 4881592427634173612}
-  m_MinTossForce: 5
-  m_MaxTossForce: 10
+  m_MinTossForce: 500
+  m_MaxTossForce: 1000
 --- !u!114 &4655812346339390596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Rigidbody: {fileID: 4745766379562620470}
   m_PhysicsPlayerControllerSettings: {fileID: 11400000, guid: 1dd99ce80f3e54d03b20bf78d6ff2a40, type: 2}
---- !u!114 &9171430309950634001
+--- !u!114 &7543523986693376117
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
     TransitionDuration: 0.1
     TriggerNameHash: -1243957561
     TransitionIndex: 0
-  m_Animator: {fileID: 8601147563451379603}
+  m_Animator: {fileID: 7006295767383679619}
   m_PhysicsPlayerController: {fileID: 4655812346339390596}
   m_AvatarInputs: {fileID: 8197190117666738524}
 --- !u!1 &9009864878170659705
@@ -344,7 +344,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &6229524770968019956
+--- !u!1001 &4617738848981348068
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -352,6 +352,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 378099091213283077}
     m_Modifications:
+    - target: {fileID: 4653874547743315895, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8353930243667998089, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
       propertyPath: m_Name
       value: PigChef_RigSetup
@@ -397,24 +401,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 363683212551861616, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
     - {fileID: 4634949050256877846, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
+    - {fileID: 363683212551861616, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
---- !u!136 &1650100839172502595 stripped
+--- !u!136 &36137897785899347 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 4653874547743315895, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
-  m_PrefabInstance: {fileID: 6229524770968019956}
+  m_PrefabInstance: {fileID: 4617738848981348068}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &3375298529462504647 stripped
+--- !u!4 &4085133075368149463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8693301772691271475, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
-  m_PrefabInstance: {fileID: 6229524770968019956}
+  m_PrefabInstance: {fileID: 4617738848981348068}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &8601147563451379603 stripped
+--- !u!95 &7006295767383679619 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2391092429025954919, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
-  m_PrefabInstance: {fileID: 6229524770968019956}
+  m_PrefabInstance: {fileID: 4617738848981348068}
   m_PrefabAsset: {fileID: 0}
