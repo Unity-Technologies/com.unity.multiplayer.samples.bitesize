@@ -127,5 +127,3 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         }
     }
 }
-
-
