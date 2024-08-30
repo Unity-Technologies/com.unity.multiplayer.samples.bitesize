@@ -190,7 +190,7 @@ CapsuleCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -213,9 +213,10 @@ GameObject:
   - component: {fileID: 4903152183366241606}
   - component: {fileID: 8197190117666738524}
   - component: {fileID: 539700041658036575}
+  - component: {fileID: 4655812346339390596}
   m_Layer: 0
   m_Name: Avatar
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2473698027
+  GlobalObjectIdHash: 3001504883
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -292,18 +293,18 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
-  m_Rigidbody: {fileID: 4745766379562620470}
+  m_CollisionType: 1
+  m_CollisionDamage: 0
+  m_DebugCollisions: 0
+  m_DebugDamage: 0
+  m_Colliders:
+  - {fileID: 817796967242824188}
+  m_MaxAngularVelocity: 10
+  m_MaxVelocity: 10
   m_PlayerInput: {fileID: 4903152183366241606}
   m_AvatarInputs: {fileID: 8197190117666738524}
-  m_WalkSpeed: 6
-  m_SprintSpeed: 10
-  m_Acceleration: 50
-  m_DragCoefficient: 4
-  m_AirControlFactor: 0.5
-  m_JumpImpusle: 7
-  m_CustomGravityMultiplier: 2
-  m_RotationSpeed: 20
-  m_GroundCheckDistance: 1.1
+  m_AvatarInteractions: {fileID: 539700041658036575}
+  m_PhysicsPlayerController: {fileID: 4655812346339390596}
 --- !u!54 &4745766379562620470
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -312,7 +313,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478015027486214707}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -328,9 +329,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!114 &-8100831418301897270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,7 +392,6 @@ MonoBehaviour:
   m_InteractActionReference: {fileID: 1781555164194001046, guid: dcd1b4eb76b964f40afe6c0a3ca65c82, type: 3}
   Move: {x: 0, y: 0}
   Look: {x: 0, y: 0}
-  Jump: 0
   Sprint: 0
   AnalogMovement: 0
   CursorLocked: 1
@@ -403,7 +403,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478015027486214707}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
   m_Name: 
@@ -413,8 +413,22 @@ MonoBehaviour:
   m_NetworkRigidbody: {fileID: -8100831418301897270}
   m_HoldTransform: {fileID: 3820763517226122587}
   m_InteractCollider: {fileID: 4881592427634173612}
-  m_MinTossForce: 5
-  m_MaxTossForce: 10
+  m_MinTossForce: 500
+  m_MaxTossForce: 1000
+--- !u!114 &4655812346339390596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478015027486214707}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222c86e1ae554b699fe6d68d3cf4ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Rigidbody: {fileID: 4745766379562620470}
+  m_PhysicsPlayerControllerSettings: {fileID: 11400000, guid: 1dd99ce80f3e54d03b20bf78d6ff2a40, type: 2}
 --- !u!1 &9009864878170659705
 GameObject:
   m_ObjectHideFlags: 0

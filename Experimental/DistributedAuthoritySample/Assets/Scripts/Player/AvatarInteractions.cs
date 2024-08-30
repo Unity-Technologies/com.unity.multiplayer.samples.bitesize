@@ -47,6 +47,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         public override void OnNetworkSpawn()
         {
+            base.OnNetworkSpawn();
             if (!HasAuthority)
             {
                 return;
@@ -64,6 +65,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         public override void OnNetworkDespawn()
         {
+            base.OnNetworkDespawn();
             if (m_AvatarInputs)
             {
                 m_AvatarInputs.InteractTapped -= OnTapPerformed;
@@ -93,7 +95,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void PickUp()
         {
-            if (Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
+            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
             {
                 if (m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
                 {
@@ -167,7 +169,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 gameplayEventInvokable.OnGameplayEvent += OnGameplayEvent;
 
                 // prevent collisions from this collider to the picked up object and vice-versa
-                Physics.IgnoreCollision(m_MainCollider, other.GetComponent<Collider>(), true);
+                UnityEngine.Physics.IgnoreCollision(m_MainCollider, other.GetComponent<Collider>(), true);
             }
         }
 
@@ -185,7 +187,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                     // revert collision
                     if (networkObject.TryGetComponent(out Collider otherCollider))
                     {
-                        Physics.IgnoreCollision(m_MainCollider, otherCollider, false);
+                        UnityEngine.Physics.IgnoreCollision(m_MainCollider, otherCollider, false);
                     }
 
                     // don't have ownership of the item, thus we can't invoke DetachFromFixedJoint(), but we need to remove created FixedJoint component
@@ -210,7 +212,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_HoldingRigidbody.DetachFromFixedJoint();
             m_HoldingRigidbody.GetComponent<Rigidbody>().useGravity = true;
-            Physics.IgnoreCollision(m_MainCollider, m_HoldingRigidbody.GetComponent<Collider>(), false);
+            UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_HoldingRigidbody.GetComponent<Collider>(), false);
             m_HoldingRigidbody = null;
         }
 

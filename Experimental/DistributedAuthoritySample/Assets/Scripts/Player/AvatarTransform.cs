@@ -1,47 +1,23 @@
-using Unity.Netcode.Components;
+using System;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
+using Unity.Multiplayer.Samples.SocialHub.Physics;
+using Unity.Netcode;
 using UnityEngine.InputSystem;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class AvatarTransform : NetworkTransform
+    class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
     {
-        [SerializeField]
-        Rigidbody m_Rigidbody;
         [SerializeField]
         PlayerInput m_PlayerInput;
         [SerializeField]
         AvatarInputs m_AvatarInputs;
         [SerializeField]
-        float m_WalkSpeed;
+        AvatarInteractions m_AvatarInteractions;
         [SerializeField]
-        float m_SprintSpeed;
-        [SerializeField]
-        float m_Acceleration;
-        [SerializeField]
-        float m_DragCoefficient;
-        [SerializeField]
-        float m_AirControlFactor;
-        [SerializeField]
-        float m_JumpImpusle;
-        [SerializeField]
-        float m_CustomGravityMultiplier;
-        [SerializeField]
-        float m_RotationSpeed;
-        [SerializeField]
-        float m_GroundCheckDistance;
-
-        Vector3 m_Movement;
-
-        // grab jump state from input and clear after consumed
-        bool m_Jump;
-
-        // cached grounded check
-        bool m_IsGrounded;
-        RaycastHit[] m_RaycastHits = new RaycastHit[1];
-        Ray m_Ray;
+        PhysicsPlayerController m_PhysicsPlayerController;
 
         public override void OnNetworkSpawn()
         {
@@ -56,163 +32,61 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
-            m_Rigidbody.isKinematic = false;
+            m_AvatarInputs.Jumped += OnJumped;
+            m_AvatarInteractions.enabled = true;
+            m_PhysicsPlayerController.enabled = true;
+            Rigidbody.isKinematic = false;
+
+            // Freeze rotation on the x and z axes to prevent toppling
+            Rigidbody.freezeRotation = true;
 
             var spawnPosition = new Vector3(0f, 1.5f, 0f);
-            m_Rigidbody.position = spawnPosition;
-            m_Rigidbody.rotation = Quaternion.identity;
-            m_Rigidbody.linearVelocity = Vector3.zero;
+            transform.SetPositionAndRotation(position: spawnPosition, rotation: Quaternion.identity);
+            Rigidbody.position = spawnPosition;
+            Rigidbody.linearVelocity = Vector3.zero;
 
-            // Inject the player avatar into the camera system
-            Camera.main.GetComponent<CameraControl>().SetAvatarTransform(this);
+            this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
+            this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
         }
 
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-
-            if (HasAuthority)
+            if (m_AvatarInputs)
             {
-                m_PlayerInput.enabled = false;
-                m_AvatarInputs.enabled = false;
-                m_Rigidbody.isKinematic = true;
-
-                // Remove the player avatar from the camera system
-                Camera.main.GetComponent<CameraControl>().SetAvatarTransform(null);
+                m_AvatarInputs.Jumped -= OnJumped;
             }
+
+            this.UnregisterAllNetworkUpdates();
         }
 
-        void Update()
+        void OnJumped()
         {
-            if (!IsSpawned || !HasAuthority)
-            {
-                return;
-            }
-
-            // Ensure movement is relative to the camera orientation
-            Camera mainCamera = Camera.main;
-            Vector3 forward = mainCamera.transform.forward;
-            Vector3 right = mainCamera.transform.right;
-
-            // Project forward and right onto the x-z plane (horizontal plane)
-            forward.y = 0f;
-            right.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-
-            Vector3 desiredMoveDirection = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
-            m_Movement = desiredMoveDirection.normalized;
-
-            if (IsGrounded() && m_AvatarInputs.Jump)
-            {
-                m_Jump = true;
-                m_AvatarInputs.Jump = false;
-            }
+            m_PhysicsPlayerController.SetJump(true);
         }
 
-        void ApplyMovement()
+        void OnTransformUpdate()
         {
-            if (Mathf.Approximately(m_Movement.sqrMagnitude, 0f))
-            {
-                return;
-            }
+            var movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
 
-            var velocity = m_Rigidbody.linearVelocity;
-            var desiredVelocity = m_Movement * (m_AvatarInputs.Sprint ? m_SprintSpeed : m_WalkSpeed);
-            var targetVelocity = new Vector3(desiredVelocity.x, velocity.y, desiredVelocity.z);
-            var velocityChange = targetVelocity - velocity;
-
-            if (m_IsGrounded)
-            {
-                // Apply force proportional to acceleration while grounded
-                var force = velocityChange * m_Acceleration;
-                m_Rigidbody.AddForce(force, ForceMode.Acceleration);
-            }
-            else
-            {
-                // Apply reduced force in the air for air control
-                var force = velocityChange * (m_Acceleration * m_AirControlFactor);
-                m_Rigidbody.AddForce(force, ForceMode.Acceleration);
-            }
+            m_PhysicsPlayerController.SetMovement(movement);
+            m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
         }
 
-        void ApplyRotation()
+        public void NetworkUpdate(NetworkUpdateStage updateStage)
         {
-            // Rotate to face direction of motion
-            var angularVelocity = Vector3.zero;
-            if (m_Movement.sqrMagnitude > 0.01f)
+            switch (updateStage)
             {
-                var delta = Mathf.Atan2(m_Movement.x, m_Movement.z) - m_Rigidbody.rotation.eulerAngles.y * Mathf.Deg2Rad;
-                if (Mathf.Abs(delta) > Mathf.PI)
-                    delta -= 2 * Mathf.PI * Mathf.Sign(delta);
-                angularVelocity = m_RotationSpeed * delta * Vector3.up;
+                case NetworkUpdateStage.Update:
+                    OnTransformUpdate();
+                    break;
+                case NetworkUpdateStage.FixedUpdate:
+                    m_PhysicsPlayerController.OnFixedUpdate();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);
             }
 
-            m_Rigidbody.angularVelocity = angularVelocity;
-        }
-
-        void ApplyJump()
-        {
-            if (m_IsGrounded && m_Jump)
-            {
-                m_Rigidbody.AddForce(Vector3.up * m_JumpImpusle, ForceMode.Impulse);
-                m_Jump = false;
-            }
-        }
-
-        void UpdateGroundedStatus()
-        {
-            m_IsGrounded = IsGrounded();
-        }
-
-        bool IsGrounded()
-        {
-            // Perform a raycast to check if the character is grounded
-            m_Ray.origin = m_Rigidbody.worldCenterOfMass;
-            m_Ray.direction = Vector3.down;
-            return Physics.RaycastNonAlloc(m_Ray, m_RaycastHits, m_GroundCheckDistance) > 0;
-        }
-
-        void FixedUpdate()
-        {
-            if (!IsSpawned || !HasAuthority || m_Rigidbody != null && m_Rigidbody.isKinematic)
-            {
-                return;
-            }
-
-            UpdateGroundedStatus();
-
-            ApplyMovement();
-
-            ApplyRotation();
-
-            ApplyJump();
-
-            ApplyDrag();
-
-            ApplyCustomGravity();
-        }
-
-        void ApplyDrag()
-        {
-            var groundVelocity = m_Rigidbody.linearVelocity;
-            groundVelocity.y = 0f;
-            if (groundVelocity.magnitude > 0f)
-            {
-                // Apply deceleration force to stop movement
-                var dragForce = -m_DragCoefficient * groundVelocity.magnitude * groundVelocity;
-                m_Rigidbody.AddForce(dragForce, ForceMode.Acceleration);
-            }
-        }
-
-        void ApplyCustomGravity()
-        {
-            // custom gravity
-            if (!m_IsGrounded)
-            {
-                var customGravity = Physics.gravity * (m_CustomGravityMultiplier - 1);
-                m_Rigidbody.AddForce(customGravity, ForceMode.Acceleration);
-            }
         }
     }
 }
