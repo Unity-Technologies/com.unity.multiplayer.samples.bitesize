@@ -168,6 +168,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -4.520996
       objectReference: {fileID: 0}
+    - target: {fileID: 8778270557094879703, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8860140056957201948, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
     m_RemovedGameObjects: []
@@ -206,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3034623722
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2945676375
+  InScenePlacedSourceGlobalObjectIdHash: 3034623722
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -233,7 +237,6 @@ MonoBehaviour:
   RightHand: {fileID: 4999509373621924852}
   Health: 1
   destructionVFX: {fileID: 4911318353974513769, guid: 56f26e64c02337a47907a313b4d6399c, type: 3}
-  rubblePrefab: {fileID: 4548375771530481534, guid: 7edc42645c2fba04892f066a0f38e825, type: 3}
   rubblePrefab: {fileID: 4548375771530481534, guid: 7edc42645c2fba04892f066a0f38e825, type: 3}
 --- !u!114 &837516015183059736
 MonoBehaviour:
@@ -279,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseRigidBodyForMotion: 0
+  UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
 --- !u!1 &4592270918398199241 stripped

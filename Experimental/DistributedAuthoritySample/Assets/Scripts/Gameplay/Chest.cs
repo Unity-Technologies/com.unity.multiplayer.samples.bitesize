@@ -6,57 +6,69 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
     public class Chest : CarryableObject
     {
-        internal GameObject rubble;
+        public GameObject rubblePrefab; // Reference to the rubble prefab
+        private GameObject spawnedRubble;
 
-        private void Awake()
-        {
-            rubble = transform.Find("Rubble_Chest").gameObject; // Make sure the child object's name is correct
-            if (rubble != null)
-            {
-                Vector3 spawnPosition = transform.position;
-                ChangeRubbleVisuals(false, spawnPosition);
-            }
-        }
-
-        /*protected override void DestroyObject()
+        protected override void DestroyObject()
         {
             Vector3 spawnPosition = transform.position;
             base.DestroyObject();
             SpawnRubble(spawnPosition);
-        }*/
+        }
 
-        /*protected override void SpawnRubble(Vector3 position)
+        protected override void SpawnRubble(Vector3 position)
         {
-            ChangeRubbleVisuals(true, position);
-        }*/
-
-        protected internal void ChangeRubbleVisuals(bool enable, Vector3 transform)
-        {
-            if (rubble != null)
+            if (rubblePrefab != null && spawnedRubble == null)
             {
+                spawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
+                if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+                {
+                    networkObject.Spawn();
+                }
+
+                ChangeRubbleVisuals(true);
+            }
+        }
+
+        protected internal void ChangeRubbleVisuals(bool enable)
+        {
+            if (spawnedRubble != null)
+            {
+                var vector3 = spawnedRubble.gameObject.transform.position;
+                vector3.y = 0f;
+                spawnedRubble.gameObject.transform.position = vector3;
                 // Enable or disable renderers
-                Renderer[] renderers = rubble.GetComponentsInChildren<Renderer>();
+                Renderer[] renderers = spawnedRubble.GetComponentsInChildren<Renderer>();
                 foreach (Renderer renderer in renderers)
                 {
                     renderer.enabled = enable;
                 }
 
                 // Enable or disable colliders
-                Collider[] colliders = rubble.GetComponentsInChildren<Collider>();
+                Collider[] colliders = spawnedRubble.GetComponentsInChildren<Collider>();
                 foreach (Collider collider in colliders)
                 {
                     collider.enabled = enable;
-                    rubble.gameObject.transform.position = transform;
                 }
             }
         }
 
-        private IEnumerable<WaitForSeconds> RubbleDeactivate(GameObject rubblePrefab)
+        public override void OnNetworkDespawn()
         {
-            yield return new WaitForSeconds(5f);
-            ChangeRubbleVisuals(false, transform.position);
+            base.OnNetworkDespawn();
+            if (spawnedRubble != null)
+            {
+                if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+                {
+                    networkObject.Despawn(true);
+                }
+                else
+                {
+                    Destroy(spawnedRubble);
+                }
+
+                spawnedRubble = null;
+            }
         }
     }
-
 }
-
