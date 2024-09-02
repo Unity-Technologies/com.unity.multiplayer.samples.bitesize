@@ -172,8 +172,15 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8860140056957201948, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+    - target: {fileID: 8860140056957201948, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: rubblePrefab
+      value: 
+      objectReference: {fileID: 4548375771530481534, guid: 7edc42645c2fba04892f066a0f38e825, type: 3}
+    - target: {fileID: 8860140056957201948, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: destructionVFX
+      value: 
+      objectReference: {fileID: 4911318353974513769, guid: 56f26e64c02337a47907a313b4d6399c, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 79685342591573548, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
@@ -181,11 +188,8 @@ PrefabInstance:
       addedObject: {fileID: 3877267113667028722}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 5832966791020054508}
-    - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1952691319617388609}
     - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       insertIndex: -1
       addedObject: {fileID: 837516015183059736}
@@ -210,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2945676375
+  GlobalObjectIdHash: 3630027201
   InScenePlacedSourceGlobalObjectIdHash: 3034623722
   DeferredDespawnTick: 0
   Ownership: 1
@@ -221,23 +225,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1952691319617388609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291901203331741842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db9577c37c28f384ba72d1bfc2401c28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeftHand: {fileID: 4592270918398199241}
-  RightHand: {fileID: 4999509373621924852}
-  Health: 1
-  destructionVFX: {fileID: 4911318353974513769, guid: 56f26e64c02337a47907a313b4d6399c, type: 3}
-  rubblePrefab: {fileID: 4548375771530481534, guid: 7edc42645c2fba04892f066a0f38e825, type: 3}
 --- !u!114 &837516015183059736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,16 +272,6 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
---- !u!1 &4592270918398199241 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8480444494992682542, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
-  m_PrefabInstance: {fileID: 5335517921941646311}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4999509373621924852 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1110772888546809875, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
-  m_PrefabInstance: {fileID: 5335517921941646311}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5408972833776088523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 79685342591573548, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
