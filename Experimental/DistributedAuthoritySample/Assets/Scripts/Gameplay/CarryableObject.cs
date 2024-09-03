@@ -4,235 +4,249 @@ using Unity.Netcode;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-public class CarryableObject : NetworkBehaviour
-{
-    [Header("General Settings")]
-    public GameObject LeftHand;
-    public GameObject RightHand;
-    public int Health = 1;
-
-    [Header("Destruction Settings")]
-    public GameObject destructionVFX;
-    public GameObject rubblePrefab;
-
-    private int previousHealth;
-    private GameObject spawnedRubble;
-
-    public int CurrentHealth
+    public class CarryableObject : NetworkBehaviour
     {
-        get => Health;
-        set
+        [Header("General Settings")]
+        public GameObject LeftHand;
+        public GameObject RightHand;
+        public int Health = 1;
+
+        [Header("Destruction Settings")]
+        public string destructionVFXType; // "Pot" or "Crate"
+        public GameObject rubblePrefab;
+
+        private int previousHealth;
+        private GameObject spawnedRubble;
+        private VFXPoolManager vfxPoolManager;
+
+        public int CurrentHealth
         {
-            Health = value;
-            if (Health <= 0)
+            get => Health;
+            set
             {
-                DestroyObject();
+                Health = value;
+                if (Health <= 0)
+                {
+                    DestroyObject();
+                }
             }
         }
-    }
 
-    private void Start()
-    {
-        previousHealth = Health;
-        if (IsOwner)
+        private void Start()
         {
-            NetworkObject.Spawn();
-        }
-    }
-
-    private void Update()
-    {
-        if (previousHealth != Health)
-        {
-            CurrentHealth = Health;
             previousHealth = Health;
-        }
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        // Ensure rubble initialization on network spawn
-        if (IsServer || IsOwner)
-        {
-            InitializeRubble();
-        }
-    }
-
-    private void InitializeRubble()
-    {
-        if (rubblePrefab != null)
-        {
-            spawnedRubble = Instantiate(rubblePrefab, transform.position, Quaternion.identity);
-            if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+            if (IsOwner)
             {
-                networkObject.Spawn(true);
+                NetworkObject.Spawn();
             }
-            ChangeRubbleVisuals(false); // Initially hide the rubble
+
+            //FindVFXPoolManager();
         }
-    }
 
-    protected virtual void DestroyObject()
-    {
-        Debug.Log("Object Destroyed");
-        StartCoroutine(DeferredDespawn());
-    }
-
-    protected IEnumerator DeferredDespawn()
-    {
-        Debug.Log("DeferredDespawn started");
-
-        ChangeObjectVisuals(false);
-
-        if (destructionVFX != null)
+        private void Update()
         {
-            var vfxInstance = Instantiate(destructionVFX, transform.position, Quaternion.identity);
-            var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
-
-            if (particleSystem != null)
+            if (previousHealth != Health)
             {
-                particleSystem.Play();
-                float totalWaitTime = particleSystem.main.duration;
-
-                yield return new WaitForSeconds(totalWaitTime);
-
-                Destroy(vfxInstance);
+                CurrentHealth = Health;
+                previousHealth = Health;
             }
         }
 
-        NotifyClientsOfDestruction();
-
-        yield return new WaitForSeconds(5f);
-
-        ChangeObjectVisuals(true);
-    }
-
-    private void ChangeObjectVisuals(bool enable)
-    {
-        // Ensure the object is at ground level when re-enabled
-        var objectPosition = transform.position;
-        objectPosition.y = 0;
-        transform.position = objectPosition;
-        transform.rotation = Quaternion.identity; // Ensure the object is upright when re-enabled
-
-        // Disable or enable renderers
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in renderers)
+        public override void OnNetworkSpawn()
         {
-            renderer.enabled = enable;
+            base.OnNetworkSpawn();
+            if (IsServer || IsOwner)
+            {
+                InitializeRubble();
+            }
+
+            FindVFXPoolManager();
         }
 
-        // Disable or enable colliders
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        foreach (Collider collider in colliders)
+        private void FindVFXPoolManager()
         {
-            collider.enabled = enable;
+            vfxPoolManager = VFXPoolManager.Instance;
+            if (vfxPoolManager == null)
+            {
+                Debug.LogError("VFXPoolManager not found in the scene.");
+            }
         }
 
-        ChangeRubbleVisuals(!enable); // Ensure the rubble is active when the object is inactive and vice-versa
-    }
-
-    private void ChangeRubbleVisuals(bool enable)
-    {
-        if (spawnedRubble != null)
+        private void InitializeRubble()
         {
-            // Ensure rubble is at ground level
-            var transformPosition = transform.position;
-            transformPosition.y = 0f;
-            spawnedRubble.transform.position = transformPosition;
+            if (rubblePrefab != null)
+            {
+                spawnedRubble = Instantiate(rubblePrefab, transform.position, Quaternion.identity);
+                if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+                {
+                    networkObject.Spawn(true);
+                }
+
+                ChangeRubbleVisuals(false); // Initially hide the rubble
+            }
+        }
+
+        protected virtual void DestroyObject()
+        {
+            Debug.Log("Object Destroyed");
+            StartCoroutine(DeferredDespawn());
+        }
+
+        protected IEnumerator DeferredDespawn()
+        {
+            Debug.Log("DeferredDespawn started");
+
+            ChangeObjectVisuals(false);
+
+            PlayDestructionVFX(transform.position);
+
+            NotifyClientsOfDestruction();
+
+            yield return new WaitForSeconds(5f);
+
+            ChangeObjectVisuals(true);
+        }
+
+        private void ChangeObjectVisuals(bool enable)
+        {
+            // Ensure the object is at ground level when re-enabled
+            var objectPosition = transform.position;
+            objectPosition.y = 0;
+            transform.position = objectPosition;
+            transform.rotation = Quaternion.identity; // Ensure the object is upright when re-enabled
 
             // Disable or enable renderers
-            Renderer[] renderers = spawnedRubble.GetComponentsInChildren<Renderer>();
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
             {
                 renderer.enabled = enable;
             }
 
             // Disable or enable colliders
-            Collider[] colliders = spawnedRubble.GetComponentsInChildren<Collider>();
+            Collider[] colliders = GetComponentsInChildren<Collider>();
             foreach (Collider collider in colliders)
             {
                 collider.enabled = enable;
             }
 
-            // Disable or enable rigidbody physics
-            Rigidbody[] rigidbodies = spawnedRubble.GetComponentsInChildren<Rigidbody>();
-            foreach (Rigidbody rigidbody in rigidbodies)
+            ChangeRubbleVisuals(!enable); // Ensure the rubble is active when the object is inactive and vice-versa
+        }
+
+        private void ChangeRubbleVisuals(bool enable)
+        {
+            if (spawnedRubble != null)
             {
-                rigidbody.isKinematic = !enable;
+                // Ensure rubble is at ground level
+                var transformPosition = transform.position;
+                transformPosition.y = 0f;
+                spawnedRubble.transform.position = transformPosition;
+
+                // Disable or enable renderers
+                Renderer[] renderers = spawnedRubble.GetComponentsInChildren<Renderer>();
+                foreach (Renderer renderer in renderers)
+                {
+                    renderer.enabled = enable;
+                }
+
+                // Disable or enable colliders
+                Collider[] colliders = spawnedRubble.GetComponentsInChildren<Collider>();
+                foreach (Collider collider in colliders)
+                {
+                    collider.enabled = enable;
+                }
+
+                // Disable or enable rigidbody physics
+                Rigidbody[] rigidbodies = spawnedRubble.GetComponentsInChildren<Rigidbody>();
+                foreach (Rigidbody rigidbody in rigidbodies)
+                {
+                    rigidbody.isKinematic = !enable;
+                }
             }
         }
-    }
 
-    private void NotifyClientsOfDestruction()
-    {
-        NotifyClientsOfDestructionClientRpc();
-    }
-
-    [ClientRpc]
-    private void NotifyClientsOfDestructionClientRpc()
-    {
-        if (!IsOwner)
+        private void NotifyClientsOfDestruction()
         {
-            HandleDestructionVisualUpdates();
+            NotifyClientsOfDestructionClientRpc();
         }
-    }
 
-    private void HandleDestructionVisualUpdates()
-    {
-        ChangeObjectVisuals(false);
-        PlayDestructionVFX(transform.position);
-        SpawnRubble(transform.position);
-    }
-
-    protected virtual void PlayDestructionVFX(Vector3 position)
-    {
-        if (destructionVFX != null)
+        [ClientRpc]
+        private void NotifyClientsOfDestructionClientRpc()
         {
-            GameObject vfxInstance = Instantiate(destructionVFX, position, Quaternion.identity);
-            var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
-
-            if (particleSystem != null)
+            if (!IsOwner)
             {
-                particleSystem.Play();
-                float totalWaitTime = particleSystem.main.duration;
-                Destroy(vfxInstance, totalWaitTime);
+                HandleDestructionVisualUpdates();
             }
         }
-    }
 
-    protected virtual void SpawnRubble(Vector3 position)
-    {
-        if (rubblePrefab != null && spawnedRubble == null)
+        private void HandleDestructionVisualUpdates()
         {
-            spawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
-            if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+            ChangeObjectVisuals(false);
+            PlayDestructionVFX(transform.position);
+            SpawnRubble(transform.position);
+        }
+
+        protected virtual void PlayDestructionVFX(Vector3 position)
+        {
+            if (vfxPoolManager != null)
             {
-                networkObject.Spawn(true);
+                GameObject vfxInstance = vfxPoolManager.GetVFXInstance(destructionVFXType);
+                if (vfxInstance != null)
+                {
+                    vfxInstance.transform.position = position;
+                    var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
+
+                    if (particleSystem != null)
+                    {
+                        Debug.Log("Playing destruction VFX.");
+                        particleSystem.time = 4;
+                        particleSystem.Play();
+                        StartCoroutine(ReturnVFXInstanceAfterDelay(destructionVFXType, vfxInstance, particleSystem.main.duration-0.02f));
+                    }
+                }
             }
-            ChangeRubbleVisuals(true);
         }
-        else
-        {
-            ChangeRubbleVisuals(true);
-        }
-    }
 
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
-        if (spawnedRubble != null)
+        private IEnumerator ReturnVFXInstanceAfterDelay(string vfxType, GameObject vfxInstance, float delay)
         {
-            if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+            Debug.Log("Returning VFX instance after delay.");
+            yield return new WaitForSeconds(delay);
+            vfxPoolManager?.ReturnVFXInstance(vfxType, vfxInstance);
+        }
+
+        protected virtual void SpawnRubble(Vector3 position)
+        {
+            if (rubblePrefab != null && spawnedRubble == null)
             {
-                networkObject.Despawn(true);
+                spawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
+                if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+                {
+                    networkObject.Spawn(true);
+                }
+
+                ChangeRubbleVisuals(true);
             }
             else
             {
-                Destroy(spawnedRubble);
+                ChangeRubbleVisuals(true);
             }
-            spawnedRubble = null;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            if (spawnedRubble != null)
+            {
+                if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+                {
+                    networkObject.Despawn(true);
+                }
+                else
+                {
+                    Destroy(spawnedRubble);
+                }
+
+                spawnedRubble = null;
+            }
         }
     }
-}
-
 }
