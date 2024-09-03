@@ -4,17 +4,12 @@ using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    class TransferableObject : NetworkBehaviour, IOwnershipRequestable, IGameplayEventInvokable
+    class TransferableObject : NetworkBehaviour, IOwnershipRequestable
     {
         public GameObject LeftHand;
         public GameObject RightHand;
 
-        //public Transform LeftHandContact;
-        //public Transform RightHandContact;
-
         public event Action<NetworkBehaviour, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
-
-        public event Action<NetworkObject, GameplayEvent> OnGameplayEvent;
 
         public override void OnNetworkSpawn()
         {
@@ -33,8 +28,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 NetworkObject.OnOwnershipRequestResponse -= OnOwnershipRequestResponse;
             }
 
-            OnGameplayEvent?.Invoke(NetworkObject, GameplayEvent.Despawned);
-            OnGameplayEvent = null;
+            GameplayEventHandler.NetworkObjectDespawned(NetworkObject);
             OnNetworkObjectOwnershipRequestResponse = null;
         }
 
@@ -42,8 +36,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         {
             base.OnOwnershipChanged(previous, current);
 
-            NetworkObjectDespawnedEvent.Raise(NetworkObject);
-            //OnGameplayEvent?.Invoke(NetworkObject, GameplayEvent.OwnershipChange);
+            GameplayEventHandler.NetworkObjectOwnershipChanged(NetworkObject, previous, current);
         }
 
         // note: invoked on owning client
@@ -58,11 +51,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         void OnOwnershipRequestResponse(NetworkObject.OwnershipRequestResponseStatus ownershipRequestResponse)
         {
             OnNetworkObjectOwnershipRequestResponse?.Invoke(this, ownershipRequestResponse);
-        }
-
-        void UpdateHands()
-        {
-
         }
     }
 }

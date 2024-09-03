@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(AvatarInputs))]
-    class AvatarInteractions : NetworkBehaviour
+    class AvatarInteractions : NetworkBehaviour, INetworkUpdateSystem
     {
         [SerializeField]
         AvatarNetworkAnimator m_AvatarNetworkAnimator;
@@ -66,8 +66,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_InteractCollider.enabled = HasAuthority;
 
-            // authority and non-authority subscribe to this event
-            NetworkObjectDespawnedEvent.Susbscribe(OnNetworkObjectDespawned);
+            this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.PreLateUpdate);
 
             if (!HasAuthority)
             {
@@ -84,6 +83,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_AvatarInputs.HoldInteractionPerformed += OnHoldStarted;
             m_AvatarInputs.HoldInteractionCancelled += OnHoldReleased;
 
+            GameplayEventHandler.OnNetworkObjectDespawned += OnNetworkObjectDespawned;
+            GameplayEventHandler.OnNetworkObjectOwnershipChanged += OnNetworkObjectOwnershipChanged;
+
             m_AnimationEventRelayer.PickupActionAnimationEvent += OnPickupActionAnimationEvent;
         }
 
@@ -97,10 +99,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 m_AvatarInputs.HoldInteractionCancelled -= OnHoldReleased;
             }
 
+            GameplayEventHandler.OnNetworkObjectDespawned -= OnNetworkObjectDespawned;
+            GameplayEventHandler.OnNetworkObjectOwnershipChanged -= OnNetworkObjectOwnershipChanged;
+
             if (m_AnimationEventRelayer)
             {
                 m_AnimationEventRelayer.PickupActionAnimationEvent -= OnPickupActionAnimationEvent;
             }
+
+            this.UnregisterAllNetworkUpdates();
         }
 
         protected override void OnNetworkSessionSynchronized()
@@ -116,14 +123,35 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             base.OnNetworkSessionSynchronized();
         }
 
-        void OnNetworkObjectDespawned(NetworkObject other)
+        // invoked on authoritative instances
+        void OnNetworkObjectDespawned(NetworkObject networkObject)
         {
             // compare to what's picked up -- if it matches our picked up object, release
+            if (m_TransferableObject != null && networkObject == m_TransferableObject.NetworkObject)
+            {
+                if (IsSpawned)
+                {
+                    m_AvatarNetworkAnimator.SetTrigger(k_DropId);
+                }
+                UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
+                m_TransferableObject = null;
+                m_PickupLocFixedJoint.connectedBody = null;
+                m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
+            }
         }
 
-        void OnNetworkObjectOwnershipChaned(ulong previous, ulong current, NetworkObject other)
+        // invoked on authoritative instances
+        void OnNetworkObjectOwnershipChanged(NetworkObject networkObject, ulong previous, ulong current)
         {
-            // compare to what's picked up -- if it matches our picked up object, release
+            // compare to what's picked up -- if it matches our picked up object, drop
+            if (m_TransferableObject != null && m_TransferableObject.NetworkObject == networkObject && !networkObject.HasAuthority)
+            {
+                m_AvatarNetworkAnimator.SetTrigger(k_DropId);
+                UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
+                m_TransferableObject = null;
+                m_PickupLocFixedJoint.connectedBody = null;
+                m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
+            }
         }
 
         void OnTapPerformed()
@@ -210,7 +238,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 return;
             }
-
             StartPickup(other);
         }
 
@@ -218,20 +245,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             // For late joining players
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference(other);
-
             // set ownership status to request required, now that this object is being held
             other.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
-
             // For immediate notification
             OnObjectPickedUpRpc(m_CurrentTransferableObject.Value);
-
             // Rotate the player to face the item smoothly
             StartCoroutine(SmoothLookAt(other.transform));
-
             m_AvatarNetworkAnimator.SetTrigger(k_PickupId);
-
-            var gameplayEventInvokable = other.GetComponent<IGameplayEventInvokable>();
-            gameplayEventInvokable.OnGameplayEvent += OnGameplayEvent;
         }
 
         IEnumerator SmoothLookAt(Transform target)
@@ -283,67 +303,25 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             transferableObjectTransform.position = m_PickupLocChild.transform.position;
             transferableObjectTransform.rotation = m_PickupLocChild.transform.rotation;
 
-            var transferableObjectRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             // prevent collisions from this collider to the picked up object and vice-versa
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), true);
 
-            transferableObjectRigidbody.useGravity = false;
-            m_PickupLocFixedJoint.connectedBody = transferableObjectRigidbody;
-
-            // get prop hands location
-            var leftHand = m_TransferableObject.LeftHand;
-            var rightHand = m_TransferableObject.RightHand;
-
-            //m_TransferableObject.RightHandContact = m_RightHandContact.transform;
-            //m_TransferableObject.LeftHandContact = m_LeftHandContact.transform;
+            if (HasAuthority)
+            {
+                var transferableObjectRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
+                transferableObjectRigidbody.useGravity = false;
+                m_PickupLocFixedJoint.connectedBody = transferableObjectRigidbody;
+            }
 
             // align hand contacts with prop hands
-            m_LeftHandContact.transform.position = leftHand.transform.position;
-            m_RightHandContact.transform.position = rightHand.transform.position;
-            m_LeftHandContact.transform.rotation = leftHand.transform.rotation;
-            m_RightHandContact.transform.rotation = rightHand.transform.rotation;
-
-            Debug.Log($"[Client-{clientId}] Picked up: " + m_TransferableObject.name);
-        }
-
-        // todo: make this a public static event to subscribe to, since all avatars need to know when a held
-        // NetworkObject has just been despawned / changed ownership
-        void OnGameplayEvent(NetworkObject networkObject, GameplayEvent gameplayEvent)
-        {
-            switch (gameplayEvent)
-            {
-                case GameplayEvent.Despawned:
-                case GameplayEvent.OwnershipChange:
-
-                    // unsubscribe
-                    var gameplayEventInvokable = networkObject.GetComponent<IGameplayEventInvokable>();
-                    gameplayEventInvokable.OnGameplayEvent -= OnGameplayEvent;
-
-                    // revert collision
-                    if (networkObject.TryGetComponent(out Collider otherCollider))
-                    {
-                        UnityEngine.Physics.IgnoreCollision(m_MainCollider, otherCollider, false);
-                    }
-
-                    // need a way to reset animator
-                    m_AvatarNetworkAnimator.SetTrigger(k_DropId);
-
-                    m_PickupLocFixedJoint.connectedBody = null;
-                    m_TransferableObject = null;
-                    m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
-                    break;
-                default:
-                    throw new Exception($"Unknown GameplayEvent {gameplayEvent}!");
-            }
+            m_LeftHandContact.transform.position = m_TransferableObject.LeftHand.transform.position;
+            m_RightHandContact.transform.position = m_TransferableObject.RightHand.transform.position;
+            m_LeftHandContact.transform.rotation = m_TransferableObject.LeftHand.transform.rotation;
+            m_RightHandContact.transform.rotation = m_TransferableObject.RightHand.transform.rotation;
         }
 
         void DropAction()
         {
-            if (!HasAuthority)
-            {
-                return;
-            }
-
             m_AvatarNetworkAnimator.SetTrigger(k_DropId);
             m_PickupLocFixedJoint.connectedBody = null;
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
@@ -401,6 +379,23 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             else
             {
                 OnDropAction();
+            }
+        }
+
+        public void NetworkUpdate(NetworkUpdateStage updateStage)
+        {
+            switch (updateStage)
+            {
+                case NetworkUpdateStage.PreLateUpdate:
+                    // if this instance is carrying something, then keep connection points synchronized with object being carried
+                    if (m_TransferableObject != null)
+                    {
+                        m_LeftHandContact.transform.position = m_TransferableObject.LeftHand.transform.position;
+                        m_RightHandContact.transform.position = m_TransferableObject.RightHand.transform.position;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);
             }
         }
     }

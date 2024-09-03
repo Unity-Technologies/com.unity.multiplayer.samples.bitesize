@@ -85,7 +85,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 default:
                     throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);
             }
-
         }
     }
 }
