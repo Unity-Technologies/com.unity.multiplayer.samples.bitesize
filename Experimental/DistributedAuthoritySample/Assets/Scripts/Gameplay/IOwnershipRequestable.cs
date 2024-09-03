@@ -6,6 +6,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
     interface IOwnershipRequestable
     {
-        event Action<NetworkObject, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
+        event Action<NetworkBehaviour, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
     }
 }

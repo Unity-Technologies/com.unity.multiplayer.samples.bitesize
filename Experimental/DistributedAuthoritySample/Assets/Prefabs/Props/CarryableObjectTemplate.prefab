@@ -40,10 +40,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 984624523486835985}
-  - component: {fileID: 8860140056957201948}
   - component: {fileID: 1070061854055180021}
   - component: {fileID: 8778270557094879703}
-  m_Layer: 0
+  - component: {fileID: 2093548513578380327}
+  - component: {fileID: 1081003696074514503}
+  - component: {fileID: 2004954010814667909}
+  - component: {fileID: 9164755434285228942}
+  m_Layer: 7
   m_Name: CarryableObjectTemplate
   m_TagString: PickUpItem
   m_Icon: {fileID: 0}
@@ -66,20 +69,6 @@ Transform:
   - {fileID: 79685342591573548}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8860140056957201948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5622352566631732085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1cd13b549715364b885cf2e2e4a8257, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeftHand: {fileID: 8480444494992682542}
-  RightHand: {fileID: 1110772888546809875}
 --- !u!65 &1070061854055180021
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128,6 +117,102 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2093548513578380327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622352566631732085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3029408173
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 3
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 1
+  AutoObjectParentSync: 1
+--- !u!114 &1081003696074514503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622352566631732085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54937e94f00ab46c8ae43b81027f342c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftHand: {fileID: 8480444494992682542}
+  RightHand: {fileID: 1110772888546809875}
+  LeftHandContact: {fileID: 0}
+  RightHandContact: {fileID: 0}
+--- !u!114 &2004954010814667909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622352566631732085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496a933d305aa4e1c926bd7d19b42f46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AuthorityMode: 1
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
+  m_CollisionType: 2
+  m_CollisionDamage: 5
+  m_DebugCollisions: 0
+  m_DebugDamage: 0
+  m_Colliders:
+  - {fileID: 7690746213975220858, guid: 1c6ec0a7b92244c349d83ba9b4a1c8ab, type: 3}
+  m_MaxAngularVelocity: 10
+  m_MaxVelocity: 10
+  m_StartingHealth: 100
+  m_IntangibleDurationAfterDamage: 2
+--- !u!114 &9164755434285228942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622352566631732085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 1
+  AutoSetKinematicOnDespawn: 1
 --- !u!1 &6648216130696299213
 GameObject:
   m_ObjectHideFlags: 0
