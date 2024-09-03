@@ -53,7 +53,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             Animator.SetBool(k_GroundedId, m_PhysicsPlayerController.Grounded);
-            Animator.SetFloat(k_MoveId, m_AvatarInputs.Move.magnitude);
+            Animator.SetFloat(k_MoveId, m_AvatarInputs.Move.magnitude * (m_AvatarInputs.Sprint ? 2f : 1f));
         }
     }
 }
