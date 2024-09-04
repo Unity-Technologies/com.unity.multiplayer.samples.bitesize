@@ -68,7 +68,7 @@ public class ServicesHelper : MonoBehaviour
 
     void LoadHubScene()
     {
-        SceneManager.LoadScene("HubScene");
+        SceneManager.LoadScene("HubScene_TownMarket");
     }
 
     async void Login()

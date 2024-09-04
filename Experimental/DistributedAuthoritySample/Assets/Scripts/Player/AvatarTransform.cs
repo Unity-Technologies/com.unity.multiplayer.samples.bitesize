@@ -39,10 +39,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             // Freeze rotation on the x and z axes to prevent toppling
             Rigidbody.freezeRotation = true;
-
-            var spawnPosition = new Vector3(0f, 1.5f, 0f);
-            transform.SetPositionAndRotation(position: spawnPosition, rotation: Quaternion.identity);
-            Rigidbody.position = spawnPosition;
+            // TODO: MTT-8899 fetch spawn point
+            var spawnPosition = new Vector3(51.4228516f,8.88483906f,-11.031064f);
+            Teleport(spawnPosition, Quaternion.identity, Vector3.one);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
