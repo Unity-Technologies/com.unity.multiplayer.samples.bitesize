@@ -4,11 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using Unity.Networking.Transport;
-using Unity.Networking.Transport.Relay;
 
 #if MULTIPLAYER_TOOLS
-using Unity.Multiplayer.Tools.NetStats;
 using Unity.Multiplayer.Tools.NetStatsMonitor;
 #endif
 
@@ -29,6 +26,7 @@ using UnityEditor;
 public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
 {
     public static NetworkManagerHelper Instance;
+    private static string s_ProfileName;
 
 #if MULTIPLAYER_TOOLS
     [Tooltip("Assign an in-scene placed net stats monitor prefab here for it to be available to other components.")]
@@ -61,8 +59,6 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
         public bool UseService;
         [Tooltip("When enabled, clients will only connect to the CMB Services server hosted on GSH. You can only start a NetworkManager as a client in this mode.")]
         public bool UseLiveService;
-
-
 
         public bool UsingService()
         {
@@ -101,10 +97,64 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
 
     public RenderPipelineAsset DefaultRenderPipelineAsset;
     public RenderPipelineAsset MacRenderPipelineAsset;
-
+    public ProgressFill ProgressBar;
     public bool IsRunningOSX { get; private set; }
 
     private string RenderingPath = "Forward+";
+
+    public enum StartModes
+    {
+        Client,
+        Host,
+        DAClient
+    }
+
+    public Action<StartModes> OnStarted;
+
+    public Action OnExiting;
+    public Action OnShuttingDown;
+
+    private float[] m_DeltaTimes = new float[60];
+    private int[] m_DeltaTicks = new int[60];
+    private int m_DeltaTickIndex;
+    private int m_DeltaTimeIndex;
+
+    private int m_DeltaTick;
+    private float m_DeltaTime;
+    private float m_DeltaDivide = 1.0f / 60.0f;
+
+    private static string s_SessionName = string.Empty;
+    private Task m_SessionTask;
+
+    private bool m_PooledObjectsLoaded;
+
+    private Dictionary<ObjectPoolSystem, float> m_PoolSystemsLoading = new Dictionary<ObjectPoolSystem, float>();
+    private int m_CurrentOwnedObjectCount;
+    private float m_LastObjectCountUpdate;
+    private Vector3 StandardGravity = new Vector3(0.0f, -9.81f, 0.0f);
+    private ISession m_CurrentSession;
+    private bool m_OriginalConsoleLogVisibilitySetting;
+
+    /// <summary>
+    /// Only used when connected to a live distributed
+    /// authority session.
+    /// </summary>
+    public enum SessionStates
+    {
+        None,
+        Joining,
+        Joined,
+        Leaving,
+    }
+
+    /// <summary>
+    /// Only used when connected to a live distributed
+    /// authority session.
+    /// </summary>
+    private SessionStates m_SessionState;
+    private string m_RelayJoinCode;
+    private Allocation m_Allocation;
+
 
 #if UNITY_EDITOR
     public SceneAsset ExitGameScene;
@@ -127,10 +177,6 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
         m_HostButtonLabel = m_DistributedAuthoritySettings.Enabled ? "DA-Host" : "Host";
         m_ClientButtonLabel = m_DistributedAuthoritySettings.Enabled ? "DA-Client" : "Client";
     }
-
-    public ProgressFill ProgressBar;
-
-
 
     private void Awake()
     {
@@ -156,45 +202,33 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
         Screen.SetResolution((int)(Screen.currentResolution.width * ResolutionFactor), (int)(Screen.currentResolution.height * ResolutionFactor), FullScreenMode.Windowed);
 
         m_NetworkManager.SetSingleton();
-
         ObjectPoolSystem.PoolSystemTrackerRegistration(this);
     }
 
     private async void Start()
     {
         Instance = this;
-        //var initoptions = new InitializationOptions();
-        //initoptions.SetProfile(GetRandomString(5));
-        await UnityServices.InitializeAsync();
+        if (UnityServices.Instance != null && UnityServices.Instance.State != ServicesInitializationState.Initialized)
+        {
+            await UnityServices.InitializeAsync();
+        }
 
         if (!AuthenticationService.Instance.IsSignedIn)
         {
             AuthenticationService.Instance.SignInFailed += SignInFailed;
             AuthenticationService.Instance.SignedIn += SignedIn;
-            AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
+            if (string.IsNullOrEmpty(s_ProfileName))
+            {
+                s_ProfileName = GetRandomString(5);
+            }
+            AuthenticationService.Instance.SwitchProfile(s_ProfileName);
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
-        //else
-        //{
-        //    // When signing out is no longer broken, we can shift this down to when the NetworkManager
-        //    // stops.
-        //    AuthenticationService.Instance.SignInFailed -= SignInFailed;
-        //    AuthenticationService.Instance.SignedIn -= SignedIn;
-        //    AuthenticationService.Instance.SignedOut += SignedOutOfServices;
-        //    try
-        //    {
-        //        AuthenticationService.Instance.SignOut();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.LogException(ex);
-        //    }
-        //}
 
 #if MULTIPLAYER_TOOLS
         if (NetStatsMonitor != null)
         {
-            NetStatsMonitor.gameObject.SetActive(false);
+            NetStatsMonitor.Visible = false;
         }
 #endif
     }
@@ -232,11 +266,11 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
             }
             if (disable)
             {
-                NetStatsMonitor.gameObject.SetActive(false);
+                NetStatsMonitor.Visible = false;
             }
             else
             {
-                NetStatsMonitor.gameObject.SetActive(!NetStatsMonitor.gameObject.activeInHierarchy);
+                NetStatsMonitor.Visible = !NetStatsMonitor.Visible;
             }
 
         }
@@ -257,57 +291,15 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
         Debug.LogError($"Failed to sign in anonymously: {error}");
     }
 
-    private async void SignedOutOfServices()
-    {
-        AuthenticationService.Instance.SignedOut -= SignedOutOfServices;
-        //AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
-        AuthenticationService.Instance.SignInFailed += SignInFailed;
-        AuthenticationService.Instance.SignedIn += SignedIn;
-
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-    }
-
-    static string GetRandomString(int length)
+    public static string GetRandomString(int length)
     {
         var r = new Random();
-        return new String(Enumerable.Range(0, length).Select(_ => (Char)r.Next('a', 'z')).ToArray());
+        return new string(Enumerable.Range(0, length).Select(_ => (Char)r.Next('a', 'z')).ToArray());
     }
 
-    public enum StartModes
-    {
-        Client,
-        Host,
-        DAClient
-    }
-
-    public Action<StartModes> OnStarted;
-
-    public Action OnExiting;
-
-    private float[] m_DeltaTimes = new float[60];
-    private int[] m_DeltaTicks = new int[60];
-    private int m_DeltaTickIndex;
-    private int m_DeltaTimeIndex;
-
-    private int m_DeltaTick;
-    private float m_DeltaTime;
-    private float m_DeltaDivide = 1.0f / 60.0f;
-
-    private string m_SessionName = string.Empty;
-    private Task m_SessionTask;
-
-    private bool m_PooledObjectsLoaded;
-
-    private Dictionary<ObjectPoolSystem, float> m_PoolSystemsLoading = new Dictionary<ObjectPoolSystem, float>();
-    private int m_CurrentOwnedObjectCount;
-    private float m_LastObjectCountUpdate;
-    private Vector3 StandardGravity = new Vector3(0.0f, -9.81f, 0.0f);
-
-
-    private ISession m_LastSession;
     public string GetSessionName()
     {
-        return m_SessionName == string.Empty ? "LocalService" : m_SessionName;
+        return s_SessionName == string.Empty ? "LocalService" : s_SessionName;
     }
 
     private void AverageDeltaTime()
@@ -494,16 +486,44 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
             {
                 if (m_DistributedAuthoritySettings.UsingLiveService())
                 {
-                    GUI.enabled = m_SessionTask == null || m_SessionTask.IsCompleted;
-
-                    GUILayout.Label("Session Name", GUILayout.Width(100));
-                    m_SessionName = GUILayout.TextField(m_SessionName);
-                    if (GUILayout.Button("Connect"))
+                    GUI.enabled = m_SessionState == SessionStates.None;
+                    if (m_SessionState == SessionStates.None)
                     {
-                        m_SessionTask = ConnectThroughLiveService(m_SessionName, true);
-                    }
+                        GUILayout.Label("Session Name", GUILayout.Width(100));
 
-                    GUI.enabled = true;
+                        s_SessionName = GUILayout.TextField(s_SessionName);
+
+                        if (GUILayout.Button("Connect"))
+                        {
+                            m_OriginalConsoleLogVisibilitySetting = ConsoleLogVisible;
+                            ConsoleLogVisible = true;
+                            LogMessage($"Connecting through live service", forceMessage: true);
+                            m_SessionState = SessionStates.Joining;
+                            m_SessionTask = ConnectThroughLiveService();
+                        }
+
+                        GUI.enabled = true;
+                    }
+                    else
+                    {
+                        switch (m_SessionState)
+                        {
+                            case SessionStates.Joining:
+                                {
+                                    if (m_SessionTask != null && m_SessionTask.IsCompletedSuccessfully)
+                                    {
+                                        m_SessionState = SessionStates.Joined;
+                                        m_SessionTask = null;
+                                    }
+                                    break;
+                                }
+                            case SessionStates.Leaving:
+                                {
+                                    GUILayout.Label("Leaving session...", GUILayout.Width(100));
+                                    break;
+                                }
+                        }
+                    }
                 }
                 else
                 {
@@ -514,7 +534,7 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
                     GUILayout.Label("Port:", GUILayout.Width(100));
                     var portString = GUILayout.TextField(unityTransport.ConnectionData.Port.ToString(), GUILayout.Width(100));
                     ushort.TryParse(portString, out unityTransport.ConnectionData.Port);
-                    
+
                     // CMB distributed authority services just "connects" with no host, client, or server option (all are clients)
                     if (GUILayout.Button("Connect"))
                     {
@@ -559,7 +579,16 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
                     }
                 }
             }
-
+            if (ConsoleLogVisible && m_MessageLogs.Count > 0)
+            {
+                GUILayout.Label("-----------(Log)-----------");
+                // Display any messages logged to screen
+                foreach (var messageLog in m_MessageLogs)
+                {
+                    GUILayout.Label(messageLog.Message);
+                }
+                GUILayout.Label("---------------------------");
+            }
             GUILayout.EndArea();
 
             GUILayout.BeginArea(new Rect(10, Display.main.renderingHeight - 40, Display.main.renderingWidth - 10, 30));
@@ -572,6 +601,10 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
             }
             GUILayout.Label(scenesPreloaded.ToString());
             GUILayout.EndArea();
+            if (m_SessionState == SessionStates.Leaving)
+            {
+                return;
+            }
             // Exit to main menu
             GUILayout.BeginArea(new Rect(Display.main.renderingWidth - 100, 10, 80, 35));
             if (!m_SelectedSessionType && GUILayout.Button("Main Menu"))
@@ -596,18 +629,24 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
             {
                 GUILayout.Label($"Join Code: {m_RelayJoinCode}");
             }
-
-            if (m_Transport != null)
+            else if (m_DistributedAuthoritySettings.UsingLiveService() && m_CurrentSession != null)
             {
-                GUILayout.Label($"{RenderingPath} | Frame Time: {(int)m_DeltaTime}ms |Latency: {m_Transport.GetCurrentRtt(NetworkManager.ServerClientId)}ms");
+                GUILayout.Label($"Session: {m_CurrentSession.Name}");
+            }
+
+            if (m_NetworkManager.IsListening && m_Transport != null)
+            {
+                if (m_NetworkManager.NetworkConfig.NetworkTransport != m_Transport)
+                {
+                    m_Transport = m_NetworkManager.NetworkConfig.NetworkTransport;
+                }
+                GUILayout.Label($"{RenderingPath} | Frame Time: {(int)m_DeltaTime}ms | Latency: {m_Transport.GetCurrentRtt(NetworkManager.ServerClientId)}ms");
             }
 
             GUILayout.Label($"DeltaTick: {m_DeltaTick} TicksAgo: {NetworkTransform.GetTickLatency()}");
 
             var networkManager = m_NetworkManager;
             GUILayout.Label($"Spawned: {m_NetworkManager.SpawnManager.SpawnedObjectsList.Count} Owned: {GetOwnedObjectCount(ref networkManager)}");
-            //var currentTimeSync = networkManager.NetworkTimeSystem.CurrentTimeSyncInfo;
-            //GUILayout.Label($"[{currentTimeSync.TimeSyncs}] LRTT: {currentTimeSync.LastSyncedRttSec} LSST: {currentTimeSync.LastSyncedServerTimeSec} STO:{currentTimeSync.DesiredServerTimeOffset} LTO: {currentTimeSync.DesiredLocalTimeOffset}");
 
             if (ConsoleLogVisible && m_MessageLogs.Count > 0)
             {
@@ -620,20 +659,31 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
                 GUILayout.Label("---------------------------");
             }
             GUILayout.EndArea();
-            // Exit
-            GUILayout.BeginArea(new Rect(Display.main.renderingWidth - 40, 10, 30, 30));
-            if (GUILayout.Button("X"))
+
+            if (m_SessionState != SessionStates.Leaving)
             {
-                m_NetworkManager.Shutdown();
-                m_SelectedSessionType = false;
-                m_SessionType = SessionTypes.None;
+                // Exit
+                GUILayout.BeginArea(new Rect(Display.main.renderingWidth - 40, 10, 30, 30));
+                if (GUILayout.Button("X"))
+                {
+                    OnShuttingDown?.Invoke();
+                    // If connected to a live service session, then shutdown by leaving the session
+                    if (m_CurrentSession != null && (m_SessionState == SessionStates.Joined || m_SessionState == SessionStates.Joining))
+                    {
+                        m_CurrentSession.LeaveAsync();
+                    }
+                    else // Otherwise, shutdown normally
+                    {
+                        m_NetworkManager.Shutdown();
+                    }
+                    m_SelectedSessionType = false;
+                    m_SessionType = SessionTypes.None;
+                }
+
+                GUILayout.EndArea();
             }
-            GUILayout.EndArea();
         }
     }
-
-    private string m_RelayJoinCode;
-    private Allocation m_Allocation;
 
     private async void StartHostWithRelay(int maxConnections = 15)
     {
@@ -698,84 +748,127 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
         m_NetworkManager.SceneManager.PostSynchronizationSceneUnloading = true;
     }
 
-    private async Task ConnectThroughLiveService(string sessionName, bool distributedAuthority)
+    private async Task<ISession> ConnectThroughLiveService()
     {
+        var sessionName = s_SessionName;
         try
         {
-            var options = new CreateSessionOptions(100)
+            m_NetworkManager.OnClientStopped -= OnNetworkManagerStopped;
+            m_NetworkManager.OnClientStopped += OnNetworkManagerStopped;
+            m_NetworkManager.OnClientDisconnectCallback += OnClientDisconnectCallback;
+            m_NetworkManager.OnClientConnectedCallback += OnClientConnectedCallback;
+            // An attempt to avoid lobby cache issue
+            sessionName += $"-{SceneManager.GetActiveScene().name}";
+            var options = new SessionOptions()
             {
                 Name = sessionName,
-                MaxPlayers = 100,
-            };
+                MaxPlayers = 32
+            }.WithDistributedAuthorityNetwork();
 
-            if (m_LastSession == null)
-            {
-                m_LastSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options.WithDistributedConnection());
-            }
-            else
-            {
-                await MultiplayerService.Instance.JoinSessionByIdAsync(m_LastSession.Id);
-            }
-
-            m_NetworkManager.OnClientStopped += OnNetworkManagerStopped;
-            OnStarted?.Invoke(distributedAuthority ? StartModes.DAClient : m_NetworkManager.IsHost ? StartModes.Host : StartModes.Client);
+            m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
+            m_CurrentSession.RemovedFromSession += RemovedFromSession;
+            m_CurrentSession.StateChanged += CurrentSession_StateChanged;
+            OnStarted?.Invoke(StartModes.DAClient);
+            ConsoleLogVisible = m_OriginalConsoleLogVisibilitySetting;
+            m_SessionState = SessionStates.Joined;
+            return m_CurrentSession;
         }
         catch (Exception e)
         {
+            m_SessionState = SessionStates.None;
+            LogMessage(e.Message, 20, forceMessage: true);
             Debug.LogException(e);
+        }
+        return null;
+    }
+
+    private void ExitedSession()
+    {
+        m_CurrentSession.RemovedFromSession -= RemovedFromSession;
+        m_CurrentSession.StateChanged -= CurrentSession_StateChanged;
+        m_SessionState = SessionStates.None;
+        m_CurrentSession = null;
+    }
+
+    private void CurrentSession_StateChanged(Unity.Services.Multiplayer.SessionState sessionState)
+    {
+        if (sessionState == Unity.Services.Multiplayer.SessionState.Disconnected)
+        {
+            ExitedSession();
         }
     }
 
-    private async void OnNetworkManagerStopped(bool obj)
+    private void RemovedFromSession()
+    {
+        ExitedSession();
+    }
+
+    private void OnClientDisconnectCallback(ulong clientId)
+    {
+        if (m_NetworkManager.LocalClientId == clientId)
+        {
+            m_NetworkManager.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+            if (!string.IsNullOrEmpty(m_NetworkManager.DisconnectReason))
+            {
+                LogMessage($"[Client-{clientId}][Disconnected] {m_NetworkManager.DisconnectReason}", forceMessage: true);
+            }
+            else
+            {
+                LogMessage($"[Client-{clientId}][Disconnected]", forceMessage: true);
+            }
+        }
+        else
+        {
+            LogMessage($"[Client-{clientId}][Disconnected]", forceMessage: true);
+        }
+    }
+
+    private void OnClientConnectedCallback(ulong clientId)
+    {
+        if (m_NetworkManager.LocalClientId == clientId)
+        {
+            m_NetworkManager.OnClientConnectedCallback -= OnClientConnectedCallback;
+            ConsoleLogVisible = m_OriginalConsoleLogVisibilitySetting;
+        }
+    }
+
+    private void OnNetworkManagerStopped(bool obj)
     {
         m_NetworkManager.OnClientStopped -= OnNetworkManagerStopped;
         ObjectOwnerColor.Reset();
         PlayerColor.Reset();
-
+        if (!string.IsNullOrEmpty(m_NetworkManager.DisconnectReason))
+        {
+            LogMessage($"[Client][Disconnected] {m_NetworkManager.DisconnectReason}", forceMessage: true);
+        }
         if (m_DistributedAuthoritySettings.UseRelay)
         {
             m_Allocation = null;
             m_RelayJoinCode = string.Empty;
         }
-        if (m_LastSession != null)
+
+        if (m_SessionState == SessionStates.Joined)
         {
-            await m_LastSession.LeaveAsync();
+            m_SessionState = SessionStates.Leaving;
         }
 
         ToggleNetStatsMonitor(true);
-
-
-        // When signing out is no longer broken, we can shift this down to when the NetworkManager
-        // stops.
-        //AuthenticationService.Instance.SignedOut += SignedOutOfServices;
-        //try
-        //{
-        //    AuthenticationService.Instance.SignOut();
-        //}
-        //catch (Exception ex)
-        //{
-        //    Debug.LogException(ex);
-        //}
-
-        //
-        //m_LastSession = null;
     }
 
     private void LoadExitScene()
     {
-        if (m_LastSession != null)
-        {
-            m_LastSession = null;
-        }
         OnExiting?.Invoke();
         if (!string.IsNullOrEmpty(ExitGameSceneName))
         {
+            // This assures this instance is destroyed when we load the main menu
             SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
             SceneManager.LoadScene(ExitGameSceneName, LoadSceneMode.Single);
         }
+        else
+        {
+            LogMessage("Warning: No exit game scene defined!", 20, forceMessage: true);
+        }
     }
-
-
 
     private int GetOwnedObjectCount(ref NetworkManager networkManager)
     {
@@ -787,9 +880,6 @@ public class NetworkManagerHelper : MonoBehaviour, IPoolSystemTracker
 
         return m_CurrentOwnedObjectCount;
     }
-
-
-
 
     /// <summary>
     /// Invoked when a network session is active
