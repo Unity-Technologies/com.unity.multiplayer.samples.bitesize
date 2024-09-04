@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    internal class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
+    class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
     {
         [SerializeField]
         PlayerInput m_PlayerInput;
@@ -19,7 +19,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
 
-        static Camera m_MainCamera;
+        Camera m_MainCamera;
 
         public override void OnNetworkSpawn()
         {
@@ -52,7 +52,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if (cameraControl != null)
             {
                 cameraControl.SetTransform(transform);
-                SetCameraReference(Camera.main);
+                m_MainCamera = Camera.main;
             }
             else
             {
@@ -78,12 +78,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
         }
 
-        private void OnJumped()
+        void OnJumped()
         {
             m_PhysicsPlayerController.SetJump(true);
         }
 
-        private void OnTransformUpdate()
+        void OnTransformUpdate()
         {
             if (m_MainCamera != null)
             {
@@ -99,11 +99,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 m_PhysicsPlayerController.SetMovement(movement);
                 m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
             }
-        }
-
-        internal static void SetCameraReference(Camera camera)
-        {
-            m_MainCamera = camera;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

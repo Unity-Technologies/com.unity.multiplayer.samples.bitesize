@@ -2,39 +2,38 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
-using Unity.Netcode;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
-    public class CameraControl : MonoBehaviour
+    class CameraControl : MonoBehaviour
     {
         [SerializeField]
         CinemachineCamera freeLookVCam;
         [SerializeField]
-        InputActionReference rotateActionReference;
+        InputActionReference m_RotateActionReference;
         [SerializeField]
-        InputActionReference lookActionReference;
+        InputActionReference m_LookActionReference;
         [SerializeField]
         float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
 
-        private Transform m_FollowTransform;
-        private bool _cameraMovementLock = false;
-        private bool _isRMBPressed = false;
-        private CinemachineOrbitalFollow _orbitalFollow;
+        Transform m_FollowTransform;
+        bool _cameraMovementLock = false;
+        bool _isRMBPressed = false;
+        CinemachineOrbitalFollow _orbitalFollow;
 
         private void Awake()
         {
-            if (rotateActionReference != null)
+            if (m_RotateActionReference != null)
             {
-                rotateActionReference.action.started += OnRotateStarted;
-                rotateActionReference.action.canceled += OnRotateCanceled;
-                rotateActionReference.action.Enable();
+                m_RotateActionReference.action.started += OnRotateStarted;
+                m_RotateActionReference.action.canceled += OnRotateCanceled;
+                m_RotateActionReference.action.Enable();
             }
 
-            if (lookActionReference != null)
+            if (m_LookActionReference != null)
             {
-                lookActionReference.action.performed += OnLookPerformed;
-                lookActionReference.action.Enable();
+                m_LookActionReference.action.performed += OnLookPerformed;
+                m_LookActionReference.action.Enable();
             }
 
             _orbitalFollow = freeLookVCam.GetComponent<CinemachineOrbitalFollow>();
@@ -43,40 +42,29 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         private void OnEnable()
         {
-            if (rotateActionReference != null && lookActionReference != null)
+            if (m_RotateActionReference != null && m_LookActionReference != null)
             {
-                rotateActionReference?.action.Enable();
-                lookActionReference?.action.Enable();
+                m_RotateActionReference.action.Enable();
+                m_LookActionReference.action.Enable();
             }
         }
 
         private void OnDisable()
         {
-            rotateActionReference?.action.Disable();
-            lookActionReference?.action.Disable();
+            if (m_RotateActionReference != null && m_LookActionReference != null)
+            {
+                m_RotateActionReference.action.Disable();
+                m_LookActionReference.action.Disable();
+            }
         }
 
         internal void SetTransform(Transform newTransform)
         {
             m_FollowTransform = newTransform;
-
-            if (m_FollowTransform != null)
-            {
-                Camera camera = Camera.main;
-                if (camera != null)
-                {
-                    AvatarTransform.SetCameraReference(camera);
-                }
-                else
-                {
-                    Debug.LogWarning("Main Camera not found. Ensure there is a camera tagged as 'Main Camera' in the scene.");
-                }
-            }
-
             SetupProtagonistVirtualCamera();
         }
 
-        private void OnRotateStarted(InputAction.CallbackContext context)
+        void OnRotateStarted(InputAction.CallbackContext context)
         {
             _isRMBPressed = true;
             Cursor.lockState = CursorLockMode.Locked;
@@ -85,21 +73,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             StartCoroutine(DisableMouseControlForFrame());
         }
 
-        private void OnRotateCanceled(InputAction.CallbackContext context)
+        void OnRotateCanceled(InputAction.CallbackContext context)
         {
             _isRMBPressed = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
-        private IEnumerator DisableMouseControlForFrame()
+        IEnumerator DisableMouseControlForFrame()
         {
             _cameraMovementLock = true;
             yield return new WaitForEndOfFrame();
             _cameraMovementLock = false;
         }
 
-        private void OnLookPerformed(InputAction.CallbackContext context)
+        void OnLookPerformed(InputAction.CallbackContext context)
         {
             Vector2 cameraMovement = context.ReadValue<Vector2>();
             bool isDeviceMouse = context.control.device == Mouse.current;
