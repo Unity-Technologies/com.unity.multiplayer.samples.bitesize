@@ -102,7 +102,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             GameplayEventHandler.OnNetworkObjectDespawned -= OnNetworkObjectDespawned;
             GameplayEventHandler.OnNetworkObjectOwnershipChanged -= OnNetworkObjectOwnershipChanged;
 
-            if (m_AnimationEventRelayer)
+            if (m_AnimationEventRelayer != null)
             {
                 m_AnimationEventRelayer.PickupActionAnimationEvent -= OnPickupActionAnimationEvent;
             }
@@ -259,20 +259,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             Quaternion initialRotation = transform.rotation;
             Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
             var elapsedTime = 0f;
-            var duration = 0.23f; // Duration of the rotation in seconds
-            var rotation = transform.rotation;
+            const float duration = 0.23f; // Duration of the rotation in seconds
             while (elapsedTime < duration)
             {
-                rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / duration);
-                rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0); // Keep only the y-axis rotation
-                transform.rotation = rotation;
+                Quaternion currentRotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / duration);
+                currentRotation = Quaternion.Euler(0, currentRotation.eulerAngles.y, 0); // Keep only the y-axis rotation
+                transform.rotation = currentRotation;
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
             // Ensure the final rotation is exactly towards the target
-            rotation = targetRotation;
-            rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0); // Keep only the y-axis rotation
+            transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0); // Keep only the y-axis rotation
         }
 
         /// <summary>
