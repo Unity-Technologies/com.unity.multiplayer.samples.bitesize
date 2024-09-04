@@ -18,6 +18,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         private int previousHealth;
         private GameObject spawnedRubble;
         private VFXPoolManager vfxPoolManager;
+        private Vector3 initialPosition;
 
         public int CurrentHealth
         {
@@ -40,7 +41,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 NetworkObject.Spawn();
             }
 
-            //FindVFXPoolManager();
+            initialPosition = transform.position;
         }
 
         private void Update()
@@ -74,9 +75,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         private void InitializeRubble()
         {
+            Debug.Log("Initializing rubble.");
             if (rubblePrefab != null)
             {
                 spawnedRubble = Instantiate(rubblePrefab, transform.position, Quaternion.identity);
+                // put the rubble underneath the ground, so it is not visible at the beginning
+                spawnedRubble.transform.position = new Vector3(transform.position.x, -10f, transform.position.z);
                 if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
                 {
                     networkObject.Spawn(true);
@@ -110,10 +114,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         private void ChangeObjectVisuals(bool enable)
         {
             // Ensure the object is at ground level when re-enabled
-            var objectPosition = transform.position;
-            objectPosition.y = 0;
-            transform.position = objectPosition;
-            transform.rotation = Quaternion.identity; // Ensure the object is upright when re-enabled
+            if (enable)
+            {
+                var carryableObject = transform;
+                carryableObject.position = initialPosition;
+                carryableObject.rotation = Quaternion.identity; // Ensure the object is upright when re-enabled
+            }
 
             // Disable or enable renderers
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
@@ -134,6 +140,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         private void ChangeRubbleVisuals(bool enable)
         {
+            Debug.Log("Changing rubble visuals.");
             if (spawnedRubble != null)
             {
                 // Ensure rubble is at ground level
@@ -215,15 +222,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         protected virtual void SpawnRubble(Vector3 position)
         {
+            Debug.Log("Spawning rubble 2.");
             if (rubblePrefab != null && spawnedRubble == null)
             {
                 spawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
+                // put the rubble underneath the ground, so it is not visible at the beginning
+                spawnedRubble.transform.position = new Vector3(position.x, -10f, position.z);
                 if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
                 {
                     networkObject.Spawn(true);
                 }
-
-                ChangeRubbleVisuals(true);
             }
             else
             {
