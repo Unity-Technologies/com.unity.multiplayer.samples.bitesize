@@ -48,6 +48,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+
+            m_InteractCollider.enabled = HasAuthority;
+
             if (!HasAuthority)
             {
                 return;
