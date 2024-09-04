@@ -8,20 +8,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     public class CameraControl : MonoBehaviour
     {
-        public CinemachineCamera freeLookVCam;
-        public InputActionReference rotateActionReference;
-        public InputActionReference lookActionReference;
+        [SerializeField]
+        CinemachineCamera freeLookVCam;
+        [SerializeField]
+        InputActionReference rotateActionReference;
+        [SerializeField]
+        InputActionReference lookActionReference;
+        [SerializeField]
+        float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
 
-        public float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
-        private AvatarTransform avatarTransform; // This will be assigned at runtime
+        private Transform m_FollowTransform;
         private bool _cameraMovementLock = false;
         private bool _isRMBPressed = false;
-
         private CinemachineOrbitalFollow _orbitalFollow;
 
         private void Awake()
         {
-            // Setup input event handlers
             if (rotateActionReference != null)
             {
                 rotateActionReference.action.started += OnRotateStarted;
@@ -35,17 +37,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 lookActionReference.action.Enable();
             }
 
-            // Grab CM's orbital follow because we will be driving its axes directly
             _orbitalFollow = freeLookVCam.GetComponent<CinemachineOrbitalFollow>();
-
-            // Ensure the camera is not tracking anything initially
             freeLookVCam.Follow = null;
         }
 
         private void OnEnable()
         {
-            rotateActionReference?.action.Enable();
-            lookActionReference?.action.Enable();
+            if (rotateActionReference != null && lookActionReference != null)
+            {
+                rotateActionReference?.action.Enable();
+                lookActionReference?.action.Enable();
+            }
         }
 
         private void OnDisable()
@@ -54,16 +56,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             lookActionReference?.action.Disable();
         }
 
-        public void SetAvatarTransform(AvatarTransform newAvatarTransform)
+        internal void SetTransform(Transform newTransform)
         {
-            avatarTransform = newAvatarTransform;
+            m_FollowTransform = newTransform;
 
-            if (avatarTransform != null)
+            if (m_FollowTransform != null)
             {
                 Camera camera = Camera.main;
                 if (camera != null)
                 {
-                    avatarTransform.SetCameraReference(camera); // Store the camera reference in the AvatarTransform
+                    AvatarTransform.SetCameraReference(camera);
                 }
                 else
                 {
@@ -108,19 +110,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if (isDeviceMouse && !_isRMBPressed)
                 return;
 
-            // Drive the camera's orbit position based on user input
             float deviceMultiplier = isDeviceMouse ? 0.02f : Time.deltaTime;
             _orbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceMultiplier * _speedMultiplier;
-            _orbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceMultiplier * _speedMultiplier * 0.01f; // Y axis units are much smaller
+            _orbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceMultiplier * _speedMultiplier * 0.01f;
         }
 
-        public void SetupProtagonistVirtualCamera()
+        void SetupProtagonistVirtualCamera()
         {
-            if (avatarTransform == null)
+            if (m_FollowTransform == null)
                 return;
 
-            Transform target = avatarTransform.transform;
-            freeLookVCam.Follow = target;
+            freeLookVCam.Follow = m_FollowTransform;
             CinemachineCore.ResetCameraState(); // snap to new position
         }
     }

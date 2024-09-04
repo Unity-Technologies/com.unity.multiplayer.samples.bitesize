@@ -7,7 +7,7 @@ using Unity.Multiplayer.Samples.SocialHub.Utils;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
-    public class PhysicsObjectMotion : BaseObjectMotionHandler
+     class PhysicsObjectMotion : BaseObjectMotionHandler
     {
         [SerializeField]
         float m_MaxAngularVelocity = 30;

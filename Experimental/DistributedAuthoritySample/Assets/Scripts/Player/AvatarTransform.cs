@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
+    internal class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
     {
         [SerializeField]
         PlayerInput m_PlayerInput;
@@ -19,7 +19,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
 
-        private Camera mainCamera;
+        static Camera m_MainCamera;
 
         public override void OnNetworkSpawn()
         {
@@ -38,8 +38,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_AvatarInteractions.enabled = true;
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
-
-            // Freeze rotation on the x and z axes to prevent toppling
             Rigidbody.freezeRotation = true;
 
             var spawnPosition = new Vector3(0f, 1.5f, 0f);
@@ -50,12 +48,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
 
-            // Inject this avatar into the camera control system
             var cameraControl = Camera.main?.GetComponent<CameraControl>();
             if (cameraControl != null)
             {
-                cameraControl.SetAvatarTransform(this);
-                SetCameraReference(Camera.main); // Store the camera reference
+                cameraControl.SetTransform(transform);
+                SetCameraReference(Camera.main);
             }
             else
             {
@@ -74,11 +71,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             this.UnregisterAllNetworkUpdates();
 
-            // Undo camera system injection
             var cameraControl = Camera.main?.GetComponent<CameraControl>();
             if (cameraControl != null)
             {
-                cameraControl.SetAvatarTransform(null);
+                cameraControl.SetTransform(null);
             }
         }
 
@@ -89,12 +85,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         private void OnTransformUpdate()
         {
-            if (mainCamera != null)
+            if (m_MainCamera != null)
             {
-                Vector3 forward = mainCamera.transform.forward;
-                Vector3 right = mainCamera.transform.right;
+                Vector3 forward = m_MainCamera.transform.forward;
+                Vector3 right = m_MainCamera.transform.right;
 
-                // Project forward and right onto the x-z plane (horizontal plane)
                 forward.y = 0f;
                 right.y = 0f;
                 forward.Normalize();
@@ -106,9 +101,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
         }
 
-        public void SetCameraReference(Camera camera)
+        internal static void SetCameraReference(Camera camera)
         {
-            mainCamera = camera;
+            m_MainCamera = camera;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
