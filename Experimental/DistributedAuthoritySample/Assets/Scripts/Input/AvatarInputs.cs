@@ -29,8 +29,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         internal bool CursorInputForLook = true;
 
         internal event Action Jumped;
-        internal event Action InteractTapped;
-        internal event Action<double> InteractHeld;
+        internal event Action TapInteractionPerformed;
+        internal event Action HoldInteractionPerformed;
+        internal event Action<double> HoldInteractionCancelled;
 
         // tracking when a Hold interaction has started/ended
         bool m_HoldingInteractionPerformed;
@@ -64,9 +65,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             {
                 case HoldInteraction:
                     m_HoldingInteractionPerformed = true;
+                    HoldInteractionPerformed?.Invoke();
                     break;
                 case TapInteraction:
-                    InteractTapped?.Invoke();
+                    TapInteractionPerformed?.Invoke();
                     break;
             }
         }
@@ -77,7 +79,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             {
                 if (m_HoldingInteractionPerformed)
                 {
-                    InteractHeld?.Invoke(context.duration);
+                    HoldInteractionCancelled?.Invoke(context.duration);
                 }
 
                 m_HoldingInteractionPerformed = false;
