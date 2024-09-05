@@ -8,20 +8,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
     class CameraControl : MonoBehaviour
     {
         [SerializeField]
-        CinemachineCamera freeLookVCam;
+        CinemachineCamera m_FreeLookVCamera;
         [SerializeField]
         InputActionReference m_RotateActionReference;
         [SerializeField]
         InputActionReference m_LookActionReference;
         [SerializeField]
-        float _speedMultiplier = 1.0f; // Speed multiplier for camera movement
+        internal float SpeedMultiplier = 1.0f; // Speed multiplier for camera movement
 
         Transform m_FollowTransform;
-        bool _cameraMovementLock = false;
-        bool _isRMBPressed = false;
-        CinemachineOrbitalFollow _orbitalFollow;
+        bool m_CameraMovementLock;
+        bool m_IsRMBPressed;
+        CinemachineOrbitalFollow m_OrbitalFollow;
 
-        private void Awake()
+        void Awake()
         {
             if (m_RotateActionReference != null)
             {
@@ -36,11 +36,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 m_LookActionReference.action.Enable();
             }
 
-            _orbitalFollow = freeLookVCam.GetComponent<CinemachineOrbitalFollow>();
-            freeLookVCam.Follow = null;
+            m_OrbitalFollow = m_FreeLookVCamera.GetComponent<CinemachineOrbitalFollow>();
+            m_FreeLookVCamera.Follow = null;
         }
 
-        private void OnEnable()
+        void OnEnable()
         {
             if (m_RotateActionReference != null && m_LookActionReference != null)
             {
@@ -49,7 +49,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             if (m_RotateActionReference != null && m_LookActionReference != null)
             {
@@ -66,7 +66,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnRotateStarted(InputAction.CallbackContext context)
         {
-            _isRMBPressed = true;
+            m_IsRMBPressed = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -75,16 +75,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnRotateCanceled(InputAction.CallbackContext context)
         {
-            _isRMBPressed = false;
+            m_IsRMBPressed = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
         IEnumerator DisableMouseControlForFrame()
         {
-            _cameraMovementLock = true;
+            m_CameraMovementLock = true;
             yield return new WaitForEndOfFrame();
-            _cameraMovementLock = false;
+            m_CameraMovementLock = false;
         }
 
         void OnLookPerformed(InputAction.CallbackContext context)
@@ -92,15 +92,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             Vector2 cameraMovement = context.ReadValue<Vector2>();
             bool isDeviceMouse = context.control.device == Mouse.current;
 
-            if (_cameraMovementLock)
+            if (m_CameraMovementLock)
                 return;
 
-            if (isDeviceMouse && !_isRMBPressed)
+            if (isDeviceMouse && !m_IsRMBPressed)
                 return;
 
             float deviceMultiplier = isDeviceMouse ? 0.02f : Time.deltaTime;
-            _orbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceMultiplier * _speedMultiplier;
-            _orbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceMultiplier * _speedMultiplier * 0.01f;
+            m_OrbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceMultiplier * SpeedMultiplier;
+            m_OrbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceMultiplier * SpeedMultiplier * 0.01f;
         }
 
         void SetupProtagonistVirtualCamera()
@@ -108,7 +108,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if (m_FollowTransform == null)
                 return;
 
-            freeLookVCam.Follow = m_FollowTransform;
+            m_FreeLookVCamera.Follow = m_FollowTransform;
             CinemachineCore.ResetCameraState(); // snap to new position
         }
     }
