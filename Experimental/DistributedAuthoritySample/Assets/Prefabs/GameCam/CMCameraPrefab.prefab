@@ -141,7 +141,7 @@ MonoBehaviour:
   TargetOffset: {x: 0, y: 0.9, z: 0}
   TrackerSettings:
     BindingMode: 5
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 10, y: 10, z: 10}
     AngularDampingMode: 0
     RotationDamping: {x: 0, y: 0, z: 0}
     QuaternionDamping: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
       Height: 5
     Bottom:
       Radius: 5
-      Height: 0.2
+      Height: 0.5
     SplineCurvature: 1
   RecenteringTarget: 2
   HorizontalAxis:
