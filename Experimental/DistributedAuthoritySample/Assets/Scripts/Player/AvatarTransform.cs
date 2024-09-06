@@ -19,6 +19,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
 
+        Camera m_MainCamera;
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
@@ -36,27 +38,45 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_AvatarInteractions.enabled = true;
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
-
-            // Freeze rotation on the x and z axes to prevent toppling
             Rigidbody.freezeRotation = true;
             // TODO: MTT-8899 fetch spawn point
-            var spawnPosition = new Vector3(51.4228516f,8.88483906f,-11.031064f);
-            Teleport(spawnPosition, Quaternion.identity, Vector3.one);
+            var spawnPosition = new Vector3(53.7428741f,7.85612297f,-8.75020027f);
+            transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0f,143.263947f,0f));
+            //Teleport(spawnPosition, Quaternion.identity, Vector3.one);
+            Rigidbody.position = spawnPosition;
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
+
+            var cameraControl = Camera.main?.GetComponent<CameraControl>();
+            if (cameraControl != null)
+            {
+                cameraControl.SetTransform(transform);
+                m_MainCamera = Camera.main;
+            }
+            else
+            {
+                Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
+            }
         }
 
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-            if (m_AvatarInputs)
+
+            if (m_AvatarInputs != null)
             {
                 m_AvatarInputs.Jumped -= OnJumped;
             }
 
             this.UnregisterAllNetworkUpdates();
+
+            var cameraControl = Camera.main?.GetComponent<CameraControl>();
+            if (cameraControl != null)
+            {
+                cameraControl.SetTransform(null);
+            }
         }
 
         void OnJumped()
@@ -66,10 +86,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnTransformUpdate()
         {
-            var movement = new Vector3(m_AvatarInputs.Move.x, 0, m_AvatarInputs.Move.y).normalized;
+            if (m_MainCamera != null)
+            {
+                Vector3 forward = m_MainCamera.transform.forward;
+                Vector3 right = m_MainCamera.transform.right;
 
-            m_PhysicsPlayerController.SetMovement(movement);
-            m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+                forward.y = 0f;
+                right.y = 0f;
+                forward.Normalize();
+                right.Normalize();
+
+                Vector3 movement = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
+                m_PhysicsPlayerController.SetMovement(movement);
+                m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+            }
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
