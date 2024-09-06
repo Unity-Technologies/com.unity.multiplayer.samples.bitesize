@@ -40,8 +40,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
             // TODO: MTT-8899 fetch spawn point
-            var spawnPosition = new Vector3(51.4228516f,8.88483906f,-11.031064f);
-            Teleport(spawnPosition, Quaternion.identity, Vector3.one);
+            var spawnPosition = new Vector3(53.7428741f,7.85612297f,-8.75020027f);
+            transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0f,143.263947f,0f));
+            //Teleport(spawnPosition, Quaternion.identity, Vector3.one);
+            Rigidbody.position = spawnPosition;
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
