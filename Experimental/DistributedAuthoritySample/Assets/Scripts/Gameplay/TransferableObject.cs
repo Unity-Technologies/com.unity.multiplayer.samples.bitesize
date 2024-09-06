@@ -8,13 +8,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
     {
         public GameObject LeftHand;
         public GameObject RightHand;
+        private Collider m_Collider;
 
         public event Action<NetworkBehaviour, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
+
+        public Vector3 GetCenterOffset()
+        {
+            return m_Collider.bounds.center;
+        }
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-
+            m_Collider = GetComponent<Collider>();
             NetworkObject.OnOwnershipRequested += OnOwnershipRequested;
             NetworkObject.OnOwnershipRequestResponse += OnOwnershipRequestResponse;
         }

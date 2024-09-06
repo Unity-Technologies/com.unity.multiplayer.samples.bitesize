@@ -62,29 +62,39 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 return;
             }
 
-            var velocity = m_Rigidbody.linearVelocity;
-            var desiredVelocity = m_Movement * (m_Sprint ? m_PhysicsPlayerControllerSettings.SprintSpeed : m_PhysicsPlayerControllerSettings.WalkSpeed);
-            var targetVelocity = new Vector3(desiredVelocity.x, velocity.y, desiredVelocity.z);
-            var velocityChange = targetVelocity - velocity;
-
-            if (Grounded)
+            // Rotate the forward vector based on input x-axis
+            if (Mathf.Abs(m_Movement.x) > 0.01f)
             {
-                // Apply force proportional to acceleration while grounded
-                var force = velocityChange * m_PhysicsPlayerControllerSettings.Acceleration;
-                m_Rigidbody.AddForce(force, ForceMode.Acceleration);
-            }
-            else
-            {
-                // Apply reduced force in the air for air control
-                var force = velocityChange * (m_PhysicsPlayerControllerSettings.Acceleration * m_PhysicsPlayerControllerSettings.AirControlFactor);
-                m_Rigidbody.AddForce(force, ForceMode.Acceleration);
+                var adjustedRight = transform.right * m_Movement.x;
+                var adjustedForward = Vector3.Lerp(transform.forward, adjustedRight, Time.fixedDeltaTime * m_PhysicsPlayerControllerSettings.RotationSpeed);
+                transform.forward = adjustedForward;
             }
 
-            // maybe add magnitude check?
-            var targetAngle = Mathf.Atan2(m_Movement.x, m_Movement.z) * Mathf.Rad2Deg;
-            var targetRotation = Quaternion.Euler(0, targetAngle, 0);
-            var smoothRotation = Quaternion.Lerp(m_Rigidbody.rotation, targetRotation, Time.fixedDeltaTime * m_PhysicsPlayerControllerSettings.RotationSpeed);
-            m_Rigidbody.MoveRotation(smoothRotation);
+            var velocityChange = Vector3.zero;
+            // Apply any forward/backward input velocity updates
+            if (Mathf.Abs(m_Movement.z) > 0.01f)
+            {
+                var desiredVelocity = m_Movement.z * transform.forward * (m_Sprint ? m_PhysicsPlayerControllerSettings.SprintSpeed : m_PhysicsPlayerControllerSettings.WalkSpeed);
+                var targetVelocity = new Vector3(desiredVelocity.x, m_Rigidbody.linearVelocity.y, desiredVelocity.z);
+                velocityChange = targetVelocity - m_Rigidbody.linearVelocity;
+            }
+
+            // Apply force based on change in velocity
+            if (velocityChange.magnitude > 0.01f)
+            {
+                if (Grounded)
+                {
+                    // Apply force proportional to acceleration while grounded
+                    var force = velocityChange * m_PhysicsPlayerControllerSettings.Acceleration;
+                    m_Rigidbody.AddForce(force, ForceMode.Force);
+                }
+                else
+                {
+                    // Apply reduced force in the air for air control
+                    var force = velocityChange * (m_PhysicsPlayerControllerSettings.Acceleration * m_PhysicsPlayerControllerSettings.AirControlFactor);
+                    m_Rigidbody.AddForce(force, ForceMode.Force);
+                }
+            }
 
             m_Movement = Vector3.zero;
         }

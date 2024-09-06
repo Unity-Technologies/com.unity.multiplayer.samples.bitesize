@@ -77,9 +77,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             switch (updateStage)
             {
                 case NetworkUpdateStage.Update:
-                    OnTransformUpdate();
                     break;
                 case NetworkUpdateStage.FixedUpdate:
+                    OnTransformUpdate();
                     m_PhysicsPlayerController.OnFixedUpdate();
                     break;
                 default:
