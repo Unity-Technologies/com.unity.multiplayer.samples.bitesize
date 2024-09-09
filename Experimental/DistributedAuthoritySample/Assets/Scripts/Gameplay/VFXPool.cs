@@ -1,6 +1,4 @@
-using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay

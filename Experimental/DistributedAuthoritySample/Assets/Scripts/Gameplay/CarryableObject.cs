@@ -15,10 +15,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         public string destructionVFXType; // "Pot" or "Crate"
         public GameObject rubblePrefab;
 
-        private int previousHealth;
-        private GameObject spawnedRubble;
-        private VFXPoolManager vfxPoolManager;
-        private Vector3 initialPosition;
+        int previousHealth;
+        GameObject spawnedRubble;
+        VFXPoolManager vfxPoolManager;
+        Vector3 initialPosition;
 
         public int CurrentHealth
         {
@@ -73,7 +73,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
         }
 
-        private void InitializeRubble()
+        void InitializeRubble()
         {
             Debug.Log("Initializing rubble.");
             if (rubblePrefab != null)
@@ -138,7 +138,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             ChangeRubbleVisuals(!enable); // Ensure the rubble is active when the object is inactive and vice-versa
         }
 
-        private void ChangeRubbleVisuals(bool enable)
+        void ChangeRubbleVisuals(bool enable)
         {
             Debug.Log("Changing rubble visuals.");
             if (spawnedRubble != null)
@@ -220,7 +220,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             vfxPoolManager?.ReturnVFXInstance(vfxType, vfxInstance);
         }
 
-        protected virtual void SpawnRubble(Vector3 position)
+        protected internal virtual void SpawnRubble(Vector3 position)
         {
             Debug.Log("Spawning rubble 2.");
             if (rubblePrefab != null && spawnedRubble == null)
@@ -255,6 +255,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
                 spawnedRubble = null;
             }
+        }
+
+        public void SpawnRubble()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

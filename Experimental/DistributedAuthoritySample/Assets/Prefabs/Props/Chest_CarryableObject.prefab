@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: rubblePrefab
+      value: 
+      objectReference: {fileID: 4548375771530481534, guid: 7edc42645c2fba04892f066a0f38e825, type: 3}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: destructionVFXType
+      value: Crate
+      objectReference: {fileID: 0}
     - target: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_Name
       value: Chest_CarryableObject
@@ -194,12 +202,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       insertIndex: 1
       addedObject: {fileID: 5832966791020054508}
-    - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 837516015183059736}
-    - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6429917030867003444}
   m_SourcePrefab: {fileID: 100100000, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
 --- !u!1 &291901203331741842 stripped
 GameObject:
@@ -218,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3630027201
+  GlobalObjectIdHash: 3034623722
   InScenePlacedSourceGlobalObjectIdHash: 3034623722
   DeferredDespawnTick: 0
   Ownership: 1
@@ -229,53 +231,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &837516015183059736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291901203331741842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AuthorityMode: 0
-  UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  Interpolate: 1
-  SlerpPosition: 0
---- !u!114 &6429917030867003444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291901203331741842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseRigidBodyForMotion: 1
-  AutoUpdateKinematicState: 1
-  AutoSetKinematicOnDespawn: 1
 --- !u!4 &5408972833776088523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 79685342591573548, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
