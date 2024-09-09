@@ -24,12 +24,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         public override void OnNetworkSpawn()
         {
-            base.OnNetworkSpawn();
-
             gameObject.name = $"[Client-{OwnerClientId}]{name}";
 
             if (!HasAuthority)
             {
+                base.OnNetworkSpawn();
                 return;
             }
 
@@ -41,7 +40,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
             var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
-            Teleport(spawnPoint.position, spawnPoint.rotation, Vector3.one);
             transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
@@ -58,6 +56,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
+
+            base.OnNetworkSpawn();
         }
 
         public override void OnNetworkDespawn()
