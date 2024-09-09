@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
@@ -39,11 +40,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
-            // TODO: MTT-8899 fetch spawn point
-            var spawnPosition = new Vector3(53.7428741f,7.85612297f,-8.75020027f);
-            transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0f,143.263947f,0f));
-            //Teleport(spawnPosition, Quaternion.identity, Vector3.one);
-            Rigidbody.position = spawnPosition;
+            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
+            Teleport(spawnPoint.position, spawnPoint.rotation, Vector3.one);
+            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
