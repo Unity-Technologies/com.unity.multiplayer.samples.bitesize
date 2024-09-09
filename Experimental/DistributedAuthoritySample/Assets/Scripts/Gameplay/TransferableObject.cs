@@ -1,15 +1,15 @@
 using System;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    class EnvironmentTransform : NetworkTransform, IOwnershipRequestable, IGameplayEventInvokable
+    class TransferableObject : NetworkBehaviour, IOwnershipRequestable
     {
-        public event Action<NetworkObject, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
+        public GameObject LeftHand;
+        public GameObject RightHand;
 
-        public event Action<NetworkObject, GameplayEvent> OnGameplayEvent;
+        public event Action<NetworkBehaviour, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
 
         public override void OnNetworkSpawn()
         {
@@ -21,20 +21,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         public override void OnNetworkDespawn()
         {
+            base.OnNetworkDespawn();
             if (NetworkObject)
             {
                 NetworkObject.OnOwnershipRequested -= OnOwnershipRequested;
                 NetworkObject.OnOwnershipRequestResponse -= OnOwnershipRequestResponse;
             }
 
-            OnGameplayEvent?.Invoke(NetworkObject, GameplayEvent.Despawned);
+            GameplayEventHandler.NetworkObjectDespawned(NetworkObject);
+            OnNetworkObjectOwnershipRequestResponse = null;
         }
 
         protected override void OnOwnershipChanged(ulong previous, ulong current)
         {
             base.OnOwnershipChanged(previous, current);
 
-            OnGameplayEvent?.Invoke(NetworkObject, GameplayEvent.OwnershipChange);
+            GameplayEventHandler.NetworkObjectOwnershipChanged(NetworkObject, previous, current);
         }
 
         // note: invoked on owning client
@@ -48,7 +50,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         // note: invoked on requesting client
         void OnOwnershipRequestResponse(NetworkObject.OwnershipRequestResponseStatus ownershipRequestResponse)
         {
-            OnNetworkObjectOwnershipRequestResponse?.Invoke(NetworkObject, ownershipRequestResponse);
+            OnNetworkObjectOwnershipRequestResponse?.Invoke(this, ownershipRequestResponse);
         }
     }
 }
