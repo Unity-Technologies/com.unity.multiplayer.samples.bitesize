@@ -1,13 +1,13 @@
-using Unity.Multiplayer.Samples.SocialHub.Player;
+using Unity.Multiplayer.Samples.SocialHub.Physics;
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Editor
 {
-    [CustomEditor(typeof(AvatarTransform))]
-    class AvatarTransformEditor : UnityEditor.Editor
+    [CustomEditor(typeof(PhysicsObjectMotion))]
+    class PhysicsObjectMotionEditor : UnityEditor.Editor
     {
         public override VisualElement CreateInspectorGUI()
         {

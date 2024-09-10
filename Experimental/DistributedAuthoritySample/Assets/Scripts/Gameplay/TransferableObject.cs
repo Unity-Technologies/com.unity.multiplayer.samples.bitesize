@@ -1,11 +1,10 @@
 using System;
 using Unity.Netcode;
-using Unity.Netcode.Components;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    class EnvironmentTransform : NetworkTransform, IOwnershipRequestable, IGameplayEventInvokable
+    class TransferableObject : NetworkBehaviour, IOwnershipRequestable, IGameplayEventInvokable
     {
         public event Action<NetworkObject, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
 
@@ -21,6 +20,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         public override void OnNetworkDespawn()
         {
+            base.OnNetworkDespawn();
             if (NetworkObject)
             {
                 NetworkObject.OnOwnershipRequested -= OnOwnershipRequested;
@@ -28,6 +28,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
 
             OnGameplayEvent?.Invoke(NetworkObject, GameplayEvent.Despawned);
+            OnGameplayEvent = null;
+            OnNetworkObjectOwnershipRequestResponse = null;
         }
 
         protected override void OnOwnershipChanged(ulong previous, ulong current)
