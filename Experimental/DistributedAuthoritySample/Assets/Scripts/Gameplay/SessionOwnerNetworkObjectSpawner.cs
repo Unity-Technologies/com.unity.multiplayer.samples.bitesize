@@ -23,5 +23,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             m_NetworkObjectToSpawn.InstantiateAndSpawn(NetworkManager, position: transform.position, rotation: transform.rotation);
             m_InitialSpawnComplete.Value = true;
         }
+
+        // add gizmo to show the spawn position
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, 0.4f);
+        }
     }
 }

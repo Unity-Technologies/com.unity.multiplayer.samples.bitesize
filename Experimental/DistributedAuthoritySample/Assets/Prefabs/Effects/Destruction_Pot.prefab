@@ -4914,6 +4914,7 @@ GameObject:
   - component: {fileID: 3773089405234980315}
   - component: {fileID: 3301834493003865236}
   - component: {fileID: 8037594611015637345}
+  - component: {fileID: 4272103622527217981}
   m_Layer: 0
   m_Name: Destruction_Pot
   m_TagString: Untagged
@@ -9816,6 +9817,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &4272103622527217981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787550606690037956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 881fb67665b67944ca1052e4cea81525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destructionVFXType: Pot
 --- !u!1 &3937747349210781739
 GameObject:
   m_ObjectHideFlags: 0

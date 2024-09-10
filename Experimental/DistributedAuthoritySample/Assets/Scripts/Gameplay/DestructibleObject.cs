@@ -28,8 +28,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         [SerializeField]
         int m_HitPoints = 100;
 
-        VFXPoolManager vfxPoolManager;
-        GameObject spawnedRubble;
+        VFXPoolManager m_VFXPoolManager;
+        GameObject m_SpawnedRubble;
 
         NetworkVariable<bool> m_Initialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         NetworkVariable<float> m_Health = new NetworkVariable<float>(0.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -48,6 +48,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             FindVFXPoolManager();
         }
 
+        public override void OnNetworkDespawn()
+        {
+            if (!HasAuthority)
+            {
+                PlayDestructionVFX(transform.position);
+                SpawnRubble(transform.position);
+            }
+            base.OnNetworkDespawn();
+        }
+
         void Update()
         {
             if (m_HitPoints <= 0 && m_HealthAtNull == false)
@@ -57,10 +67,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
         }
 
-        private void FindVFXPoolManager()
+        void FindVFXPoolManager()
         {
-            vfxPoolManager = VFXPoolManager.Instance;
-            if (vfxPoolManager == null)
+            m_VFXPoolManager = VFXPoolManager.Instance;
+            if (m_VFXPoolManager == null)
             {
                 Debug.LogError("VFXPoolManager not found in the scene.");
             }
@@ -121,8 +131,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 EnableColliders(false);
                 m_Health.Value = currentHealth;
                 NetworkObject.DeferDespawn(1, destroy: false);
-                // Trigger VFX and rubble after deferred despawn time
-                StartCoroutine(HandleDestructionAfterDelay(1));
             }
             else
             {
@@ -131,58 +139,76 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
         }
 
-        IEnumerator HandleDestructionAfterDelay(float delay)
+        // This method is authority relative
+        public override void OnDeferringDespawn(int despawnTick)
         {
-            yield return new WaitForSeconds(delay);
-
-            PlayDestructionVFX(gameObject.transform.position);
-            SpawnVFXRpc();
-
-            // Spawn rubble and then manage its lifecycle
-            SpawnRubble(gameObject.transform.position);
-            StartCoroutine(DestroyRubbleAndRestoreObject(5));
+            PlayDestructionVFX(transform.position);
+            base.OnDeferringDespawn(despawnTick);
+            ChangeObjectVisuals(false);
+            SpawnRubble(transform.position);
         }
 
-        [Rpc(SendTo.NotAuthority & SendTo.Authority)]
-        void SpawnVFXRpc()
+        void ChangeObjectVisuals(bool enable)
         {
-            PlayDestructionVFX(gameObject.transform.position);
+            // Ensure the object is at ground level when re-enabled
+            if (enable)
+            {
+                var carryableObject = transform;
+                carryableObject.position = m_OriginalPosition;
+                carryableObject.rotation = m_OriginalRotation;
+            }
+
+            // Disable or enable renderers
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.enabled = enable;
+            }
+
+            // Disable or enable colliders
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider collider in colliders)
+            {
+                collider.enabled = enable;
+            }
+
+            // Disable or enable rigidbody physics
+            Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
+            foreach (Rigidbody rigidbody in rigidbodies)
+            {
+                rigidbody.isKinematic = !enable;
+            }
+
+            //ChangeRubbleVisuals(!enable); // Ensure the rubble is active when the object is inactive and vice-versa
         }
+
 
         void PlayDestructionVFX(Vector3 position)
         {
-            Debug.Log("Playing destruction VFX.");
-            if (vfxPoolManager != null)
+            if (m_VFXPoolManager != null)
             {
-                GameObject vfxInstance = vfxPoolManager.GetVFXInstance(destructionVFXType);
+                GameObject vfxInstance = m_VFXPoolManager.GetVFXInstance(destructionVFXType);
                 if (vfxInstance != null)
                 {
                     vfxInstance.transform.position = position;
                     var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
 
-                    if (particleSystem != null)
+                    if (particleSystem != null && !particleSystem.isPlaying)
                     {
+                        Debug.Log(vfxInstance.gameObject.GetInstanceID());
                         Debug.Log("Playing destruction VFX.");
                         particleSystem.Play();
-                        StartCoroutine(ReturnVFXInstanceAfterDelay(destructionVFXType, vfxInstance, particleSystem.main.duration - 0.02f));
                     }
                 }
             }
         }
 
-        IEnumerator ReturnVFXInstanceAfterDelay(string vfxType, GameObject vfxInstance, float delay)
-        {
-            Debug.Log("Returning VFX instance after delay.");
-            yield return new WaitForSeconds(delay);
-            vfxPoolManager?.ReturnVFXInstance(vfxType, vfxInstance);
-        }
-
         void SpawnRubble(Vector3 position)
         {
-            if (rubblePrefab != null && spawnedRubble == null)
+            if (rubblePrefab != null && m_SpawnedRubble == null)
             {
-                spawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
-                if (spawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
+                m_SpawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
+                if (m_SpawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
                 {
                     networkObject.Spawn(true);
                 }
@@ -193,16 +219,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         {
             yield return new WaitForSeconds(delay);
 
-            if (spawnedRubble != null)
+            if (m_SpawnedRubble != null)
             {
-                Destroy(spawnedRubble);
-                spawnedRubble = null;
+                Destroy(m_SpawnedRubble);
+                m_SpawnedRubble = null;
 
                 RestoreObjectRpc();
             }
         }
 
-        [Rpc(SendTo.NotAuthority & SendTo.Authority)]
+        [Rpc(SendTo.Everyone)]
         void RestoreObjectRpc()
         {
             RestoreObject();

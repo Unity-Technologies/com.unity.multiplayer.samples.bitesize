@@ -111,7 +111,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             ChangeObjectVisuals(true);
         }
 
-        private void ChangeObjectVisuals(bool enable)
+        void ChangeObjectVisuals(bool enable)
         {
             // Ensure the object is at ground level when re-enabled
             if (enable)
