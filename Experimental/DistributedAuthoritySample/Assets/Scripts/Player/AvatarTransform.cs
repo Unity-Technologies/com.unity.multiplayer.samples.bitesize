@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
@@ -23,12 +24,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         public override void OnNetworkSpawn()
         {
-            base.OnNetworkSpawn();
-
             gameObject.name = $"[Client-{OwnerClientId}]{name}";
 
             if (!HasAuthority)
             {
+                base.OnNetworkSpawn();
                 return;
             }
 
@@ -39,11 +39,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
-            // TODO: MTT-8899 fetch spawn point
-            var spawnPosition = new Vector3(53.7428741f,7.85612297f,-8.75020027f);
-            transform.SetPositionAndRotation(spawnPosition, Quaternion.Euler(0f,143.263947f,0f));
-            //Teleport(spawnPosition, Quaternion.identity, Vector3.one);
-            Rigidbody.position = spawnPosition;
+            // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
+            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
+            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
@@ -59,6 +57,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
+
+            base.OnNetworkSpawn();
         }
 
         public override void OnNetworkDespawn()
