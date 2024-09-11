@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
 using Unity.Netcode;
 using UnityEngine;
@@ -52,8 +53,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         {
             if (!HasAuthority)
             {
-                PlayDestructionVFX(transform.position);
+                GetDestructionVFX(transform.position);
+                ChangeObjectVisuals(false);
                 SpawnRubble(transform.position);
+                StartCoroutine(DestroyRubbleAndRestoreObject(10f));
             }
             base.OnNetworkDespawn();
         }
@@ -142,10 +145,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         // This method is authority relative
         public override void OnDeferringDespawn(int despawnTick)
         {
-            PlayDestructionVFX(transform.position);
+            GetDestructionVFX(transform.position);
             base.OnDeferringDespawn(despawnTick);
             ChangeObjectVisuals(false);
             SpawnRubble(transform.position);
+            StartCoroutine(DestroyRubbleAndRestoreObject(10f));
         }
 
         void ChangeObjectVisuals(bool enable)
@@ -157,33 +161,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 carryableObject.position = m_OriginalPosition;
                 carryableObject.rotation = m_OriginalRotation;
             }
-
-            // Disable or enable renderers
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
             {
                 renderer.enabled = enable;
             }
-
-            // Disable or enable colliders
-            Collider[] colliders = GetComponentsInChildren<Collider>();
-            foreach (Collider collider in colliders)
-            {
-                collider.enabled = enable;
-            }
-
-            // Disable or enable rigidbody physics
+            EnableColliders(enable);
             Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
             foreach (Rigidbody rigidbody in rigidbodies)
             {
                 rigidbody.isKinematic = !enable;
             }
-
-            //ChangeRubbleVisuals(!enable); // Ensure the rubble is active when the object is inactive and vice-versa
         }
 
-
-        void PlayDestructionVFX(Vector3 position)
+        void GetDestructionVFX(Vector3 position)
         {
             if (m_VFXPoolManager != null)
             {
@@ -191,14 +182,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 if (vfxInstance != null)
                 {
                     vfxInstance.transform.position = position;
-                    var particleSystem = vfxInstance.GetComponent<ParticleSystem>();
-
-                    if (particleSystem != null && !particleSystem.isPlaying)
-                    {
-                        Debug.Log(vfxInstance.gameObject.GetInstanceID());
-                        Debug.Log("Playing destruction VFX.");
-                        particleSystem.Play();
-                    }
                 }
             }
         }
@@ -217,32 +200,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         IEnumerator DestroyRubbleAndRestoreObject(float delay)
         {
+            Debug.Log("Destroying rubble and restoring object.");
             yield return new WaitForSeconds(delay);
-
             if (m_SpawnedRubble != null)
             {
                 Destroy(m_SpawnedRubble);
                 m_SpawnedRubble = null;
-
-                RestoreObjectRpc();
+                NetworkObject.Spawn();
+                ChangeObjectVisuals(true);
+                InitializeDestructible(m_StartingHealth);
             }
-        }
-
-        [Rpc(SendTo.Everyone)]
-        void RestoreObjectRpc()
-        {
-            RestoreObject();
-        }
-
-        void RestoreObject()
-        {
-            transform.position = m_OriginalPosition;
-            transform.rotation = m_OriginalRotation;
-            EnableColliders(true);
-            Rigidbody.isKinematic = false;
-
-            // Re-initialize health and other parameters
-            InitializeDestructible(m_StartingHealth);
         }
 
         void InitializeDestructible()

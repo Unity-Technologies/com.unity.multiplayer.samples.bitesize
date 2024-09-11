@@ -6,25 +6,29 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
     public class VFXBehaviour : MonoBehaviour
     {
-
         [SerializeField]
         string destructionVFXType;
 
         VFXPoolManager m_VFXPoolManager;
+        GameObject m_VFXInstance;
+        ParticleSystem m_ParticleSystem;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            m_VFXInstance = gameObject;
+            m_ParticleSystem = m_VFXInstance.GetComponent<ParticleSystem>();
             PlayDestructionVFX();
         }
+
         void PlayDestructionVFX()
         {
-            GameObject vfxInstance = gameObject;
-            if (vfxInstance != null)
+            if (m_VFXInstance != null)
             {
-                Debug.Log(vfxInstance.gameObject.GetInstanceID());
-                ParticleSystem system = vfxInstance.GetComponent<ParticleSystem>();
-                StartCoroutine(ReturnVFXInstanceAfterDelay(destructionVFXType, vfxInstance, system.main.duration - 0.02f));;
+                if (m_ParticleSystem != null)
+                {
+                    m_ParticleSystem.Play();
+                    StartCoroutine(ReturnVFXInstanceAfterDelay(destructionVFXType, m_VFXInstance, m_ParticleSystem.main.duration - 0.1f));
+                }
             }
         }
 
@@ -32,7 +36,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         {
             Debug.Log("Returning VFX instance after delay.");
             yield return new WaitForSeconds(delay);
-            m_VFXPoolManager?.ReturnVFXInstance(vfxType, vfxInstance);
+            if (m_ParticleSystem != null)
+            {
+                m_ParticleSystem.Stop();
+                m_VFXPoolManager?.ReturnVFXInstance(vfxType, vfxInstance);
+            }
         }
     }
 }
