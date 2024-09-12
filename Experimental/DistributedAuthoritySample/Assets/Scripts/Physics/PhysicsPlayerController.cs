@@ -71,13 +71,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             {
                 // Apply force proportional to acceleration while grounded
                 var force = velocityChange * m_PhysicsPlayerControllerSettings.Acceleration;
-                m_Rigidbody.AddForce(force, ForceMode.Acceleration);
+                m_Rigidbody.AddForce(force, ForceMode.Force);
             }
             else
             {
                 // Apply reduced force in the air for air control
                 var force = velocityChange * (m_PhysicsPlayerControllerSettings.Acceleration * m_PhysicsPlayerControllerSettings.AirControlFactor);
-                m_Rigidbody.AddForce(force, ForceMode.Acceleration);
+                m_Rigidbody.AddForce(force, ForceMode.Force);
             }
 
             // maybe add magnitude check?
