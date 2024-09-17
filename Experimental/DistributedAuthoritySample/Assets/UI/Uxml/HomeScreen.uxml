@@ -2,20 +2,21 @@
     <Style src="project://database/Assets/UI/Uss/HomeScreen.uss?fileID=7433441132597879392&amp;guid=c08c9106b0ec56748be4248cef38da1f&amp;type=3#HomeScreen" />
     <Style src="project://database/Assets/UI/Uss/Global.uss?fileID=7433441132597879392&amp;guid=dd4dac81c4e217440a3543f354c31a02&amp;type=3#Global" />
     <ui:VisualElement name="background" class="color-02" style="width: 100%; height: 100%; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 15px; border-right-width: 15px; border-bottom-width: 15px; border-left-width: 15px; align-items: center; align-content: center; justify-content: center; background-image: none;">
+        <ui:VisualElement name="curtain" style="flex-grow: 1; position: absolute; width: 40%; height: 100%; align-items: auto; background-color: rgba(26, 26, 26, 0.68); top: auto; left: 0;" />
         <ui:VisualElement name="container_global" style="width: 94%; height: 80%; align-items: center; justify-content: space-between; align-content: stretch; flex-wrap: nowrap; flex-direction: row;">
             <ui:VisualElement name="container_menu" style="width: 925px; height: 100%; align-items: center; justify-content: flex-start; overflow: hidden; flex-wrap: nowrap; flex-direction: column;">
-                <ui:Label text="Social Hub Sample" name="lb_menuTitle" class="font-arialBlack" style="-unity-text-align: middle-center; -unity-font-style: bold; min-width: auto; margin-top: 80px; margin-bottom: 90px; margin-left: 0; justify-content: center; align-self: flex-end;" />
-                <ui:VisualElement name="container_buttons" style="width: 85%; height: 85%; align-self: flex-start; align-items: auto; justify-content: center;">
+                <ui:Label text="Social Hub &#10;Sample" name="lb_menuTitle" class="font-arialBlack" style="-unity-text-align: middle-center; -unity-font-style: bold; min-width: auto; margin-top: 80px; margin-bottom: 90px; margin-left: 0; justify-content: center; align-self: flex-end; -unity-text-outline-width: 3px; left: -345px;" />
+                <ui:VisualElement name="container_buttons" style="width: 85%; height: 85%; align-self: flex-start; align-items: auto; justify-content: center; margin-left: 0; left: -90px;">
                     <ui:TextField label="Player Name" placeholder-text="filler text" name="tf_player_name" class="tf-mainMenu" />
                     <ui:TextField label="Session Name" placeholder-text="filler text" name="tf_session_name" class="tf-mainMenu" />
                     <ui:Button name="bt_start" class="bt-mainMenu">
                         <ui:VisualElement name="ve_buttonHover_left" class="ve-buttonHover" />
-                        <ui:Label text="Start" name="lb_start" class="lb-mainMenu color-01 font-arial" />
+                        <ui:Label text="Start" name="lb_start" class="lb-mainMenu color-01 font-arial" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/ariblk.ttf?fileID=12800000&amp;guid=81311bbf5f0828e4cb85d497120b1072&amp;type=3#ariblk&quot;);" />
                         <ui:VisualElement name="ve_buttonHover_right" class="ve-buttonHover" style="scale: -1 1;" />
                     </ui:Button>
                     <ui:Button name="bt_quit" class="bt-mainMenu">
                         <ui:VisualElement name="ve_buttonHover_left" class="ve-buttonHover" />
-                        <ui:Label text="Quit" name="lb_quit" class="lb-mainMenu color-01 font-arial" />
+                        <ui:Label text="Quit" name="lb_quit" class="lb-mainMenu color-01 font-arial" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/ariblk.ttf?fileID=12800000&amp;guid=81311bbf5f0828e4cb85d497120b1072&amp;type=3#ariblk&quot;);" />
                         <ui:VisualElement name="ve_buttonHover_right" class="ve-buttonHover" style="scale: -1 1;" />
                     </ui:Button>
                 </ui:VisualElement>
