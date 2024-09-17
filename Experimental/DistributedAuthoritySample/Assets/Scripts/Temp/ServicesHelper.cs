@@ -95,6 +95,27 @@ public class ServicesHelper : MonoBehaviour
         return new string(Enumerable.Range(0, length).Select(_ => (Char)r.Next('a', 'z')).ToArray());
     }
 
+    public void SetSessionName(string sessionName)
+    {
+        m_SessionName = sessionName;
+    }
+
+    public async Task ConnectToSession()
+    {
+        if (AuthenticationService.Instance == null || !AuthenticationService.Instance.IsSignedIn)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(m_SessionName))
+        {
+            Debug.LogError("Session name is empty. Cannot connect.");
+            return;
+        }
+
+        await ConnectThroughLiveService(m_SessionName);
+    }
+
     async Task ConnectThroughLiveService(string sessionName)
     {
         try
@@ -121,28 +142,6 @@ public class ServicesHelper : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogException(e);
-        }
-    }
-
-    void OnGUI()
-    {
-        if (AuthenticationService.Instance == null || !AuthenticationService.Instance.IsSignedIn)
-        {
-            return;
-        }
-
-        if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
-        {
-            GUI.enabled = m_SessionTask == null || m_SessionTask.IsCompleted;
-
-            GUILayout.Label("Session Name", GUILayout.Width(100));
-            m_SessionName = GUILayout.TextField(m_SessionName);
-            if (GUILayout.Button("Connect"))
-            {
-                m_SessionTask = ConnectThroughLiveService(m_SessionName);
-            }
-
-            GUI.enabled = true;
         }
     }
 }

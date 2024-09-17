@@ -54,7 +54,7 @@
 }
 
 .lb-mainMenu:hover {
-    background-color: rgb(150, 100, 50);
+    background-color: rgb(250, 244, 0);
     scale: 1.1 1.1;
     transition-property: scale;
     transition-duration: 0.2s;
@@ -79,9 +79,54 @@
     -unity-text-outline-width: 1px;
 }
 
+.tf-mainMenu:focus:enabled {
+    font-size: 17px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-left;
+    white-space: normal;
+    width: 56%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-self: center;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    -unity-font-definition: url("project://database/Assets/Fonts/ariblk.ttf?fileID=12800000&guid=81311bbf5f0828e4cb85d497120b1072&type=3#ariblk");
+    color: rgb(0, 0, 0);
+    -unity-text-outline-width: 1px;
+}
+
 .font-arialBlack {
     color: rgb(250, 200, 0);
     -unity-text-outline-color: black;
     -unity-text-outline-width: 2px;
     font-size: 80px;
+}
+
+.lb-mainMenu:disabled {
+    width: 80%;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    font-size: 30px;
+    padding-top: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    padding-left: 3%;
+    background-color: rgb(90, 90, 90);
+    color: rgb(59, 59, 59);
+}
+
+.tf-mainMenu:focus:enabled > .unity-base-field__label {
+    color: rgb(250, 228, 0);
+}
+
+.unity-base-field__input > .unity-text-element {
+    color: rgb(0, 0, 0);
 }

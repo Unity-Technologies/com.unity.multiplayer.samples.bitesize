@@ -1,47 +1,77 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
+public class HomeScreenView : UIView
+{
+    TextField m_PlayerNameField;
+    TextField m_SessionNameField;
+    Button m_StartButton;
+    Button m_QuitButton;
+    ServicesHelper m_ServicesHelper;
 
-    /// <summary>
-    /// This is the main menu home view, which contains logic for all visual elements in the home screen uxml.
-    /// </summary>
-    public class HomeScreenView : UIView
+    public override void Initialize(VisualElement viewRoot)
     {
-        Button m_StartButton;
-        Button m_LoadButton;
-        Button m_LeaderboardButton;
-        Button m_SettingsButton;
-        Button m_QuitButton;
+        base.Initialize(viewRoot);
+        m_PlayerNameField = m_Root.Q<TextField>("tf_player_name");
+        m_SessionNameField = m_Root.Q<TextField>("tf_session_name");
+        m_StartButton = m_Root.Q<Button>("bt_start");
+        m_QuitButton = m_Root.Q<Button>("bt_quit");
 
-        public override void Initialize(VisualElement viewRoot)
+        // Assume ServicesHelper is attached to the same GameObject
+        m_ServicesHelper = FindAnyObjectByType<ServicesHelper>();
+        m_StartButton.SetEnabled(false);
+    }
+
+    public override void RegisterEvents()
+    {
+        m_PlayerNameField.RegisterValueChangedCallback(evt => OnFieldChanged());
+        m_SessionNameField.RegisterValueChangedCallback(evt => OnFieldChanged());
+        m_StartButton.RegisterCallback<ClickEvent>(HandleStartClicked);
+        m_QuitButton.RegisterCallback<ClickEvent>(HandleQuitClicked);
+    }
+
+    public override void UnregisterEvents()
+    {
+        m_PlayerNameField.UnregisterValueChangedCallback(evt => OnFieldChanged());
+        m_SessionNameField.UnregisterValueChangedCallback(evt => OnFieldChanged());
+        m_StartButton.UnregisterCallback<ClickEvent>(HandleStartClicked);
+        m_QuitButton.UnregisterCallback<ClickEvent>(HandleQuitClicked);
+    }
+
+    void OnFieldChanged()
+    {
+        string playerName = m_PlayerNameField.value;
+        string sessionName = m_SessionNameField.value;
+        m_StartButton.SetEnabled(!string.IsNullOrEmpty(playerName) && !string.IsNullOrEmpty(sessionName));
+    }
+
+    void HandleStartClicked(ClickEvent evt)
+    {
+        Debug.Log("Start button clicked");
+        string sessionName = m_SessionNameField.value;
+
+        // Call ServicesHelper to connect to the session
+        m_ServicesHelper.SetSessionName(sessionName);
+
+        // Start the async connection process
+        StartSessionConnection();
+    }
+
+    async void StartSessionConnection()
+    {
+        try
         {
-            base.Initialize(viewRoot);
-
-            m_StartButton = m_Root.Q<Button>("bt_start");
-            m_QuitButton = m_Root.Q<Button>("bt_quit");
+            await m_ServicesHelper.ConnectToSession();
         }
-
-        public override void RegisterEvents()
+        catch (Exception ex)
         {
-            m_StartButton.RegisterCallback<ClickEvent>(HandleStartClicked);
-            m_QuitButton.RegisterCallback<ClickEvent>(HandleQuitClicked);
-        }
-
-        public override void UnregisterEvents()
-        {
-            m_StartButton.UnregisterCallback<ClickEvent>(HandleStartClicked);
-            m_QuitButton.UnregisterCallback<ClickEvent>(HandleQuitClicked);
-        }
-
-        void HandleStartClicked(ClickEvent evt)
-        {
-            Debug.Log("Start button clicked");
-            SceneManager.LoadScene("HubScene_TownMarket", LoadSceneMode.Single);
-        }
-        void HandleQuitClicked(ClickEvent evt)
-        {
-            Application.Quit();
+            Debug.LogError($"Error connecting to session: {ex.Message}");
         }
     }
+
+    void HandleQuitClicked(ClickEvent evt)
+    {
+        Application.Quit();
+    }
+}
