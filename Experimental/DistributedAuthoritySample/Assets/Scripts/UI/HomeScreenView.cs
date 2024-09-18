@@ -17,8 +17,6 @@ public class HomeScreenView : UIView
         m_SessionNameField = m_Root.Q<TextField>("tf_session_name");
         m_StartButton = m_Root.Q<Button>("bt_start");
         m_QuitButton = m_Root.Q<Button>("bt_quit");
-
-        // Assume ServicesHelper is attached to the same GameObject
         m_ServicesHelper = FindAnyObjectByType<ServicesHelper>();
         m_StartButton.SetEnabled(false);
     }

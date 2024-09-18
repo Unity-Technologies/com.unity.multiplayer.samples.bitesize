@@ -3,7 +3,6 @@ using UnityEngine.UIElements;
 
 namespace UIToolkitSamples
 {
-
     /// <summary>
     /// Main UI controller. Holds child views for sub views.
     /// </summary>
@@ -40,10 +39,8 @@ namespace UIToolkitSamples
             DisplayChildView(m_HomeView);
         }
 
-        public override void RegisterEvents()
-        { }
+        public override void RegisterEvents() { }
 
-        public override void UnregisterEvents()
-        { }
+        public override void UnregisterEvents() { }
     }
 }
