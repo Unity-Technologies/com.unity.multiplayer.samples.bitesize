@@ -1,5 +1,6 @@
 using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRpc
 {
@@ -13,10 +14,16 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRpc
 
         NetworkVariable<Color32> m_NetworkedColor = new NetworkVariable<Color32>();
         Material m_Material;
+        InputAction interactAction;
 
         void Awake()
         {
             m_Material = GetComponent<Renderer>().material;
+        }
+
+        void Start()
+        {
+            interactAction = InputSystem.actions.FindAction("Interact");
         }
 
         public override void OnNetworkSpawn()
@@ -57,7 +64,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.NetVarVsRpc
                 return;
             }
 
-            if (Input.GetKeyUp(KeyCode.E))
+            if (interactAction.WasPressedThisFrame())
             {
                 OnClientRequestColorChange();
             }
