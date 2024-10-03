@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    class DestructibleObject : PhysicsObjectMotion
+    class DestructibleObject : PhysicsObjectMotion, ISpawnable
     {
         [SerializeField]
         float m_StartingHealth = 100f;
@@ -15,13 +14,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         [SerializeField]
         float m_IntangibleDurationAfterDamage;
 
+        [SerializeField]
+        float m_SecondsUntilRespawn;
+
+        NetworkVariable<NetworkBehaviourReference> m_SessionOwnerNetworkObjectSpawner = new NetworkVariable<NetworkBehaviourReference>();
+
         float m_LastDamageTime;
 
         [SerializeField]
         GameObject m_DestructionFX;
 
         [SerializeField]
-        GameObject rubblePrefab;
+        NetworkObject m_RubblePrefab;
 
         [SerializeField]
         string destructionVFXType;
@@ -30,11 +34,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         int m_HitPoints = 100;
 
         VFXPoolManager m_VFXPoolManager;
-        GameObject m_SpawnedRubble;
 
         NetworkVariable<bool> m_Initialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         NetworkVariable<float> m_Health = new NetworkVariable<float>(0.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        bool m_HealthAtNull = false;
 
         Vector3 m_OriginalPosition;
         Quaternion m_OriginalRotation;
@@ -51,23 +53,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         public override void OnNetworkDespawn()
         {
+            RigidbodyContactEventManager.Instance.RegisterHandler(this, false);
+
             if (!HasAuthority)
             {
                 GetDestructionVFX(transform.position);
                 ChangeObjectVisuals(false);
-                SpawnRubble(transform.position);
-                StartCoroutine(DestroyRubbleAndRestoreObject(10f));
             }
             base.OnNetworkDespawn();
         }
 
-        void Update()
+        public void Init(SessionOwnerNetworkObjectSpawner spawner)
         {
-            if (m_HitPoints <= 0 && m_HealthAtNull == false)
-            {
-                m_HealthAtNull = true;
-                ApplyCollisionDamage(100);
-            }
+            m_SessionOwnerNetworkObjectSpawner.Value = new NetworkBehaviourReference(spawner);
         }
 
         void FindVFXPoolManager()
@@ -146,10 +144,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         public override void OnDeferringDespawn(int despawnTick)
         {
             GetDestructionVFX(transform.position);
-            base.OnDeferringDespawn(despawnTick);
             ChangeObjectVisuals(false);
             SpawnRubble(transform.position);
-            StartCoroutine(DestroyRubbleAndRestoreObject(10f));
+            m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager);
+            spawner.RespawnRpc(Time.time + m_SecondsUntilRespawn);
+            base.OnDeferringDespawn(despawnTick);
         }
 
         void ChangeObjectVisuals(bool enable)
@@ -188,27 +187,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         void SpawnRubble(Vector3 position)
         {
-            if (rubblePrefab != null && m_SpawnedRubble == null)
+            if (m_RubblePrefab != null)
             {
-                m_SpawnedRubble = Instantiate(rubblePrefab, position, Quaternion.identity);
-                if (m_SpawnedRubble.TryGetComponent<NetworkObject>(out var networkObject))
-                {
-                    networkObject.Spawn(true);
-                }
-            }
-        }
-
-        IEnumerator DestroyRubbleAndRestoreObject(float delay)
-        {
-            Debug.Log("Destroying rubble and restoring object.");
-            yield return new WaitForSeconds(delay);
-            if (m_SpawnedRubble != null)
-            {
-                Destroy(m_SpawnedRubble);
-                m_SpawnedRubble = null;
-                NetworkObject.Spawn();
-                ChangeObjectVisuals(true);
-                InitializeDestructible(m_StartingHealth);
+                m_RubblePrefab.InstantiateAndSpawn(NetworkManager, destroyWithScene:true, position: position, rotation: Quaternion.identity);
             }
         }
 
@@ -227,6 +208,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             {
                 m_Health.Value = health;
             }
+        }
+
+        // TESTING, REMOVE ================================
+        [ContextMenu("DebugDestroy")]
+        void DebugDestroy()
+        {
+            if (!HasAuthority)
+            {
+                return;
+            }
+            ApplyCollisionDamage(9000f);
         }
     }
 }

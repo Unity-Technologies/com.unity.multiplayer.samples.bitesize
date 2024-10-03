@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
@@ -9,38 +8,25 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         [SerializeField]
         string destructionVFXType;
 
-        VFXPoolManager m_VFXPoolManager;
         GameObject m_VFXInstance;
         ParticleSystem m_ParticleSystem;
 
-        void Start()
+        void Awake()
+        {
+            m_ParticleSystem = GetComponent<ParticleSystem>();
+            var systemMain = m_ParticleSystem.main;
+            systemMain.stopAction = ParticleSystemStopAction.Callback;
+        }
+
+        void OnEnable()
         {
             m_VFXInstance = gameObject;
-            m_ParticleSystem = m_VFXInstance.GetComponent<ParticleSystem>();
-            PlayDestructionVFX();
+            m_ParticleSystem.Play();
         }
 
-        void PlayDestructionVFX()
+        void OnParticleSystemStopped()
         {
-            if (m_VFXInstance != null)
-            {
-                if (m_ParticleSystem != null)
-                {
-                    m_ParticleSystem.Play();
-                    StartCoroutine(ReturnVFXInstanceAfterDelay(destructionVFXType, m_VFXInstance, m_ParticleSystem.main.duration - 0.1f));
-                }
-            }
-        }
-
-        IEnumerator ReturnVFXInstanceAfterDelay(string vfxType, GameObject vfxInstance, float delay)
-        {
-            Debug.Log("Returning VFX instance after delay.");
-            yield return new WaitForSeconds(delay);
-            if (m_ParticleSystem != null)
-            {
-                m_ParticleSystem.Stop();
-                m_VFXPoolManager?.ReturnVFXInstance(vfxType, vfxInstance);
-            }
+            VFXPoolManager.Instance.ReturnVFXInstance(destructionVFXType, m_VFXInstance);
         }
     }
 }
