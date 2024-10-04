@@ -9,13 +9,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         [SerializeField]
         float m_SecondsUntilDespawn;
 
-        NetworkVariable<float> m_DespawnTime = new NetworkVariable<float>();
+        NetworkVariable<int> m_DespawnTick = new NetworkVariable<int>();
 
         public override void OnNetworkSpawn()
         {
             if (HasAuthority)
             {
-                m_DespawnTime.Value = (float)NetworkManager.LocalTime.Time + m_SecondsUntilDespawn;
+                m_DespawnTick.Value = NetworkManager.ServerTime.Tick + Mathf.RoundToInt(NetworkManager.ServerTime.TickRate * m_SecondsUntilDespawn);
             }
             OnOwnershipChanged(0L, 0L);
         }
@@ -34,8 +34,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         IEnumerator DespawnCoroutine()
         {
-            var timeRemaining = m_DespawnTime.Value - Time.time;
-            yield return new WaitForSeconds(timeRemaining);
+            yield return new WaitUntil(() => NetworkManager.NetworkTickSystem.ServerTime.Tick > m_DespawnTick.Value);
             // TODO: add hook to this NetworkObject's pool system
             NetworkObject.Despawn();
         }

@@ -11,7 +11,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         NetworkVariable<bool> m_IsRespawning = new NetworkVariable<bool>();
 
-        NetworkVariable<float> m_TimeToRespawn = new NetworkVariable<float>();
+        NetworkVariable<int> m_TickToRespawn = new NetworkVariable<int>();
 
         public override void OnNetworkSpawn()
         {
@@ -37,19 +37,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         /// <summary>
         ///
         /// </summary>
-        /// <param name="respawnTime"> Time.time at which to respawn this NetworkObject prefab </param>
+        /// <param name="respawnTime"> Network tick at which to respawn this NetworkObject prefab </param>
         [Rpc(SendTo.Authority)]
-        public void RespawnRpc(float respawnTime)
+        public void RespawnRpc(int respawnTime)
         {
-            m_TimeToRespawn.Value = respawnTime;
+            m_TickToRespawn.Value = respawnTime;
             m_IsRespawning.Value = true;
             StartCoroutine(WaitToRespawn());
         }
 
         IEnumerator WaitToRespawn()
         {
-            var timeRemaining = m_TimeToRespawn.Value - Time.time;
-            yield return new WaitForSeconds(timeRemaining);
+            yield return new WaitUntil(() => NetworkManager.NetworkTickSystem.ServerTime.Tick > m_TickToRespawn.Value);
             Spawn();
         }
 

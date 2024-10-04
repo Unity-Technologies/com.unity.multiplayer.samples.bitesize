@@ -1,5 +1,6 @@
 using System;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
+using Unity.Multiplayer.Samples.SocialHub.Effects;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -30,10 +31,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         [SerializeField]
         string destructionVFXType;
 
-        [SerializeField]
-        int m_HitPoints = 100;
-
-        VFXPoolManager m_VFXPoolManager;
+        FXPrefabPool m_DestructionFXPoolSystem;
 
         NetworkVariable<bool> m_Initialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         NetworkVariable<float> m_Health = new NetworkVariable<float>(0.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -48,7 +46,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             gameObject.name = $"[NetworkObjectId-{NetworkObjectId}]{name}";
             m_OriginalPosition = transform.position;
             m_OriginalRotation = transform.rotation;
-            FindVFXPoolManager();
+            m_DestructionFXPoolSystem = FXPrefabPool.GetFxPool(m_DestructionFX);
         }
 
         public override void OnNetworkDespawn()
@@ -57,7 +55,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
             if (!HasAuthority)
             {
-                GetDestructionVFX(transform.position);
+                var fxInstance = m_DestructionFXPoolSystem.GetInstance();
+                fxInstance.transform.position = transform.position;
                 ChangeObjectVisuals(false);
             }
             base.OnNetworkDespawn();
@@ -66,15 +65,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         public void Init(SessionOwnerNetworkObjectSpawner spawner)
         {
             m_SessionOwnerNetworkObjectSpawner.Value = new NetworkBehaviourReference(spawner);
-        }
-
-        void FindVFXPoolManager()
-        {
-            m_VFXPoolManager = VFXPoolManager.Instance;
-            if (m_VFXPoolManager == null)
-            {
-                Debug.LogError("VFXPoolManager not found in the scene.");
-            }
         }
 
         protected override void OnContactEvent(ulong eventId, Vector3 averagedCollisionNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
@@ -131,7 +121,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 Rigidbody.isKinematic = true;
                 EnableColliders(false);
                 m_Health.Value = currentHealth;
-                NetworkObject.DeferDespawn(1, destroy: false);
+                // TODO: add NetworkObject pool here
+                NetworkObject.DeferDespawn(1, destroy: true);
             }
             else
             {
@@ -143,11 +134,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         // This method is authority relative
         public override void OnDeferringDespawn(int despawnTick)
         {
-            GetDestructionVFX(transform.position);
+            var fxInstance = m_DestructionFXPoolSystem.GetInstance();
+            fxInstance.transform.position = transform.position;
             ChangeObjectVisuals(false);
             SpawnRubble(transform.position);
             m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager);
-            spawner.RespawnRpc(Time.time + m_SecondsUntilRespawn);
+            var tickToRespawn = NetworkManager.NetworkTickSystem.ServerTime.Tick + Mathf.RoundToInt(m_SecondsUntilRespawn * NetworkManager.NetworkTickSystem.ServerTime.TickRate);
+            spawner.RespawnRpc(tickToRespawn);
             base.OnDeferringDespawn(despawnTick);
         }
 
@@ -170,18 +163,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             foreach (Rigidbody rigidbody in rigidbodies)
             {
                 rigidbody.isKinematic = !enable;
-            }
-        }
-
-        void GetDestructionVFX(Vector3 position)
-        {
-            if (m_VFXPoolManager != null)
-            {
-                GameObject vfxInstance = m_VFXPoolManager.GetVFXInstance(destructionVFXType);
-                if (vfxInstance != null)
-                {
-                    vfxInstance.transform.position = position;
-                }
             }
         }
 
