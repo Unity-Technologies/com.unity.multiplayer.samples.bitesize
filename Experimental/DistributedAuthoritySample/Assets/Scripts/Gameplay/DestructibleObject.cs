@@ -190,16 +190,5 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 m_Health.Value = health;
             }
         }
-
-        // TESTING, REMOVE ================================
-        [ContextMenu("DebugDestroy")]
-        void DebugDestroy()
-        {
-            if (!HasAuthority)
-            {
-                return;
-            }
-            ApplyCollisionDamage(9000f);
-        }
     }
 }
