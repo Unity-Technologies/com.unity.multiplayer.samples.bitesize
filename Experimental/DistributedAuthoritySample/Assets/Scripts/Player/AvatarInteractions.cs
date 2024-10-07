@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using Unity.Multiplayer.Samples.SocialHub.Input;
+using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -46,6 +48,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         NetworkVariable<NetworkBehaviourReference> m_CurrentTransferableObject = new NetworkVariable<NetworkBehaviourReference>(new NetworkBehaviourReference());
 
         TransferableObject m_TransferableObject;
+        PickUpIndicator m_PickUpIndicator;
 
         const float k_MinDurationHeld = 0f;
         const float k_MaxDurationHeld = 2f;
@@ -60,9 +63,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PickupableLayerMask = 1 << LayerMask.NameToLayer("Pickupable");
         }
 
+        void Update()
+        {
+            CheckForPickupsInRange();
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+            m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
 
             m_InteractCollider.enabled = HasAuthority;
 
@@ -184,6 +193,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
         }
 
+        void CheckForPickupsInRange()
+        {
+            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
+            {
+                if(m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
+                {
+                    m_PickUpIndicator.ShowPickup(otherNetworkObject.transform);
+                }
+            }
+        }
+
         void PickUp()
         {
             if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
@@ -243,6 +263,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void StartPickup(NetworkBehaviour other)
         {
+            m_PickUpIndicator.ClearPickup();
             // For late joining players
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference(other);
             // set ownership status to request required, now that this object is being held
