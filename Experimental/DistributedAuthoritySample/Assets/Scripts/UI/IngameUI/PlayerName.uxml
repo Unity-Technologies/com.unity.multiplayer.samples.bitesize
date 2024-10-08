@@ -1,3 +1,4 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Label text="Name  Label" style="background-color: rgb(255, 182, 0); width: 200px; height: 32px; -unity-text-align: middle-center; border-top-width: 2px; border-left-width: 2px; border-top-right-radius: 10px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-right-width: 2px; border-left-color: rgb(195, 105, 0); border-right-color: rgb(195, 105, 0); border-top-color: rgb(195, 105, 0); border-bottom-color: rgb(195, 105, 0); border-bottom-width: 2px; border-bottom-right-radius: 10px; translate: -50% 0; scale: 1 1; position: absolute; min-width: 200px;" />
+    <Style src="project://database/Assets/Scripts/UI/IngameUI/PickupIndicator.uss?fileID=7433441132597879392&amp;guid=ec4ffd17950114522b47a97c7ca56113&amp;type=3#PickupIndicator" />
+    <engine:Label text="Name  Label" class="player-name" />
 </engine:UXML>

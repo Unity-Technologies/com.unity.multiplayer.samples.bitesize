@@ -30,7 +30,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_UIDocument = GetComponent<UIDocument>();
             m_Root = m_UIDocument.rootVisualElement;
             m_Pickup = m_PickupAsset.CloneTree().Children().First();
-            m_Pickup.styleSheets.Add(m_PickupAsset.stylesheets.First());
+            //m_Pickup.styleSheets.Add(m_PickupAsset.stylesheets.First());
             m_UIDocument.rootVisualElement.Q<VisualElement>("Pickup").Add(m_Pickup);
         }
 
