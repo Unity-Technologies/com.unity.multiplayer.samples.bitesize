@@ -198,6 +198,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if(m_TransferableObject != null)
             {
                 m_PickUpIndicator.ClearPickup();
+                m_PickUpIndicator.ShowCarry(this.transform);
                 return;
             }
 

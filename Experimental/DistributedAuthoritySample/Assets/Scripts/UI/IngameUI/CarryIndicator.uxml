@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/UI/IngameUI/PickupIndicator.uss?fileID=7433441132597879392&amp;guid=ec4ffd17950114522b47a97c7ca56113&amp;type=3#PickupIndicator" />
+    <engine:VisualElement name="PickupIndicator" class="pickup-indicator" style="max-width: 150px;">
+        <engine:Label text="E" name="key-code" style="-unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=16179bdf163bda5448611f1be545e640&amp;type=3#NotInter-Regular&quot;); height: 18px; width: 18px; -unity-text-align: middle-center; white-space: normal;" />
+        <engine:VisualElement style="flex-grow: 1;">
+            <engine:Label text="tab - throw" name="call-to-action" parse-escape-sequences="true" class="call-to-action" style="-unity-text-align: upper-center; -unity-font-definition: url(&quot;project://database/Assets/Scripts/UI/Font/BalooTammudu2-ExtraBold.ttf?fileID=12800000&amp;guid=952a1ddec301242ccb14388162b3a241&amp;type=3#BalooTammudu2-ExtraBold&quot;);" />
+            <engine:Label text="tab - throw" name="call-to-action2" parse-escape-sequences="true" enabled="true" style="-unity-text-align: upper-center; -unity-font-definition: url(&quot;project://database/Assets/Scripts/UI/Font/BalooTammudu2-Bold.ttf?fileID=12800000&amp;guid=c57b78e245f1049c8b2b38017fd8207a&amp;type=3#BalooTammudu2-Bold&quot;); display: flex;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="border" />
+    </engine:VisualElement>
+</engine:UXML>

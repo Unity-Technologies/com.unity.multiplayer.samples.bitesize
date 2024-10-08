@@ -38,8 +38,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             for (int i = 0; i < m_VisualElements.Length; i++)
             {
                 var elm = m_VisualElements[i];
-                elm.transform.rotation = WorldspaceUtils.LookAtCameraY(Camera.main, m_Transforms[i]);
-                WorldspaceUtils.TranslateVEWorldspaceInPixelSpace(m_UIDocument, elm, m_Transforms[i],1f);
+                elm.transform.rotation = UIUtils.LookAtCameraY(Camera.main, m_Transforms[i]);
+                UIUtils.TranslateVEWorldspaceInPixelSpace(m_UIDocument, elm, m_Transforms[i],1f);
             }
         }
     }

@@ -147,7 +147,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
                 m_Nameplates[i].style.left = Mathf.Round(panelSpacePosition.x);
                 m_Nameplates[i].style.top = Mathf.Round(panelSpacePosition.y);
-                // m_Nameplates[i].style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
+                m_Nameplates[i].style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
             }
         }
     }
