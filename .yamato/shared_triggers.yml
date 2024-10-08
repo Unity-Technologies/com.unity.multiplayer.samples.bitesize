@@ -35,7 +35,7 @@ pull_request_trigger_test:
 {% for project in projects %}
 {% for editor in project.test_editors %}
 {% for platform in test_platforms %}
-    - path: {{ project.name }}/**
+    - path: {{ project.path }}/**
       jobs:
         - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
         {% if project.run_editor_tests or project.run_playmode_tests %}
