@@ -32,11 +32,9 @@ pull_request_trigger:
 pull_request_trigger_test:
   name: TEST - Pull Request Trigger (main, develop, & sample branches)
   dependencies:
-{% for project in projects %}
-    - path: {{ project.path }}/**
+    - path: Experimental/DistributedAuthoritySample/**
       jobs:
         - .yamato/build.yml#build_DistributedAuthoritySample_trunk_win
-{% endfor %}
   triggers:
     cancel_old_ci: true
     expression: |-
