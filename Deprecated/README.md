@@ -19,3 +19,8 @@ This means:
 For education on game features critical to your production, please use our **Production-Ready** [Bitesize samples](https://docs-multiplayer.unity3d.com/netcode/current/learn/bitesize/bitesize-introduction/), [Boss Room](https://docs-multiplayer.unity3d.com/netcode/current/learn/bossroom/bossroom/), and [documentation](https://docs-multiplayer.unity3d.com/). 
 
 To connect, find support and share feedback, join the multiplayer community on the [Unity Discord](https://discord.gg/mNgM2XRDpb) and [Unity Forum](https://forum.unity.com/forums/multiplayer.26/).<br> <center>
+
+### Invaders Overview
+
+The [Invaders Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Deprecated/Invaders) was a UNET sample that has been converted over to NGO. Learn more about game flow, modes, unconventional networked movement, and using a shared timer in this sample.
+<br><br>
