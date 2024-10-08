@@ -27,6 +27,7 @@ pull_request_trigger:
           - "main"
           - "develop"
           - "/^sample\//"
+          - "/sample\/.*/"
       
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
