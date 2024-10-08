@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -47,6 +48,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             m_InteractActionReference.action.performed += OnInteractPerformed;
             m_InteractActionReference.action.canceled += OnInteractCanceled;
             m_InteractActionReference.action.Enable();
+            var actionString  = m_InteractActionReference.action.GetBindingIndex();
+            var binding = m_InteractActionReference.action.bindings[actionString];
+
         }
 
         void OnDestroy()

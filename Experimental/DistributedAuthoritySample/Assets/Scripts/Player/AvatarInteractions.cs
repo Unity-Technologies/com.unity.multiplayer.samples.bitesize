@@ -195,6 +195,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void CheckForPickupsInRange()
         {
+            if(m_TransferableObject != null)
+            {
+                m_PickUpIndicator.ClearPickup();
+                return;
+            }
+
             if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
             {
                 if(m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
@@ -263,7 +269,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void StartPickup(NetworkBehaviour other)
         {
-            m_PickUpIndicator.ClearPickup();
             // For late joining players
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference(other);
             // set ownership status to request required, now that this object is being held

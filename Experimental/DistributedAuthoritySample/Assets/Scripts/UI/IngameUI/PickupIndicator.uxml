@@ -1,3 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Label text="E for Pickup" style="background-color: rgb(13, 162, 255); width: 106px;" />
+    <Style src="project://database/Assets/Scripts/UI/IngameUI/PickupIndicator.uss?fileID=7433441132597879392&amp;guid=ec4ffd17950114522b47a97c7ca56113&amp;type=3#PickupIndicator" />
+    <engine:VisualElement name="PickupIndicator" class="pickup-indicator">
+        <engine:Label text="E" name="key-code" />
+        <engine:Label text="Pickup" name="call-to-action" />
+        <engine:VisualElement name="border" />
+    </engine:VisualElement>
 </engine:UXML>

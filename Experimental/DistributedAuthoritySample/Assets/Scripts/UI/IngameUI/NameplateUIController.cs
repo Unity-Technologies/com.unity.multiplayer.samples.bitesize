@@ -28,6 +28,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         [SerializeField]
         Camera m_Camera;
 
+        [SerializeField]
         List<Transform> m_TrackingTarget = new();
 
         private UIDocument m_UIDocument;
@@ -36,10 +37,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         private void OnEnable()
         {
-            NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
+           // NetworkManager.Singleton.OnConnectionEvent += OnConnectionEvent;
             m_Nameplates = new List<VisualElement>();
             m_UIDocument = GetComponent<UIDocument>();
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("NameTags");
+
+
+            // foreach (var target in m_TrackingTarget)
+            // {
+            //     VisualElement nameplate = m_NameplateAsset.Instantiate().Children().First();
+            //     SetPlayerNameLabel(nameplate, target.gameObject.name);
+            //     m_Nameplates.Add(nameplate);
+            //     m_Root.Add(nameplate);
+            // }
         }
 
         void OnConnectionEvent(NetworkManager manager, ConnectionEventData evt)
@@ -135,9 +145,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
                 var mappedScale  = Mathf.Lerp (m_PanelMaxSize, m_PanelMinSize, Mathf.InverseLerp (5, 10, distance));
 
-                m_Nameplates[i].style.left = panelSpacePosition.x;
-                m_Nameplates[i].style.top = panelSpacePosition.y;
-                m_Nameplates[i].style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
+                m_Nameplates[i].style.left = Mathf.Round(panelSpacePosition.x);
+                m_Nameplates[i].style.top = Mathf.Round(panelSpacePosition.y);
+                // m_Nameplates[i].style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
             }
         }
     }

@@ -1,0 +1,71 @@
+*{
+    --secondary-color: rgb(83, 51, 33);
+    --main-color: rgb(188, 130, 99);
+    --light-text-color: rgba(200, 200, 200, 1);
+    --dark-text-color: rgba(16, 16, 16, 1);
+    --base-height: 24px;
+    padding: 0;
+    margin: 0;
+}
+
+.pickup-indicator{
+    position: absolute;
+    left: -39px;
+    align-items: center;
+    transition-property: scale, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out-sine;
+    flex-direction: row;
+    border-radius: 12px;
+    max-height: var(--base-height);
+    min-height: var(--base-height);
+
+    flex-shrink: 1;
+    flex-grow: 1;
+    max-width: 78px;
+    color: var(--dark-text-color);
+    background-color: rgba(255, 255, 255,0.5);
+}
+
+.pickup-indicator > #key-code{
+    margin-left: 3px;
+    -unity-font-style: bold;
+    background-color: var(--main-color);
+    min-width: 18px;
+    min-height: 18px;
+    max-width: 18px;
+    max-height: 18px;
+    -unity-text-align: middle-center;
+    border-radius: 12px;
+    color: var(--secondary-color);
+
+
+}
+
+.pickup-indicator > #call-to-action{
+    -unity-text-align: middle-center;
+    padding-left: 4px;
+    padding-right: 4px;
+    min-height: 24px;
+    max-height: 24px;
+    color: var(--secondary-color);
+}
+
+.pickup-indicator > #border{
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    border-color: var(--secondary-color);
+    border-radius: 12px;
+    border-width: 2px;
+}
+
+.hide{
+    scale: 0.8;
+    opacity: 0;
+}
+
+.show{
+    scale: 1;
+    opacity: 1;
+}
