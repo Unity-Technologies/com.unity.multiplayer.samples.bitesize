@@ -127,7 +127,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 340021862}
-  - component: {fileID: 340021861}
   m_Layer: 0
   m_Name: ServicesHelper
   m_TagString: Untagged
@@ -135,20 +134,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &340021861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340021860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5134217b751de44fb27f189c7ef29e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AutoAuthenticateOnStart: 1
-  m_InitiateVivoxOnAuthentication: 1
 --- !u!4 &340021862
 Transform:
   m_ObjectHideFlags: 0
@@ -175,6 +160,7 @@ GameObject:
   - component: {fileID: 900326970}
   - component: {fileID: 900326969}
   - component: {fileID: 900326968}
+  - component: {fileID: 900326971}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -223,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NetworkManagerExpanded: 0
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 900326968}
@@ -268,6 +255,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &900326971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900326967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5134217b751de44fb27f189c7ef29e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AutoAuthenticateOnStart: 1
+  m_InitiateVivoxOnAuthentication: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

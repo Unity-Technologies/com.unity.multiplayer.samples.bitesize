@@ -39,6 +39,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         Vector3 m_OriginalPosition;
         Quaternion m_OriginalRotation;
 
+        TransferableObject m_TransferableObject;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            m_TransferableObject = GetComponent<TransferableObject>();
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
@@ -48,6 +56,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             m_OriginalRotation = transform.rotation;
             m_DestructionFXPoolSystem = FXPrefabPool.GetFxPool(m_DestructionFX);
         }
+
 
         public override void OnNetworkDespawn()
         {
@@ -67,28 +76,33 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             m_SessionOwnerNetworkObjectSpawner.Value = new NetworkBehaviourReference(spawner);
         }
 
+        protected override bool ProvideNonRigidBodyContactEvents()
+        {
+            return m_TransferableObject && (m_TransferableObject.CurrentObjectState == TransferableObject.ObjectStates.Thrown);
+        }
+
         protected override void OnContactEvent(ulong eventId, Vector3 averagedCollisionNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
         {
-            var collidingBaseObjectMotion = collidingBody.GetComponent<BaseObjectMotionHandler>();
-            var collidingBodyPhys = collidingBaseObjectMotion as PhysicsObjectMotion;
-
-            if (!Rigidbody.isKinematic && !collidingBody.isKinematic && collidingBodyPhys != null && HasAuthority && collidingBodyPhys.HasAuthority)
+            if (!collidingBody)
             {
+                Debug.Log($"{name}-{NetworkObjectId} collision with non-rigidbody.");
                 var collisionMessageInfo = new CollisionMessageInfo();
-                collisionMessageInfo.Damage = collidingBodyPhys.CollisionDamage;
-                collisionMessageInfo.SetFlag(true, (uint)collidingBodyPhys.CollisionType);
-
-                OnHandleCollision(collisionMessageInfo);
-
                 collisionMessageInfo.Damage = CollisionDamage;
                 collisionMessageInfo.SetFlag(true, (uint)CollisionType);
-
-                var destructible = collidingBodyPhys.GetComponent<DestructibleObject>();
-                destructible.OnHandleCollision(collisionMessageInfo);
+                collisionMessageInfo.Source = NetworkObjectId;
+                collisionMessageInfo.SourceId = NetworkObjectId;
+                collisionMessageInfo.Destination = NetworkObjectId;
+                collisionMessageInfo.DestinationBehaviourId = NetworkBehaviourId;
+                OnHandleCollision(collisionMessageInfo);
+                m_TransferableObject.SetObjectState(TransferableObject.ObjectStates.AtRest);
             }
             else
             {
-                base.OnContactEvent(eventId, averagedCollisionNormal, collidingBody, contactPoint, hasCollisionStay, averagedCollisionStayNormal);
+                // Optional: If you don't want destructibles to be able to damage other destructibles being carried then enable this line
+                //if (m_TransferableObject && (m_TransferableObject.CurrentObjectState != TransferableObject.ObjectStates.PickedUp))
+                {
+                    base.OnContactEvent(eventId, averagedCollisionNormal, collidingBody, contactPoint, hasCollisionStay, averagedCollisionStayNormal);
+                }
             }
         }
 
@@ -105,7 +119,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
                 return;
             }
-
+            if (NetworkManager.SpawnManager.SpawnedObjects.ContainsKey(collisionMessage.Source))
+            {
+                var sourceCollider = NetworkManager.SpawnManager.SpawnedObjects[collisionMessage.Source];
+                Debug.Log($"[{name}] Collided with {sourceCollider.name} owned by Client-{sourceCollider.OwnerClientId} and is applying a damage of {collisionMessage.Damage}!");
+            }
+            else
+            {
+                Debug.Log($"[{name}] Collided with (unknown or self) and is applying a damage of {collisionMessage.Damage}!");
+            }
             ApplyCollisionDamage(collisionMessage.Damage);
 
             base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
@@ -113,7 +135,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         void ApplyCollisionDamage(float damage)
         {
-            Debug.Log("Applying collision damage.");
             var currentHealth = Mathf.Max(0.0f, m_Health.Value - damage);
 
             if (currentHealth == 0.0f)
@@ -170,7 +191,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         {
             if (m_RubblePrefab != null)
             {
-                m_RubblePrefab.InstantiateAndSpawn(NetworkManager, destroyWithScene:true, position: position, rotation: Quaternion.identity);
+                m_RubblePrefab.InstantiateAndSpawn(NetworkManager, destroyWithScene: true, position: position, rotation: Quaternion.identity);
             }
         }
 

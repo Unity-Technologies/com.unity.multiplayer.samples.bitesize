@@ -11,6 +11,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         public event Action<NetworkBehaviour, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
 
+        public enum ObjectStates
+        {
+            AtRest,
+            PickedUp,
+            Thrown
+        }
+
+        public ObjectStates CurrentObjectState { get; private set; }
+
+        public void SetObjectState(ObjectStates objectState)
+        {
+            CurrentObjectState = objectState;
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();

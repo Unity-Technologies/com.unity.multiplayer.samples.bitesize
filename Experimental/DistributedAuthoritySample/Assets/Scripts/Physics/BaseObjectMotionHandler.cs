@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
-    class BaseObjectMotionHandler : NetworkTransform, ICollisionHandler, IContactEventHandler
+    class BaseObjectMotionHandler : NetworkTransform, ICollisionHandler, IContactEventHandlerWithInfo
     {
         protected bool m_IsPooled = true;
 
@@ -232,6 +232,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         }
 
+
+
         /// <summary>
         /// Invoked from <see cref="RigidbodyContactEventManager"/> when a non-kinematic body collides
         /// with another registered <see cref="UnityEngine.Rigidbody"/>.
@@ -254,6 +256,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             OnContactEvent(eventId, averageNormal, collidingBody, contactPoint, hasCollisionStay, averagedCollisionStayNormal);
             LastEventId = eventId;
+        }
+
+        protected virtual bool ProvideNonRigidBodyContactEvents()
+        {
+            return false;
+        }
+
+        public ContactEventHandlerInfo GetContactEventHandlerInfo()
+        {
+            var contactEventHandlerInfo = new ContactEventHandlerInfo();
+            contactEventHandlerInfo.ProvideNonRigidBodyContactEvents = ProvideNonRigidBodyContactEvents();
+            contactEventHandlerInfo.HasContactEventPriority = HasAuthority;
+            return contactEventHandlerInfo;
         }
 
         /// <summary>

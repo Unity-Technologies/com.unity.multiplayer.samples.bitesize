@@ -24,9 +24,12 @@ public class ServicesHelper : MonoBehaviour
 
     ISession m_LastSession;
 
+    private NetworkManager m_NetworkManager;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
+        m_NetworkManager = GetComponent<NetworkManager>();
     }
 
     async void Start()
@@ -142,7 +145,27 @@ public class ServicesHelper : MonoBehaviour
                 m_SessionTask = ConnectThroughLiveService(m_SessionName);
             }
 
+            if (GUILayout.Button("Host"))
+            {
+                SceneManager.sceneLoaded += Host_SceneLoaded;
+                LoadHubScene();
+                //SceneManager.LoadScene("ObjectTesting");
+
+            }
+
+            if (GUILayout.Button("Client"))
+            {
+                m_NetworkManager.StartClient();
+            }
+
+
             GUI.enabled = true;
         }
+    }
+
+    private void Host_SceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        SceneManager.sceneLoaded -= Host_SceneLoaded;
+        m_NetworkManager.StartHost();
     }
 }

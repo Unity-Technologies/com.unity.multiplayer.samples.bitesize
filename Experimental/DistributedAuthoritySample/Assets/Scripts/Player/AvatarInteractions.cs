@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using Unity.Multiplayer.Samples.SocialHub.Input;
+using Unity.Multiplayer.Samples.SocialHub.Physics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -249,6 +250,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             other.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
             // For immediate notification
             OnObjectPickedUpRpc(m_CurrentTransferableObject.Value);
+
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectStates.PickedUp);
+
             // Rotate the player to face the item smoothly
             StartCoroutine(SmoothLookAt(other.transform));
             m_AvatarNetworkAnimator.SetTrigger(k_PickupId);
@@ -354,7 +358,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             float timeHeldClamped = Mathf.Clamp((float)holdDuration, k_MinDurationHeld, k_MaxDurationHeld);
             float tossForce = Mathf.Lerp(m_MinTossForce, m_MaxTossForce, Mathf.Clamp(timeHeldClamped, 0f, 1f));
             transferableObjectRigidbody.AddForce(transform.forward * tossForce, ForceMode.Impulse);
-
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectStates.Thrown);
             m_TransferableObject = null;
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
         }
@@ -362,6 +366,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnThrowAction()
         {
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectStates.Thrown);
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
             m_TransferableObject = null;
