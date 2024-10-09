@@ -38,8 +38,7 @@ pull_request_trigger_{{ project.name }}_test:
   triggers:
     cancel_old_ci: true
     expression: |-
-      (pull_request.target eq "develop" AND
-      pull_request.changes.any match "^{{ project.path }}/.*$")
+      pull_request.target eq "develop"
 {% endfor -%}
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
