@@ -28,8 +28,9 @@ pull_request_trigger:
           - "develop"
           - "/^sample\//"
           - "/sample\/.*/"
-      
-pull_request_trigger_test:
+
+{% for project in projects -%}
+pull_request_trigger_{{ project.name }}_test:
   name: TEST - Pull Request Trigger (main, develop, & sample branches)
   dependencies:
     - .yamato/build.yml#build_DistributedAuthoritySample_trunk_win
@@ -37,8 +38,8 @@ pull_request_trigger_test:
   triggers:
     cancel_old_ci: true
     expression: |-
-      pull_request.target match "^Experimental/DistributedAuthoritySample/.*$"
-
+      (pull_request.target match "^{{ project.path }}/.*$")
+{% endfor -%}
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
