@@ -188,7 +188,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
             {
-                // TODO: Display UI next to pickupable object to show that it can be picked up
                 if (m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject)
                     && otherNetworkObject.TryGetComponent(out TransferableObject otherTransferableObject))
                 {
