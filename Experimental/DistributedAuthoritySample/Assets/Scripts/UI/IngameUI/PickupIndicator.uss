@@ -4,6 +4,7 @@
     --light-text-color: rgb(200, 200, 200);
     --dark-text-color: rgb(16, 16, 16);
     --base-height: 24px;
+    --mic-icon-size: 36px;
     padding: 0;
     margin: 0;
 }
@@ -18,17 +19,18 @@
     flex-direction: row;
     justify-content: flex-start;
     border-radius: 12px;
-
+    padding-top: 4px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
     min-height: var(--base-height);
     flex-shrink: 1;
     flex-grow: 1;
-    max-width: 78px;
     color: var(--dark-text-color);
     background-color: rgba(255, 255, 255, 0.5);
 }
 
 .pickup-indicator #key-code {
-    margin-top: 3px;
     margin-left: 3px;
     -unity-font-style: bold;
     background-color: var(--main-color);
@@ -42,11 +44,8 @@
 }
 
 .pickup-indicator #call-to-action {
-    -unity-text-align: middle-center;
-    padding-left: 4px;
-    padding-right: 4px;
-    min-height: 24px;
-    max-height: 24px;
+    -unity-text-align: middle-left;
+    padding: 4px;
     color: var(--secondary-color);
 }
 
@@ -67,4 +66,29 @@
 .show {
     scale: 1;
     opacity: 1;
+}
+
+
+/*player UI above head*/
+.player-top-ui{
+    position: absolute;
+    align-items: center;
+    translate: -50% 0;
+    max-width: 200px;
+    min-width: 200px;
+}
+
+.player-mic-icon{
+    max-width: var(--mic-icon-size);
+    min-width: var(--mic-icon-size);
+    max-height: var(--mic-icon-size);
+    min-height: var(--mic-icon-size);
+    background-color: red;
+}
+
+.player-name {
+    font-size: 24px;
+    color: white;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.29);
+    -unity-text-outline-width: 1px;
 }

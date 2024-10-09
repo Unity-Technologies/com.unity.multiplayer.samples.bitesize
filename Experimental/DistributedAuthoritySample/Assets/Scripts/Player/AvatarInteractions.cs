@@ -48,7 +48,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         NetworkVariable<NetworkBehaviourReference> m_CurrentTransferableObject = new NetworkVariable<NetworkBehaviourReference>(new NetworkBehaviourReference());
 
         TransferableObject m_TransferableObject;
+
         PickUpIndicator m_PickUpIndicator;
+
+        CarryBoxIndicator m_CarryBoxIndicator;
 
         const float k_MinDurationHeld = 0f;
         const float k_MaxDurationHeld = 2f;
@@ -72,6 +75,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             base.OnNetworkSpawn();
             m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
+            m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
 
             m_InteractCollider.enabled = HasAuthority;
 
@@ -198,9 +202,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if(m_TransferableObject != null)
             {
                 m_PickUpIndicator.ClearPickup();
-                m_PickUpIndicator.ShowCarry(this.transform);
                 return;
             }
+
+            m_CarryBoxIndicator.HideCarry();
 
             if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
             {
@@ -279,6 +284,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // Rotate the player to face the item smoothly
             StartCoroutine(SmoothLookAt(other.transform));
             m_AvatarNetworkAnimator.SetTrigger(k_PickupId);
+
+
         }
 
         IEnumerator SmoothLookAt(Transform target)
@@ -295,6 +302,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
+
+            // show indicator for carry
+            m_CarryBoxIndicator.ShowCarry(this.transform);
 
             // Ensure the final rotation is exactly towards the target
             transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0); // Keep only the y-axis rotation

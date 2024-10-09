@@ -11,81 +11,61 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VisualTreeAsset m_PickupAsset;
 
         [SerializeField]
-        VisualTreeAsset m_CarryAsset;
-
-        [SerializeField]
         Camera m_Camera;
-
-        [SerializeField]
-        Transform m_CurrentPickup;
-
-        [SerializeField]
-        Transform m_CurrentCarry;
 
         [SerializeField]
         float m_VerticalOffset = 1.5f;
 
-
-        VisualElement m_PickupUI;
-
-        VisualElement m_CarryUI;
-
         [SerializeField]
         UIDocument m_WorldspaceUI;
 
-        [SerializeField]
-        UIDocument m_SceenspaceUI;
+        VisualElement m_PickupUI;
+
+        Transform m_CurrentPickup;
+
+        Transform m_NextPickup;
+
+        const string k_ActiveUSSClass = "show";
+        const string k_InactiveUSSClass = "hide";
 
         void OnEnable()
         {
-            m_PickupUI = m_PickupAsset.CloneTree().Children().First();
-            m_PickupUI.styleSheets.Add(m_PickupAsset.stylesheets.First());
-            m_PickupUI.AddToClassList("hide");
+            // pick first child to avoid adding the root element
+            m_PickupUI = m_PickupAsset.CloneTree().Children().ToArray()[0];
+            m_PickupUI.AddToClassList(k_InactiveUSSClass);
             m_WorldspaceUI.rootVisualElement.Q<VisualElement>("Pickup").Add(m_PickupUI);
-
-            m_CarryUI = m_CarryAsset.CloneTree().Children().First();
-            m_CarryUI.styleSheets.Add(m_CarryAsset.stylesheets.First());
-            m_SceenspaceUI.rootVisualElement.Q<VisualElement>("Pickup").Add(m_CarryUI);
         }
 
         public void ShowPickup(Transform t)
         {
-            m_CurrentPickup = t;
+            m_NextPickup = t;
             m_PickupUI.style.display = DisplayStyle.Flex;
-            m_PickupUI.RemoveFromClassList("hide");
-            m_PickupUI.AddToClassList("show");
         }
-
-        public void ShowCarry(Transform t)
-        {
-            m_CurrentCarry = t;
-        }
-
 
         public void ClearPickup()
         {
-            m_PickupUI.RemoveFromClassList("show");
-            m_PickupUI.AddToClassList("hide");
+            m_NextPickup = null;
         }
-
-
 
         private void Update()
         {
-            if (m_CurrentPickup != null)
+            if (m_CurrentPickup == m_NextPickup)
             {
-                UpdatePickup();
+                if (m_CurrentPickup != null)
+                {
+                    m_PickupUI.RemoveFromClassList(k_InactiveUSSClass);
+                    m_PickupUI.AddToClassList(k_ActiveUSSClass);
+                    UpdatePickup();
+                }
+                return;
             }
 
-            if(m_CurrentCarry != null)
+            m_PickupUI.RemoveFromClassList(k_ActiveUSSClass);
+            m_PickupUI.AddToClassList(k_InactiveUSSClass);
+            if (m_PickupUI.resolvedStyle.opacity == 0)
             {
-                UpdateCarry();
+                m_CurrentPickup = m_NextPickup;
             }
-        }
-
-        void UpdateCarry()
-        {
-            UIUtils.TranslateVEWorldToScreenspace(m_Camera, m_CurrentCarry, m_CarryUI);
         }
 
         void UpdatePickup()
