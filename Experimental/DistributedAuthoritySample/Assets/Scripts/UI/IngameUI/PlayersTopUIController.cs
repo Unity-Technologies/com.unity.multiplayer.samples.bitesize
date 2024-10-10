@@ -76,6 +76,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
                 // new player found, create a new UI
                 var display = GetDisplayForPlayer();
+                display.SetPlayerName(player.gameObject.name);
                 UpdateDisplayPosition(player.transform, display);
                 m_PlayersToDisplayMap.Add(new Tuple<NetworkObject, PlayerHeadDisplay>(player, display));
             }
@@ -100,9 +101,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 m_Root.Add(display);
                 return display;
             }
-            var newDisplaye = new PlayerHeadDisplay(m_NameplateAsset);
-            m_Root.Add(newDisplaye);
-            return newDisplaye;
+            var newDisplay = new PlayerHeadDisplay(m_NameplateAsset);
+            m_Root.Add(newDisplay);
+            return newDisplay;
         }
 
         void UpdateDisplayPosition(Transform playerTransform, VisualElement headDisplay)

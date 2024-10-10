@@ -48,7 +48,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             //Todo: Use service Helper
             NetworkManager.Singleton.Shutdown();
-            SceneManager.LoadScene("Bootstrap", LoadSceneMode.Single);
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
         }
 
         void QuitGame()

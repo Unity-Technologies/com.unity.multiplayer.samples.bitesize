@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.UI;
