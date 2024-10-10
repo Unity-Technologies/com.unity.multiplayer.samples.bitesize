@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/UI/IngameUI/PickupIndicator.uss?fileID=7433441132597879392&amp;guid=ec4ffd17950114522b47a97c7ca56113&amp;type=3#PickupIndicator" />
+    <ui:VisualElement name="in-game-menu" style="flex-grow: 1;">
+        <ui:Button text="x" name="burger-button" />
+        <ui:VisualElement name="sceen-overlay" style="flex-grow: 1;" />
+        <ui:VisualElement name="menu" style="flex-grow: 1; background-image: none; background-color: rgb(166, 153, 146); border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; height: 128px;">
+            <ui:Button text="Go to Main " name="btn-goto-main" class="main-menu-button" />
+            <ui:Button text="Exit Application" name="btn-exit" class="main-menu-button" />
+            <ui:Button text="x" name="btn-close-menu" class="main-menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -132,6 +132,7 @@ Transform:
   - {fileID: 6937904944313903544}
   - {fileID: 2669059270614148897}
   - {fileID: 7581405936094859531}
+  - {fileID: 2189629918565340710}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4492209481782214086
@@ -248,7 +249,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NameplateAsset: {fileID: 9197481963319205126, guid: 93774d1efb29141dcb0508be17dda6f6, type: 3}
   m_NameplateScale: {x: 0, y: 0}
-  m_PanelMinSize: 0.6
-  m_PanelMaxSize: 1.2
+  m_PanelMinSize: 0.2
+  m_PanelMaxSize: 1
+  m_DisplayYOffset: 1.8
   m_Camera: {fileID: 0}
   m_TrackingTarget: []
+--- !u!1 &8141439421283659290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2189629918565340710}
+  - component: {fileID: 6695400750158310331}
+  m_Layer: 0
+  m_Name: IngameMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2189629918565340710
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8141439421283659290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1381363753434730508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6695400750158310331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8141439421283659290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0f8437c8bb4c46be8a811bea177ede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIDocument: {fileID: 5522957199897624514}
+  m_IngameMenuAsset: {fileID: 9197481963319205126, guid: 48779f62bf80443f0aebb4f2157d6ea6, type: 3}

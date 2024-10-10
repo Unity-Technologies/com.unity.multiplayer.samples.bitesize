@@ -7,6 +7,7 @@
     --mic-icon-size: 36px;
     padding: 0;
     margin: 0;
+    -unity-font-definition: url("project://database/Assets/Scripts/UI/Font/Grandstander-SemiBold.ttf?fileID=12800000&guid=d1191de98d21f499b804d1335f809197&type=3#Grandstander-SemiBold");
 }
 
 .pickup-indicator {
@@ -38,9 +39,11 @@
     min-height: 18px;
     max-width: 18px;
     max-height: 18px;
-    -unity-text-align: middle-center;
     border-radius: 12px;
     color: var(--secondary-color);
+    -unity-text-align: middle-center;
+    font-size: 17px;
+    text-shadow: 1px 1px 2px rgba(41, 41, 41, 0.69);
 }
 
 .pickup-indicator #call-to-action {
@@ -68,9 +71,7 @@
     opacity: 1;
 }
 
-
-/*player UI above head*/
-.player-top-ui{
+.player-top-ui {
     position: absolute;
     align-items: center;
     translate: -50% 0;
@@ -78,7 +79,7 @@
     min-width: 200px;
 }
 
-.player-mic-icon{
+.player-mic-icon {
     max-width: var(--mic-icon-size);
     min-width: var(--mic-icon-size);
     max-height: var(--mic-icon-size);
@@ -91,4 +92,59 @@
     color: white;
     -unity-text-outline-color: rgba(0, 0, 0, 0.29);
     -unity-text-outline-width: 1px;
+}
+
+#in-game-menu {
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#burger-button {
+    position: absolute;
+    min-height: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    max-height: 36px;
+    left: 20px;
+    top: 20px;
+}
+
+#sceen-overlay {
+    transition-property: opacity;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in-out-sine;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+#menu {
+    transition-property: scale, opacity;
+    transition-duration: 200ms;
+    transition-timing-function:ease-in-out-bounce;
+    justify-content: center;
+    background-color: var(--main-color);
+    max-width: 300px;
+    align-self: center;
+    max-height: 140px;
+    padding: 16px;
+}
+
+.main-menu-button {
+    padding: 8px;
+    margin-top: 4px;
+    border-width: 0;
+    background-image: url("project://database/Assets/Scripts/UI/IngameUI/BG_Setting_Row.png?fileID=21300000&guid=3407fc574197a4a2cbec1c7cd06eee31&type=3#BG_Setting_Row");
+    background-color: rgba(188, 188, 188, 0);
+    -unity-background-image-tint-color: rgb(17, 3, 0);
+}
+
+.main-menu-button:hover {
+    background-image: url("project://database/Assets/Scripts/UI/IngameUI/BG_Setting_Row.png?fileID=21300000&guid=3407fc574197a4a2cbec1c7cd06eee31&type=3#BG_Setting_Row");
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+
 }

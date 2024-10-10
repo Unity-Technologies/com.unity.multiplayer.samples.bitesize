@@ -31,13 +31,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             doc.gameObject.transform.rotation = LookAtCameraY(Camera.main, objectInWorldSpace);
         }
 
-        public static void TranslateVEWorldToScreenspace(Camera cam, Transform objectInWorldSpace, VisualElement elm)
+        public static void TranslateVEWorldToScreenspace(Camera cam, Transform objectInWorldSpace, VisualElement elm, float yOffset = 0f)
         {
-            // Get position of nameplate in screen space.
-            Vector2 screenSpacePosition = cam.WorldToScreenPoint(objectInWorldSpace.position);
+            var positionInWorldSpace = new Vector3(objectInWorldSpace.position.x, objectInWorldSpace.position.y + yOffset, objectInWorldSpace.position.z);
+            Vector2 screenSpacePosition = cam.WorldToScreenPoint(positionInWorldSpace);
             Vector2 panelSpacePosition = RuntimePanelUtils.ScreenToPanel(elm.panel, new Vector2(screenSpacePosition.x, Screen.height - screenSpacePosition.y));
-            elm.style.left = Mathf.Round(panelSpacePosition.x);
-            elm.style.top = Mathf.Round(panelSpacePosition.y);
+            elm.style.left = panelSpacePosition.x;
+            elm.style.top = panelSpacePosition.y;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             // pick first child to avoid adding the root element
             m_CarryUI = m_CarryBoxIndicatorAsset.CloneTree().Children().ToArray()[0];
             m_CarryUI.AddToClassList(k_InactiveUSSClass);
-            m_ScreenspaceUI.rootVisualElement.Q<VisualElement>("player-carry").Add(m_CarryUI);
+            m_ScreenspaceUI.rootVisualElement.Q<VisualElement>("player-carry-container").Add(m_CarryUI);
             m_CarryUI.Q<Label>("call-to-action").text = "tab - drop \nhold - throw";
         }
 

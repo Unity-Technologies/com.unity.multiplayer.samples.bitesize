@@ -212,8 +212,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 if(m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
                 {
                     m_PickUpIndicator.ShowPickup(otherNetworkObject.transform);
+                    return;
                 }
             }
+            m_PickUpIndicator.ClearPickup();
         }
 
         void PickUp()

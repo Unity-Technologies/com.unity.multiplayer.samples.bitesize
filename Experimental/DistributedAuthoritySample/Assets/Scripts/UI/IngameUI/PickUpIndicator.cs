@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -25,8 +26,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         Transform m_NextPickup;
 
+
         const string k_ActiveUSSClass = "show";
         const string k_InactiveUSSClass = "hide";
+
+        bool m_IsShown = false;
+        bool isShown
+        {
+            set
+            {
+                // if the value is the same, do nothing
+                if (m_IsShown == value)
+                    return;
+
+                m_IsShown = value;
+
+                // fade in the pickup UI
+                if (m_IsShown)
+                {
+                    m_PickupUI.RemoveFromClassList(k_InactiveUSSClass);
+                    m_PickupUI.AddToClassList(k_ActiveUSSClass);
+                    return;
+                }
+
+                // fade out the pickup UI
+                m_PickupUI.RemoveFromClassList(k_ActiveUSSClass);
+                m_PickupUI.AddToClassList(k_InactiveUSSClass);
+            }
+        }
+
+
 
         void OnEnable()
         {
@@ -39,7 +68,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         public void ShowPickup(Transform t)
         {
             m_NextPickup = t;
-            m_PickupUI.style.display = DisplayStyle.Flex;
         }
 
         public void ClearPickup()
@@ -53,20 +81,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             {
                 if (m_CurrentPickup != null)
                 {
-                    m_PickupUI.RemoveFromClassList(k_InactiveUSSClass);
-                    m_PickupUI.AddToClassList(k_ActiveUSSClass);
+                    isShown = true;
                     UpdatePickup();
                 }
                 return;
             }
 
-            m_PickupUI.RemoveFromClassList(k_ActiveUSSClass);
-            m_PickupUI.AddToClassList(k_InactiveUSSClass);
+            isShown = false;
             if (m_PickupUI.resolvedStyle.opacity == 0)
             {
                 m_CurrentPickup = m_NextPickup;
             }
         }
+
 
         void UpdatePickup()
         {
