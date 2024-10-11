@@ -75,7 +75,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         protected override bool ProvideNonRigidbodyContactEvents()
         {
-            return m_TransferableObject && m_TransferableObject.CurrentObjectState == TransferableObject.ObjectState.Thrown;
+            return m_TransferableObject && m_TransferableObject.CurrentObjectState == TransferableObject.ObjectState.Thrown && HasAuthority;
         }
 
         protected override void OnContactEvent(ulong eventId, Vector3 averagedCollisionNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
