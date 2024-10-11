@@ -140,8 +140,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         void ApplyCollisionDamage(float damage)
         {
-            Debug.Log($"Applying collision damage. HasAuthority {HasAuthority}");
-
             var currentHealth = Mathf.Max(0.0f, m_Health.Value - damage);
 
             if (currentHealth == 0.0f)
@@ -150,7 +148,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 EnableColliders(false);
                 m_Health.Value = currentHealth;
                 // TODO: add NetworkObject pool here
-                Debug.Log($"{name} despawned. OwnerClientId {OwnerClientId}");
                 NetworkObject.DeferDespawn(m_DeferredDespawnTicks, destroy: true);
             }
             else

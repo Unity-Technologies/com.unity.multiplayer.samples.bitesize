@@ -283,6 +283,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 return;
             }
+
+            if (m_TransferableObject == null || !m_TransferableObject.IsSpawned)
+            {
+                // object being picked up may have been despawned while trying to pick it up
+                return;
+            }
+
             OnPickupAction(OwnerClientId);
         }
 
