@@ -87,6 +87,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 if (!m_PlayersToDisplayMap[i].Item1)
                 {
                     m_PlayerHeadDisplayPool.Add(m_PlayersToDisplayMap[i].Item2);
+                    m_PlayersToDisplayMap[i].Item2.RemoveFromHierarchy();
                     m_PlayersToDisplayMap.RemoveAt(i);
                 }
             }
