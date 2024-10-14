@@ -18,14 +18,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         float m_VerticalOffset = 1.5f;
 
         [SerializeField]
-        float m_PanelScale = 1.5f;
-
-        [SerializeField]
         UIDocument m_ScreenspaceUI;
 
         VisualElement m_CarryUI;
 
         Transform m_CarryTransform;
+
+        [SerializeField]
+        float m_PanelMaxSize = 1.5f;
+
+        [SerializeField]
+        float m_PanelMinSize = 0.7f;
 
         const string k_ActiveUSSClass = "show";
         const string k_InactiveUSSClass = "hide";
@@ -37,7 +40,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryUI.AddToClassList(k_InactiveUSSClass);
             m_ScreenspaceUI.rootVisualElement.Q<VisualElement>("player-carry-container").Add(m_CarryUI);
             m_CarryUI.Q<Label>("call-to-action").text = "tab - drop \nhold - throw";
-            m_CarryUI.style.scale = new StyleScale(new Vector2(m_PanelScale,m_PanelScale));
+            m_CarryUI.AddToClassList("carrybox");
         }
 
         public void ShowCarry(Transform t)
@@ -45,6 +48,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryTransform = t;
             m_CarryUI.RemoveFromClassList(k_InactiveUSSClass);
             m_CarryUI.AddToClassList(k_ActiveUSSClass);
+            StopCoroutine(HideAfterDelay(5f));
             StartCoroutine(HideAfterDelay(5f));
         }
 
@@ -67,6 +71,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 return;
 
             UIUtils.TranslateVEWorldToScreenspace(m_Camera, m_CarryTransform, m_CarryUI, m_VerticalOffset);
+            var distance = Vector3.Distance(m_Camera.transform.position, m_CarryTransform.position);
+            var mappedScale  = Mathf.Lerp (m_PanelMaxSize, m_PanelMinSize, Mathf.InverseLerp (5, 20, distance));
+            m_CarryUI.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
         }
     }
 }

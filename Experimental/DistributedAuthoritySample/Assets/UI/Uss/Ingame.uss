@@ -54,6 +54,14 @@
     border-width: 2px;
 }
 
+/* uses the same as UXML as pickup-indicator
+   remove scale transition because gets scaled by distance
+*/
+.carrybox{
+        transition-property: scale;
+        transition-duration: 0ms;
+}
+
 .hide {
     scale: 0.8;
     opacity: 0;
@@ -115,29 +123,33 @@
 }
 
 #menu {
+    -unity-font-definition: var(--script-font);
     transition-property: scale, opacity;
     transition-duration: 200ms;
     transition-timing-function:ease-in-out-bounce;
     justify-content: center;
     background-color: var(--main-color);
-    max-width: 300px;
     align-self: center;
-    max-height: 140px;
-    padding: 16px;
+    min-width: 400px;
+    padding: 32px;
 }
 
-.main-menu-button {
-    padding: 8px;
-    margin-top: 4px;
-    border-width: 0;
-    background-image: url("project://database/Assets/Art/UI/BG_Setting_Row.png?fileID=21300000&guid=3407fc574197a4a2cbec1c7cd06eee31&type=3#BG_Setting_Row");
-    background-color: rgba(188, 188, 188, 0);
-    -unity-background-image-tint-color: rgb(17, 3, 0);
+#menu #btn-close-menu{
+    position: absolute;
+    right: -25px;
+    top: -32px;
 }
 
-.main-menu-button:hover {
-    background-image: url("project://database/Assets/Art/UI/BG_Setting_Row.png?fileID=21300000&guid=3407fc574197a4a2cbec1c7cd06eee31&type=3#BG_Setting_Row");
-    background-color: rgba(0, 0, 0, 0);
-    color: white;
+.btn-round{
+    min-height: 50px;
+    min-width: 50px;
+    border-radius: 25px;
+}
 
+.btn-round .ve-buttonHover{
+    display: none;
+}
+
+#burger-button{
+    font-size: 12px;
 }

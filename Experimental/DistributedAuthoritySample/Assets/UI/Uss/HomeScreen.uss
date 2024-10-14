@@ -19,6 +19,18 @@
     justify-content: space-between;
 }
 
+#container_menu {
+    margin-top: 22%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+#container_buttons {
+    -unity-font-definition: var(--script-font);
+    margin-top: 18px;
+}
+
+/* Game Titel*/
 #game-titel {
     -unity-font-definition: var(--script-font);
     -unity-text-align: middle-right;
@@ -39,67 +51,6 @@
     margin-top: -10px;
 }
 
-#container_menu {
-    margin-top: 22%;
-    padding-left: 15%;
-    padding-right: 15%;
-}
-
-#container_buttons {
-    -unity-font-definition: var(--script-font);
-    margin-top: 18px;
-}
-
-.bt-mainMenu {
-    overflow: visible;
-    min-height: 50px;
-    font-size: 30px;
-    border-width: 4px;
-    border-color: black;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: var(--highlight-color);
-    transition-property: scale;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in-out-back;
-}
-
-.bt-mainMenu:hover {
-    scale: 1.05 1.05;
-}
-
-.bt-mainMenu:hover .ve-buttonHover {
-    opacity: 1;
-}
-
-.bt-mainMenu:disabled .ve-buttonHover {
-    opacity: 0;
-}
-
-.ve-buttonHover {
-    position: absolute;
-    left: -5%;
-    top: 20%;
-    height:60%;
-    width: 110%;
-    background-image: url("project://database/Assets/UI/Textures/menu_button_selection_sample.png?fileID=2800000&guid=9aef6e97aa57aa24c879459f6419dd56&type=3#menu_button_selection_sample");
-    -unity-background-scale-mode: scale-to-fit;
-    background-position: left;
-    opacity: 0;
-    transition-property: opacity, width;
-    transition-duration: 0.2s;
-    transition-timing-function: linear;
-}
-
-.mirror {
-    scale: -1 1;
-}
-
-.bt-mainMenu:disabled {
-    scale: 1.0 1.0;
-}
-
-
 /* text field styles */
 .tf-mainMenu {
     font-size: 20px;
@@ -114,7 +65,7 @@
 }
 
 .tf-mainMenu:focus:enabled {
-    color: rgb(0, 0, 0);
+    color: black;
 }
 
 .tf-mainMenu:focus:enabled > .unity-base-field__label {
@@ -122,7 +73,7 @@
 }
 
 .unity-base-field__input > .unity-text-element {
-    color: rgb(0, 0, 0);
+    color: black;
 }
 
 #info_text {

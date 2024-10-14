@@ -5,9 +5,62 @@
     --main-color: rgb(188, 130, 99);
     --light-text-color: rgb(200, 200, 200);
     --dark-text-color: rgb(16, 16, 16);
-    --highlight-color: rgb(250, 200, 0);
+    --highlight-color: rgb(255, 218, 70);
     --base-height: 24px;
     --mic-icon-size: 36px;
+}
+
+
+
+/* Buttons */
+.bt-mainMenu {
+    overflow: visible;
+    min-height: 60px;
+    font-size: 30px;
+    border-width: 4px;
+    border-color: black;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--highlight-color);
+    transition-property: scale;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out-back;
+}
+
+.bt-mainMenu:hover {
+    scale: 1.05 1.05;
+}
+
+.bt-mainMenu:hover .ve-buttonHover {
+    opacity: 1;
+}
+
+.bt-mainMenu:disabled .ve-buttonHover {
+    opacity: 0;
+}
+
+.ve-buttonHover {
+    position: absolute;
+    padding: -8px;
+    left: -25px;
+    top: 20%;
+    height:60%;
+    width: 25px;
+    background-image: url("project://database/Assets/UI/Textures/menu_button_selection_sample.png?fileID=2800000&guid=9aef6e97aa57aa24c879459f6419dd56&type=3#menu_button_selection_sample");
+    -unity-background-scale-mode: scale-to-fit;
+    opacity:0;
+    transition-property: opacity, width;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+}
+
+.mirror {
+    scale: -1 1;
+    left: 100%;
+}
+
+.bt-mainMenu:disabled {
+    scale: 1.0 1.0;
 }
 
 
