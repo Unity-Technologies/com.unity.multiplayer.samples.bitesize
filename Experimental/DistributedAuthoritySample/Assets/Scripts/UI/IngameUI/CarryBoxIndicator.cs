@@ -18,6 +18,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         float m_VerticalOffset = 1.5f;
 
         [SerializeField]
+        float m_PanelScale = 1.5f;
+
+        [SerializeField]
         UIDocument m_ScreenspaceUI;
 
         VisualElement m_CarryUI;
@@ -34,6 +37,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryUI.AddToClassList(k_InactiveUSSClass);
             m_ScreenspaceUI.rootVisualElement.Q<VisualElement>("player-carry-container").Add(m_CarryUI);
             m_CarryUI.Q<Label>("call-to-action").text = "tab - drop \nhold - throw";
+            m_CarryUI.style.scale = new StyleScale(new Vector2(m_PanelScale,m_PanelScale));
         }
 
         public void ShowCarry(Transform t)

@@ -1,8 +1,9 @@
 @import url(Global.uss);
 
 .pickup-indicator {
+    -unity-font-definition: var(--script-font);
     position: absolute;
-    left: -39px;
+    left: -50px;
     align-items: flex-start;
     transition-property: scale, opacity;
     transition-duration: 200ms;
@@ -33,7 +34,7 @@
     color: var(--secondary-color);
     -unity-text-align: middle-center;
     font-size: 17px;
-    text-shadow: 1px 1px 2px rgba(41, 41, 41, 0.69);
+    text-shadow: 1px 1px 5px rgba(41, 41, 41, 0.69);
 }
 
 .pickup-indicator #call-to-action {
@@ -67,8 +68,7 @@
     position: absolute;
     align-items: center;
     translate: -50% 0;
-    max-width: 200px;
-    min-width: 200px;
+
 }
 
 .player-mic-icon {
@@ -80,7 +80,8 @@
 }
 
 .player-name {
-    font-size: 24px;
+    -unity-font-definition: var(--script-font);
+    font-size: 36px;
     color: white;
     -unity-text-outline-color: rgba(0, 0, 0, 0.29);
     -unity-text-outline-width: 1px;

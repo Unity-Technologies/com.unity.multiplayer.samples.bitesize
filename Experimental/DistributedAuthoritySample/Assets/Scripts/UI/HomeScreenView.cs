@@ -49,6 +49,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void HandleStartButtonPressed(ClickEvent evt)
         {
             string sessionName = m_SessionNameField.value;
+            //this should be reset if something goes wrong on connect
+            m_StartButton.enabledSelf = false;
             StartButtonPressed?.Invoke(sessionName);
         }
 
