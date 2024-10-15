@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Components;
@@ -250,7 +249,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 return;
             }
 
-            if (collidingBodyPhys == null)
+            if (collidingBodyPhys == null || !collidingBodyPhys.IsSpawned)
             {
                 return;
             }
@@ -274,7 +273,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 // Send collision to owner of kinematic body
                 EventCollision(averagedCollisionNormal, collidingBodyPhys);
             }
-            else if (Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
+
+            if (Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
             {
                 // our kinematic Rigidbody was hit by a non-kinematic physics-moving Rigidbody
 
@@ -284,6 +284,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 if (m_DebugCollisions)
                 {
                     Debug.Log($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(otherKineticForce)} to {name}.", this);
+                }
+            }
+            else if (!Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
+            {
+                // Both bodies are non-kinematic (i.e. local client has authority over both) so we create and process event collisions for both
+                m_CollisionMessage.CollisionForce = thisKineticForce;
+                m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
+
+                // Send collision to owner of kinematic body
+                EventCollision(averagedCollisionNormal, collidingBodyPhys);
+                if (m_DebugCollisions)
+                {
+                    Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.", this);
                 }
             }
 
