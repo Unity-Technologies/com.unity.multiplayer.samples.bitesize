@@ -97,6 +97,20 @@ MonoBehaviour:
           m_MaskType: 0
           m_MaskSizeModifier: 0
           m_UnmaskedControls: []
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
+          m_EditorWindowType:
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -111,17 +125,17 @@ MonoBehaviour:
 
 
           You can do so by
-          creating a build of this project or a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
-          Player</a>, and run it as a Host
+          creating a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
+          Player</a> or a build of this project, and run it as a Host
 
 
-          Enter PlayMode and connect
-          to your build as a Client from the editor to see how incoming messages
-          pop up on top of each player.
+          Enter
+          PlayMode and connect to your player/build as a Client from the editor to
+          see how incoming messages pop up on top of each player.
 
 
-          You can read more about RPCs
-          <a href="https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/messaging-system">here</a>.
+          You
+          can read more about RPCs <a href="https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/messaging-system">here</a>.
 
 
           Once

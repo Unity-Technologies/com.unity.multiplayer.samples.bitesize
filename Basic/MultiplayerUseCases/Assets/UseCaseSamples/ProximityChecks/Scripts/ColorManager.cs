@@ -1,5 +1,6 @@
 using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Unity.Netcode.Samples.MultiplayerUseCases.Proximity
 {
@@ -11,11 +12,17 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Proximity
         NetworkVariable<Color32> m_NetworkedColor = new NetworkVariable<Color32>();
         Material m_Material;
         ProximityChecker m_ProximityChecker;
+        InputAction interactAction;
 
         void Awake()
         {
             m_Material = GetComponent<Renderer>().material;
             m_ProximityChecker = GetComponent<ProximityChecker>();
+        }
+
+        void Start()
+        {
+            interactAction = InputSystem.actions.FindAction("Interact");
         }
 
         public override void OnNetworkSpawn()
@@ -51,7 +58,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Proximity
                 return;
             }
 
-            if (Input.GetKeyUp(KeyCode.E))
+            if (interactAction.WasPressedThisFrame())
             {
                 OnClientRequestColorChange();
             }
