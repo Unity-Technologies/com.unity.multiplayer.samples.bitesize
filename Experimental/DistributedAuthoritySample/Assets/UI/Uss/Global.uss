@@ -81,10 +81,19 @@
     min-height: 50px;
     min-width: 50px;
     border-radius: 25px;
+    transition-property: rotate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out-back;
 }
 
 .menu-button--round .menu-button__focus-indicator{
     display: none;
+}
+
+.menu-button--round:focus{
+    -unity-text-outline-color: var(--main-color);
+    -unity-text-outline-width: 2px;
+    rotate: 360deg;
 }
 
 
