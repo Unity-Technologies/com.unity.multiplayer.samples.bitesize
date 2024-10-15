@@ -8,7 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Effects
     /// <summary>
     /// Intended to be used as a client-side only pool
     /// </summary>
-    public class FXPrefabPool : MonoBehaviour
+    class FXPrefabPool : MonoBehaviour
     {
         [SerializeField]
         GameObject m_Prefab;
@@ -83,7 +83,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Effects
 
         protected virtual void OnReleaseInstance(GameObject obj) { }
 
-        public GameObject GetInstance()
+        internal GameObject GetInstance()
         {
             var objInstance = m_Pool.Get();
             objInstance.transform.parent = null;
@@ -91,7 +91,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Effects
             return objInstance;
         }
 
-        public void ReleaseInstance(GameObject gameObject)
+        internal void ReleaseInstance(GameObject gameObject)
         {
             gameObject.transform.parent = null;
             OnReleaseInstance(gameObject);

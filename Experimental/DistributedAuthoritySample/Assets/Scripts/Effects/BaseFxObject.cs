@@ -6,7 +6,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Effects
     /// To be used in conjunction with <see cref="FXPrefabPool"/>, derive your
     /// FX specific component that manages the FX instance from this.
     /// </summary>
-    public class BaseFxObject : MonoBehaviour
+    class BaseFxObject : MonoBehaviour
     {
         FXPrefabPool m_FXPrefabPool;
 
@@ -15,7 +15,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Effects
             m_FXPrefabPool = pool;
         }
 
-        public void StopFx()
+        internal void StopFx()
         {
             if (gameObject.activeInHierarchy)
             {

@@ -24,14 +24,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534730064734534971}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.49993345, z: -0, w: 0.86606383}
   m_LocalPosition: {x: -7.74, y: 14.069992, z: 33.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6786068853499320062}
   - {fileID: 5131427823272636734}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 59.991, z: 0}
 --- !u!114 &5780955586185471994
 MonoBehaviour:
@@ -45,6 +46,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 186a517aff2f77347919a1bcd76d1053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_RotationRhythm:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0009765625
+      value: 0.9988899
+      inSlope: 0.11601239
+      outSlope: 0.11601239
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.36654308
+    - serializedVersion: 3
+      time: 0.33728114
+      value: 0.9876822
+      inSlope: -0.07651214
+      outSlope: -0.07651214
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5023769
+      value: 0.81165636
+      inSlope: 0.09394771
+      outSlope: 0.09394771
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6377262
+      value: 0.98139787
+      inSlope: 0.15500988
+      outSlope: 0.15500988
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0013428
+      value: 0.9994278
+      inSlope: 0.14989166
+      outSlope: 0.14989166
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.31418818
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 1
+    m_RotationOrder: 4
   rotationRhythm:
     serializedVersion: 2
     m_Curve:
@@ -96,7 +148,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 1
     m_RotationOrder: 4
+  m_Wheel: {fileID: 5131427823272636734}
   wheel: {fileID: 5131427823272636734}
+  m_Speed: 10
   speed: 10
 --- !u!1 &5385908066565673314
 GameObject:
@@ -123,12 +177,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5385908066565673314}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.00000037252897, w: 1}
   m_LocalPosition: {x: 0.0011251, y: -2.03, z: 0.077845}
   m_LocalScale: {x: 3.5357199, y: 3.5357199, z: 3.5357199}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1057749183440030066}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &838159881950471584
 MeshFilter:
@@ -149,11 +204,15 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -204,12 +263,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8813362254865915567}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.00000037252897, w: 1}
   m_LocalPosition: {x: 0.0011283, y: 2.3839, z: -0.26081}
   m_LocalScale: {x: 3.4124982, y: 3.4124982, z: 3.4124982}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1057749183440030066}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2387583783705300366
 MeshFilter:
@@ -230,11 +290,15 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

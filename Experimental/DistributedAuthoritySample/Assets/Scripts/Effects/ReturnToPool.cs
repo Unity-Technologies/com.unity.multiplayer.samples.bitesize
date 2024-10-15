@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Unity.Multiplayer.Samples.SocialHub.Effects
 {
     [RequireComponent(typeof(ParticleSystem))]
-    public class ReturnToPool : BaseFxObject
+    class ReturnToPool : BaseFxObject
     {
         ParticleSystem m_ParticleSystem;
 
