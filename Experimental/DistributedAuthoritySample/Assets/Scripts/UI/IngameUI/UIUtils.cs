@@ -5,39 +5,68 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
     public static class UIUtils
     {
-        public static Quaternion LookAtCameraY(Camera cam, Transform t)
+        public const string activeUSSClass = "show";
+        public const string inactiveUSSClass = "hide";
+
+
+        /// <summary>
+        /// Returns a rotation that looks at the target in worldspace. The rotation is only applied to the Y axis.
+        /// </summary>
+        /// <param name="target">Target Object most of the time Camera</param>
+        /// <param name="origin">The object that should get rotated</param>
+        /// <returns>Rotation that looks at the target in worldspace </returns>
+        static Quaternion LookAtYAxis(Transform target, Transform origin)
         {
-            var lookAtVector = t.position - cam.transform.position ;
+            var lookAtVector = origin.position - target.position;
             lookAtVector.y = 0;
-            Debug.DrawRay(t.position, lookAtVector, Color.red);
-            var rotation = Quaternion.LookRotation( lookAtVector, Vector3.up);
+            var rotation = Quaternion.LookRotation(lookAtVector, Vector3.up);
             return rotation;
-            return Quaternion.Euler(0f, 360f - rotation.eulerAngles.y, 0f);
         }
 
-        public static void TranslateVEWorldspaceInPixelSpace(UIDocument doc , VisualElement element, Transform objectInWorldSpace, float yOffset = 0f)
+        /// <summary>
+        /// Translates a UIDocument (GameObject with UI Document) in Worldspace and rotates it to the camera.
+        /// </summary>
+        /// <param name="uiDocument">The UI Document that should get transfomred</param>
+        /// <param name="worldspaceTransform">The transform in Worldspace (a GameObject in the Scene) the VisualElement should be placed to.</param>
+        /// <param name="camera">The camera the UI Document should get rotatet to</param>
+        /// <param name="yOffset">Offset in Y from the position provided in worldspaceTransform</param>
+        public static void TransformUIDocumentWorldspace(UIDocument uiDocument, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
         {
-            var pixelsPerUnit = doc.panelSettings.referenceSpritePixelsPerUnit;
-            var x = new Length(objectInWorldSpace.transform.position.x*pixelsPerUnit, LengthUnit.Pixel);
-            var y = new Length((objectInWorldSpace.transform.position.y+ yOffset)*pixelsPerUnit*-1f, LengthUnit.Pixel);
-            var z = objectInWorldSpace.transform.position.z*-1f * pixelsPerUnit;
-            element.style.translate = new StyleTranslate(new Translate(x, y, z));
+            var position = worldspaceTransform.position;
+            uiDocument.gameObject.transform.position = new Vector3(position.x, position.y + yOffset, position.z);
+            uiDocument.gameObject.transform.rotation = LookAtYAxis(camera.transform, worldspaceTransform);
         }
 
-        public static void TransformUIDocumentWorldspace(UIDocument doc, Transform objectInWorldSpace, float yOffset = 0f)
+        /// <summary>
+        /// Positions a VisualElement in Screenspace to match a worldspace transform.
+        /// </summary>
+        /// <param name="camera">The current camera</param>
+        /// <param name="worldspaceTransform">Transform of the worldspace object</param>
+        /// <param name="visualElement">VisualElement that should get translated in Screenspace</param>
+        /// <param name="yOffset">Offset in Y from the position provided in worldspaceTransform</param>
+        public static void TranslateVEWorldToScreenspace(Camera camera, Transform worldspaceTransform, VisualElement visualElement, float yOffset = 0f)
         {
-            var position = objectInWorldSpace.position;
-            doc.gameObject.transform.position = new Vector3(position.x, position.y + yOffset, position.z);
-            doc.gameObject.transform.rotation = LookAtCameraY(Camera.main, objectInWorldSpace);
+            var positionInWorldSpace = new Vector3(worldspaceTransform.position.x, worldspaceTransform.position.y + yOffset, worldspaceTransform.position.z);
+            Vector2 screenSpacePosition = camera.WorldToScreenPoint(positionInWorldSpace);
+            if (visualElement.panel == null)
+            {
+                //Todo: Happens on style change can be removed when finished.
+                return;
+            }
+
+            Vector2 panelSpacePosition = RuntimePanelUtils.ScreenToPanel(visualElement.panel, new Vector2(screenSpacePosition.x, Screen.height - screenSpacePosition.y));
+            visualElement.style.left = panelSpacePosition.x;
+            visualElement.style.top = panelSpacePosition.y;
         }
 
-        public static void TranslateVEWorldToScreenspace(Camera cam, Transform objectInWorldSpace, VisualElement elm, float yOffset = 0f)
+        // Just a helper extension method to get the first child of a VisualElement without using LINQ.
+        public static VisualElement GetFirstChild(this VisualElement element)
         {
-            var positionInWorldSpace = new Vector3(objectInWorldSpace.position.x, objectInWorldSpace.position.y + yOffset, objectInWorldSpace.position.z);
-            Vector2 screenSpacePosition = cam.WorldToScreenPoint(positionInWorldSpace);
-            Vector2 panelSpacePosition = RuntimePanelUtils.ScreenToPanel(elm.panel, new Vector2(screenSpacePosition.x, Screen.height - screenSpacePosition.y));
-            elm.style.left = panelSpacePosition.x;
-            elm.style.top = panelSpacePosition.y;
+            foreach (var item in element.Children())
+            {
+                return item;
+            }
+            return null;
         }
     }
 }

@@ -1,11 +1,12 @@
 using System;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
+    /// <summary>
+    /// Indicator shown when a pickup is in range.
+    /// </summary>
     public class PickUpIndicator : MonoBehaviour
     {
         [SerializeField]
@@ -26,11 +27,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         Transform m_NextPickup;
 
-
-        const string k_ActiveUSSClass = "show";
-        const string k_InactiveUSSClass = "hide";
-
         bool m_IsShown = false;
+
         bool isShown
         {
             set
@@ -44,24 +42,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 // fade in the pickup UI
                 if (m_IsShown)
                 {
-                    m_PickupUI.RemoveFromClassList(k_InactiveUSSClass);
-                    m_PickupUI.AddToClassList(k_ActiveUSSClass);
+                    m_PickupUI.RemoveFromClassList(UIUtils.inactiveUSSClass);
+                    m_PickupUI.AddToClassList(UIUtils.activeUSSClass);
                     return;
                 }
 
                 // fade out the pickup UI
-                m_PickupUI.RemoveFromClassList(k_ActiveUSSClass);
-                m_PickupUI.AddToClassList(k_InactiveUSSClass);
+                m_PickupUI.RemoveFromClassList(UIUtils.activeUSSClass);
+                m_PickupUI.AddToClassList(UIUtils.inactiveUSSClass);
             }
         }
-
-
 
         void OnEnable()
         {
             // pick first child to avoid adding the root element
-            m_PickupUI = m_PickupAsset.CloneTree().Children().ToArray()[0];
-            m_PickupUI.AddToClassList(k_InactiveUSSClass);
+            m_PickupUI = m_PickupAsset.CloneTree().GetFirstChild();
+            m_PickupUI.AddToClassList(UIUtils.inactiveUSSClass);
             m_WorldspaceUI.rootVisualElement.Q<VisualElement>("Pickup").Add(m_PickupUI);
         }
 
@@ -84,6 +80,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                     isShown = true;
                     UpdatePickup();
                 }
+
                 return;
             }
 
@@ -94,10 +91,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-
         void UpdatePickup()
         {
-            UIUtils.TransformUIDocumentWorldspace(this.m_WorldspaceUI, m_CurrentPickup, m_VerticalOffset);
+            UIUtils.TransformUIDocumentWorldspace(m_WorldspaceUI, m_Camera, m_CurrentPickup, m_VerticalOffset);
         }
     }
 }

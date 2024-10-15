@@ -1,7 +1,9 @@
 * {
+    /* Fonts */
     --sans-serif-font: url("project://database/Assets/Fonts/arial.ttf?fileID=12800000&guid=ae3fa31b7436b4541b1a40b4da1bfb37&type=3#arial");
     --script-font: url("project://database/Assets/Fonts/Grandstander-SemiBold.ttf?fileID=12800000&guid=d1191de98d21f499b804d1335f809197&type=3#Grandstander-SemiBold");
 
+    /* Colors */
     --secondary-color: rgb(83, 51, 33);
     --main-color: rgb(188, 130, 99);
     --light-text-color: rgb(246, 246, 256);
@@ -9,17 +11,16 @@
     --pickup-background-color: rgba(255, 255, 255, 0.5);
     --dark-text-color: rgb(16, 16, 16);
 
+    /* Sizes */
     --border-radius: 12px;
-
     --pickup-base-height: 24px;
     --mic-icon-size: 36px;
-
     --menu-button-size: 60px;
     --menu-button-font-size: 30px;
 }
 
 /* Buttons */
-.bt-mainMenu {
+.menu-button {
     border-radius: var(--border-radius);
     overflow: visible;
     min-height: var(--menu-button-size);
@@ -32,50 +33,61 @@
     transition-property: scale, text-shadow;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out-back;
-
 }
 
-.bt-mainMenu:hover{
+.menu-button:hover {
     scale: 1.03 1.03;
     text-shadow: 0px 2px 15px var(--main-color);
 }
 
-.bt-mainMenu:focus .ve-buttonHover  {
+.menu-button:focus .menu-button__focus-indicator {
     opacity: 1;
 }
 
-.bt-mainMenu:active .ve-buttonHover  {
+.menu-button:active .menu-button__focus-indicator {
     opacity: 0;
 }
 
-.bt-mainMenu:disabled .ve-buttonHover {
+.menu-button:disabled .menu-button__focus-indicator {
     opacity: 0;
     text-shadow: 0px 0px 0px var(--main-color);
 }
 
-.ve-buttonHover {
+.menu-button__focus-indicator {
     position: absolute;
     padding: -8px;
     left: -25px;
     top: 20%;
-    height:60%;
+    height: 60%;
     width: 25px;
     background-image: url("project://database/Assets/UI/Textures/menu_button_selection_sample.png?fileID=2800000&guid=9aef6e97aa57aa24c879459f6419dd56&type=3#menu_button_selection_sample");
     -unity-background-scale-mode: scale-to-fit;
-    opacity:0;
+    opacity: 0;
     transition-property: opacity, width;
     transition-duration: 0.2s;
     transition-timing-function: linear;
 }
 
-.mirror {
+.menu-button:disabled {
+    scale: 1.0 1.0;
+}
+
+.menu-button__focus-indicator--right {
     scale: -1 1;
     left: 100%;
 }
 
-.bt-mainMenu:disabled {
-    scale: 1.0 1.0;
+.menu-button--round{
+    min-height: 50px;
+    min-width: 50px;
+    border-radius: 25px;
 }
+
+.menu-button--round .menu-button__focus-indicator{
+    display: none;
+}
+
+
 
 
 

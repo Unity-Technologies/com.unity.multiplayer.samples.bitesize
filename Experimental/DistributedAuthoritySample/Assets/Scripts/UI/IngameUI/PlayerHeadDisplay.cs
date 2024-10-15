@@ -3,6 +3,10 @@ using UnityEngine.UIElements;
 
 public class PlayerHeadDisplay : VisualElement
 {
+    /// <summary>
+    /// Display that is shown above a players head
+    /// </summary>
+    /// <param name="asset">Uxml to be used</param>
     public PlayerHeadDisplay(VisualTreeAsset asset)
     {
         this.AddToClassList("player-top-ui");

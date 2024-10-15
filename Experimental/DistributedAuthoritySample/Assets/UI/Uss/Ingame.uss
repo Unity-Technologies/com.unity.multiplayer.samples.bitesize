@@ -1,5 +1,6 @@
 @import url(Global.uss);
 
+/* Pickup Indicator shown when player is close to an object */
 .pickup-indicator {
     -unity-font-definition: var(--script-font);
     position: absolute;
@@ -19,7 +20,7 @@
     background-color: var(--pickup-background-color);
 }
 
-.pickup-indicator #key-code {
+.pickup-indicator__keycode {
     margin-left: 3px;
     width: 18px;
     height: 18px;
@@ -32,13 +33,13 @@
     text-shadow: 1px 1px 5px rgba(41, 41, 41, 0.69);
 }
 
-.pickup-indicator #call-to-action {
+.pickup-indicator__call-to-action {
     -unity-text-align: middle-left;
     padding: 4px;
     color: var(--secondary-color);
 }
 
-.pickup-indicator > #border {
+.pickup-indicator__border {
     position: absolute;
     left:0px;
     top:0px;
@@ -49,24 +50,15 @@
     border-width: 2px;
 }
 
-/* uses the same as UXML as pickup-indicator
-   remove scale transition because gets scaled by distance
+/* Carry Box Info box uses the same style as the pickup indicator
+   just remove scale transition because gets scaled by distance
 */
 .carrybox{
         transition-property: scale;
         transition-duration: 0ms;
 }
 
-.hide {
-    scale: 0.8;
-    opacity: 0;
-}
-
-.show {
-    scale: 1;
-    opacity: 1;
-}
-
+/* Player UI above the player */
 .player-top-ui {
     position: absolute;
     align-items: center;
@@ -88,6 +80,7 @@
     -unity-text-outline-width: 1px;
 }
 
+/* Ingame Menu */
 #in-game-menu {
     justify-content: center;
     width: 100%;
@@ -132,13 +125,13 @@
     top: -32px;
 }
 
-.btn-round{
-    min-height: 50px;
-    min-width: 50px;
-    border-radius: 25px;
+.hide {
+    scale: 0.8;
+    opacity: 0;
 }
 
-.btn-round .ve-buttonHover{
-    display: none;
+.show {
+    scale: 1;
+    opacity: 1;
 }
 

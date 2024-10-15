@@ -7,8 +7,8 @@
             <ui:Label text="Sample" name="line-2" />
         </ui:VisualElement>
         <ui:VisualElement name="container_menu">
-            <ui:TextField label="Player Name" name="tf_player_name" class="tf-mainMenu" />
-            <ui:TextField label="Session Name" name="tf_session_name" class="tf-mainMenu" />
+            <ui:TextField label="Player Name" name="tf_player_name" class="textfield" />
+            <ui:TextField label="Session Name" name="tf_session_name" class="textfield" />
             <ui:VisualElement name="container_buttons">
                 <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton name="bt_start" text="Start" />
                 <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton name="bt_quit" text="Quit" />
