@@ -42,6 +42,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             sceenOverlay.style.display = DisplayStyle.None;
             menu.RemoveFromClassList("show");
             menu.AddToClassList("hide");
+            menu.SetEnabled(false);
         }
 
         void GoToMainScene()
@@ -53,7 +54,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void QuitGame()
         {
-            Debug.Log("Quit Game");
             NetworkManager.Singleton.Shutdown();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
@@ -63,10 +63,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void ShowMenu()
         {
-            Debug.Log("Show Menu");
             menu.RemoveFromClassList("hide");
             menu.AddToClassList("show");
             sceenOverlay.style.display = DisplayStyle.Flex;
+            menu.SetEnabled(true);
         }
     }
 }

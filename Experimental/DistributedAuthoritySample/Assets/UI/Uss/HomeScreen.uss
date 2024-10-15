@@ -2,7 +2,7 @@
 
 #background {
     position: absolute;
-    border-color:white;
+    border-color: var(--light-text-color);
     width: 100%;
     height: 100%;
     border-width: 8px;
@@ -30,7 +30,7 @@
     margin-top: 18px;
 }
 
-/* Game Titel*/
+/* Game Titel */
 #game-titel {
     -unity-font-definition: var(--script-font);
     -unity-text-align: middle-right;
@@ -42,7 +42,7 @@
     color: var(--highlight-color);
     -unity-text-outline-width: 2px;
     -unity-text-outline-color: rgb(0, 0, 0);
-    text-shadow: 5px 5px 0 rgba(250, 200, 0,0.1);
+    text-shadow: 3px 3px 20px var(--main-color);
     letter-spacing: -3px;
 }
 
@@ -51,7 +51,7 @@
     margin-top: -10px;
 }
 
-/* text field styles */
+/* Text field */
 .tf-mainMenu {
     font-size: 20px;
     color: var(--highlight-color);
@@ -60,24 +60,18 @@
     margin-bottom: 10px;
 }
 
-.tf-mainMenu Label {
+.tf-mainMenu > .unity-base-field__label {
+    color: var(--highlight-color);
     -unity-font-definition: var(--script-font);
 }
 
-.tf-mainMenu:focus:enabled {
-    color: black;
-}
-
-.tf-mainMenu:focus:enabled > .unity-base-field__label {
-    color: var(--highlight-color);
-}
-
-.unity-base-field__input > .unity-text-element {
-    color: black;
+.unity-base-field__input {
+    border-radius: var(--border-radius);
+    color: var(--dark-text-color);
 }
 
 #info_text {
-    color: white;
+    color: var(--light-text-color);
     align-self: flex-end;
     padding: 16px;
     font-size: 10px;

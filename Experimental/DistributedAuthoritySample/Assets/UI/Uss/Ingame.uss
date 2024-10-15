@@ -10,30 +10,25 @@
     transition-timing-function: ease-in-out-sine;
     flex-direction: row;
     justify-content: flex-start;
-    border-radius: 12px;
-    padding-top: 4px;
-    padding-bottom: 2px;
-    padding-left: 2px;
-    padding-right: 2px;
-    min-height: var(--base-height);
+    border-radius: var(--border-radius);
+    padding: 4px 2px 2px 2px;
+    min-height: var(--pickup-base-height);
     flex-shrink: 1;
     flex-grow: 1;
     color: var(--dark-text-color);
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: var(--pickup-background-color);
 }
 
 .pickup-indicator #key-code {
     margin-left: 3px;
+    width: 18px;
+    height: 18px;
+    font-size: 17px;
     -unity-font-style: bold;
     background-color: var(--main-color);
-    min-width: 18px;
-    min-height: 18px;
-    max-width: 18px;
-    max-height: 18px;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     color: var(--secondary-color);
     -unity-text-align: middle-center;
-    font-size: 17px;
     text-shadow: 1px 1px 5px rgba(41, 41, 41, 0.69);
 }
 
@@ -50,7 +45,7 @@
     min-width: 100%;
     min-height: 100%;
     border-color: var(--secondary-color);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     border-width: 2px;
 }
 
@@ -80,17 +75,15 @@
 }
 
 .player-mic-icon {
-    max-width: var(--mic-icon-size);
-    min-width: var(--mic-icon-size);
-    max-height: var(--mic-icon-size);
-    min-height: var(--mic-icon-size);
+    width: var(--mic-icon-size);
+    height: var(--mic-icon-size);
     background-color: red;
 }
 
 .player-name {
     -unity-font-definition: var(--script-font);
     font-size: 36px;
-    color: white;
+    color: var(--light-text-color);
     -unity-text-outline-color: rgba(0, 0, 0, 0.29);
     -unity-text-outline-width: 1px;
 }
@@ -103,10 +96,8 @@
 
 #burger-button {
     position: absolute;
-    min-height: 36px;
-    min-width: 36px;
-    max-width: 36px;
-    max-height: 36px;
+    -unity-font-style: bold;
+    font-size: 18px;
     left: 20px;
     top: 20px;
 }
@@ -123,6 +114,7 @@
 }
 
 #menu {
+    border-radius: var(--border-radius);
     -unity-font-definition: var(--script-font);
     transition-property: scale, opacity;
     transition-duration: 200ms;
@@ -150,6 +142,3 @@
     display: none;
 }
 
-#burger-button{
-    font-size: 12px;
-}
