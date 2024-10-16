@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.UI;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
@@ -148,6 +149,42 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             {
                 Debug.LogException(e);
             }
+        }
+
+        void OnGUI()
+        {
+            if (AuthenticationService.Instance == null || !AuthenticationService.Instance.IsSignedIn)
+            {
+                return;
+            }
+
+            if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
+            {
+                GUI.enabled = m_SessionTask == null || m_SessionTask.IsCompleted;
+
+                GUILayout.Label("Session Name", GUILayout.Width(100));
+
+                if (GUILayout.Button("Host"))
+                {
+                    SceneManager.sceneLoaded += Host_SceneLoaded;
+                    LoadHubScene();
+
+                    //SceneManager.LoadScene("ObjectTesting");
+                }
+
+                if (GUILayout.Button("Client"))
+                {
+                    NetworkManager.Singleton.StartClient();
+                }
+
+                GUI.enabled = true;
+            }
+        }
+
+        void Host_SceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            SceneManager.sceneLoaded -= Host_SceneLoaded;
+            NetworkManager.Singleton.StartHost();
         }
     }
 }

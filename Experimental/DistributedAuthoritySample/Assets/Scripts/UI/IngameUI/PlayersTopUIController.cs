@@ -16,10 +16,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         [SerializeField]
         VisualTreeAsset m_NameplateAsset;
-
-        [SerializeField]
-        Vector2 m_NameplateScale;
-
+        
         [SerializeField]
         float m_PanelMinSize = 0.8f;
 
