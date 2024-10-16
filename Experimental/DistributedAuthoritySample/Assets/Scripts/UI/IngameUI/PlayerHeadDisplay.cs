@@ -1,26 +1,29 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerHeadDisplay : VisualElement
+namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
-    /// <summary>
-    /// Display that is shown above a players head
-    /// </summary>
-    /// <param name="asset">Uxml to be used</param>
-    public PlayerHeadDisplay(VisualTreeAsset asset)
+    class PlayerHeadDisplay : VisualElement
     {
-        this.AddToClassList("player-top-ui");
-        this.Add(asset.CloneTree());
-        ShowMicIcon(false);
-    }
+        /// <summary>
+        /// Display that is shown above a players head
+        /// </summary>
+        /// <param name="asset">Uxml to be used</param>
+        internal PlayerHeadDisplay(VisualTreeAsset asset)
+        {
+            AddToClassList("player-top-ui");
+            Add(asset.CloneTree());
+            ShowMicIcon(false);
+        }
 
-    public void SetPlayerName(string name)
-    {
-        this.Q<Label>().text = name;
-    }
+        internal void SetPlayerName(string playerName)
+        {
+            this.Q<Label>().text = playerName;
+        }
 
-    void ShowMicIcon(bool show)
-    {
-        this.Q<VisualElement>("mic-icon").style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+        void ShowMicIcon(bool show)
+        {
+            this.Q<VisualElement>("mic-icon").style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+        }
     }
 }

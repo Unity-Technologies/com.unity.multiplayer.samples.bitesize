@@ -5,8 +5,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
     public static class UIUtils
     {
-        public const string activeUSSClass = "show";
-        public const string inactiveUSSClass = "hide";
+        internal const string s_ActiveUSSClass = "show";
+        internal const string s_InactiveUSSClass = "hide";
 
 
         /// <summary>

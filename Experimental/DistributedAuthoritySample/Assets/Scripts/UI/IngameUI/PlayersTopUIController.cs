@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -31,7 +30,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         List<PlayerHeadDisplay> m_PlayerHeadDisplayPool = new();
 
-        List<Tuple<NetworkObject, PlayerHeadDisplay>> m_PlayersToDisplayMap = new();
+        Dictionary<GameObject, PlayerHeadDisplay> m_PlayerToPlayerDisplayDict = new();
 
         VisualElement m_Root;
 
@@ -48,52 +47,28 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("player-top-display-container");
         }
 
-        private void Update()
+        void Update()
         {
-            if (!NetworkManager.Singleton || NetworkManager.Singleton.SpawnManager == null)
-                return;
-
-            foreach (var player in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+            foreach (var playerPair in m_PlayerToPlayerDisplayDict)
             {
-                var playerAlreadyExists = false;
-                for (var i = 0; i < m_PlayersToDisplayMap.Count; i++)
-                {
-                    var currentPlayer = m_PlayersToDisplayMap[i].Item1;
-                    var correspondingDisplay = m_PlayersToDisplayMap[i].Item2;
-                    if (currentPlayer == player)
-                    {
-                        // Player has already a UI, update it
-                        UpdateDisplayPosition(currentPlayer.transform, correspondingDisplay);
-                        playerAlreadyExists = true;
-                        break;
-                    }
-                }
-
-                if (playerAlreadyExists)
-                    continue;
-
-                // New player found, create a new UI
-                var display = GetDisplayForPlayer();
-                display.SetPlayerName(player.gameObject.name);
-                UpdateDisplayPosition(player.transform, display);
-                m_PlayersToDisplayMap.Add(new Tuple<NetworkObject, PlayerHeadDisplay>(player, display));
+                UpdateDisplayPosition(playerPair.Key.transform, playerPair.Value);
             }
-
-            ReturnUnusedDisplaysToPool();
         }
 
-        void ReturnUnusedDisplaysToPool()
+        internal void AddPlayer(GameObject player)
         {
-            //Return unused displays to the pool
-            for (var i = 0; i < m_PlayersToDisplayMap.Count; i++)
-            {
-                if (!m_PlayersToDisplayMap[i].Item1)
-                {
-                    m_PlayerHeadDisplayPool.Add(m_PlayersToDisplayMap[i].Item2);
-                    m_PlayersToDisplayMap[i].Item2.RemoveFromHierarchy();
-                    m_PlayersToDisplayMap.RemoveAt(i);
-                }
-            }
+            var display = GetDisplayForPlayer();
+            display.SetPlayerName(player.gameObject.name);
+            UpdateDisplayPosition(player.transform, display);
+            m_PlayerToPlayerDisplayDict.Add(player, display);
+        }
+
+        internal void RemovePlayer(GameObject player)
+        {
+            var display = m_PlayerToPlayerDisplayDict[player];
+            display.RemoveFromHierarchy();
+            m_PlayerHeadDisplayPool.Add(display);
+            m_PlayerToPlayerDisplayDict.Remove(player);
         }
 
         PlayerHeadDisplay GetDisplayForPlayer()

@@ -7,7 +7,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
     /// <summary>
     /// Indicator shown when a pickup is in range.
     /// </summary>
-    public class PickUpIndicator : MonoBehaviour
+    class PickUpIndicator : MonoBehaviour
     {
         [SerializeField]
         VisualTreeAsset m_PickupAsset;
@@ -42,36 +42,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 // fade in the pickup UI
                 if (m_IsShown)
                 {
-                    m_PickupUI.RemoveFromClassList(UIUtils.inactiveUSSClass);
-                    m_PickupUI.AddToClassList(UIUtils.activeUSSClass);
+                    m_PickupUI.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
+                    m_PickupUI.AddToClassList(UIUtils.s_ActiveUSSClass);
                     return;
                 }
 
                 // fade out the pickup UI
-                m_PickupUI.RemoveFromClassList(UIUtils.activeUSSClass);
-                m_PickupUI.AddToClassList(UIUtils.inactiveUSSClass);
+                m_PickupUI.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
+                m_PickupUI.AddToClassList(UIUtils.s_InactiveUSSClass);
             }
+        }
+
+        internal void ShowPickup(Transform t)
+        {
+            m_NextPickup = t;
+        }
+
+        internal void ClearPickup()
+        {
+            m_NextPickup = null;
         }
 
         void OnEnable()
         {
             // pick first child to avoid adding the root element
             m_PickupUI = m_PickupAsset.CloneTree().GetFirstChild();
-            m_PickupUI.AddToClassList(UIUtils.inactiveUSSClass);
+            m_PickupUI.AddToClassList(UIUtils.s_InactiveUSSClass);
             m_WorldspaceUI.rootVisualElement.Q<VisualElement>("Pickup").Add(m_PickupUI);
         }
 
-        public void ShowPickup(Transform t)
-        {
-            m_NextPickup = t;
-        }
-
-        public void ClearPickup()
-        {
-            m_NextPickup = null;
-        }
-
-        private void Update()
+        void Update()
         {
             if (m_CurrentPickup == m_NextPickup)
             {

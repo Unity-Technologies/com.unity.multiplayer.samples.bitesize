@@ -8,7 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
     /// <summary>
     /// Panel that shows interaction options when character carries something.
     /// </summary>
-    public class CarryBoxIndicator : MonoBehaviour
+    class CarryBoxIndicator : MonoBehaviour
     {
         [SerializeField]
         VisualTreeAsset m_CarryBoxIndicatorAsset;
@@ -32,36 +32,46 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         Transform m_CarryTransform;
 
+        bool m_IsShown;
+
         void OnEnable()
         {
             // Pick first child to avoid adding the root element
             m_CarryUI = m_CarryBoxIndicatorAsset.CloneTree().GetFirstChild();
-            m_CarryUI.AddToClassList(UIUtils.activeUSSClass);
+            m_CarryUI.AddToClassList(UIUtils.s_ActiveUSSClass);
             m_ScreenspaceUI.rootVisualElement.Q<VisualElement>("player-carry-container").Add(m_CarryUI);
             m_CarryUI.Q<Label>("call-to-action").text = "tab - drop \nhold - throw";
             m_CarryUI.AddToClassList("carrybox");
         }
 
-        public void ShowCarry(Transform t)
+        internal void ShowCarry(Transform t)
         {
+            if (m_IsShown)
+                return;
+
             m_CarryTransform = t;
-            m_CarryUI.RemoveFromClassList(UIUtils.inactiveUSSClass);
-            m_CarryUI.AddToClassList(UIUtils.activeUSSClass);
+            m_CarryUI.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
+            m_CarryUI.AddToClassList(UIUtils.s_ActiveUSSClass);
             StopCoroutine(HideAfterDelay(5f));
             StartCoroutine(HideAfterDelay(5f));
+            m_IsShown = true;
+        }
+
+        internal void HideCarry()
+        {
+            if(m_IsShown == false)
+                return;
+
+            StopCoroutine(HideAfterDelay(5f));
+            m_CarryUI.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
+            m_CarryUI.AddToClassList(UIUtils.s_InactiveUSSClass);
+            m_IsShown = false;
         }
 
         IEnumerator HideAfterDelay(float delay)
         {
             yield return new WaitForSeconds(delay);
             HideCarry();
-        }
-
-        public void HideCarry()
-        {
-            StopCoroutine(HideAfterDelay(5f));
-            m_CarryUI.RemoveFromClassList(UIUtils.activeUSSClass);
-            m_CarryUI.AddToClassList(UIUtils.inactiveUSSClass);
         }
 
         void Update()

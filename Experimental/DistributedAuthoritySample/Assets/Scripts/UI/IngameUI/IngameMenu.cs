@@ -1,7 +1,5 @@
 using System;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
@@ -9,7 +7,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
     /// <summary>
     /// Ingame Menu to show options like exit, go to main menu etc.
     /// </summary>
-    public class IngameMenu : MonoBehaviour
+    class IngameMenu : MonoBehaviour
     {
         [SerializeField]
         UIDocument m_UIDocument;
@@ -23,6 +21,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         VisualElement m_SceenOverlay;
 
+        internal static event Action QuitGamePressed;
+        internal static event Action GoToMainScenePressed;
+
+
         void OnEnable()
         {
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("ingame-menu-container");
@@ -31,7 +33,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_Menu = m_Root.Q<VisualElement>("menu");
             m_SceenOverlay = m_Root.Q<VisualElement>("sceen-overlay");
-            m_Menu.AddToClassList(UIUtils.inactiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
 
             m_Menu.Q<Button>("btn-exit").clicked += QuitGame;
             m_Menu.Q<Button>("btn-goto-main").clicked += GoToMainScene;
@@ -43,31 +45,25 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void HideMenu()
         {
             m_SceenOverlay.style.display = DisplayStyle.None;
-            m_Menu.RemoveFromClassList(UIUtils.activeUSSClass);
-            m_Menu.AddToClassList(UIUtils.inactiveUSSClass);
+            m_Menu.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
             m_Menu.SetEnabled(false);
         }
 
-        void GoToMainScene()
+        static void GoToMainScene()
         {
-            //Todo: Use service Helper
-            NetworkManager.Singleton.Shutdown();
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+            GoToMainScenePressed?.Invoke();
         }
 
-        void QuitGame()
+        static void QuitGame()
         {
-            NetworkManager.Singleton.Shutdown();
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            Application.Quit();
+            QuitGamePressed?.Invoke();
         }
 
         void ShowMenu()
         {
-            m_Menu.RemoveFromClassList(UIUtils.inactiveUSSClass);
-            m_Menu.AddToClassList(UIUtils.activeUSSClass);
+            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
             m_SceenOverlay.style.display = DisplayStyle.Flex;
             m_Menu.SetEnabled(true);
         }

@@ -52,6 +52,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         CarryBoxIndicator m_CarryBoxIndicator;
 
+        PlayersTopUIController m_TopUIController;
+
         const float k_MinDurationHeld = 0f;
         const float k_MaxDurationHeld = 2f;
 
@@ -74,9 +76,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             base.OnNetworkSpawn();
 
-            m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
-            m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
-
             m_InteractCollider.enabled = HasAuthority;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.PreLateUpdate);
@@ -91,6 +90,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogWarning("Assign AvatarInputs in the inspector!");
                 return;
             }
+
+            m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
+            m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
+            m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
+
+            m_TopUIController.AddPlayer(gameObject);
 
             m_AvatarInputs.TapInteractionPerformed += OnTapPerformed;
             m_AvatarInputs.HoldInteractionPerformed += OnHoldStarted;
@@ -119,6 +124,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 m_AnimationEventRelayer.PickupActionAnimationEvent -= OnPickupActionAnimationEvent;
             }
+
+            m_TopUIController.RemovePlayer(gameObject);
 
             this.UnregisterAllNetworkUpdates();
         }
