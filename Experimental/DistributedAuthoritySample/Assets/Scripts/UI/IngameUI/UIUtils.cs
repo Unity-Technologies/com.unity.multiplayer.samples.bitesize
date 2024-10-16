@@ -44,7 +44,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         /// <param name="worldspaceTransform">Transform of the worldspace object</param>
         /// <param name="visualElement">VisualElement that should get translated in Screenspace</param>
         /// <param name="yOffset">Offset in Y from the position provided in worldspaceTransform</param>
-        public static void TranslateVEWorldToScreenspace(Camera camera, Transform worldspaceTransform, VisualElement visualElement, float yOffset = 0f)
+        public static void TranslateVEWorldToScreenspace(this VisualElement visualElement, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
         {
             var positionInWorldSpace = new Vector3(worldspaceTransform.position.x, worldspaceTransform.position.y + yOffset, worldspaceTransform.position.z);
             Vector2 screenSpacePosition = camera.WorldToScreenPoint(positionInWorldSpace);
