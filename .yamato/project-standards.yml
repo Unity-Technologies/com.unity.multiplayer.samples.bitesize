@@ -2,7 +2,7 @@
 ---
   
 {% for project in projects -%}
-{% for editor in test_editors -%}
+{% for editor in project.test_editors -%}
 
 standards_{{ project.name }}:
   name: Standards Check {{ project.name }} - {{ editor }}
