@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -821,6 +822,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &1017577773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7079470771712663481, guid: e0e46513231ac0d4192526820acd436d, type: 3}
@@ -885,6 +887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NetworkManagerExpanded: 0
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1242368264}
@@ -906,6 +909,11 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
+    NetworkTopology: 0
+    UseCMBService: 0
+    AutoSpawnPlayerPrefabClientSide: 1
+    NetworkMessageMetrics: 1
+    NetworkProfilingMetrics: 1
     OldPrefabList:
     - Override: 0
       Prefab: {fileID: 4416926081852918481, guid: b4f4d10f529a9064487c55fc530813b2, type: 3}
@@ -1122,6 +1130,10 @@ PrefabInstance:
     - target: {fileID: 7072414127250795839, guid: e0e46513231ac0d4192526820acd436d, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1643459133
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072414127250795839, guid: e0e46513231ac0d4192526820acd436d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1755651710
       objectReference: {fileID: 0}
     - target: {fileID: 7079470771712663481, guid: e0e46513231ac0d4192526820acd436d, type: 3}
       propertyPath: m_Name

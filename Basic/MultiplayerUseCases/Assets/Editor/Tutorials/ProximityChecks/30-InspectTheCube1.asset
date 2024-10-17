@@ -21,8 +21,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -33,6 +36,7 @@ MonoBehaviour:
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
             m_TypeName: UnityEditor.InspectorWindow, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
@@ -47,6 +51,7 @@ MonoBehaviour:
               m_Text: ColorManager
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
@@ -57,8 +62,9 @@ MonoBehaviour:
                 m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
                 m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
                 m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager, com.unity.samples.multiplayer-use-cases.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager,
+                    com.unity.samples.multiplayer-use-cases.rpcvsnetvar, Version=0.0.0.0,
+                    Culture=neutral, PublicKeyToken=null
                 m_ComponentIndex: 0
                 m_AssetObject: {fileID: 0}
                 m_Prefab: {fileID: 0}
@@ -72,6 +78,7 @@ MonoBehaviour:
               m_Text: ColorManager
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
@@ -82,8 +89,9 @@ MonoBehaviour:
                 m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
                 m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
                 m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager, com.unity.samples.multiplayer-use-cases.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager,
+                    com.unity.samples.multiplayer-use-cases.rpcvsnetvar, Version=0.0.0.0,
+                    Culture=neutral, PublicKeyToken=null
                 m_ComponentIndex: 0
                 m_AssetObject: {fileID: 0}
                 m_Prefab: {fileID: 0}
@@ -94,6 +102,7 @@ MonoBehaviour:
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
             m_TypeName: UnityEditor.ProjectBrowser, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
@@ -108,6 +117,7 @@ MonoBehaviour:
               m_Text: ColorManager
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
@@ -132,6 +142,7 @@ MonoBehaviour:
               m_Text: ColorManager
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
@@ -165,8 +176,11 @@ MonoBehaviour:
 
           It makes the <b>ColorManager</b> ready to interact
           with the player when it approaches the object.'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -184,8 +198,11 @@ MonoBehaviour:
         m_Untranslated: Press Next to continue
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -238,7 +255,20 @@ MonoBehaviour:
         m_CallState: 1
   Shown:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 0bbd71a4713de434d8c94e72034b789c, type: 2}
+        m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.CommonTutorialCallbacks,
+          Unity.Tutorials.Core.Editor
+        m_MethodName: SelectGameObject
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: CubeMesh
+          m_BoolArgument: 0
+        m_CallState: 1
   Staying:
     m_PersistentCalls:
       m_Calls: []
