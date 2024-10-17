@@ -5,6 +5,10 @@ using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Misc
 {
+    /// <summary>
+    /// Adds a label to the RuntimeNetStatsMonitor UI to show how to toggle visibility.
+    /// In future this functionality could be moved to the RuntimeNetStatsMonitor itself.
+    /// </summary>
     [RequireComponent(typeof(RuntimeNetStatsMonitor))]
     class RuntimeStatsMonitorController : MonoBehaviour
     {
