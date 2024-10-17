@@ -1,6 +1,6 @@
 # Multiplayer Use Cases
 
-[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-6000.0.22f1%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/6000.0.22)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-6000.0.23f1%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/6000.0.23)
 [![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-2.0.0-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F2.0.0)
 <br><br>
 
