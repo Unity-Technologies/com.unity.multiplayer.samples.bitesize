@@ -8,7 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
     /// <summary>
     /// UI controller which displays nameplate and mic icon on top of each connected player.
     /// </summary>
-    public class PlayersTopUIController : MonoBehaviour
+    class PlayersTopUIController : MonoBehaviour
     {
         [SerializeField]
         UIDocument m_UIDocument;
@@ -92,6 +92,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             var distance = Vector3.Distance(m_Camera.transform.position, playerTransform.position);
             var mappedScale = Mathf.Lerp(m_PanelMaxSize, m_PanelMinSize, Mathf.InverseLerp(5, 20, distance));
             headDisplay.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
+        }
+
+        void OnDisable()
+        {
+            foreach (var playerPair in m_PlayerToPlayerDisplayDict)
+            {
+                playerPair.Value.RemoveFromHierarchy();
+            }
+            m_PlayerHeadDisplayPool.Clear();
+            m_PlayerToPlayerDisplayDict.Clear();
         }
     }
 }

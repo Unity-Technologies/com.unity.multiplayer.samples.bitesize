@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
-    public static class UIUtils
+    static class UIUtils
     {
         internal const string s_ActiveUSSClass = "show";
         internal const string s_InactiveUSSClass = "hide";
@@ -30,7 +30,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         /// <param name="worldspaceTransform">The transform in Worldspace (a GameObject in the Scene) the VisualElement should be placed to.</param>
         /// <param name="camera">The camera the UI Document should get rotatet to</param>
         /// <param name="yOffset">Offset in Y from the position provided in worldspaceTransform</param>
-        public static void TransformUIDocumentWorldspace(UIDocument uiDocument, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
+        internal static void TransformUIDocumentWorldspace(UIDocument uiDocument, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
         {
             var position = worldspaceTransform.position;
             uiDocument.gameObject.transform.position = new Vector3(position.x, position.y + yOffset, position.z);
@@ -44,7 +44,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         /// <param name="worldspaceTransform">Transform of the worldspace object</param>
         /// <param name="visualElement">VisualElement that should get translated in Screenspace</param>
         /// <param name="yOffset">Offset in Y from the position provided in worldspaceTransform</param>
-        public static void TranslateVEWorldToScreenspace(this VisualElement visualElement, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
+        internal static void TranslateVEWorldToScreenspace(this VisualElement visualElement, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
         {
             var positionInWorldSpace = new Vector3(worldspaceTransform.position.x, worldspaceTransform.position.y + yOffset, worldspaceTransform.position.z);
             Vector2 screenSpacePosition = camera.WorldToScreenPoint(positionInWorldSpace);
@@ -60,7 +60,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         }
 
         // Just a helper extension method to get the first child of a VisualElement without using LINQ.
-        public static VisualElement GetFirstChild(this VisualElement element)
+        internal static VisualElement GetFirstChild(this VisualElement element)
         {
             foreach (var item in element.Children())
             {

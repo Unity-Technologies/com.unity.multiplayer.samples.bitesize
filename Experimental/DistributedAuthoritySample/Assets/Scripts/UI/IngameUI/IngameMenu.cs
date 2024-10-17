@@ -42,6 +42,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             HideMenu();
         }
 
+        void OnDisable()
+        {
+            m_Root.Q<Button>("burger-button").clicked -= ShowMenu;
+            m_Menu.Q<Button>("btn-exit").clicked -= QuitGame;
+            m_Menu.Q<Button>("btn-goto-main").clicked -= GoToMainScene;
+            m_Menu.Q<Button>("btn-close-menu").clicked -= HideMenu;
+        }
+
         void HideMenu()
         {
             m_SceenOverlay.style.display = DisplayStyle.None;
