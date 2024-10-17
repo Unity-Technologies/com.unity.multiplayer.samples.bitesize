@@ -13,6 +13,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Misc
 
         RuntimeNetStatsMonitor m_RuntimeNetStatsMonitor;
 
+        string m_VisibilityLabelName = "toggle-visibility-label";
+
         void Start()
         {
             m_RuntimeNetStatsMonitor = GetComponent<RuntimeNetStatsMonitor>();
@@ -41,8 +43,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Misc
                         return;
                     }
 
+                    if(rsnm.Q<VisualElement>(m_VisibilityLabelName) != null)
+                    {
+                        // Label already exists, do not add another
+                        return;
+                    }
+
+
                     var label = new Label("Toggle visibility with M")
                     {
+                        name = m_VisibilityLabelName,
                         style =
                         {
                             backgroundColor = new StyleColor(Color.black),
