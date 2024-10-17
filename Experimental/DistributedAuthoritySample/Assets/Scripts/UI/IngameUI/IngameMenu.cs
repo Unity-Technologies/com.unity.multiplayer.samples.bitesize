@@ -21,8 +21,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         VisualElement m_SceenOverlay;
 
-        internal static event Action QuitGamePressed;
-        internal static event Action GoToMainScenePressed;
+        internal static event Action OnQuitGamePressed;
+        internal static event Action OnGoToMainScenePressed;
 
 
         void OnEnable()
@@ -52,12 +52,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         static void GoToMainScene()
         {
-            GoToMainScenePressed?.Invoke();
+            OnGoToMainScenePressed?.Invoke();
         }
 
         static void QuitGame()
         {
-            QuitGamePressed?.Invoke();
+            OnQuitGamePressed?.Invoke();
         }
 
         void ShowMenu()

@@ -48,6 +48,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
 
             HomeScreenView.StartButtonPressed += OnStartButtonPressed;
+            IngameMenu.OnQuitGamePressed += () => { Debug.Log("Not implemented");};
+            IngameMenu.OnGoToMainScenePressed += () => { Debug.Log("Not implemented");};
         }
 
         async void OnStartButtonPressed(string sessionName)
