@@ -88,7 +88,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void UpdateDisplayPosition(Transform playerTransform, VisualElement headDisplay)
         {
-            UIUtils.TranslateVEWorldToScreenspace(m_Camera, playerTransform, headDisplay, m_DisplayYOffset);
+            headDisplay.TranslateVEWorldToScreenspace(m_Camera, playerTransform, m_DisplayYOffset);
             var distance = Vector3.Distance(m_Camera.transform.position, playerTransform.position);
             var mappedScale = Mathf.Lerp(m_PanelMaxSize, m_PanelMinSize, Mathf.InverseLerp(5, 20, distance));
             headDisplay.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));

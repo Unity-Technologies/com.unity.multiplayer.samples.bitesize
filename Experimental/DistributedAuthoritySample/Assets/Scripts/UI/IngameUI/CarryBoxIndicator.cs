@@ -79,7 +79,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if (m_CarryTransform == null)
                 return;
 
-            UIUtils.TranslateVEWorldToScreenspace(m_Camera, m_CarryTransform, m_CarryUI, m_VerticalOffset);
+            m_CarryUI.TranslateVEWorldToScreenspace(m_Camera, m_CarryTransform, m_VerticalOffset);
             var distance = Vector3.Distance(m_Camera.transform.position, m_CarryTransform.position);
             var mappedScale = Mathf.Lerp(m_PanelMaxSize, m_PanelMinSize, Mathf.InverseLerp(5, 20, distance));
             m_CarryUI.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
