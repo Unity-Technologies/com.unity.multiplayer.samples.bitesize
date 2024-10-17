@@ -6,9 +6,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
     class TransferableObject : NetworkBehaviour, IOwnershipRequestable
     {
-        [SerializeField]
-        Collider m_Collider;
-
         public GameObject LeftHand;
         public GameObject RightHand;
 
@@ -62,11 +59,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         void OnOwnershipRequestResponse(NetworkObject.OwnershipRequestResponseStatus ownershipRequestResponse)
         {
             OnNetworkObjectOwnershipRequestResponse?.Invoke(this, ownershipRequestResponse);
-        }
-
-        internal Vector3 GetCenterOffset()
-        {
-            return m_Collider.bounds.center;
         }
 
         internal void SetObjectState(ObjectState state)
