@@ -1,7 +1,7 @@
 # Multiplayer Use Cases
 
-[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2022.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.27)
-[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.8.1-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F1.8.1)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-6000.0.22f1%20-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/6000.0.22)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-2.0.0-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F2.0.0)
 <br><br>
 
 This sample provides a series of scenes. Each scene explains a specific API or system commonly used in Netcode for GameObjects. In this sample you will learn more about client-server communication, state synchronization, and other typical mechanics of multiplayer games.
