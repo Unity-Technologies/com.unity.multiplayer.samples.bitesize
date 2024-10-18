@@ -6,9 +6,9 @@
         <ui:Label text="Port" display-tooltip-when-elided="true" name="PortLabel" class="labelText" style="flex-shrink: 1; flex-direction: row;" />
         <ui:TextField text="7979" name="PortField" focusable="true" is-delayed="true" tabindex="2" class="button" />
         <ui:Button text="Server" display-tooltip-when-elided="true" name="ServerButton" parse-escape-sequences="true" class="button UseCaseButton" style="margin-top: 8px;" />
-        <ui:Button text="Host" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HostButton" class="UseCaseButtonActive UseCaseButton" />
-        <ui:Button text="Client" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClientButton" class="button UseCaseButtonActive UseCaseButton" />
-        <ui:Button text="Disconnect" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DisconnectButton" class="button UseCaseButtonActive UseCaseButton" style="margin-top: 14px;" />
-        <ui:Button text="Quit Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitSceneButton" class="button UseCaseButtonActive UseCaseButton" />
+        <ui:Button text="Host" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HostButton" class="UseCaseButton" />
+        <ui:Button text="Client" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClientButton" class="button UseCaseButton" />
+        <ui:Button text="Disconnect" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DisconnectButton" class="button UseCaseButton" style="margin-top: 14px;" />
+        <ui:Button text="Quit Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitSceneButton" class="button UseCaseButton" />
     </ui:VisualElement>
 </ui:UXML>
