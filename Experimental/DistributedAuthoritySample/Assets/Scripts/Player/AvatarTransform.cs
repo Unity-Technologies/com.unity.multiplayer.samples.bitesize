@@ -1,8 +1,10 @@
 using System;
+using Unity.Collections;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
+using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 
@@ -22,9 +24,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         Camera m_MainCamera;
 
+        PlayersTopUIController m_TopUIController;
+
+        NetworkVariable<FixedString32Bytes> m_PlayerName = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+
         public override void OnNetworkSpawn()
         {
             gameObject.name = $"[Client-{OwnerClientId}]{name}";
+
+            m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
+            m_PlayerName.OnValueChanged += OnPlayerNameChanged;
+            OnPlayerNameChanged(string.Empty, m_PlayerName.Value);
 
             if (!HasAuthority)
             {
@@ -32,6 +42,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
+            m_PlayerName.Value = new FixedString32Bytes(HomeScreenView.PlayerName);
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
             m_AvatarInputs.Jumped += OnJumped;
@@ -77,6 +88,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 cameraControl.SetTransform(null);
             }
+
+            m_TopUIController?.RemovePlayer(gameObject);
         }
 
         void OnJumped()
@@ -100,6 +113,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 m_PhysicsPlayerController.SetMovement(movement);
                 m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
             }
+        }
+
+        void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+        {
+            m_TopUIController.AddPlayer(gameObject, newValue.Value);
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
