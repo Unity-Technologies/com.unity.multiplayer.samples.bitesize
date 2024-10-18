@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.Multiplayer.Samples.SocialHub.UI;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -25,7 +25,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         Task m_SessionTask;
 
-        ISession m_LastSession;
+        ISession m_CurrentSession;
 
         void Awake()
         {
@@ -47,15 +47,41 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 }
             }
 
-            HomeScreenView.StartButtonPressed += OnStartButtonPressed;
-            IngameMenu.OnQuitGamePressed += () => { Debug.Log("Not implemented");};
-            IngameMenu.OnGoToMainScenePressed += () => { Debug.Log("Not implemented");};
+            GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
+            GameplayEventHandler.OnReturnToMainMenuButtonPressed += OnReturnToMainMenuButtonPressed;
+            GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
+        }
+
+        void OnDestroy()
+        {
+            GameplayEventHandler.OnStartButtonPressed -= OnStartButtonPressed;
+            GameplayEventHandler.OnReturnToMainMenuButtonPressed -= OnReturnToMainMenuButtonPressed;
+            GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
         }
 
         async void OnStartButtonPressed(string sessionName)
         {
             m_SessionName = sessionName;
-            await ConnectToSession();
+            var connectTask = ConnectToSession();
+            await connectTask;
+            GameplayEventHandler.ConnectToSessionComplete(connectTask);
+        }
+
+        void OnReturnToMainMenuButtonPressed()
+        {
+            LeaveSession();
+            LoadMenuScene();
+        }
+
+        void OnQuitGameButtonPressed()
+        {
+            LeaveSession();
+            Application.Quit();
+        }
+
+        void LeaveSession()
+        {
+            m_CurrentSession?.LeaveAsync();
         }
 
         void SignInFailed(RequestFailedException obj)
@@ -65,7 +91,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void SignedIn()
         {
-            Debug.Log(nameof(SignedIn));
             if (m_InitiateVivoxOnAuthentication)
             {
                 Login();
@@ -134,18 +159,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                     MaxPlayers = 64,
                 }.WithDistributedAuthorityNetwork();
 
-                if (m_LastSession == null)
+                if (m_CurrentSession == null)
                 {
-                    m_LastSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
+                    m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
                 }
                 else
                 {
-                    await MultiplayerService.Instance.JoinSessionByIdAsync(m_LastSession.Id);
+                    await MultiplayerService.Instance.JoinSessionByIdAsync(m_CurrentSession.Id);
                 }
 
                 LoadHubScene();
-
-                // DA TODO: m_NetworkManager.OnClientStopped += OnNetworkManagerStopped;
             }
             catch (Exception e)
             {
@@ -170,8 +193,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 {
                     SceneManager.sceneLoaded += Host_SceneLoaded;
                     LoadHubScene();
-
-                    //SceneManager.LoadScene("ObjectTesting");
                 }
 
                 if (GUILayout.Button("Client"))

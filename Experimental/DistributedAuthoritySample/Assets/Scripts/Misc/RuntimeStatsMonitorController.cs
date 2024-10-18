@@ -22,7 +22,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Misc
         void Start()
         {
             m_RuntimeNetStatsMonitor = GetComponent<RuntimeNetStatsMonitor>();
-            var uiDocuments = FindObjectsOfType<UIDocument>(true);
+            var uiDocuments = FindObjectsByType<UIDocument>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             if(m_RuntimeNetStatsMonitor.PanelSettingsOverride == null)
             {

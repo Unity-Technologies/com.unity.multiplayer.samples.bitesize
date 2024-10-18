@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,7 +13,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         Button m_StartButton;
         Button m_QuitButton;
 
-        internal static event Action<string> StartButtonPressed;
+        internal static string PlayerName = string.Empty;
+
+        void Start()
+        {
+            GameplayEventHandler.OnConnectToSessionCompleted += OnConnectToSessionCompleted;
+        }
+
+        void OnDestroy()
+        {
+            GameplayEventHandler.OnConnectToSessionCompleted -= OnConnectToSessionCompleted;
+        }
 
         public override void Initialize(VisualElement viewRoot)
         {
@@ -41,9 +53,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnFieldChanged()
         {
-            string playerName = m_PlayerNameField.value;
+            PlayerName = m_PlayerNameField.value;
             string sessionName = m_SessionNameField.value;
-            m_StartButton.SetEnabled(!string.IsNullOrEmpty(playerName) && !string.IsNullOrEmpty(sessionName));
+            m_StartButton.SetEnabled(!string.IsNullOrEmpty(PlayerName) && !string.IsNullOrEmpty(sessionName));
         }
 
         void HandleStartButtonPressed()
@@ -51,12 +63,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             string sessionName = m_SessionNameField.value;
             //this should be reset if something goes wrong on connect
             m_StartButton.enabledSelf = false;
-            StartButtonPressed?.Invoke(sessionName);
+            GameplayEventHandler.StartButtonPressed(sessionName);
         }
 
         void HandleQuitButtonPressed()
         {
-            Application.Quit();
+            GameplayEventHandler.QuitGamePressed();
+        }
+
+        void OnConnectToSessionCompleted(Task obj)
+        {
+            if (!obj.IsCompletedSuccessfully)
+            {
+                m_StartButton.enabledSelf = true;
+            }
         }
     }
 }

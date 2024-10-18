@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,6 +39,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_OrbitalFollow = m_FreeLookVCamera.GetComponent<CinemachineOrbitalFollow>();
             m_FreeLookVCamera.Follow = null;
+        }
+
+        void OnDestroy()
+        {
+            StopAllCoroutines();
         }
 
         void OnEnable()
