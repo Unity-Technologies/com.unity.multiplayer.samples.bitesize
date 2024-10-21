@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.8.0] 2024-10-17
+## [1.8.0] 2024-10-21
 
 ### Multiplayer Use Cases
 
@@ -11,6 +11,7 @@
 #### Changed
 - Updated project to Unity 6 (and packages to the latest stable versions)
 - All inputs are handled through the new Unity Input System
+- In-Game UI is now responsive and adapts to screen size
 - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
 - Disabled compatibility mode for RenderGraph, as it's going to be deprecated and throws warnings
 - Removed runtime network stats monitor from the scene to improve readability
