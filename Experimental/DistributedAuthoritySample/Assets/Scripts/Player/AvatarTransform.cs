@@ -8,6 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
     [RequireComponent(typeof(Rigidbody))]
     public class AvatarTransform : NetworkTransform
     {
+<<<<<<< Updated upstream
         [SerializeField]
         Rigidbody m_Rigidbody;
         [SerializeField]
@@ -32,6 +33,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         float m_RotationSpeed;
         [SerializeField]
         float m_GroundCheckDistance;
+=======
+#if UNITY_EDITOR
+        [HideInInspector]
+        public bool AvatarTransformPropertiesVisible;
+#endif
+
+        
+        public PlayerInput PlayerInput;
+        
+        public AvatarInputs AvatarInputs;
+        
+        public AvatarInteractions AvatarInteractions;
+        
+        public PhysicsPlayerController PhysicsPlayerController;
+>>>>>>> Stashed changes
 
         Vector3 m_Movement;
         // grab jump state from input and clear after consumed
@@ -52,9 +68,23 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
+<<<<<<< Updated upstream
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
             m_Rigidbody.isKinematic = false;
+=======
+            PlayerInput.enabled = true;
+            AvatarInputs.enabled = true;
+            AvatarInputs.Jumped += OnJumped;
+            AvatarInteractions.enabled = true;
+            PhysicsPlayerController.enabled = true;
+            Rigidbody.isKinematic = false;
+            Rigidbody.freezeRotation = true;
+            // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
+            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
+            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+            Rigidbody.linearVelocity = Vector3.zero;
+>>>>>>> Stashed changes
 
             // Freeze rotation on the x and z axes to prevent toppling
             m_Rigidbody.freezeRotation = true;
@@ -109,18 +139,63 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
             else
             {
+<<<<<<< Updated upstream
                 // Apply reduced force in the air for air control
                 var force = velocityChange * (m_Acceleration * m_AirControlFactor);
                 m_Rigidbody.AddForce(force, ForceMode.Acceleration);
+=======
+                Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
+            }
+
+            base.OnNetworkSpawn();
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            if (AvatarInputs != null)
+            {
+                AvatarInputs.Jumped -= OnJumped;
+            }
+
+            this.UnregisterAllNetworkUpdates();
+
+            var cameraControl = Camera.main?.GetComponent<CameraControl>();
+            if (cameraControl != null)
+            {
+                cameraControl.SetTransform(null);
+>>>>>>> Stashed changes
             }
         }
 
         void ApplyJump()
         {
+<<<<<<< Updated upstream
             if (m_IsGrounded && m_Jump)
             {
                 m_Rigidbody.AddForce(Vector3.up * m_JumpImpusle, ForceMode.Impulse);
                 m_Jump = false;
+=======
+            PhysicsPlayerController.SetJump(true);
+        }
+
+        void OnTransformUpdate()
+        {
+            if (m_MainCamera != null)
+            {
+                Vector3 forward = m_MainCamera.transform.forward;
+                Vector3 right = m_MainCamera.transform.right;
+
+                forward.y = 0f;
+                right.y = 0f;
+                forward.Normalize();
+                right.Normalize();
+
+                Vector3 movement = forward * AvatarInputs.Move.y + right * AvatarInputs.Move.x;
+                PhysicsPlayerController.SetMovement(movement);
+                PhysicsPlayerController.SetSprint(AvatarInputs.Sprint);
+>>>>>>> Stashed changes
             }
         }
 
@@ -141,6 +216,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (!IsSpawned || !HasAuthority || m_Rigidbody != null && m_Rigidbody.isKinematic)
             {
+<<<<<<< Updated upstream
                 return;
             }
 
@@ -174,6 +250,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 var customGravity = Physics.gravity * (m_CustomGravityMultiplier - 1);
                 m_Rigidbody.AddForce(customGravity, ForceMode.Acceleration);
+=======
+                case NetworkUpdateStage.Update:
+                    OnTransformUpdate();
+                    break;
+                case NetworkUpdateStage.FixedUpdate:
+                    PhysicsPlayerController.OnFixedUpdate();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);
+>>>>>>> Stashed changes
             }
         }
     }
