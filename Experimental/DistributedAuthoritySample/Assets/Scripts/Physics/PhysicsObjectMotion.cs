@@ -8,10 +8,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
     class PhysicsObjectMotion : BaseObjectMotionHandler
     {
+#if UNITY_EDITOR
+        [HideInInspector]
+        public bool PhysicsObjectMotionPropertiesVisible;
+#endif
+
         [SerializeField]
-        float m_MaxAngularVelocity = 30;
+        public float MaxAngularVelocity = 30;
         [SerializeField]
-        float m_MaxVelocity = 30;
+        public float MaxVelocity = 30;
 
         List<RemoteForce> m_RemoteAppliedForce = new List<RemoteForce>();
 
@@ -20,11 +25,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         /// All of the below values keep the physics objects synchronized between clients so when ownership changes the local Rigidbody can be configured to mirror
         /// the last known physics related states.
         /// </summary>
-        protected NetworkVariable<float> m_Mass = new NetworkVariable<float>(1.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> m_AngularVelocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> m_Velocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> m_Torque = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-        protected NetworkVariable<Vector3> m_Force = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<float> m_Mass = new NetworkVariable<float>(1.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector3> m_AngularVelocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector3> m_Velocity = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector3> m_Torque = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<Vector3> m_Force = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         protected override Vector3 OnGetObjectVelocity(bool getReference = false)
         {
@@ -132,8 +137,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             RigidbodyContactEventManager.Instance.RegisterHandler(this);
 
             // Clamp the linear and angular velocities
-            Rigidbody.maxAngularVelocity = m_MaxAngularVelocity;
-            Rigidbody.maxLinearVelocity = m_MaxVelocity;
+            Rigidbody.maxAngularVelocity = MaxAngularVelocity;
+            Rigidbody.maxLinearVelocity = MaxVelocity;
             if (HasAuthority)
             {
                 // Assure we are not still in kinematic mode
@@ -167,7 +172,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             // If we are pooled and not shutting down, then reset the physics object for re-use later
             // ** Important to do this **
-            if (m_IsPooled)
+            if (IsPooled)
             {
                 EnableColliders(false);
                 if (!Rigidbody.isKinematic)
@@ -197,8 +202,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 NetworkRigidbody.SetIsKinematic(false);
                 if (m_IsInitialized.Value)
                 {
-                    Rigidbody.angularVelocity = Vector3.ClampMagnitude(GetObjectAngularVelocity(), m_MaxAngularVelocity);
-                    SetObjectVelocity(Vector3.ClampMagnitude(GetObjectVelocity(true), m_MaxVelocity));
+                    Rigidbody.angularVelocity = Vector3.ClampMagnitude(GetObjectAngularVelocity(), MaxAngularVelocity);
+                    SetObjectVelocity(Vector3.ClampMagnitude(GetObjectVelocity(true), MaxVelocity));
                 }
                 else
                 {
@@ -265,7 +270,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             {
                 m_CollisionMessage.CollisionForce = thisKineticForce;
                 m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
-                if (m_DebugCollisions)
+                if (DebugCollisions)
                 {
                     Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.", this);
                 }
@@ -281,7 +286,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 collidingBodyPhys.m_CollisionMessage.CollisionForce = otherKineticForce;
                 collidingBodyPhys.m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
                 collidingBodyPhys.EventCollision(averagedCollisionNormal, this);
-                if (m_DebugCollisions)
+                if (DebugCollisions)
                 {
                     Debug.Log($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(otherKineticForce)} to {name}.", this);
                 }
@@ -294,7 +299,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
                 // Send collision to owner of kinematic body
                 EventCollision(averagedCollisionNormal, collidingBodyPhys);
-                if (m_DebugCollisions)
+                if (DebugCollisions)
                 {
                     Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.", this);
                 }

@@ -9,17 +9,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
     class BaseObjectMotionHandler : NetworkTransform, ICollisionHandler, IContactEventHandlerWithInfo
     {
-        protected bool m_IsPooled = true;
+#if UNITY_EDITOR
+        [HideInInspector]
+        public bool BaseObjectMotionHandlerPropertiesVisible;
+#endif
+
+        public bool IsPooled = true;
+        
+        public CollisionType CollisionType;
 
         [SerializeField]
-        CollisionType m_CollisionType;
-
-        internal CollisionType CollisionType => m_CollisionType;
-
-        [SerializeField]
-        ushort m_CollisionDamage;
-
-        internal ushort CollisionDamage => m_CollisionDamage;
+        public ushort CollisionDamage;
 
         protected CollisionMessageInfo m_CollisionMessage = new CollisionMessageInfo();
 
@@ -29,15 +29,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         [Tooltip("Enables/Disables collision logging (based on per derived type)")]
         [SerializeField]
-        protected bool m_DebugCollisions;
+        public bool DebugCollisions;
 
         [Tooltip("Enables/Disables damage logging (based on per derived type)")]
         [SerializeField]
-        protected bool m_DebugDamage;
+        public bool DebugDamage;
 
         [Tooltip("Add all colliders to this list that will be used to detect collisions (exclude triggers).")]
         [SerializeField]
-        List<Collider> m_Colliders;
+        public List<Collider> Colliders;
 
         static int s_CollisionId = 0;
 
@@ -45,7 +45,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected void EnableColliders(bool enable)
         {
-            foreach (var collider in m_Colliders)
+            foreach (var collider in Colliders)
             {
                 collider.enabled = enable;
             }
@@ -137,8 +137,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected virtual void Start()
         {
-            m_CollisionMessage.Damage = m_CollisionDamage;
-            m_CollisionMessage.SetFlag(true, (uint)m_CollisionType);
+            m_CollisionMessage.Damage = CollisionDamage;
+            m_CollisionMessage.SetFlag(true, (uint)CollisionType);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             OnHandleCollision(collisionMessage, isLocal, applyImmediately);
 
             // Handling is invoked before logging so logging can determine the end result.
-            if (m_DebugCollisions)
+            if (DebugCollisions)
             {
                 LogHandleCollision(collisionMessage);
             }
@@ -277,7 +277,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         protected void EventCollision(Vector3 averagedCollisionNormal, BaseObjectMotionHandler collidingBodyBaseObject)
         {
 #if DEBUG || UNITY_EDITOR
-            if (m_DebugCollisions)
+            if (DebugCollisions)
             {
                 LogCollision(ref collidingBodyBaseObject);
             }
@@ -313,7 +313,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         void LogCollision(ref BaseObjectMotionHandler objectHit)
         {
-            if (!m_DebugCollisions)
+            if (!DebugCollisions)
             {
                 return;
             }
@@ -330,7 +330,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected void LogCollision(CollisionMessageInfo collisionMessage)
         {
-            if (!m_DebugDamage || collisionMessage.Damage == 0)
+            if (!DebugDamage || collisionMessage.Damage == 0)
             {
                 return;
             }

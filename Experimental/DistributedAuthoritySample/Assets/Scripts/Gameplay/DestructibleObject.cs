@@ -9,33 +9,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
     class DestructibleObject : PhysicsObjectMotion, ISpawnable
     {
-        [SerializeField]
-        float m_StartingHealth = 100f;
-
-        [SerializeField]
-        float m_IntangibleDurationAfterDamage;
-
-        [SerializeField]
-        float m_SecondsUntilRespawn;
-
-        [SerializeField]
-        int m_DeferredDespawnTicks = 4;
-
-        [SerializeField]
-        TransferableObject m_TransferableObject;
+#if UNITY_EDITOR
+        [HideInInspector]
+        public bool DestructibleObjectPropertiesVisible;
+#endif
+        public float StartingHealth = 100f;
+        public float IntangibleDurationAfterDamage;
+        public float SecondsUntilRespawn;
+        public int DeferredDespawnTicks = 4;
+        public TransferableObject TransferableObject;
 
         NetworkVariable<NetworkBehaviourReference> m_SessionOwnerNetworkObjectSpawner = new NetworkVariable<NetworkBehaviourReference>(writePerm: NetworkVariableWritePermission.Owner);
 
         int m_LastDamageTick;
-
-        [SerializeField]
-        GameObject m_DestructionFX;
-
-        [SerializeField]
-        NetworkObject m_RubblePrefab;
-
-        [SerializeField]
-        string destructionVFXType;
+        public GameObject DestructionFX;
+        public NetworkObject RubblePrefab;
+        public string DestructionVFXType;
 
         FXPrefabPool m_DestructionFXPoolSystem;
 
@@ -52,7 +41,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             gameObject.name = $"[NetworkObjectId-{NetworkObjectId}]{name}";
             m_OriginalPosition = transform.position;
             m_OriginalRotation = transform.rotation;
-            m_DestructionFXPoolSystem = FXPrefabPool.GetFxPool(m_DestructionFX);
+            m_DestructionFXPoolSystem = FXPrefabPool.GetFxPool(DestructionFX);
         }
 
         public override void OnNetworkDespawn()
@@ -75,14 +64,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         protected override bool ProvideNonRigidbodyContactEvents()
         {
-            return m_TransferableObject && m_TransferableObject.CurrentObjectState == TransferableObject.ObjectState.Thrown && HasAuthority;
+            return TransferableObject && TransferableObject.CurrentObjectState == TransferableObject.ObjectState.Thrown && HasAuthority;
         }
 
         protected override void OnContactEvent(ulong eventId, Vector3 averagedCollisionNormal, Rigidbody collidingBody, Vector3 contactPoint, bool hasCollisionStay = false, Vector3 averagedCollisionStayNormal = default)
         {
             if (!collidingBody)
             {
-                if (m_DebugCollisions)
+                if (DebugCollisions)
                 {
                     Debug.Log($"{name}-{NetworkObjectId} collision with non-rigidbody.");
                 }
@@ -97,7 +86,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 };
                 collisionMessageInfo.SetFlag(true, (uint)CollisionType);
                 OnHandleCollision(collisionMessageInfo);
-                m_TransferableObject.SetObjectState(TransferableObject.ObjectState.AtRest);
+                TransferableObject.SetObjectState(TransferableObject.ObjectState.AtRest);
             }
             else
             {
@@ -113,14 +102,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 return;
             }
 
-            var intangibilityTicks = Mathf.RoundToInt(NetworkManager.ServerTime.TickRate * m_IntangibleDurationAfterDamage);
+            var intangibilityTicks = Mathf.RoundToInt(NetworkManager.ServerTime.TickRate * IntangibleDurationAfterDamage);
             if (NetworkManager.NetworkTickSystem.ServerTime.Tick - m_LastDamageTick < intangibilityTicks)
             {
                 base.OnHandleCollision(collisionMessage, isLocal, applyImmediately);
                 return;
             }
 
-            if (m_DebugCollisions || m_DebugDamage)
+            if (DebugCollisions || DebugDamage)
             {
                 if (NetworkManager.SpawnManager.SpawnedObjects.ContainsKey(collisionMessage.Source))
                 {
@@ -148,7 +137,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
                 EnableColliders(false);
                 m_Health.Value = currentHealth;
                 // TODO: add NetworkObject pool here
-                NetworkObject.DeferDespawn(m_DeferredDespawnTicks, destroy: true);
+                NetworkObject.DeferDespawn(DeferredDespawnTicks, destroy: true);
             }
             else
             {
@@ -165,7 +154,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             ChangeObjectVisuals(false);
             SpawnRubble(transform.position);
             m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager);
-            var tickToRespawn = NetworkManager.NetworkTickSystem.ServerTime.Tick + Mathf.RoundToInt(m_SecondsUntilRespawn * NetworkManager.NetworkTickSystem.ServerTime.TickRate);
+            var tickToRespawn = NetworkManager.NetworkTickSystem.ServerTime.Tick + Mathf.RoundToInt(SecondsUntilRespawn * NetworkManager.NetworkTickSystem.ServerTime.TickRate);
             spawner.RespawnRpc(tickToRespawn);
             base.OnDeferringDespawn(despawnTick);
         }
@@ -196,9 +185,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         void SpawnRubble(Vector3 position)
         {
-            if (m_RubblePrefab != null)
+            if (RubblePrefab != null)
             {
-                m_RubblePrefab.InstantiateAndSpawn(NetworkManager, destroyWithScene: true, position: position, rotation: Quaternion.identity);
+                RubblePrefab.InstantiateAndSpawn(NetworkManager, destroyWithScene: true, position: position, rotation: Quaternion.identity);
             }
         }
 
@@ -208,7 +197,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             {
                 if (IsSpawned)
                 {
-                    m_Health.Value = m_StartingHealth;
+                    m_Health.Value = StartingHealth;
                     m_LastDamageTick = NetworkManager.NetworkTickSystem.ServerTime.Tick;
                 }
                 m_Initialized.Value = true;
