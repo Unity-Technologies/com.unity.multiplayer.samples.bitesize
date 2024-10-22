@@ -42,6 +42,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor
             EditorGUILayout.PropertyField(m_IntangibleDurationAfterDamage);
             EditorGUILayout.PropertyField(m_SecondsUntilRespawn);
             EditorGUILayout.PropertyField(m_DeferredDespawnTicks);
+            EditorGUILayout.PropertyField(m_TransferableObject);
             EditorGUILayout.PropertyField(m_DestructionFX);
             EditorGUILayout.PropertyField(m_RubblePrefab);
             EditorGUILayout.PropertyField(m_DestructionVFXType);
