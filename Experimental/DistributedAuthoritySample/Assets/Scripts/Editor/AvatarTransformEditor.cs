@@ -1,32 +1,46 @@
 using Unity.Multiplayer.Samples.SocialHub.Player;
+using Unity.Multiplayer.Samples.SocialHub.Physics;
 using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Editor
 {
-    [CustomEditor(typeof(AvatarTransform))]
-    class AvatarTransformEditor : UnityEditor.Editor
+    /// <summary>
+    /// The custom editor for the <see cref="PhysicsObjectMotion"/> component.
+    /// </summary>
+    [CustomEditor(typeof(PhysicsObjectMotion), true)]
+    public class AvatarTransformEditor : PhysicsObjectMotionEditor
     {
-        public override VisualElement CreateInspectorGUI()
+        public SerializedProperty m_PlayerInput;
+
+        public SerializedProperty m_AvatarInputs;
+
+        public SerializedProperty m_AvatarInteractions;
+
+        public SerializedProperty m_PhysicsPlayerController;
+
+        public override void OnEnable()
         {
-            // Create a new VisualElement to be the root of the inspector UI
-            var root = new VisualElement();
+            m_PlayerInput = serializedObject.FindProperty(nameof(AvatarTransform.PlayerInput));
+            m_AvatarInputs = serializedObject.FindProperty(nameof(AvatarTransform.AvatarInputs));
+            m_AvatarInteractions = serializedObject.FindProperty(nameof(AvatarTransform.AvatarInteractions));
+            m_PhysicsPlayerController = serializedObject.FindProperty(nameof(AvatarTransform.PhysicsPlayerController));
+            base.OnEnable();
+        }
 
-            // Generate default inspector for AvatarTransform
-            serializedObject.Update();
-            SerializedProperty property = serializedObject.GetIterator();
-            property.NextVisible(true); // Skip the script field
-            while (property.NextVisible(false))
-            {
-                var propertyField = new PropertyField(property);
-                root.Add(propertyField);
-            }
+        private void DisplayAvatarTransformProperties()
+        {
+            EditorGUILayout.PropertyField(m_PlayerInput);
+            EditorGUILayout.PropertyField(m_AvatarInputs);
+            EditorGUILayout.PropertyField(m_AvatarInteractions);
+            EditorGUILayout.PropertyField(m_PhysicsPlayerController);
+        }
 
-            serializedObject.ApplyModifiedProperties();
-
-            return root;
+        public override void OnInspectorGUI()
+        {
+            var avatarObject = target as AvatarTransform;
+            void SetExpanded(bool expanded) { avatarObject.AvatarTransformPropertiesVisible = expanded; };
+            DrawFoldOutGroup<AvatarTransform>(avatarObject.GetType(), DisplayAvatarTransformProperties, avatarObject.AvatarTransformPropertiesVisible, SetExpanded);
+            base.OnInspectorGUI();
         }
     }
 }

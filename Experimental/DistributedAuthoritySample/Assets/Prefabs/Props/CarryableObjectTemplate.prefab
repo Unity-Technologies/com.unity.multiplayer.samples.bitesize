@@ -193,18 +193,33 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
-  m_CollisionType: 2
-  m_CollisionDamage: 5
-  m_DebugCollisions: 0
-  m_DebugDamage: 0
-  m_Colliders:
+  BaseObjectMotionHandlerPropertiesVisible: 1
+  IsPooled: 1
+  CollisionType: 2
+  CollisionDamage: 5
+  DebugCollisions: 0
+  DebugDamage: 0
+  Colliders:
   - {fileID: 1070061854055180021}
-  m_MaxAngularVelocity: 10
-  m_MaxVelocity: 10
-  m_StartingHealth: 25
-  m_IntangibleDurationAfterDamage: 2
-  m_SecondsUntilRespawn: 0
-  m_TransferableObject: {fileID: 0}
+  PhysicsObjectMotionPropertiesVisible: 1
+  MaxAngularVelocity: 10
+  MaxVelocity: 10
+  m_Mass:
+    m_InternalValue: 1
+  m_AngularVelocity:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Velocity:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Torque:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Force:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  DestructibleObjectPropertiesVisible: 1
+  StartingHealth: 25
+  IntangibleDurationAfterDamage: 2
+  SecondsUntilRespawn: 5
+  DeferredDespawnTicks: 4
+  TransferableObject: {fileID: 0}
   m_DestructionFX: {fileID: 4911318353974513769, guid: 56f26e64c02337a47907a313b4d6399c, type: 3}
   m_RubblePrefab: {fileID: 0}
   destructionVFXType: 
