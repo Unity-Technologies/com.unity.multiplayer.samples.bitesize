@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3001504883
+  GlobalObjectIdHash: 2473698027
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -260,6 +260,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &5446307037829169848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +274,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e253f865ab604b12a7f84e3d97704d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
   AuthorityMode: 1
+  TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
@@ -290,20 +295,35 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
-  m_Rigidbody: {fileID: 4745766379562620470}
-  m_PlayerInput: {fileID: 4903152183366241606}
-  m_AvatarInputs: {fileID: 8197190117666738524}
-  m_WalkSpeed: 6
-  m_SprintSpeed: 10
-  m_Acceleration: 50
-  m_DragCoefficient: 4
-  m_AirControlFactor: 0.5
-  m_JumpImpusle: 7
-  m_CustomGravityMultiplier: 2
-  m_RotationSpeed: 700
-  m_GroundCheckDistance: 1.1
+  BaseObjectMotionHandlerPropertiesVisible: 1
+  IsPooled: 1
+  CollisionType: 1
+  CollisionDamage: 0
+  DebugCollisions: 0
+  DebugDamage: 0
+  Colliders:
+  - {fileID: 36137897785899347}
+  PhysicsObjectMotionPropertiesVisible: 1
+  MaxAngularVelocity: 10
+  MaxVelocity: 10
+  m_Mass:
+    m_InternalValue: 1
+  m_AngularVelocity:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Velocity:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Torque:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Force:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  AvatarTransformPropertiesVisible: 1
+  PlayerInput: {fileID: 4903152183366241606}
+  AvatarInputs: {fileID: 8197190117666738524}
+  AvatarInteractions: {fileID: 539700041658036575}
+  PhysicsPlayerController: {fileID: 4655812346339390596}
 --- !u!54 &4745766379562620470
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -343,6 +363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
@@ -405,12 +427,95 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5478015027486214707}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_AvatarNetworkAnimator: {fileID: 7543523986693376117}
+  m_AnimationEventRelayer: {fileID: 3050276823525430539}
+  m_MainCollider: {fileID: 36137897785899347}
+  m_AvatarInputs: {fileID: 8197190117666738524}
+  m_PickupLocFixedJoint: {fileID: 3522541554063944713}
+  m_PickupLocChild: {fileID: 1191881578848548316}
+  m_LeftHandContact: {fileID: 8336303498504233401}
+  m_RightHandContact: {fileID: 4756851392954789958}
+  m_InteractCollider: {fileID: 4881592427634173612}
+  m_MinTossForce: 500
+  m_MaxTossForce: 1000
+--- !u!114 &4655812346339390596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478015027486214707}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e222c86e1ae554b699fe6d68d3cf4ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Rigidbody: {fileID: 4745766379562620470}
+  m_PhysicsPlayerControllerSettings: {fileID: 11400000, guid: 1dd99ce80f3e54d03b20bf78d6ff2a40, type: 2}
+--- !u!114 &7543523986693376117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478015027486214707}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MainCollider: {fileID: 817796967242824188}
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 2081823275
+    DestinationState: 125937960
+    TransitionDuration: 0.1
+    TriggerNameHash: 125937960
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 765711723
+    DestinationState: 125937960
+    TransitionDuration: 0.1
+    TriggerNameHash: 125937960
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 753088835
+    DestinationState: 1177697483
+    TransitionDuration: 0.1
+    TriggerNameHash: 1177697483
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 961424176
+    DestinationState: -802706916
+    TransitionDuration: 0.1
+    TriggerNameHash: -802706916
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 961424176
+    DestinationState: -1413593168
+    TransitionDuration: 0.1
+    TriggerNameHash: -1907200461
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: -1413593168
+    DestinationState: -1907200461
+    TransitionDuration: 0.1
+    TriggerNameHash: -1243957561
+    TransitionIndex: 0
+  m_Animator: {fileID: 7006295767383679619}
+  m_PhysicsPlayerController: {fileID: 4655812346339390596}
   m_AvatarInputs: {fileID: 8197190117666738524}
   m_NetworkRigidbody: {fileID: -8100831418301897270}
   m_HoldTransform: {fileID: 3820763517226122587}
