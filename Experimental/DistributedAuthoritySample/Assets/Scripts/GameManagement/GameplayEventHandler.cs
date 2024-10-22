@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
 {
-    abstract class GameplayEventHandler
+    static class GameplayEventHandler
     {
         internal static event Action<NetworkObject> OnNetworkObjectDespawned;
         internal static event Action<NetworkObject, ulong, ulong> OnNetworkObjectOwnershipChanged;

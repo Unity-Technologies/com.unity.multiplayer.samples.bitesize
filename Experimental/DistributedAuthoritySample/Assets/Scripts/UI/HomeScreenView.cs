@@ -13,8 +13,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         Button m_StartButton;
         Button m_QuitButton;
 
-        internal static string PlayerName = string.Empty;
-
         void Start()
         {
             GameplayEventHandler.OnConnectToSessionCompleted += OnConnectToSessionCompleted;
@@ -53,15 +51,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnFieldChanged()
         {
-            PlayerName = m_PlayerNameField.value;
+            string playerName = m_PlayerNameField.value;
             string sessionName = m_SessionNameField.value;
-            m_StartButton.SetEnabled(!string.IsNullOrEmpty(PlayerName) && !string.IsNullOrEmpty(sessionName));
+            m_StartButton.SetEnabled(!string.IsNullOrEmpty(playerName) && !string.IsNullOrEmpty(sessionName));
         }
 
         void HandleStartButtonPressed()
         {
             string sessionName = m_SessionNameField.value;
-            //this should be reset if something goes wrong on connect
             m_StartButton.enabledSelf = false;
             GameplayEventHandler.StartButtonPressed(sessionName);
         }

@@ -6,6 +6,7 @@ using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
 using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine.InputSystem;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
@@ -42,7 +43,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            m_PlayerName.Value = new FixedString32Bytes(HomeScreenView.PlayerName);
+            m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.Profile);
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
             m_AvatarInputs.Jumped += OnJumped;
