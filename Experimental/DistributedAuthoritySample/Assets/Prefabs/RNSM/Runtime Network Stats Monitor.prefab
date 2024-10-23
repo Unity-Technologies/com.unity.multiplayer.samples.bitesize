@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2560315501379389793}
   - component: {fileID: 3424233303973944120}
+  - component: {fileID: 6717113432061250836}
   m_Layer: 0
   m_Name: Runtime Network Stats Monitor
   m_TagString: Untagged
@@ -50,6 +51,19 @@ MonoBehaviour:
   <PanelSettingsOverride>k__BackingField: {fileID: 0}
   <Position>k__BackingField:
     <OverridePosition>k__BackingField: 1
-    m_PositionLeftToRight: 0
+    m_PositionLeftToRight: 1
     m_PositionTopToBottom: 0
   <Configuration>k__BackingField: {fileID: 11400000, guid: 08b51bc9665db584a94cac2fd1c7313d, type: 2}
+--- !u!114 &6717113432061250836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290292887620514864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c70c2cf93e2f4f7e94a255fac4c480d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InteractActionReference: {fileID: -6206414252132299102, guid: dcd1b4eb76b964f40afe6c0a3ca65c82, type: 3}

@@ -27,16 +27,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             m_PlayerNameField.RegisterValueChangedCallback(evt => OnFieldChanged());
             m_SessionNameField.RegisterValueChangedCallback(evt => OnFieldChanged());
-            m_StartButton.RegisterCallback<ClickEvent>(HandleStartButtonPressed);
-            m_QuitButton.RegisterCallback<ClickEvent>(HandleQuitButtonPressed);
+            m_StartButton.clicked += HandleStartButtonPressed;
+            m_QuitButton.clicked += HandleQuitButtonPressed;
         }
 
         protected override void UnregisterEvents()
         {
             m_PlayerNameField.UnregisterValueChangedCallback(evt => OnFieldChanged());
             m_SessionNameField.UnregisterValueChangedCallback(evt => OnFieldChanged());
-            m_StartButton.UnregisterCallback<ClickEvent>(HandleStartButtonPressed);
-            m_QuitButton.UnregisterCallback<ClickEvent>(HandleQuitButtonPressed);
+            m_StartButton.clicked -= HandleStartButtonPressed;
+            m_QuitButton.clicked -= HandleQuitButtonPressed;
         }
 
         void OnFieldChanged()
@@ -46,13 +46,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_StartButton.SetEnabled(!string.IsNullOrEmpty(playerName) && !string.IsNullOrEmpty(sessionName));
         }
 
-        void HandleStartButtonPressed(ClickEvent evt)
+        void HandleStartButtonPressed()
         {
             string sessionName = m_SessionNameField.value;
+            //this should be reset if something goes wrong on connect
+            m_StartButton.enabledSelf = false;
             StartButtonPressed?.Invoke(sessionName);
         }
 
-        void HandleQuitButtonPressed(ClickEvent evt)
+        void HandleQuitButtonPressed()
         {
             Application.Quit();
         }

@@ -149,19 +149,18 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void SetButtonStateAndColor(Button button, bool highlight, bool enable)
         {
+            button.SetEnabled(enable);
+
             if (enable)
             {
                 button.RemoveFromClassList("UseCaseButtonHighlight");
-                button.AddToClassList("UseCaseButton");
+                return;
             }
 
-            else
+            if (highlight)
             {
-                button.RemoveFromClassList("UseCaseButton");
-                button.AddToClassList(highlight ? "UseCaseButtonHighlight" : "UseCaseButton");
+                button.AddToClassList("UseCaseButtonHighlight");
             }
-
-            button.SetEnabled(enable);
         }
     }
 }

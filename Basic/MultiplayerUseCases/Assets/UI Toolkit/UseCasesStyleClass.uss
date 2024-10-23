@@ -1,10 +1,21 @@
+* {
+    --font-size: 16px;
+    --text-color: rgb(250, 250, 250);
+    --mid-blue-color: rgb(79, 120, 168);
+    --mid-blue-color: rgb(79, 120, 168);
+    --dark-blue-color: rgb(47, 79, 112);
+    --light-blue-color: rgb(127, 179, 224);
+    --highlight-color: rgb(76, 178, 113);
+    --highlight-border-color: rgb(166, 243, 185);
+}
+
 .UseCaseButton {
-    background-color: rgb(79, 120, 168);
-    border-color: rgb(127, 179, 224);
+    background-color: var(--mid-blue-color);
+    border-color: var(--light-blue-color);
     border-width: 2px;
-    color: rgb(255, 255, 255);
+    color: var(--text-color);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
-    font-size: 12px;
+    font-size: var(--font-size);
     border-radius: 5px;
     margin: 4px;
     padding: 10px;
@@ -12,60 +23,41 @@
     align-self: center;
     justify-content: flex-start;
     align-items: stretch;
-    -unity-font-definition: none;
-    height: 24px;
     max-height: 24px;
     min-height: 24px;
-}
-
-.UseCaseButton:hover {
-    background-color: rgb(101, 151, 210);
 }
 
 .UseCaseButton:disabled {
-    background-color: rgb(47, 79, 112);
-    border-color: rgb(81, 121, 164);
+    background-color: var(--dark-blue-color);
+    border-color: var(--light-blue-color);
+}
+
+.UseCaseButton:hover {
+    border-color: var(--light-blue-color);
+}
+
+.UseCaseButton:focus {
+    border-color: var(--highlight-border-color);
 }
 
 .UseCaseButtonHighlight {
-    background-color: rgb(76, 178, 113);
-    border-color: rgb(96, 225, 141);
-    border-width: 2px;
-    color: rgb(255, 255, 255);
-    -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
-    -unity-font-style: normal;
-    font-size: 12px;
-    border-radius: 5px;
-    margin: 4px;
-    display: flex;
-    opacity: 1;
-    visibility: visible;
-    overflow: visible;
-    -unity-text-outline-width: 0;
-    -unity-text-outline-color: rgba(255, 255, 255, 0);
-    text-overflow: clip;
-    white-space: nowrap;
-    padding: 10px;
-    width: 100%;
-    height: 24px;
-    flex-direction: column;
-    align-self: center;
-    justify-content: flex-start;
-    align-items: stretch;
-    -unity-font-definition: none;
-    max-height: 24px;
-    min-height: 24px;
+    background-color: var(--highlight-color);
+    border-color: var(--highlight-border-color);
+}
+
+.UseCaseButtonHighlight:disabled {
+    background-color: var(--highlight-color);
+    border-color: var(--highlight-border-color);
 }
 
 .unity-text-field {
     margin: 0 0 2px;
-    padding: 2px;
-    font-size: 12px;
+    font-size: var(--font-size);
     width: 100%;
     height: 25px;
     -unity-text-align: middle-center;
     flex-direction: row;
-    border-color: rgb(127, 179, 224);
+    border-color: var(--light-blue-color);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
     align-self: center;
 }
@@ -79,9 +71,16 @@
     border-width: 2px;
     align-self: center;
     max-width: 245px;
-    -unity-font-definition: none;
     border-color: rgb(127, 179, 224);
-    font-size: 12px;
+    font-size: var(--font-size);
+}
+
+.unity-text-field:focus {
+    border-color: var(--highlight-border-color);
+}
+
+.unity-text-field:focus .unity-text-field__input {
+    border-color: var(--highlight-border-color);
 }
 
 .labelText {
@@ -89,8 +88,23 @@
     margin: 2px;
     flex-direction: row;
     -unity-text-align: upper-center;
-    color: rgb(255, 255, 255);
+    color: var(--text-color);
     -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
     -unity-font-style: normal;
-    font-size: 12px;
+    font-size: var(--font-size);
+}
+
+#NetworkManagerUI {
+    position: absolute;
+    background-color: rgb(40, 40, 42);
+    max-width: 200px;
+    min-width: 100px;
+    display: flex;
+    border-bottom-left-radius: 7px;
+    right: 0;
+    justify-content: center;
+    width: 25%;
+    margin: 0px;
+    padding: 12px;
+    top: 0;
 }
