@@ -29,14 +29,17 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7327345928292335279}
   - {fileID: 4450108465509321284}
   - {fileID: 7077482001374640691}
   - {fileID: 589860171797664454}
-  - {fileID: 4595254275983507726}
-  - {fileID: 8378615877629939362}
   - {fileID: 5913238793561800659}
-  - {fileID: 960556088801971831}
   - {fileID: 1473745981569514718}
+  - {fileID: 7855518654368332788}
+  - {fileID: 3681771428295587290}
+  - {fileID: 5793526666611174155}
+  - {fileID: 8378615877629939362}
+  - {fileID: 960556088801971831}
   - {fileID: 8993169720051689315}
   - {fileID: 5757960299379194304}
   - {fileID: 271452536466931213}
@@ -53,9 +56,6 @@ Transform:
   - {fileID: 4883819382569346677}
   - {fileID: 6350749594509041084}
   - {fileID: 2228573865541357812}
-  - {fileID: 7855518654368332788}
-  - {fileID: 5793526666611174155}
-  - {fileID: 3681771428295587290}
   - {fileID: 2023556665324198792}
   - {fileID: 71107635059664710}
   - {fileID: 3032822133131443622}
@@ -171,11 +171,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1184713995
+      value: 455507157
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (3)
+      value: ChestGroup_NetworkObjectSpawner (3)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -183,7 +183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2289803565
+      value: 1300707344
       objectReference: {fileID: 0}
     - target: {fileID: 5841156136240675339, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -195,7 +195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2162162679
+      value: 4063950595
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -217,7 +217,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 800633143
+      value: 2430153124
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -265,7 +265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (22)
+      value: Pot_NetworkObjectSpawner (18)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -291,7 +291,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 141143205
+      value: 2284766335
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -339,7 +339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (12)
+      value: Pot_NetworkObjectSpawner (39)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -365,7 +365,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4153386048
+      value: 4056952572
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -413,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (20)
+      value: Pot_NetworkObjectSpawner (44)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -439,7 +439,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1283219464
+      value: 732524487
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -447,7 +447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -21.89
+      value: -22.04
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -487,11 +487,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (1)
+      value: BigChestGroup_NetworkObjectSpawner (2)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2491521793173181752, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -499,35 +503,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499150982154828731, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.203
+      value: 0.224
       objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1784096139
+      value: 3647835851
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 550866356
+      value: 1424180157
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 621010472
+      value: 1431911479
       objectReference: {fileID: 0}
     - target: {fileID: 3383200208853992801, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.203
+      value: 0.224
       objectReference: {fileID: 0}
     - target: {fileID: 3409132396115254678, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.203
+      value: 0.224
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3033613294
+      value: 2875157816
       objectReference: {fileID: 0}
     - target: {fileID: 3759701802044339276, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -535,7 +543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4055221618
+      value: 868990952
       objectReference: {fileID: 0}
     - target: {fileID: 7013616095046890751, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -543,15 +551,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 281724401
+      value: 573309919
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 749971701
+      value: 140126521
       objectReference: {fileID: 0}
     - target: {fileID: 7377827864778571500, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.203
+      value: 0.224
       objectReference: {fileID: 0}
     - target: {fileID: 7385816707186003575, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -559,7 +567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8132870197294800792, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.203
+      value: 0.224
       objectReference: {fileID: 0}
     - target: {fileID: 8133693443593302299, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -567,7 +575,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1705907278
+      value: 2799510755
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905602912146470217, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.121
       objectReference: {fileID: 0}
     - target: {fileID: 8988588020041011137, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -579,7 +591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3073222976
+      value: 1577581644
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -601,7 +613,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1879272630
+      value: 1305223112
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -649,7 +661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (7)
+      value: Pot_NetworkObjectSpawner (4)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -675,7 +687,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3765076029
+      value: 3112973191
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -723,7 +735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (21)
+      value: Pot_NetworkObjectSpawner (45)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -749,7 +761,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 271537229
+      value: 3368469078
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -793,47 +805,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (13)
+      value: BigChestGroup_NetworkObjectSpawner (13)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 997305460
+      value: 2570167928
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2652780019
+      value: 3830091069
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 671358444
+      value: 2692457962
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2537058258
+      value: 1265332250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1516952165
+      value: 2807873906
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4105911549
+      value: 4174397393
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 208337423
+      value: 2810644183
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 504319683
+      value: 3318196321
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2364640008
+      value: 2000933390
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -895,11 +915,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3973439927
+      value: 423556589
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (6)
+      value: ChestGroup_NetworkObjectSpawner (6)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -907,7 +927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3431692280
+      value: 3862363319
       objectReference: {fileID: 0}
     - target: {fileID: 5841156136240675339, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -919,7 +939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1180550184
+      value: 3221219808
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -941,7 +961,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 201650734
+      value: 3145025692
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -985,47 +1005,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (4)
+      value: BigChestGroup_NetworkObjectSpawner (4)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4056792212
+      value: 468794249
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 610054460
+      value: 4017982323
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 726421053
+      value: 4026340060
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2939586097
+      value: 479183268
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3155306713
+      value: 1032243963
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 361236096
+      value: 3913330429
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2325023991
+      value: 1199568157
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3280069070
+      value: 3949759875
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 689266044
+      value: 2536728611
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1047,7 +1075,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1289054101
+      value: 3848307823
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1095,7 +1123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (32)
+      value: Pot_NetworkObjectSpawner (56)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1121,7 +1149,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 885681615
+      value: 849462348
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1165,47 +1193,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (8)
+      value: BigChestGroup_NetworkObjectSpawner (8)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3577825047
+      value: 2579970407
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1055840718
+      value: 409147983
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3779873684
+      value: 3551960323
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3131654147
+      value: 2181689186
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1336558136
+      value: 2997169461
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 559253046
+      value: 1925903780
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1799777917
+      value: 15970131
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1587643745
+      value: 3990533356
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3445887122
+      value: 3340162432
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1227,7 +1263,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4089092279
+      value: 3876861344
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1275,7 +1311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (2)
+      value: Pot_NetworkObjectSpawner (26)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1301,7 +1337,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3341376245
+      value: 2724962601
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1349,7 +1385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (31)
+      value: Pot_NetworkObjectSpawner (55)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1375,7 +1411,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 992729740
+      value: 910068377
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1419,47 +1455,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (2)
+      value: BigChestGroup_NetworkObjectSpawner (3)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1087755843
+      value: 355945114
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 105272461
+      value: 3925385793
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3982810511
+      value: 54957829
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3541404651
+      value: 323609218
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3280368223
+      value: 1882810250
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 189805280
+      value: 464913993
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1797524513
+      value: 639524597
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 945015916
+      value: 890157857
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 964312098
+      value: 469164300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1481,7 +1525,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 958017811
+      value: 1745573225
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1529,7 +1573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (16)
+      value: Pot_NetworkObjectSpawner (32)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1555,7 +1599,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4139713936
+      value: 247972434
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1603,7 +1647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (43)
+      value: Pot_NetworkObjectSpawner (67)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1629,7 +1673,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3782145569
+      value: 3130065660
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1673,11 +1717,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (11)
+      value: BigChestGroup_NetworkObjectSpawner (11)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2491521793173181752, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -1689,15 +1737,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3332603746
+      value: 728531137
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1134808495
+      value: 1679031824
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 104072801
+      value: 1335156925
       objectReference: {fileID: 0}
     - target: {fileID: 3383200208853992801, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1709,23 +1757,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3110310065
+      value: 123124780
       objectReference: {fileID: 0}
     - target: {fileID: 3759701802044339276, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3951811423
+      value: 93738894
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3192830075
+      value: 3544798335
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3902461478
+      value: 2703609280
       objectReference: {fileID: 0}
     - target: {fileID: 7377827864778571500, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1741,7 +1793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2989751045
+      value: 4026624986
       objectReference: {fileID: 0}
     - target: {fileID: 8988588020041011137, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -1753,7 +1805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 776538056
+      value: 3052746624
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1775,7 +1827,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3579317347
+      value: 2856563130
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1823,7 +1875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (39)
+      value: Pot_NetworkObjectSpawner (63)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1849,7 +1901,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1081677241
+      value: 36737754
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1897,7 +1949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (25)
+      value: Pot_NetworkObjectSpawner (49)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1923,7 +1975,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3827516405
+      value: 2912226507
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -1971,7 +2023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (5)
+      value: Pot_NetworkObjectSpawner (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -1997,7 +2049,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 835393279
+      value: 2391438901
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2045,7 +2097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (8)
+      value: Pot_NetworkObjectSpawner (35)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2071,7 +2123,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3712110234
+      value: 20563869
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2119,7 +2171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (24)
+      value: Pot_NetworkObjectSpawner (48)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2145,7 +2197,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3241963893
+      value: 1101116847
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2193,7 +2245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (15)
+      value: Pot_NetworkObjectSpawner (20)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2219,7 +2271,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2329481262
+      value: 2009247123
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2267,7 +2319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (22)
+      value: Pot_NetworkObjectSpawner (46)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2293,7 +2345,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1243318236
+      value: 261000226
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2337,47 +2389,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (3)
+      value: BigChestGroup_NetworkObjectSpawner (5)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2905942601
+      value: 2589151740
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 99210319
+      value: 2955148616
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2741316705
+      value: 3877940761
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2406340314
+      value: 4040160997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3411069582
+      value: 448061727
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1401607526
+      value: 3425165821
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 441278277
+      value: 995613853
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3745843457
+      value: 3702296895
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2374694351
+      value: 3505582082
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2399,7 +2459,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4082503733
+      value: 1907473398
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2447,7 +2507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (18)
+      value: Pot_NetworkObjectSpawner (23)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2473,7 +2533,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2081217250
+      value: 1460013005
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2521,7 +2581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (34)
+      value: Pot_NetworkObjectSpawner (58)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2547,7 +2607,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3212698343
+      value: 2250117662
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2595,7 +2655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (26)
+      value: Pot_NetworkObjectSpawner (50)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2621,7 +2681,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2632422005
+      value: 2462649499
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2669,7 +2729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (36)
+      value: Pot_NetworkObjectSpawner (60)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2695,7 +2755,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3101006379
+      value: 3248224333
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2743,7 +2803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (1)
+      value: Pot_NetworkObjectSpawner (25)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2769,7 +2829,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 305605215
+      value: 2543627416
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2817,7 +2877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (5)
+      value: Pot_NetworkObjectSpawner (31)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2843,7 +2903,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 798320422
+      value: 2856422500
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2891,7 +2951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (13)
+      value: Pot_NetworkObjectSpawner (40)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2917,7 +2977,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2446327181
+      value: 1955695959
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2965,7 +3025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (29)
+      value: Pot_NetworkObjectSpawner (53)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -2991,7 +3051,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1815091299
+      value: 1343066091
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3035,47 +3095,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup
+      value: BigChestGroup_NetworkObjectSpawner
       objectReference: {fileID: 0}
-    - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 2499150982154828731, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.162
       objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3376077616
+      value: 2768513406
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2517337539
+      value: 2170580775
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3721946082
+      value: 2092246681
+      objectReference: {fileID: 0}
+    - target: {fileID: 3383200208853992801, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.162
+      objectReference: {fileID: 0}
+    - target: {fileID: 3409132396115254678, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.162
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1004255772
+      value: 397909755
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2636861281
+      value: 3343149903
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3969682584
+      value: 2312462443
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1489921034
+      value: 3506037644
+      objectReference: {fileID: 0}
+    - target: {fileID: 7377827864778571500, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.162
+      objectReference: {fileID: 0}
+    - target: {fileID: 8132870197294800792, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.162
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4201009049
+      value: 2843751246
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905602912146470217, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1033326740
+      value: 3401871802
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3097,7 +3185,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 904437086
+      value: 3694559179
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3145,7 +3233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (17)
+      value: Pot_NetworkObjectSpawner (30)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3211,11 +3299,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3892756066
+      value: 2265756417
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (4)
+      value: ChestGroup_NetworkObjectSpawner(4)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -3223,11 +3311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1646422215
+      value: 772515686
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2359517409
+      value: 1018009800
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3239,80 +3327,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2316457990300695867, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
   m_PrefabInstance: {fileID: 3745442934389624716}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3804671728381982008
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4063744897888870535}
-    m_Modifications:
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 66.28127
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -22.03783
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -14.884281
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.91411245
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.40546075
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -47.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1062401694913768019, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 3358733233
-      objectReference: {fileID: 0}
-    - target: {fileID: 1062401694913768019, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 2187013619
-      objectReference: {fileID: 0}
-    - target: {fileID: 6433141558356164246, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Chest
-      objectReference: {fileID: 0}
-    - target: {fileID: 6433141558356164246, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
---- !u!4 &4595254275983507726 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 795298397303764022, guid: e20adb281a0e9d74c80f571a6453f115, type: 3}
-  m_PrefabInstance: {fileID: 3804671728381982008}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3824074511044903988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3323,7 +3337,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 18116912
+      value: 1960438735
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3371,7 +3385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (9)
+      value: Pot_NetworkObjectSpawner (10)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3397,7 +3411,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3874395468
+      value: 4202964643
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3445,7 +3459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (14)
+      value: Pot_NetworkObjectSpawner (41)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3471,7 +3485,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3273053229
+      value: 969027192
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3519,7 +3533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (28)
+      value: Pot_NetworkObjectSpawner (52)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3545,7 +3559,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3147056694
+      value: 2418858660
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3593,7 +3607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (7)
+      value: Pot_NetworkObjectSpawner (34)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3619,7 +3633,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 141528214
+      value: 375233525
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3667,7 +3681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (6)
+      value: Pot_NetworkObjectSpawner (42)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3693,7 +3707,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3918306621
+      value: 2736777618
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3741,7 +3755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (1)
+      value: Pot_NetworkObjectSpawner (7)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3767,7 +3781,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 441206223
+      value: 2052243008
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -3815,7 +3829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (20)
+      value: Pot_NetworkObjectSpawner (16)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -3841,7 +3855,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2816710238
+      value: 2865146408
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3885,47 +3899,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (7)
+      value: BigChestGroup_NetworkObjectSpawner (7)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2095980609
+      value: 4101683001
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 236555134
+      value: 1326194320
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 416368970
+      value: 3756195569
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2556331236
+      value: 2577374475
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4043796928
+      value: 2224661121
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3313571492
+      value: 2601104513
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2105013101
+      value: 2322033109
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2199024414
+      value: 1080335983
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 653291018
+      value: 2259933512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3987,11 +4009,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1913140001
+      value: 885050671
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (1)
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -3999,7 +4021,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2985280124
+      value: 3140402532
       objectReference: {fileID: 0}
     - target: {fileID: 5841156136240675339, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4011,7 +4033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2600309543
+      value: 702652593
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4033,7 +4055,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 876162112
+      value: 515683074
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4081,7 +4103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot
+      value: Pot_NetworkObjectSpawner (6)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4107,7 +4129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2241636337
+      value: 322526883
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4151,47 +4173,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (9)
+      value: BigChestGroup_NetworkObjectSpawner (9)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1365769549
+      value: 658363520
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 457047531
+      value: 2005709014
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 219618998
+      value: 697340113
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3071373600
+      value: 2229178211
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2912395028
+      value: 1741474974
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1303951322
+      value: 2803742538
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1504915577
+      value: 3885262845
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 738955225
+      value: 613845723
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1375795713
+      value: 1529172305
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4213,7 +4243,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2443115267
+      value: 395934680
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4261,7 +4291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (44)
+      value: Pot_NetworkObjectSpawner (68)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4287,7 +4317,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 417469107
+      value: 4222547699
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4335,7 +4365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (2)
+      value: Pot_NetworkObjectSpawner (8)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4361,7 +4391,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2817310180
+      value: 4035923281
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4409,7 +4439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (37)
+      value: Pot_NetworkObjectSpawner (61)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4435,7 +4465,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2625505176
+      value: 2030269300
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4483,7 +4513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (15)
+      value: Pot_NetworkObjectSpawner (29)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4509,7 +4539,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1760618743
+      value: 430746185
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4553,11 +4583,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (12)
+      value: BigChestGroup_NetworkObjectSpawner (12)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2499150982154828731, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4565,15 +4599,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3282298012
+      value: 700137336
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1946779175
+      value: 4235880552
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1102345402
+      value: 62900538
       objectReference: {fileID: 0}
     - target: {fileID: 3383200208853992801, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4585,23 +4619,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3135907788
+      value: 4002968903
       objectReference: {fileID: 0}
     - target: {fileID: 3761027603982632151, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.073
       objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2212214798
+      value: 809544764
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2848888039
+      value: 502189851
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 77101357
+      value: 3331071731
       objectReference: {fileID: 0}
     - target: {fileID: 7377827864778571500, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4613,11 +4651,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 75652351
+      value: 2973783450
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2817039537
+      value: 3165136973
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4639,7 +4677,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 480539189
+      value: 3825887447
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4687,7 +4725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (18)
+      value: Pot_NetworkObjectSpawner (33)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4713,7 +4751,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1531593468
+      value: 2479524418
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4757,47 +4795,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (10)
+      value: BigChestGroup_NetworkObjectSpawner (10)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1436976305
+      value: 603943946
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4197334839
+      value: 3562854059
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2492305264
+      value: 3414750801
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 530856137
+      value: 2515547531
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3914441126
+      value: 2199434210
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1413626992
+      value: 1750593686
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 610295902
+      value: 1926272686
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2245001200
+      value: 1908787197
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 606694282
+      value: 3078519243
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4819,7 +4865,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 417965910
+      value: 3291449094
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4867,7 +4913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant
+      value: Pot_NetworkObjectSpawner (24)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4893,7 +4939,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2613174359
+      value: 3538024754
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -4941,7 +4987,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (19)
+      value: Pot_NetworkObjectSpawner (43)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -4967,7 +5013,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1124833322
+      value: 1203980274
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5015,7 +5061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (27)
+      value: Pot_NetworkObjectSpawner (51)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5041,7 +5087,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2545584596
+      value: 3801053932
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5089,7 +5135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (10)
+      value: Pot_NetworkObjectSpawner (37)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5155,11 +5201,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 158055388
+      value: 2944401266
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (7)
+      value: ChestGroup_NetworkObjectSpawner(7)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -5167,7 +5213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 723909329
+      value: 3838431943
       objectReference: {fileID: 0}
     - target: {fileID: 5841156136240675339, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5179,7 +5225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4106251372
+      value: 4028950172
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5201,7 +5247,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2299986135
+      value: 3411168828
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5249,7 +5295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (4)
+      value: Pot_NetworkObjectSpawner (28)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5275,7 +5321,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 355766139
+      value: 509883218
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5323,7 +5369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (23)
+      value: Pot_NetworkObjectSpawner (47)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5349,7 +5395,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 92454398
+      value: 3216285291
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5397,7 +5443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (11)
+      value: Pot_NetworkObjectSpawner (38)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5423,7 +5469,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3877807059
+      value: 1481997579
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5471,7 +5517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (6)
+      value: Pot_NetworkObjectSpawner (3)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5497,7 +5543,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3228198826
+      value: 701165926
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5545,7 +5591,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (35)
+      value: Pot_NetworkObjectSpawner (59)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5571,7 +5617,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3165592064
+      value: 2334936039
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5619,7 +5665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (3)
+      value: Pot_NetworkObjectSpawner (27)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5645,7 +5691,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2274872082
+      value: 1116160140
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5693,7 +5739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (14)
+      value: Pot_NetworkObjectSpawner (19)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5719,7 +5765,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 860246942
+      value: 2922739566
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5767,7 +5813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (10)
+      value: Pot_NetworkObjectSpawner (11)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5793,7 +5839,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2986318900
+      value: 845810910
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5837,47 +5883,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (6)
+      value: BigChestGroup_NetworkObjectSpawner (6)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
+      objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2277333270
+      value: 851782057
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1459138320
+      value: 1385509528
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 945449092
+      value: 1374114625
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1652534295
+      value: 4064001442
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2489900182
+      value: 1963129986
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1890478804
+      value: 2205962643
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2548587820
+      value: 222926274
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1112094891
+      value: 1861492403
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 382488194
+      value: 2544454907
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5899,7 +5953,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3953111840
+      value: 3001282500
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5947,7 +6001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (9)
+      value: Pot_NetworkObjectSpawner (36)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -5973,7 +6027,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3809589078
+      value: 594922503
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6021,7 +6075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (4)
+      value: Pot_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6047,7 +6101,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1663996609
+      value: 1360667792
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6095,7 +6149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (40)
+      value: Pot_NetworkObjectSpawner (64)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6121,7 +6175,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3023238760
+      value: 3854294463
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6169,7 +6223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (11)
+      value: Pot_NetworkObjectSpawner (12)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6195,7 +6249,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1564913854
+      value: 323268775
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6243,7 +6297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (3)
+      value: Pot_NetworkObjectSpawner (5)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6269,7 +6323,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1904314289
+      value: 2670218660
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6317,7 +6371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (19)
+      value: Pot_NetworkObjectSpawner (15)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6343,7 +6397,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3381946696
+      value: 3269584540
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6391,7 +6445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (33)
+      value: Pot_NetworkObjectSpawner (57)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6417,7 +6471,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 354051684
+      value: 1963495405
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6465,7 +6519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (17)
+      value: Pot_NetworkObjectSpawner (22)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6531,11 +6585,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2767485155
+      value: 116392891
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (5)
+      value: ChestGroup_NetworkObjectSpawner (5)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -6543,11 +6597,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3266493870
+      value: 433903386
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3350943852
+      value: 1062867150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6609,11 +6663,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741762835423229499, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1407626504
+      value: 1800476236
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_ChestGroup (2)
+      value: ChestGroup_NetworkObjectSpawner (2)
       objectReference: {fileID: 0}
     - target: {fileID: 4381606202648809199, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: m_IsActive
@@ -6621,11 +6675,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5655038521153545688, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2928148177
+      value: 1122781588
       objectReference: {fileID: 0}
     - target: {fileID: 6104888320848176238, guid: a7877d0fd3eec7845a415afd21c09f8e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2267840410
+      value: 3110186189
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6647,7 +6701,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 906429558308190585, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2932419468
+      value: 1158346792
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6655,7 +6709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -21.895
+      value: -22.075
       objectReference: {fileID: 0}
     - target: {fileID: 980182422108849506, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6691,11 +6745,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_BigChestGroup (5)
+      value: BigChestGroup_NetworkObjectSpawner (1)
       objectReference: {fileID: 0}
     - target: {fileID: 1386184684697734700, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609594333447356845, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 2491521793173181752, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -6703,55 +6761,59 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499150982154828731, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.127
+      value: 0.217
       objectReference: {fileID: 0}
     - target: {fileID: 2817524419273549278, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1791067811
+      value: 1409804721
       objectReference: {fileID: 0}
     - target: {fileID: 3096423488481133555, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3240377620
+      value: 2786265048
       objectReference: {fileID: 0}
     - target: {fileID: 3117781433572449028, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1778488964
+      value: 2516982360
       objectReference: {fileID: 0}
     - target: {fileID: 3383200208853992801, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.127
+      value: 0.217
       objectReference: {fileID: 0}
     - target: {fileID: 3409132396115254678, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.127
+      value: 0.217
       objectReference: {fileID: 0}
     - target: {fileID: 3568757140656167602, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3140525188
+      value: 3778378677
       objectReference: {fileID: 0}
     - target: {fileID: 3759701802044339276, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4842189305616347525, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
+      propertyPath: m_Name
+      value: ChestGroup_NetworkObjectSpawner (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 6480905132291000657, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2779102603
+      value: 353884682
       objectReference: {fileID: 0}
     - target: {fileID: 7193462746157621385, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2150667068
+      value: 55117634
       objectReference: {fileID: 0}
     - target: {fileID: 7269444998731049626, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2983723067
+      value: 1433731335
       objectReference: {fileID: 0}
     - target: {fileID: 7377827864778571500, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.127
+      value: 0.217
       objectReference: {fileID: 0}
     - target: {fileID: 8132870197294800792, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.127
+      value: 0.217
       objectReference: {fileID: 0}
     - target: {fileID: 8133693443593302299, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -6759,11 +6821,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8460818121307963901, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3984120773
+      value: 2883844643
       objectReference: {fileID: 0}
     - target: {fileID: 8905602912146470217, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.077
+      value: 0.181
       objectReference: {fileID: 0}
     - target: {fileID: 8988588020041011137, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: m_IsActive
@@ -6775,7 +6837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9088283503808572204, guid: ba67feb056ac4424facc4ef7c909b30b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 367783565
+      value: 3874694950
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6797,7 +6859,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3283076690
+      value: 2505605049
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6845,7 +6907,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (30)
+      value: Pot_NetworkObjectSpawner (54)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6871,7 +6933,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2526297028
+      value: 4182654958
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6919,7 +6981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (12)
+      value: Pot_NetworkObjectSpawner (13)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -6935,6 +6997,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3951261219583195705, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
   m_PrefabInstance: {fileID: 8291943036174077908}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8419274537388644921
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4063744897888870535}
+    m_Modifications:
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 66.34128
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -21.970001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14.450136
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499607153087855347, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1541964818
+      objectReference: {fileID: 0}
+    - target: {fileID: 4843296344903462454, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_Name
+      value: Chest_NetworkObjectSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 8817259292813230997, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+      propertyPath: m_NetworkObjectToSpawn
+      value: 
+      objectReference: {fileID: 5832966791020054508, guid: 1f03a9a384a87cf4d84905ac5d10712c, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+--- !u!4 &7327345928292335279 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1258953842080244886, guid: e54d55fa193a2495ea1270535da81837, type: 3}
+  m_PrefabInstance: {fileID: 8419274537388644921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8436223963083758668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6945,7 +7077,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4096907818
+      value: 3433124538
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6993,7 +7125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (16)
+      value: Pot_NetworkObjectSpawner (21)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -7019,7 +7151,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2498557062
+      value: 1588164734
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -7067,7 +7199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (38)
+      value: Pot_NetworkObjectSpawner (62)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -7093,7 +7225,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1702243983
+      value: 2834055006
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -7141,7 +7273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (42)
+      value: Pot_NetworkObjectSpawner (66)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -7167,7 +7299,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1054283825
+      value: 900117215
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -7215,7 +7347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (8)
+      value: Pot_NetworkObjectSpawner (9)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -7241,7 +7373,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1016787267
+      value: 1342726093
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -7289,7 +7421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot Variant (41)
+      value: Pot_NetworkObjectSpawner (65)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -7315,7 +7447,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3930122172
+      value: 2538505339
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -7363,7 +7495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (13)
+      value: Pot_NetworkObjectSpawner (14)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
@@ -7389,7 +7521,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3939476384
+      value: 4160918117
       objectReference: {fileID: 0}
     - target: {fileID: 3702711229423920220, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -7437,7 +7569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_Name
-      value: SessionOwnerNetworkObjectSpawner_Pot (21)
+      value: Pot_NetworkObjectSpawner (17)
       objectReference: {fileID: 0}
     - target: {fileID: 7249626211220795545, guid: a951fefbc6b0c504da5ecaba3bcaedf4, type: 3}
       propertyPath: m_IsActive
