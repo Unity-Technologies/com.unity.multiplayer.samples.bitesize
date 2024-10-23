@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 433160265
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 882396614
+  InScenePlacedSourceGlobalObjectIdHash: 882396614
   DeferredDespawnTick: 0
   Ownership: 0
   AlwaysReplicateAsRoot: 0
@@ -56,6 +56,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &8817259292813230997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,4 +70,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea4e07da167d4da7beddb67532a15f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_NetworkObjectToSpawn: {fileID: 0}

@@ -64,11 +64,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             }
         }
 
-        // add gizmo to show the spawn position
+        // Add gizmo to show the spawn position of the network object
         void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, 0.4f);
+            Gizmos.DrawWireCube(transform.position, new Vector3(0.848f, 0.501f, 0.694f));
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, 0.25f);
         }
     }
 }
