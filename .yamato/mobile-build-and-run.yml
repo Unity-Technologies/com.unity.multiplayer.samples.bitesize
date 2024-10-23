@@ -65,7 +65,6 @@ Build_Player_With_Tests_Android_{{ project.name }}_{{ editor }}:
 # For every editor version, run iOS project tests without
 # running package tests too since they are handled on their respective jobs
 {% for project in projects -%}
-{% if project.name != "dedicatedgameserver" -%}
 {% for editor in project.test_editors -%}
 mobile_test_ios_{{ project.name }}_{{ editor }}:
     name: {{ project.name }} mobile project tests - {{ editor }} on iOS
@@ -94,13 +93,11 @@ mobile_test_ios_{{ project.name }}_{{ editor }}:
             paths:
                 - "build/test-results/**"
 {% endfor -%}
-{% endif -%}
 {% endfor -%}
 
   # For every editor version, run Android project tests without
   # running package tests too since they are handled on their respective jobs
 {% for project in projects -%}
-{% if project.name != "dedicatedgameserver" -%}
 {% for editor in project.test_editors -%}
 mobile_test_android_{{ project.name }}_{{ editor }}:
     name: {{ project.name }} mobile project tests - {{ editor }} on Android
@@ -128,5 +125,4 @@ mobile_test_android_{{ project.name }}_{{ editor }}:
             paths:
                 - "build/test-results/**"
 {% endfor -%}
-{% endif -%}
 {% endfor -%}
