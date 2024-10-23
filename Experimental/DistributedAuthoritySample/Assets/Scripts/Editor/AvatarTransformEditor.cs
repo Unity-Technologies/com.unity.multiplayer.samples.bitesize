@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace Unity.Multiplayer.Samples.SocialHub.Editor
 {
     [CustomEditor(typeof(AvatarTransform))]
-    class DerivedComponentEditor : UnityEditor.Editor
+    class AvatarTransformEditor : UnityEditor.Editor
     {
         public override VisualElement CreateInspectorGUI()
         {

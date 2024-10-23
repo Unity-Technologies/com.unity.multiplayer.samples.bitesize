@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="PickupIndicator" class="pickup-indicator">
+        <engine:Label text="E" name="key-code" class="pickup-indicator__keycode" />
+        <engine:Label text="pickup" name="call-to-action" class="pickup-indicator__call-to-action" parse-escape-sequences="true"/>
+        <engine:VisualElement name="pickup-indicator__border" class="pickup-indicator__border"/>
+    </engine:VisualElement>
+</engine:UXML>

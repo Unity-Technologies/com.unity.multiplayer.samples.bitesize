@@ -16,8 +16,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         [SerializeField]
         internal Vector2 Look;
         [SerializeField]
-        internal bool Jump;
-        [SerializeField]
         internal bool Sprint;
 
         [Header("Movement Settings")]
@@ -30,8 +28,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         [SerializeField]
         internal bool CursorInputForLook = true;
 
-        internal event Action InteractTapped;
-        internal event Action<double> InteractHeld;
+        internal event Action Jumped;
+        internal event Action TapInteractionPerformed;
+        internal event Action HoldInteractionPerformed;
+        internal event Action<double> HoldInteractionCancelled;
 
         // tracking when a Hold interaction has started/ended
         bool m_HoldingInteractionPerformed;
@@ -65,9 +65,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             {
                 case HoldInteraction:
                     m_HoldingInteractionPerformed = true;
+                    HoldInteractionPerformed?.Invoke();
                     break;
                 case TapInteraction:
-                    InteractTapped?.Invoke();
+                    TapInteractionPerformed?.Invoke();
                     break;
             }
         }
@@ -78,7 +79,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             {
                 if (m_HoldingInteractionPerformed)
                 {
-                    InteractHeld?.Invoke(context.duration);
+                    HoldInteractionCancelled?.Invoke(context.duration);
                 }
                 m_HoldingInteractionPerformed = false;
             }
@@ -100,7 +101,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
 
         void OnJump(InputValue value)
         {
-            JumpInput(value.isPressed);
+            Jumped?.Invoke();
         }
 
         void OnSprint(InputValue value)
@@ -117,11 +118,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         void LookInput(Vector2 newLookDirection)
         {
             Look = newLookDirection;
-        }
-
-        void JumpInput(bool newJumpState)
-        {
-            Jump = newJumpState;
         }
 
         void SprintInput(bool newSprintState)

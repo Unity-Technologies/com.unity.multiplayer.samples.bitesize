@@ -21,8 +21,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -34,6 +37,7 @@ MonoBehaviour:
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
             m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
@@ -48,6 +52,7 @@ MonoBehaviour:
               m_Text: 
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: ToolbarPlayModePlayButton
             m_PropertyPath: 
             m_TargetType:
@@ -63,16 +68,44 @@ MonoBehaviour:
                 m_AssetObject: {fileID: 0}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: unity-editor-toolbar__button-strip-element--left
+            m_VisualElementClassName: 
             m_VisualElementName: Play
-            m_VisualElementTypeName: UnityEditor.Toolbars.EditorToolbarToggle
+            m_VisualElementTypeName: 
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
             m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls: []
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
+          m_EditorWindowType:
+            m_TypeName: UnityEditor.Build.Profile.BuildProfileWindow, UnityEditor.BuildProfileModule,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls: []
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
+          m_EditorWindowType:
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
@@ -92,25 +125,28 @@ MonoBehaviour:
 
 
           You
-          can do so by creating a build of this project or a <a href="https://docs-multiplayer.unity3d.com/netcode/current/tutorials/testing/testing_locally/index.html">ParrelSync
-          clone</a>, and run it as a Host. Be sure to wait until the color, health
-          and username of the objects change before connecting another client.
+          can do so by creating a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
+          Player</a> or a build of this project, and run it as a Host. Be sure to
+          wait until the color, health and username of the objects change before
+          connecting another client.
 
 
-          Once
-          the data changed at least once, enter PlayMode and connect to your build
-          as a Client from the editor to see how the objects react to subsequent
-          data updates.
+          Once the data changed at least once,
+          enter PlayMode and connect to your player/build as a Client from the editor
+          to see how the objects react to subsequent data updates.
 
 
-          You can also read more about NetworkVariables
-          <a href="https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/index.html">here</a>
+          You
+          can also read more about NetworkVariables <a href="https://docs-multiplayer.unity3d.com/netcode/current/basics/networkvariable/index.html">here</a>
 
 
           Once
           you''re done, press <b>Done</b> to complete this tutorial.'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -128,8 +164,11 @@ MonoBehaviour:
         m_Untranslated: Press Done to complete the tutorial
       Text:
         m_Untranslated: On press the button below to load the next one
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -147,8 +186,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 'Tutorial 2: RPCs'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 11400000, guid: a8a53d65b311ea94282d86f5a5919368, type: 2}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:

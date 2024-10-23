@@ -106,7 +106,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             string newAddress = evt.newValue;
             ushort currentPort = ushort.Parse(m_PortInputField.value);
 
-            if (string.IsNullOrEmpty(newAddress) || !NetworkEndPoint.TryParse(newAddress, currentPort, out NetworkEndPoint networkEndPoint))
+            if (string.IsNullOrEmpty(newAddress) || !NetworkEndpoint.TryParse(newAddress, currentPort, out NetworkEndpoint networkEndPoint))
             {
                 Debug.LogError($"IP address '{newAddress}', is not valid. Reverting IP address to {k_DefaultIP}");
                 m_AddressInputField.value = k_DefaultIP;
@@ -118,7 +118,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void OnPortChanged(ChangeEvent<string> evt)
         {
-            if (!ushort.TryParse(evt.newValue, out ushort newPort) || !NetworkEndPoint.TryParse(m_AddressInputField.value, newPort, out NetworkEndPoint networkEndPoint))
+            if (!ushort.TryParse(evt.newValue, out ushort newPort) || !NetworkEndpoint.TryParse(m_AddressInputField.value, newPort, out NetworkEndpoint networkEndPoint))
             {
                 Debug.LogError($"Port '{evt.newValue}' is not valid. Reverting port to {k_DefaultPort}");
                 m_PortInputField.value = k_DefaultPort.ToString();
@@ -149,19 +149,18 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void SetButtonStateAndColor(Button button, bool highlight, bool enable)
         {
+            button.SetEnabled(enable);
+
             if (enable)
             {
                 button.RemoveFromClassList("UseCaseButtonHighlight");
-                button.AddToClassList("UseCaseButton");
+                return;
             }
 
-            else
+            if (highlight)
             {
-                button.RemoveFromClassList("UseCaseButton");
-                button.AddToClassList(highlight ? "UseCaseButtonHighlight" : "UseCaseButton");
+                button.AddToClassList("UseCaseButtonHighlight");
             }
-
-            button.SetEnabled(enable);
         }
     }
 }
