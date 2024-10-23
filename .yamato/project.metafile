@@ -40,7 +40,7 @@ projects:
   - name: dedicatedgameserver
     path: Experimental/DedicatedGameServer
     test_editors:
-      - trunk
+      - 6000.0.3
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool true
     test_filter: Unity.DedicatedGameServerSample.Tests
@@ -53,6 +53,6 @@ projects:
   - name: DistributedAuthoritySample
     path: Experimental/DistributedAuthoritySample
     test_editors:
-      - trunk
+      - 6000.0.21
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false

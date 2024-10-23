@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
- 
+
 namespace Unity.Multiplayer.Samples.SocialHub.Editor
 {
     [CustomEditor(typeof(AvatarTransform))]
