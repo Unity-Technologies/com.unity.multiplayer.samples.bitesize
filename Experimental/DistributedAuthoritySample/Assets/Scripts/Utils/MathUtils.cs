@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Utils
 {
-    abstract class MathUtils
+    static class MathUtils
     {
         const float k_DefaultThreshold = 0.0025f;
 
