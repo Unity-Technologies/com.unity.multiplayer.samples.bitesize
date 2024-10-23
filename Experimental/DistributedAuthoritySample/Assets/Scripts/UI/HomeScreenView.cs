@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,7 +13,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         Button m_StartButton;
         Button m_QuitButton;
 
-        internal static event Action<string> StartButtonPressed;
+        void Start()
+        {
+            GameplayEventHandler.OnConnectToSessionCompleted += OnConnectToSessionCompleted;
+        }
+
+        void OnDestroy()
+        {
+            GameplayEventHandler.OnConnectToSessionCompleted -= OnConnectToSessionCompleted;
+        }
 
         public override void Initialize(VisualElement viewRoot)
         {
@@ -49,14 +59,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void HandleStartButtonPressed()
         {
             string sessionName = m_SessionNameField.value;
-            //this should be reset if something goes wrong on connect
             m_StartButton.enabledSelf = false;
-            StartButtonPressed?.Invoke(sessionName);
+            GameplayEventHandler.StartButtonPressed(sessionName);
         }
 
         void HandleQuitButtonPressed()
         {
-            Application.Quit();
+            GameplayEventHandler.QuitGamePressed();
+        }
+
+        void OnConnectToSessionCompleted(Task obj)
+        {
+            if (!obj.IsCompletedSuccessfully)
+            {
+                m_StartButton.enabledSelf = true;
+            }
         }
     }
 }
