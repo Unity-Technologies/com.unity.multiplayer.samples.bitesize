@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
-    class BaseObjectMotionHandler : NetworkTransform, ICollisionHandler, IContactEventHandler
+    class BaseObjectMotionHandler : NetworkTransform, ICollisionHandler, IContactEventHandlerWithInfo
     {
         protected bool m_IsPooled = true;
 
@@ -254,6 +254,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             OnContactEvent(eventId, averageNormal, collidingBody, contactPoint, hasCollisionStay, averagedCollisionStayNormal);
             LastEventId = eventId;
+        }
+
+        protected virtual bool ProvideNonRigidbodyContactEvents()
+        {
+            return false;
+        }
+
+        public ContactEventHandlerInfo GetContactEventHandlerInfo()
+        {
+            var contactEventHandlerInfo = new ContactEventHandlerInfo();
+            contactEventHandlerInfo.ProvideNonRigidBodyContactEvents = ProvideNonRigidbodyContactEvents();
+            contactEventHandlerInfo.HasContactEventPriority = HasAuthority;
+            return contactEventHandlerInfo;
         }
 
         /// <summary>
