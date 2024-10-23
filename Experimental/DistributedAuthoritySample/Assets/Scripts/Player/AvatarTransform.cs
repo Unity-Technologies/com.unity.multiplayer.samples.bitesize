@@ -11,14 +11,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
     [RequireComponent(typeof(Rigidbody))]
     class AvatarTransform : PhysicsObjectMotion, INetworkUpdateSystem
     {
-        [SerializeField]
-        PlayerInput m_PlayerInput;
-        [SerializeField]
-        AvatarInputs m_AvatarInputs;
-        [SerializeField]
-        AvatarInteractions m_AvatarInteractions;
-        [SerializeField]
-        PhysicsPlayerController m_PhysicsPlayerController;
+#if UNITY_EDITOR
+        public bool AvatarTransformPropertiesVisible;
+#endif
+
+        public PlayerInput PlayerInput;
+        
+        public AvatarInputs AvatarInputs;
+        
+        public AvatarInteractions AvatarInteractions;
+        
+        public PhysicsPlayerController PhysicsPlayerController;
 
         Camera m_MainCamera;
 
@@ -32,11 +35,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            m_PlayerInput.enabled = true;
-            m_AvatarInputs.enabled = true;
-            m_AvatarInputs.Jumped += OnJumped;
-            m_AvatarInteractions.enabled = true;
-            m_PhysicsPlayerController.enabled = true;
+            PlayerInput.enabled = true;
+            AvatarInputs.enabled = true;
+            AvatarInputs.Jumped += OnJumped;
+            AvatarInteractions.enabled = true;
+            PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
             // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
@@ -65,9 +68,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             base.OnNetworkDespawn();
 
-            if (m_AvatarInputs != null)
+            if (AvatarInputs != null)
             {
-                m_AvatarInputs.Jumped -= OnJumped;
+                AvatarInputs.Jumped -= OnJumped;
             }
 
             this.UnregisterAllNetworkUpdates();
@@ -81,7 +84,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnJumped()
         {
-            m_PhysicsPlayerController.SetJump(true);
+            PhysicsPlayerController.SetJump(true);
         }
 
         void OnTransformUpdate()
@@ -96,9 +99,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 forward.Normalize();
                 right.Normalize();
 
-                Vector3 movement = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
-                m_PhysicsPlayerController.SetMovement(movement);
-                m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+                Vector3 movement = forward * AvatarInputs.Move.y + right * AvatarInputs.Move.x;
+                PhysicsPlayerController.SetMovement(movement);
+                PhysicsPlayerController.SetSprint(AvatarInputs.Sprint);
             }
         }
 
@@ -110,7 +113,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                     OnTransformUpdate();
                     break;
                 case NetworkUpdateStage.FixedUpdate:
-                    m_PhysicsPlayerController.OnFixedUpdate();
+                    PhysicsPlayerController.OnFixedUpdate();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(updateStage), updateStage, null);

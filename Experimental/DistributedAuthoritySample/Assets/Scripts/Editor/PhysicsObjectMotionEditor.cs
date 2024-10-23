@@ -1,32 +1,36 @@
 using Unity.Multiplayer.Samples.SocialHub.Physics;
-using UnityEngine;
 using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Editor
 {
-    [CustomEditor(typeof(PhysicsObjectMotion))]
-    class PhysicsObjectMotionEditor : UnityEditor.Editor
+    /// <summary>
+    /// The custom editor for the <see cref="PhysicsObjectMotion"/> component.
+    /// </summary>
+    [CustomEditor(typeof(PhysicsObjectMotion), true)]
+    public class PhysicsObjectMotionEditor : BaseObjectMotionHandlerEditor
     {
-        public override VisualElement CreateInspectorGUI()
+        private SerializedProperty m_MaxAngularVelocity;
+        private SerializedProperty m_MaxVelocity;
+
+        public override void OnEnable()
         {
-            // Create a new VisualElement to be the root of the inspector UI
-            var root = new VisualElement();
+            m_MaxAngularVelocity = serializedObject.FindProperty(nameof(PhysicsObjectMotion.MaxAngularVelocity));
+            m_MaxVelocity = serializedObject.FindProperty(nameof(PhysicsObjectMotion.MaxVelocity));
+            base.OnEnable();
+        }
 
-            // Generate default inspector for AvatarTransform
-            serializedObject.Update();
-            SerializedProperty property = serializedObject.GetIterator();
-            property.NextVisible(true); // Skip the script field
-            while (property.NextVisible(false))
-            {
-                var propertyField = new PropertyField(property);
-                root.Add(propertyField);
-            }
+        private void DisplayPhysicsObjectMotionProperties()
+        {
+            EditorGUILayout.PropertyField(m_MaxAngularVelocity);
+            EditorGUILayout.PropertyField(m_MaxVelocity);
+        }
 
-            serializedObject.ApplyModifiedProperties();
-
-            return root;
+        public override void OnInspectorGUI()
+        {
+            var physicsObject = target as PhysicsObjectMotion;
+            void SetExpanded(bool expanded) { physicsObject.PhysicsObjectMotionPropertiesVisible = expanded; };
+            DrawFoldOutGroup<PhysicsObjectMotion>(physicsObject.GetType(), DisplayPhysicsObjectMotionProperties, physicsObject.PhysicsObjectMotionPropertiesVisible, SetExpanded);
+            base.OnInspectorGUI();
         }
     }
 }

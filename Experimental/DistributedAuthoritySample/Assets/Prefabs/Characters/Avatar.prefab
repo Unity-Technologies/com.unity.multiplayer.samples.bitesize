@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3001504883
+  GlobalObjectIdHash: 2473698027
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -65,6 +65,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &5446307037829169848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e253f865ab604b12a7f84e3d97704d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
   AuthorityMode: 1
+  TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
@@ -95,20 +100,35 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
-  m_CollisionType: 1
-  m_CollisionDamage: 0
-  m_DebugCollisions: 0
-  m_DebugDamage: 0
-  m_Colliders:
+  BaseObjectMotionHandlerPropertiesVisible: 1
+  IsPooled: 1
+  CollisionType: 1
+  CollisionDamage: 0
+  DebugCollisions: 0
+  DebugDamage: 0
+  Colliders:
   - {fileID: 36137897785899347}
-  m_MaxAngularVelocity: 10
-  m_MaxVelocity: 10
-  m_PlayerInput: {fileID: 4903152183366241606}
-  m_AvatarInputs: {fileID: 8197190117666738524}
-  m_AvatarInteractions: {fileID: 539700041658036575}
-  m_PhysicsPlayerController: {fileID: 4655812346339390596}
+  PhysicsObjectMotionPropertiesVisible: 1
+  MaxAngularVelocity: 10
+  MaxVelocity: 10
+  m_Mass:
+    m_InternalValue: 1
+  m_AngularVelocity:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Velocity:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Torque:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  m_Force:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  AvatarTransformPropertiesVisible: 1
+  PlayerInput: {fileID: 4903152183366241606}
+  AvatarInputs: {fileID: 8197190117666738524}
+  AvatarInteractions: {fileID: 539700041658036575}
+  PhysicsPlayerController: {fileID: 4655812346339390596}
 --- !u!54 &4745766379562620470
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -148,6 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
@@ -212,6 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_AvatarNetworkAnimator: {fileID: 7543523986693376117}
   m_AnimationEventRelayer: {fileID: 3050276823525430539}
   m_MainCollider: {fileID: 36137897785899347}
@@ -249,6 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df477f8da5cc5436fb68de2bde7515aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList:
   - IsCrossFadeExit: 0
     Layer: 0
