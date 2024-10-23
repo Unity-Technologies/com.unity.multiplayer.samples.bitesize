@@ -1506,9 +1506,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 309633228405838073, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4634949050256877846}
-    - targetCorrespondingSourceObject: {fileID: 309633228405838073, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4589486523240472741}
     - targetCorrespondingSourceObject: {fileID: 309633228405838073, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
       insertIndex: -1
@@ -1844,33 +1841,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 309633228405838073, guid: 062b3805bf6784e4d9c599ee60eaa002, type: 3}
   m_PrefabInstance: {fileID: 8620758904180090224}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4634949050256877846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8353930243667998089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 773f019e80151034aa8663326cf3a1ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  turnSpeed: 7
-  jumpForce: 4
-  gravityScale: 2
-  pickupRange: 2
-  maximumThrowTime: 5
-  minimumThrowForce: 5
-  maximumThrowForce: 15
-  pickupLocChild: {fileID: 5809618227429677880}
-  leftHandContact: {fileID: 3721660875845472093}
-  rightHandContact: {fileID: 150371580926074530}
-  pickupAngleThreshold: 0.342
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!114 &4589486523240472741
 MonoBehaviour:
   m_ObjectHideFlags: 0
