@@ -11,8 +11,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         public event Action<NetworkBehaviour, NetworkObject.OwnershipRequestResponseStatus> OnNetworkObjectOwnershipRequestResponse;
 
+        internal ObjectState CurrentObjectState { get; private set; }
+
         public override void OnNetworkSpawn()
         {
+            if (HasAuthority)
+            {
+                NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
+                NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+            }
+
             base.OnNetworkSpawn();
 
             NetworkObject.OnOwnershipRequested += OnOwnershipRequested;
@@ -51,6 +59,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         void OnOwnershipRequestResponse(NetworkObject.OwnershipRequestResponseStatus ownershipRequestResponse)
         {
             OnNetworkObjectOwnershipRequestResponse?.Invoke(this, ownershipRequestResponse);
+        }
+
+        internal void SetObjectState(ObjectState state)
+        {
+            CurrentObjectState = state;
+        }
+
+        public enum ObjectState
+        {
+            AtRest,
+            PickedUp,
+            Thrown
         }
     }
 }

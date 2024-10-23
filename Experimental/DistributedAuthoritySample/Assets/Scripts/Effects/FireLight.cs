@@ -1,21 +1,27 @@
 ﻿using UnityEngine;
 
-public class FireLight : MonoBehaviour
+namespace Unity.Multiplayer.Samples.SocialHub.Effects
 {
-	public AnimationCurve lightCurve;
-	public float fireSpeed = 1f;
+    class FireLight : MonoBehaviour
+    {
+        [SerializeField]
+        AnimationCurve m_LightCurve;
 
-	private Light _lightComp;
-	private float _initialIntensity;
+        [SerializeField]
+        float m_FireSpeed = 1f;
 
-	private void Awake()
-	{
-		_lightComp = GetComponent<Light>();
-		_initialIntensity = _lightComp.intensity;
-	}
+        Light m_Light;
+        float m_InitialIntensity;
 
-	void Update()
-	{
-		_lightComp.intensity = _initialIntensity * lightCurve.Evaluate(Time.time * fireSpeed);
-	}
+        void Awake()
+        {
+            m_Light = GetComponent<Light>();
+            m_InitialIntensity = m_Light.intensity;
+        }
+
+        void Update()
+        {
+            m_Light.intensity = m_InitialIntensity * m_LightCurve.Evaluate(Time.time * m_FireSpeed);
+        }
+    }
 }

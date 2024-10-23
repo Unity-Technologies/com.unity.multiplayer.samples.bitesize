@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using Unity.Multiplayer.Samples.SocialHub.Input;
+using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -47,6 +48,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         TransferableObject m_TransferableObject;
 
+        PickUpIndicator m_PickUpIndicator;
+
+        CarryBoxIndicator m_CarryBoxIndicator;
+
+        PlayersTopUIController m_TopUIController;
+
         const float k_MinDurationHeld = 0f;
         const float k_MaxDurationHeld = 2f;
 
@@ -58,6 +65,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void Awake()
         {
             m_PickupableLayerMask = 1 << LayerMask.NameToLayer("Pickupable");
+        }
+
+        void Update()
+        {
+            CheckForPickupsInRange();
         }
 
         public override void OnNetworkSpawn()
@@ -78,6 +90,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogWarning("Assign AvatarInputs in the inspector!");
                 return;
             }
+
+            m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
+            m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
+            m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
+
+            m_TopUIController.AddPlayer(gameObject);
 
             m_AvatarInputs.TapInteractionPerformed += OnTapPerformed;
             m_AvatarInputs.HoldInteractionPerformed += OnHoldStarted;
@@ -106,6 +124,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 m_AnimationEventRelayer.PickupActionAnimationEvent -= OnPickupActionAnimationEvent;
             }
+
+            m_TopUIController.RemovePlayer(gameObject);
 
             this.UnregisterAllNetworkUpdates();
         }
@@ -184,6 +204,27 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
         }
 
+        void CheckForPickupsInRange()
+        {
+            if(m_TransferableObject != null)
+            {
+                m_PickUpIndicator.ClearPickup();
+                return;
+            }
+
+            m_CarryBoxIndicator.HideCarry();
+
+            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
+            {
+                if(m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
+                {
+                    m_PickUpIndicator.ShowPickup(otherNetworkObject.transform);
+                    return;
+                }
+            }
+            m_PickUpIndicator.ClearPickup();
+        }
+
         void PickUp()
         {
             if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
@@ -247,6 +288,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference(other);
             // set ownership status to request required, now that this object is being held
             other.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.PickedUp);
             // For immediate notification
             OnObjectPickedUpRpc(m_CurrentTransferableObject.Value);
             // Rotate the player to face the item smoothly
@@ -269,6 +311,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 yield return null;
             }
 
+            // show indicator for carry
+            m_CarryBoxIndicator.ShowCarry(transform);
+
             // Ensure the final rotation is exactly towards the target
             transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0); // Keep only the y-axis rotation
         }
@@ -282,6 +327,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 return;
             }
+
+            if (m_TransferableObject == null || !m_TransferableObject.IsSpawned)
+            {
+                // object being picked up may have been despawned while trying to pick it up
+                return;
+            }
+
             OnPickupAction(OwnerClientId);
         }
 
@@ -300,8 +352,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // Create FixedJoint and connect it to the player's hand
             transferableObjectTransform.position = m_PickupLocChild.transform.position;
             transferableObjectTransform.rotation = m_PickupLocChild.transform.rotation;
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.PickedUp);
 
-            // prevent collisions from this collider to the picked up object and vice-versa
+            // prevent collisions from this collider to the picked up object and vice versa
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), true);
 
             if (HasAuthority)
@@ -326,6 +379,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // set ownership status to request required, now that this object is being held
             m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
             m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.AtRest);
             OnDropAction();
         }
 
@@ -334,6 +388,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.AtRest);
             m_TransferableObject = null;
         }
 
@@ -355,6 +410,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             float tossForce = Mathf.Lerp(m_MinTossForce, m_MaxTossForce, Mathf.Clamp(timeHeldClamped, 0f, 1f));
             transferableObjectRigidbody.AddForce(transform.forward * tossForce, ForceMode.Impulse);
 
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.Thrown);
             m_TransferableObject = null;
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
         }
@@ -362,6 +418,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnThrowAction()
         {
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
+            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.Thrown);
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
             m_TransferableObject = null;

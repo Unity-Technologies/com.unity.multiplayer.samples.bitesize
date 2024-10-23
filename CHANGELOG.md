@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.8.0] 2024-10-21
+
+### Multiplayer Use Cases
+
+#### Added
+- The last page of the "Data/Event Synchronization" tutorial redirects to the "Proximity Checks" tutorial
+- Imported TextMeshPro essentials so you don't have to do it
+
+#### Changed
+- Updated project to Unity 6 (and packages to the latest stable versions)
+- All inputs are handled through the new Unity Input System
+- In-Game UI is now responsive and adapts to screen size
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+- Disabled compatibility mode for RenderGraph, as it's going to be deprecated and throws warnings
+- Removed runtime network stats monitor from the scene to improve readability
+- Removed deprecated visual studio code package
+
+#### Fixed
+- Fixed "Build Profile" window not being clickable during the last page of each tutorial
+
 ## [1.7.0] 2024-08-31
 
 ### Bitesize Samples Repository
@@ -373,7 +393,7 @@ A new sample was added named client driven. It focus on client driven movements,
 
 #### Known Issues
 
-- Upon import a MissingReferenceException is triggered from within MLAPI: **"MissingReferenceException: The object of type ‘GameObject’ has been destroyed but you are still trying to access it.
+- Upon import a MissingReferenceException is triggered from within MLAPI: **"MissingReferenceException: The object of type ‘GameObject' has been destroyed but you are still trying to access it.
   Your script should either check if it is null or you should not destroy the object."** in:
   - UnityEngine.GameObject.GetComponent[T] () (at /Users/bokken/buildslave/unity/build/Runtime/Export/Scripting/GameObject.bindings.cs:28)
 

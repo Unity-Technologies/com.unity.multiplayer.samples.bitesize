@@ -1,13 +1,19 @@
 using UnityEngine;
 
-public class Watermill : MonoBehaviour
+namespace Unity.Multiplayer.Samples.SocialHub.Effects
 {
-	public AnimationCurve rotationRhythm;
-	public Transform wheel;
-	public float speed;
-    
-    void Update()
+    class Watermill : MonoBehaviour
     {
-		wheel.Rotate(0f, 0f, rotationRhythm.Evaluate(Time.time) * speed * Time.deltaTime);
+        [SerializeField]
+        AnimationCurve m_RotationRhythm;
+        [SerializeField]
+        Transform m_Wheel;
+        [SerializeField]
+        float m_Speed;
+
+        void Update()
+        {
+            m_Wheel.Rotate(0f, 0f, m_RotationRhythm.Evaluate(Time.time) * m_Speed * Time.deltaTime);
+        }
     }
 }
