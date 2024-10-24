@@ -58,9 +58,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void HandleStartButtonPressed()
         {
+            string playerName = m_PlayerNameField.value;
             string sessionName = m_SessionNameField.value;
             m_StartButton.enabledSelf = false;
-            GameplayEventHandler.StartButtonPressed(sessionName);
+            GameplayEventHandler.StartButtonPressed(playerName, sessionName);
         }
 
         void HandleQuitButtonPressed()

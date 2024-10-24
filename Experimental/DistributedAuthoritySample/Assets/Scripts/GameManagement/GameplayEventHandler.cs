@@ -9,7 +9,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
     {
         internal static event Action<NetworkObject> OnNetworkObjectDespawned;
         internal static event Action<NetworkObject, ulong, ulong> OnNetworkObjectOwnershipChanged;
-        internal static event Action<string> OnStartButtonPressed;
+        internal static event Action<string, string> OnStartButtonPressed;
         internal static event Action OnReturnToMainMenuButtonPressed;
         internal static event Action OnQuitGameButtonPressed;
         internal static event Action<Task> OnConnectToSessionCompleted;
@@ -24,9 +24,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             OnNetworkObjectOwnershipChanged?.Invoke(networkObject, previous, current);
         }
 
-        internal static void StartButtonPressed(string sessionName)
+        internal static void StartButtonPressed(string playerName, string sessionName)
         {
-            OnStartButtonPressed?.Invoke(sessionName);
+            OnStartButtonPressed?.Invoke(playerName, sessionName);
         }
 
         internal static void ReturnToMainMenuPressed()

@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3001504883
+  GlobalObjectIdHash: 2473698027
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 0
@@ -65,6 +65,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &5446307037829169848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e253f865ab604b12a7f84e3d97704d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
   AuthorityMode: 1
+  TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
@@ -95,6 +100,7 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
   m_CollisionType: 1
@@ -148,6 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
@@ -198,7 +206,7 @@ MonoBehaviour:
   Look: {x: 0, y: 0}
   Sprint: 0
   AnalogMovement: 0
-  CursorLocked: 1
+  CursorLocked: 0
   CursorInputForLook: 1
 --- !u!114 &539700041658036575
 MonoBehaviour:
@@ -212,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b47efef44cef74d9ca00f4913607f988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_AvatarNetworkAnimator: {fileID: 7543523986693376117}
   m_AnimationEventRelayer: {fileID: 3050276823525430539}
   m_MainCollider: {fileID: 36137897785899347}
@@ -249,6 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df477f8da5cc5436fb68de2bde7515aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList:
   - IsCrossFadeExit: 0
     Layer: 0
