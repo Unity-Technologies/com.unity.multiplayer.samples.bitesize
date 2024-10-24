@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
@@ -12,6 +13,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         TextField m_SessionNameField;
         Button m_StartButton;
         Button m_QuitButton;
+
+        const int k_AuthenticationMaxNameLength = 50;
 
         void Start()
         {
@@ -51,9 +54,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnFieldChanged()
         {
-            string playerName = m_PlayerNameField.value;
+            m_PlayerNameField.value = SanitizePlayerName(m_PlayerNameField.value);
             string sessionName = m_SessionNameField.value;
-            m_StartButton.SetEnabled(!string.IsNullOrEmpty(playerName) && !string.IsNullOrEmpty(sessionName));
+            m_StartButton.SetEnabled(!string.IsNullOrEmpty(m_PlayerNameField.value) && !string.IsNullOrEmpty(sessionName));
         }
 
         void HandleStartButtonPressed()
@@ -62,6 +65,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             string sessionName = m_SessionNameField.value;
             m_StartButton.enabledSelf = false;
             GameplayEventHandler.StartButtonPressed(playerName, sessionName);
+        }
+
+        static string SanitizePlayerName(string dirtyString)
+        {
+            var output = Regex.Replace(dirtyString, @"\s", "");
+            return output[..Math.Min(output.Length, k_AuthenticationMaxNameLength)];
         }
 
         void HandleQuitButtonPressed()

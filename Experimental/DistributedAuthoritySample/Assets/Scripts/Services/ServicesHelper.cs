@@ -119,18 +119,31 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             await VivoxService.Instance.LoginAsync(options);
         }
 
+        static string GetRandomString(int length)
+        {
+            var r = new System.Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = (char)r.Next('a', 'z' + 1);
+            }
+
+            return new string(result);
+        }
+
         void LoggedInToVivox()
         {
             Debug.Log(nameof(LoggedInToVivox));
         }
 
-        async Task SignIn(string profileName)
+        async Task SignIn()
         {
             try
             {
                 AuthenticationService.Instance.SignInFailed += SignInFailed;
                 AuthenticationService.Instance.SignedIn += SignedIn;
-                AuthenticationService.Instance.SwitchProfile(profileName);
+                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
             catch (Exception e)
@@ -149,8 +162,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
             if (!AuthenticationService.Instance.IsSignedIn)
             {
-                await SignIn(playerName);
+                await SignIn();
             }
+
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
 
             if (string.IsNullOrEmpty(sessionName))
             {

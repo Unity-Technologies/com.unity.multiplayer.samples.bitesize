@@ -43,7 +43,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.Profile);
+            // a randomly-generated suffix consisting of a hash and four digits (e.g. #1234) is automatically appended to the requested name
+            m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerName.Split('#')[0]);
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
             m_AvatarInputs.Jumped += OnJumped;
