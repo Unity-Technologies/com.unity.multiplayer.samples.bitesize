@@ -13,18 +13,23 @@ pull_request_trigger:
     - .yamato/tests.yml#test_{{ project.name }}_{{ editor }}_{{ platform.name }}
 {% endif -%}
 {% endfor -%}
+{% if project.name != "dedicatedgameserver" -%}
+    # iOS
+    - .yamato/mobile-build-and-run.yml#Build_Player_With_Tests_iOS_{{ project.name }}_{{ editor }}
+    # Android
+    - .yamato/mobile-build-and-run.yml#Build_Player_With_Tests_Android_{{ project.name }}_{{ editor }}
+{% endif -%}
 {% endfor -%}
 {% endfor -%}
   triggers:
     cancel_old_ci: true
-    expression: |-
-     (pull_request.target eq "main" OR
-      pull_request.target eq "develop" OR
-      pull_request.target match "/^sample\//") AND
-      NOT pull_request.draft AND
-      (NOT pull_request.changes.any match "Basic/**/*" AND 
-       NOT pull_request.changes.any match "Experimental/**/*")
-      
+    pull_requests:
+    - targets:
+        only:
+          - "main"
+          - "develop"
+          - "/^sample\//"
+          - "/sample\/.*/"
 
 # Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
 external_ngo_develop_pull_request_trigger:
