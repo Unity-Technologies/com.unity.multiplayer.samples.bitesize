@@ -33,7 +33,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         GameObject m_RightHandContact;
 
         [SerializeField]
-        Collider m_InteractCollider;
+        BoxCollider m_InteractCollider;
 
         [SerializeField]
         float m_MinTossForce;
@@ -61,9 +61,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         static readonly int k_ThrowId = Animator.StringToHash("Throw");
         static readonly int k_ThrowReleaseId = Animator.StringToHash("ThrowRelease");
 
+        Vector3 m_InitialInteractColliderSize;
+        Vector3 m_BoneLocalPosition;
+
         void Awake()
         {
             m_PickupableLayerMask = 1 << LayerMask.NameToLayer("Pickupable");
+            m_InitialInteractColliderSize = m_InteractCollider.size;
+            m_BoneLocalPosition = transform.InverseTransformPoint(m_PickupLocChild.transform.parent.position);
         }
 
         void Update()
@@ -161,6 +166,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if (m_TransferableObject != null && m_TransferableObject.NetworkObject == networkObject && !networkObject.HasAuthority)
             {
                 m_AvatarNetworkAnimator.SetTrigger(k_DropId);
+                m_InteractCollider.isTrigger = false;
                 UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
                 m_TransferableObject = null;
                 m_PickupLocFixedJoint.connectedBody = null;
@@ -177,7 +183,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
             else
             {
-                PickUp();
+                TryPickUp();
             }
         }
 
@@ -200,7 +206,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void CheckForPickupsInRange()
         {
-            if(m_TransferableObject != null)
+            if (m_TransferableObject != null)
             {
                 m_PickUpIndicator.ClearPickup();
                 return;
@@ -210,7 +216,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
             {
-                if(m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
+                if (m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
                 {
                     m_PickUpIndicator.ShowPickup(otherNetworkObject.transform);
                     return;
@@ -219,45 +225,50 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PickUpIndicator.ClearPickup();
         }
 
-        void PickUp()
+        void TryPickUp()
         {
-            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
+            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position + (transform.forward * 0.5f), Vector3.one, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
             {
-                if (m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject)
-                    && otherNetworkObject.TryGetComponent(out TransferableObject otherTransferableObject))
+                if (m_Results[0].TryGetComponent(out TransferableObject otherTransferableObject))
                 {
-                    // if NetworkObject is locked, nothing we can do but retry a pickup at another time
-                    if (otherNetworkObject.IsOwnershipLocked)
-                    {
-                        return;
-                    }
+                    HandleOwnershipTransfer(otherTransferableObject);
+                }
+            }
+        }
 
-                    m_TransferableObject = otherTransferableObject;
-                    // trivial case: other NetworkObject is owned by this client, we can attach to fixed joint
-                    if (otherNetworkObject.HasAuthority)
-                    {
-                        StartPickup(otherTransferableObject);
-                        return;
-                    }
+        void HandleOwnershipTransfer(TransferableObject otherTransferableObject)
+        {
+            var otherNetworkObject = otherTransferableObject.NetworkObject;
+            // if NetworkObject is locked, nothing we can do but retry a pickup at another time
+            if (otherNetworkObject.IsOwnershipLocked)
+            {
+                return;
+            }
 
-                    if (otherNetworkObject.IsOwnershipTransferable)
-                    {
-                        // can use change ownership directly
-                        otherNetworkObject.ChangeOwnership(OwnerClientId);
+            m_TransferableObject = otherTransferableObject;
+            // trivial case: other NetworkObject is owned by this client, we can attach to fixed joint
+            if (otherNetworkObject.HasAuthority)
+            {
+                StartPickup(otherTransferableObject);
+                return;
+            }
 
-                        StartPickup(otherTransferableObject);
-                    }
-                    else if (otherNetworkObject.IsOwnershipRequestRequired)
+            if (otherNetworkObject.IsOwnershipTransferable)
+            {
+                // can use change ownership directly
+                otherNetworkObject.ChangeOwnership(OwnerClientId);
+
+                StartPickup(otherTransferableObject);
+            }
+            else if (otherNetworkObject.IsOwnershipRequestRequired)
+            {
+                // if not transferable, we must request access to become owner
+                if (m_Results[0].TryGetComponent(out IOwnershipRequestable otherRequestable))
+                {
+                    var ownershipRequestStatus = otherNetworkObject.RequestOwnership();
+                    if (ownershipRequestStatus == NetworkObject.OwnershipRequestStatus.RequestSent)
                     {
-                        // if not transferable, we must request access to become owner
-                        if (m_Results[0].TryGetComponent(out IOwnershipRequestable otherRequestable))
-                        {
-                            var ownershipRequestStatus = otherNetworkObject.RequestOwnership();
-                            if (ownershipRequestStatus == NetworkObject.OwnershipRequestStatus.RequestSent)
-                            {
-                                otherRequestable.OnNetworkObjectOwnershipRequestResponse += OnOwnershipRequestResponse;
-                            }
-                        }
+                        otherRequestable.OnNetworkObjectOwnershipRequestResponse += OnOwnershipRequestResponse;
                     }
                 }
             }
@@ -334,25 +345,38 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [Rpc(SendTo.NotAuthority)]
         void OnObjectPickedUpRpc(NetworkBehaviourReference networkBehaviourReference, RpcParams rpcParams = default)
         {
-            if (networkBehaviourReference.TryGet(out m_TransferableObject, NetworkManager))
+            if (networkBehaviourReference.TryGet(out m_TransferableObject, NetworkManager)
+                && m_TransferableObject.IsSpawned)
             {
                 OnPickupAction(rpcParams.Receive.SenderClientId);
             }
         }
 
-        void OnPickupAction(ulong clientId)
+        void OnPickupAction(ulong _)
         {
             var transferableObjectTransform = m_TransferableObject.transform;
             // Create FixedJoint and connect it to the player's hand
             transferableObjectTransform.position = m_PickupLocChild.transform.position;
             transferableObjectTransform.rotation = m_PickupLocChild.transform.rotation;
-            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.PickedUp);
 
-            // prevent collisions from this collider to the picked up object and vice versa
-            UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), true);
+            // prevent collisions from the main collider to the picked up object and vice versa
+            var transferableObjectCollider = m_TransferableObject.GetComponent<Collider>();
+            UnityEngine.Physics.IgnoreCollision(m_MainCollider, transferableObjectCollider, true);
 
             if (HasAuthority)
             {
+                m_InteractCollider.isTrigger = false;
+                if (transferableObjectCollider is BoxCollider boxCollider)
+                {
+                    m_InteractCollider.size = boxCollider.size;
+                    m_InteractCollider.center = boxCollider.center;
+                    m_InteractCollider.transform.localPosition = m_BoneLocalPosition;
+                }
+                else
+                {
+                    m_InteractCollider.size = transferableObjectCollider.bounds.size;
+                }
+
                 var transferableObjectRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
                 transferableObjectRigidbody.useGravity = false;
                 m_PickupLocFixedJoint.connectedBody = transferableObjectRigidbody;
@@ -365,20 +389,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_RightHandContact.transform.rotation = m_TransferableObject.RightHand.transform.rotation;
         }
 
+        // invoked by authority
         void DropAction()
         {
             m_AvatarNetworkAnimator.SetTrigger(k_DropId);
             m_PickupLocFixedJoint.connectedBody = null;
-            m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
-            // set ownership status to request required, now that this object is being held
-            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
-            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
-            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.AtRest);
+            // unlock the object when dropped
+            SetTransferableObjectAsTransferableDistributable();
             OnDropAction();
+            m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
         }
 
+        // invoked on all clients
         void OnDropAction()
         {
+            ResetMainCollider();
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
@@ -386,36 +411,46 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_TransferableObject = null;
         }
 
+        // invoked by authority
         void ThrowAction(double holdDuration)
         {
-            var transferableObjectRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
-            UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
-
             m_AvatarNetworkAnimator.SetTrigger(k_ThrowReleaseId);
             m_PickupLocFixedJoint.connectedBody = null;
-            // Unlock the object when we drop it
-            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
-            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
-            transferableObjectRigidbody.detectCollisions = true;
-            transferableObjectRigidbody.useGravity = true;
+            // unlock the object when thrown
+            SetTransferableObjectAsTransferableDistributable();
 
             // apply a force to the released object
+            var transferableObjectRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             float timeHeldClamped = Mathf.Clamp((float)holdDuration, k_MinDurationHeld, k_MaxDurationHeld);
             float tossForce = Mathf.Lerp(m_MinTossForce, m_MaxTossForce, Mathf.Clamp(timeHeldClamped, 0f, 1f));
             transferableObjectRigidbody.AddForce(transform.forward * tossForce, ForceMode.Impulse);
 
-            m_TransferableObject.SetObjectState(TransferableObject.ObjectState.Thrown);
-            m_TransferableObject = null;
+            OnThrowAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
         }
 
+        // invoked on all clients
         void OnThrowAction()
         {
-            var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
+            ResetMainCollider();
             m_TransferableObject.SetObjectState(TransferableObject.ObjectState.Thrown);
+            var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
             m_TransferableObject = null;
+        }
+
+        void SetTransferableObjectAsTransferableDistributable()
+        {
+            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
+            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+        }
+
+        void ResetMainCollider()
+        {
+            m_InteractCollider.isTrigger = true;
+            m_InteractCollider.center = Vector3.zero;
+            m_InteractCollider.size = m_InitialInteractColliderSize;
         }
 
         [Rpc(SendTo.NotAuthority)]
