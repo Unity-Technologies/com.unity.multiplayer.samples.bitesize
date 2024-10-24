@@ -36,7 +36,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         // tracking when a Hold interaction has started/ended
         bool m_HoldingInteractionPerformed;
 
-        void Start()
+        void OnEnable()
         {
             if (m_InteractActionReference == null)
             {
@@ -46,16 +46,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
 
             m_InteractActionReference.action.performed += OnInteractPerformed;
             m_InteractActionReference.action.canceled += OnInteractCanceled;
-            m_InteractActionReference.action.Enable();
         }
 
-        void OnDestroy()
+        void OnDisable()
         {
             if (m_InteractActionReference != null)
             {
                 m_InteractActionReference.action.performed -= OnInteractPerformed;
                 m_InteractActionReference.action.canceled -= OnInteractCanceled;
-                m_InteractActionReference.action.Disable();
             }
         }
 

@@ -17,8 +17,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         static bool s_InitialLoad;
 
-        string m_SessionName;
-
         Task m_SessionTask;
 
         ISession m_CurrentSession;
@@ -50,10 +48,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
         }
 
-        async void OnStartButtonPressed(string sessionName)
+        async void OnStartButtonPressed(string playerName, string sessionName)
         {
-            m_SessionName = sessionName;
-            var connectTask = ConnectToSession();
+            var connectTask = ConnectToSession(playerName, sessionName);
             await connectTask;
             GameplayEventHandler.ConnectToSessionComplete(connectTask);
         }
@@ -70,9 +67,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             Application.Quit();
         }
 
-        void LeaveSession()
+        async void LeaveSession()
         {
-            m_CurrentSession?.LeaveAsync();
+            if (m_CurrentSession != null)
+            {
+                try
+                {
+                    await m_CurrentSession.LeaveAsync();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    throw;
+                }
+            }
         }
 
         void SignInFailed(RequestFailedException obj)
@@ -111,18 +119,31 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             await VivoxService.Instance.LoginAsync(options);
         }
 
+        static string GetRandomString(int length)
+        {
+            var r = new System.Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = (char)r.Next('a', 'z' + 1);
+            }
+
+            return new string(result);
+        }
+
         void LoggedInToVivox()
         {
             Debug.Log(nameof(LoggedInToVivox));
         }
 
-        async Task SignIn(string profileName)
+        async Task SignIn()
         {
             try
             {
                 AuthenticationService.Instance.SignInFailed += SignInFailed;
                 AuthenticationService.Instance.SignedIn += SignedIn;
-                AuthenticationService.Instance.SwitchProfile(profileName);
+                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
             catch (Exception e)
@@ -132,7 +153,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
         }
 
-        async Task ConnectToSession()
+        async Task ConnectToSession(string playerName, string sessionName)
         {
             if (AuthenticationService.Instance == null)
             {
@@ -141,16 +162,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
             if (!AuthenticationService.Instance.IsSignedIn)
             {
-                await SignIn(m_SessionName);
+                await SignIn();
             }
 
-            if (string.IsNullOrEmpty(m_SessionName))
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
+
+            if (string.IsNullOrEmpty(sessionName))
             {
                 Debug.LogError("Session name is empty. Cannot connect.");
                 return;
             }
 
-            await ConnectThroughLiveService(m_SessionName);
+            await ConnectThroughLiveService(sessionName);
         }
 
         async Task ConnectThroughLiveService(string sessionName)
@@ -163,14 +186,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                     MaxPlayers = 64,
                 }.WithDistributedAuthorityNetwork();
 
-                if (m_CurrentSession == null)
-                {
-                    m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-                }
-                else
-                {
-                    await MultiplayerService.Instance.JoinSessionByIdAsync(m_CurrentSession.Id);
-                }
+                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
 
                 LoadHubScene();
             }
