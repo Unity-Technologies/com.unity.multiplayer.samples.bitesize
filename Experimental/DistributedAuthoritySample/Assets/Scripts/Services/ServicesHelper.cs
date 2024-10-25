@@ -1,31 +1,25 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Unity.Multiplayer.Samples.SocialHub.UI;
-using Unity.Netcode;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = System.Random;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
     class ServicesHelper : MonoBehaviour
     {
         [SerializeField]
-        bool m_AutoAuthenticateOnStart;
-
-        [SerializeField]
         bool m_InitiateVivoxOnAuthentication;
 
-        string m_SessionName;
+        static bool s_InitialLoad;
 
         Task m_SessionTask;
 
-        ISession m_LastSession;
+        ISession m_CurrentSession;
 
         void Awake()
         {
@@ -34,28 +28,59 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void Start()
         {
-            if (m_AutoAuthenticateOnStart)
-            {
-                await UnityServices.InitializeAsync();
+            await UnityServices.InitializeAsync();
 
-                if (!AuthenticationService.Instance.IsSignedIn)
-                {
-                    AuthenticationService.Instance.SignInFailed += SignInFailed;
-                    AuthenticationService.Instance.SignedIn += SignedIn;
-                    AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                }
+            if (!s_InitialLoad)
+            {
+                s_InitialLoad = true;
+                LoadMenuScene();
             }
 
-            HomeScreenView.StartButtonPressed += OnStartButtonPressed;
-            IngameMenu.OnQuitGamePressed += () => { Debug.Log("Not implemented");};
-            IngameMenu.OnGoToMainScenePressed += () => { Debug.Log("Not implemented");};
+            GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
+            GameplayEventHandler.OnReturnToMainMenuButtonPressed += OnReturnToMainMenuButtonPressed;
+            GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
         }
 
-        async void OnStartButtonPressed(string sessionName)
+        void OnDestroy()
         {
-            m_SessionName = sessionName;
-            await ConnectToSession();
+            GameplayEventHandler.OnStartButtonPressed -= OnStartButtonPressed;
+            GameplayEventHandler.OnReturnToMainMenuButtonPressed -= OnReturnToMainMenuButtonPressed;
+            GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
+        }
+
+        async void OnStartButtonPressed(string playerName, string sessionName)
+        {
+            var connectTask = ConnectToSession(playerName, sessionName);
+            await connectTask;
+            GameplayEventHandler.ConnectToSessionComplete(connectTask);
+        }
+
+        void OnReturnToMainMenuButtonPressed()
+        {
+            LeaveSession();
+            LoadMenuScene();
+        }
+
+        void OnQuitGameButtonPressed()
+        {
+            LeaveSession();
+            Application.Quit();
+        }
+
+        async void LeaveSession()
+        {
+            if (m_CurrentSession != null)
+            {
+                try
+                {
+                    await m_CurrentSession.LeaveAsync();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    throw;
+                }
+            }
         }
 
         void SignInFailed(RequestFailedException obj)
@@ -65,13 +90,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void SignedIn()
         {
-            Debug.Log(nameof(SignedIn));
             if (m_InitiateVivoxOnAuthentication)
             {
-                Login();
+                LogInToVivox();
             }
-
-            LoadMenuScene();
         }
 
         void LoadMenuScene()
@@ -84,7 +106,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             SceneManager.LoadScene("HubScene_TownMarket");
         }
 
-        async void Login()
+        async void LogInToVivox()
         {
             await VivoxService.Instance.InitializeAsync();
 
@@ -97,31 +119,61 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             await VivoxService.Instance.LoginAsync(options);
         }
 
+        static string GetRandomString(int length)
+        {
+            var r = new System.Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = (char)r.Next('a', 'z' + 1);
+            }
+
+            return new string(result);
+        }
+
         void LoggedInToVivox()
         {
             Debug.Log(nameof(LoggedInToVivox));
         }
 
-        static string GetRandomString(int length)
+        async Task SignIn()
         {
-            var r = new Random();
-            return new string(Enumerable.Range(0, length).Select(_ => (Char)r.Next('a', 'z')).ToArray());
+            try
+            {
+                AuthenticationService.Instance.SignInFailed += SignInFailed;
+                AuthenticationService.Instance.SignedIn += SignedIn;
+                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                throw;
+            }
         }
 
-        async Task ConnectToSession()
+        async Task ConnectToSession(string playerName, string sessionName)
         {
-            if (AuthenticationService.Instance == null || !AuthenticationService.Instance.IsSignedIn)
+            if (AuthenticationService.Instance == null)
             {
                 return;
             }
 
-            if (string.IsNullOrEmpty(m_SessionName))
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                await SignIn();
+            }
+
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
+
+            if (string.IsNullOrEmpty(sessionName))
             {
                 Debug.LogError("Session name is empty. Cannot connect.");
                 return;
             }
 
-            await ConnectThroughLiveService(m_SessionName);
+            await ConnectThroughLiveService(sessionName);
         }
 
         async Task ConnectThroughLiveService(string sessionName)
@@ -134,59 +186,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                     MaxPlayers = 64,
                 }.WithDistributedAuthorityNetwork();
 
-                if (m_LastSession == null)
-                {
-                    m_LastSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-                }
-                else
-                {
-                    await MultiplayerService.Instance.JoinSessionByIdAsync(m_LastSession.Id);
-                }
+                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
 
                 LoadHubScene();
-
-                // DA TODO: m_NetworkManager.OnClientStopped += OnNetworkManagerStopped;
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
             }
-        }
-
-        void OnGUI()
-        {
-            if (AuthenticationService.Instance == null || !AuthenticationService.Instance.IsSignedIn)
-            {
-                return;
-            }
-
-            if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
-            {
-                GUI.enabled = m_SessionTask == null || m_SessionTask.IsCompleted;
-
-                GUILayout.Label("Session Name", GUILayout.Width(100));
-
-                if (GUILayout.Button("Host"))
-                {
-                    SceneManager.sceneLoaded += Host_SceneLoaded;
-                    LoadHubScene();
-
-                    //SceneManager.LoadScene("ObjectTesting");
-                }
-
-                if (GUILayout.Button("Client"))
-                {
-                    NetworkManager.Singleton.StartClient();
-                }
-
-                GUI.enabled = true;
-            }
-        }
-
-        void Host_SceneLoaded(Scene arg0, LoadSceneMode arg1)
-        {
-            SceneManager.sceneLoaded -= Host_SceneLoaded;
-            NetworkManager.Singleton.StartHost();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,10 +21,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VisualElement m_Menu;
 
         VisualElement m_SceenOverlay;
-
-        internal static event Action OnQuitGamePressed;
-        internal static event Action OnGoToMainScenePressed;
-
 
         void OnEnable()
         {
@@ -60,12 +57,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         static void GoToMainScene()
         {
-            OnGoToMainScenePressed?.Invoke();
+            GameplayEventHandler.ReturnToMainMenuPressed();
         }
 
         static void QuitGame()
         {
-            OnQuitGamePressed?.Invoke();
+            GameplayEventHandler.QuitGamePressed();
         }
 
         void ShowMenu()

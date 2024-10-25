@@ -1,4 +1,7 @@
 using System;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,7 +14,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         Button m_StartButton;
         Button m_QuitButton;
 
-        internal static event Action<string> StartButtonPressed;
+        const int k_AuthenticationMaxNameLength = 50;
+
+        void Start()
+        {
+            GameplayEventHandler.OnConnectToSessionCompleted += OnConnectToSessionCompleted;
+        }
+
+        void OnDestroy()
+        {
+            GameplayEventHandler.OnConnectToSessionCompleted -= OnConnectToSessionCompleted;
+        }
 
         public override void Initialize(VisualElement viewRoot)
         {
@@ -41,22 +54,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnFieldChanged()
         {
-            string playerName = m_PlayerNameField.value;
+            m_PlayerNameField.value = SanitizePlayerName(m_PlayerNameField.value);
             string sessionName = m_SessionNameField.value;
-            m_StartButton.SetEnabled(!string.IsNullOrEmpty(playerName) && !string.IsNullOrEmpty(sessionName));
+            m_StartButton.SetEnabled(!string.IsNullOrEmpty(m_PlayerNameField.value) && !string.IsNullOrEmpty(sessionName));
         }
 
         void HandleStartButtonPressed()
         {
+            string playerName = m_PlayerNameField.value;
             string sessionName = m_SessionNameField.value;
-            //this should be reset if something goes wrong on connect
             m_StartButton.enabledSelf = false;
-            StartButtonPressed?.Invoke(sessionName);
+            GameplayEventHandler.StartButtonPressed(playerName, sessionName);
+        }
+
+        static string SanitizePlayerName(string dirtyString)
+        {
+            var output = Regex.Replace(dirtyString, @"\s", "");
+            return output[..Math.Min(output.Length, k_AuthenticationMaxNameLength)];
         }
 
         void HandleQuitButtonPressed()
         {
-            Application.Quit();
+            GameplayEventHandler.QuitGamePressed();
+        }
+
+        void OnConnectToSessionCompleted(Task obj)
+        {
+            if (!obj.IsCompletedSuccessfully)
+            {
+                m_StartButton.enabledSelf = true;
+            }
         }
     }
 }

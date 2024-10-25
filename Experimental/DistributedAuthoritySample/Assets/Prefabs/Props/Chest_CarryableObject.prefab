@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: m_ProvidesContacts
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1081003696074514503, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: m_Collider
+      value: 
+      objectReference: {fileID: 4959042433798655250}
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: rubblePrefab
       value: 
@@ -261,6 +265,11 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!65 &4959042433798655250 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1070061854055180021, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+  m_PrefabInstance: {fileID: 5335517921941646311}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4975332333728566176 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1081003696074514503, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}

@@ -55,10 +55,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-        internal void AddPlayer(GameObject player)
+        internal void AddPlayer(GameObject player, string playerName)
         {
+            // if player has already been added, update name and return
+            if (m_PlayerToPlayerDisplayDict.TryGetValue(player, out var playerHeadDisplay))
+            {
+                playerHeadDisplay.SetPlayerName(playerName);
+                return;
+            }
+
             var display = GetDisplayForPlayer();
-            display.SetPlayerName(player.gameObject.name);
+            display.SetPlayerName(playerName);
             UpdateDisplayPosition(player.transform, display);
             m_PlayerToPlayerDisplayDict.Add(player, display);
         }

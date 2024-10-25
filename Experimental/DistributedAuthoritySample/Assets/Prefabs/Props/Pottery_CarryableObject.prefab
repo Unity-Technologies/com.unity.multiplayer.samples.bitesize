@@ -151,6 +151,10 @@ PrefabInstance:
       propertyPath: m_ProvidesContacts
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1081003696074514503, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: m_Collider
+      value: 
+      objectReference: {fileID: 4851839056760781028}
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: rubblePrefab
       value: 
@@ -189,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2093548513578380327, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1926722854
+      value: 1898126669
       objectReference: {fileID: 0}
     - target: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_Name
@@ -302,6 +306,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54937e94f00ab46c8ae43b81027f342c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &4851839056760781028 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1070061854055180021, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+  m_PrefabInstance: {fileID: 5588033086453456401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5519081190088884285 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 79685342591573548, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
