@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: m_ProvidesContacts
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1081003696074514503, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: m_Collider
+      value: 
+      objectReference: {fileID: 4959042433798655250}
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: rubblePrefab
       value: 
@@ -95,7 +99,7 @@ PrefabInstance:
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_RubblePrefab
       value: 
-      objectReference: {fileID: 8387396247047937556, guid: 7edc42645c2fba04892f066a0f38e825, type: 3}
+      objectReference: {fileID: -1386922736006940962, guid: 207d5e6445bda07469ed6abdda1bc59c, type: 3}
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_StartingHealth
       value: 10
@@ -248,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3630027201
+  GlobalObjectIdHash: 3034623722
   InScenePlacedSourceGlobalObjectIdHash: 3034623722
   DeferredDespawnTick: 0
   Ownership: 3
@@ -261,6 +265,11 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!65 &4959042433798655250 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1070061854055180021, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+  m_PrefabInstance: {fileID: 5335517921941646311}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4975332333728566176 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1081003696074514503, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
