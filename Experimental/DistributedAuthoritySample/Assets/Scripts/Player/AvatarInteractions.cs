@@ -41,9 +41,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         float m_MaxTossForce;
 
-        Collider[] m_Results = new Collider[1];
+        Collider[] m_Results = new Collider[4];
 
         LayerMask m_PickupableLayerMask;
+
+        Collider m_PotentialPickupCollider;
 
         NetworkVariable<NetworkBehaviourReference> m_CurrentTransferableObject = new NetworkVariable<NetworkBehaviourReference>(new NetworkBehaviourReference());
 
@@ -62,18 +64,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         static readonly int k_ThrowReleaseId = Animator.StringToHash("ThrowRelease");
 
         Vector3 m_InitialInteractColliderSize;
+        Vector3 m_InitialInteractColliderLocalPosition;
         Vector3 m_BoneLocalPosition;
 
         void Awake()
         {
             m_PickupableLayerMask = 1 << LayerMask.NameToLayer("Pickupable");
             m_InitialInteractColliderSize = m_InteractCollider.size;
+            m_InitialInteractColliderLocalPosition = m_InteractCollider.transform.localPosition;
             m_BoneLocalPosition = transform.InverseTransformPoint(m_PickupLocChild.transform.parent.position);
-        }
-
-        void Update()
-        {
-            CheckForPickupsInRange();
         }
 
         public override void OnNetworkSpawn()
@@ -94,6 +93,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogWarning("Assign AvatarInputs in the inspector!");
                 return;
             }
+
+            this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
 
             m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
             m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
@@ -148,14 +149,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // compare to what's picked up -- if it matches our picked up object, release
             if (m_TransferableObject != null && networkObject == m_TransferableObject.NetworkObject)
             {
-                if (IsSpawned)
-                {
-                    m_AvatarNetworkAnimator.SetTrigger(k_DropId);
-                }
-                UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
-                m_TransferableObject = null;
-                m_PickupLocFixedJoint.connectedBody = null;
-                m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
+                DropAction();
             }
         }
 
@@ -165,12 +159,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // compare to what's picked up -- if it matches our picked up object, drop
             if (m_TransferableObject != null && m_TransferableObject.NetworkObject == networkObject && !networkObject.HasAuthority)
             {
-                m_AvatarNetworkAnimator.SetTrigger(k_DropId);
-                m_InteractCollider.isTrigger = false;
-                UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
-                m_TransferableObject = null;
-                m_PickupLocFixedJoint.connectedBody = null;
-                m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
+                DropAction();
             }
         }
 
@@ -178,7 +167,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (m_TransferableObject != null)
             {
-                OnObjectDroppedRpc(false);
                 DropAction();
             }
             else
@@ -199,40 +187,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (m_TransferableObject != null)
             {
-                OnObjectDroppedRpc(true);
                 ThrowAction(holdDuration);
             }
         }
 
-        void CheckForPickupsInRange()
-        {
-            if (m_TransferableObject != null)
-            {
-                m_PickUpIndicator.ClearPickup();
-                return;
-            }
-
-            m_CarryBoxIndicator.HideCarry();
-
-            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
-            {
-                if (m_Results[0].TryGetComponent(out NetworkObject otherNetworkObject))
-                {
-                    m_PickUpIndicator.ShowPickup(otherNetworkObject.transform);
-                    return;
-                }
-            }
-            m_PickUpIndicator.ClearPickup();
-        }
-
         void TryPickUp()
         {
-            if (UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position + (transform.forward * 0.5f), Vector3.one, m_Results, Quaternion.identity, mask: m_PickupableLayerMask) > 0)
+            if (m_PotentialPickupCollider != null && m_PotentialPickupCollider.TryGetComponent(out TransferableObject otherTransferableObject))
             {
-                if (m_Results[0].TryGetComponent(out TransferableObject otherTransferableObject))
-                {
-                    HandleOwnershipTransfer(otherTransferableObject);
-                }
+                HandleOwnershipTransfer(otherTransferableObject);
             }
         }
 
@@ -299,6 +262,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // Rotate the player to face the item smoothly
             StartCoroutine(SmoothLookAt(other.transform));
             m_AvatarNetworkAnimator.SetTrigger(k_PickupId);
+            m_PickUpIndicator.ClearPickup();
+            m_CarryBoxIndicator.ShowCarry(m_TransferableObject.transform);
         }
 
         IEnumerator SmoothLookAt(Transform target)
@@ -315,9 +280,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
-
-            // show indicator for carry
-            m_CarryBoxIndicator.ShowCarry(transform);
 
             // Ensure the final rotation is exactly towards the target
             transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0); // Keep only the y-axis rotation
@@ -392,12 +354,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         // invoked by authority
         void DropAction()
         {
+            OnObjectDroppedRpc(false);
             m_AvatarNetworkAnimator.SetTrigger(k_DropId);
             m_PickupLocFixedJoint.connectedBody = null;
             // unlock the object when dropped
             SetTransferableObjectAsTransferableDistributable();
             OnDropAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
+            m_CarryBoxIndicator.HideCarry();
         }
 
         // invoked on all clients
@@ -414,6 +378,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         // invoked by authority
         void ThrowAction(double holdDuration)
         {
+            OnObjectDroppedRpc(true);
             m_AvatarNetworkAnimator.SetTrigger(k_ThrowReleaseId);
             m_PickupLocFixedJoint.connectedBody = null;
             // unlock the object when thrown
@@ -427,6 +392,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             OnThrowAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
+            m_CarryBoxIndicator.HideCarry();
         }
 
         // invoked on all clients
@@ -442,8 +408,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void SetTransferableObjectAsTransferableDistributable()
         {
-            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
-            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+            if (m_TransferableObject != null)
+            {
+                m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Distributable, clearAndSet: true);
+                m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.Transferable);
+            }
         }
 
         void ResetMainCollider()
@@ -451,6 +420,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_InteractCollider.isTrigger = true;
             m_InteractCollider.center = Vector3.zero;
             m_InteractCollider.size = m_InitialInteractColliderSize;
+            m_InteractCollider.transform.localPosition = m_InitialInteractColliderLocalPosition;
         }
 
         [Rpc(SendTo.NotAuthority)]
@@ -466,10 +436,48 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
         }
 
+        void CheckForPickupsInRange()
+        {
+            if (m_TransferableObject != null)
+            {
+                return;
+            }
+
+            var hits = UnityEngine.Physics.OverlapBoxNonAlloc(m_InteractCollider.transform.position, m_InteractCollider.bounds.extents, m_Results, Quaternion.identity, mask: m_PickupableLayerMask);
+            if (hits > 0)
+            {
+                var closestDistanceSqr = Mathf.Infinity;
+                var position = transform.position;
+
+                for (int i = 0; i < hits; i++)
+                {
+                    var resultCollider = m_Results[i];
+                    var directionToTarget = resultCollider.transform.position - position;
+                    var dSqrToTarget = directionToTarget.sqrMagnitude;
+
+                    if (dSqrToTarget < closestDistanceSqr)
+                    {
+                        closestDistanceSqr = dSqrToTarget;
+                        m_PotentialPickupCollider = resultCollider;
+                    }
+                }
+
+                m_PickUpIndicator.ShowPickup(m_PotentialPickupCollider.transform);
+            }
+            else
+            {
+                m_PotentialPickupCollider = null;
+                m_PickUpIndicator.ClearPickup();
+            }
+        }
+
         public void NetworkUpdate(NetworkUpdateStage updateStage)
         {
             switch (updateStage)
             {
+                case NetworkUpdateStage.FixedUpdate:
+                    CheckForPickupsInRange();
+                    break;
                 case NetworkUpdateStage.PreLateUpdate:
                     // if this instance is carrying something, then keep connection points synchronized with object being carried
                     if (m_TransferableObject != null)
