@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
@@ -19,6 +20,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         Task m_SessionTask;
 
         ISession m_CurrentSession;
+        bool m_IsLeavingSession;
 
         void Awake()
         {
@@ -35,13 +37,25 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 GameplayEventHandler.LoadMainMenuScene();
             }
 
+            NetworkManager.Singleton.OnClientStopped += OnClientStopped;
+
             GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
             GameplayEventHandler.OnReturnToMainMenuButtonPressed += OnReturnToMainMenuButtonPressed;
             GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
         }
 
+        void OnClientStopped(bool obj)
+        {
+            LeaveSession();
+        }
+
         void OnDestroy()
         {
+            if (NetworkManager.Singleton)
+            {
+                NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+            }
+
             GameplayEventHandler.OnStartButtonPressed -= OnStartButtonPressed;
             GameplayEventHandler.OnReturnToMainMenuButtonPressed -= OnReturnToMainMenuButtonPressed;
             GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
@@ -67,10 +81,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void LeaveSession()
         {
-            if (m_CurrentSession != null)
+            if (m_CurrentSession != null && !m_IsLeavingSession)
             {
                 try
                 {
+                    m_IsLeavingSession = true;
                     await m_CurrentSession.LeaveAsync();
                 }
                 catch (Exception e)
@@ -80,6 +95,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 }
                 finally
                 {
+                    m_IsLeavingSession = false;
                     ExitedSession();
                 }
             }
