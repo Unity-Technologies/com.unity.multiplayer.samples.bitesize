@@ -6,7 +6,6 @@ using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using Unity.Services.Vivox;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
@@ -33,7 +32,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if (!s_InitialLoad)
             {
                 s_InitialLoad = true;
-                LoadMenuScene();
+                GameplayEventHandler.LoadMainMenuScene();
             }
 
             GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
@@ -58,7 +57,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         void OnReturnToMainMenuButtonPressed()
         {
             LeaveSession();
-            LoadMenuScene();
         }
 
         void OnQuitGameButtonPressed()
@@ -80,6 +78,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                     Debug.LogException(e);
                     throw;
                 }
+                finally
+                {
+                    ExitedSession();
+                }
             }
         }
 
@@ -94,16 +96,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             {
                 LogInToVivox();
             }
-        }
-
-        void LoadMenuScene()
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
-        void LoadHubScene()
-        {
-            SceneManager.LoadScene("HubScene_TownMarket");
         }
 
         async void LogInToVivox()
@@ -187,12 +179,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 }.WithDistributedAuthorityNetwork();
 
                 m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-
-                LoadHubScene();
+                m_CurrentSession.RemovedFromSession += RemovedFromSession;
+                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
+            }
+        }
+
+        void RemovedFromSession()
+        {
+            ExitedSession();
+        }
+
+        void CurrentSessionOnStateChanged(SessionState sessionState)
+        {
+            if (sessionState != SessionState.Connected)
+            {
+                ExitedSession();
+            }
+        }
+
+        void ExitedSession()
+        {
+            if (m_CurrentSession != null)
+            {
+                m_CurrentSession.RemovedFromSession -= RemovedFromSession;
+                m_CurrentSession.StateChanged -= CurrentSessionOnStateChanged;
+                m_CurrentSession = null;
+                GameplayEventHandler.ExitedSession();
             }
         }
     }
