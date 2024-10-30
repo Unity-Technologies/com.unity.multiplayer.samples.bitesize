@@ -47,14 +47,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         internal static void TranslateVEWorldToScreenspace(this VisualElement visualElement, Camera camera, Transform worldspaceTransform, float yOffset = 0f)
         {
             var positionInWorldSpace = new Vector3(worldspaceTransform.position.x, worldspaceTransform.position.y + yOffset, worldspaceTransform.position.z);
-            Vector2 screenSpacePosition = camera.WorldToScreenPoint(positionInWorldSpace);
-            if (visualElement.panel == null)
+            var screenSpacePosition = camera.WorldToScreenPoint(positionInWorldSpace);
+
+            // Point is behind the camera
+            if (screenSpacePosition.z <= 0)
             {
-                //Todo: Happens on style change can be removed when finished.
+                visualElement.style.left = -1000;
                 return;
             }
 
-            Vector2 panelSpacePosition = RuntimePanelUtils.ScreenToPanel(visualElement.panel, new Vector2(screenSpacePosition.x, Screen.height - screenSpacePosition.y));
+            var panelSpacePosition = RuntimePanelUtils.ScreenToPanel(visualElement.panel, new Vector2(screenSpacePosition.x, Screen.height - screenSpacePosition.y));
             visualElement.style.left = panelSpacePosition.x;
             visualElement.style.top = panelSpacePosition.y;
         }
