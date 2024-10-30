@@ -4,6 +4,11 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+#endif
 
 namespace Unity.Multiplayer.Samples.SocialHub.Physics
 {
@@ -367,5 +372,29 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         }
 
         #endregion
+
+#if UNITY_EDITOR
+        // override this in child classes to implement custom drawing of a child class' inspector
+        protected virtual VisualElement CreateInspectorGUI(SerializedObject serializedObj)
+        {
+            // Create a new VisualElement to be the root of our inspector UI.
+            var root = new VisualElement();
+
+            // Iterate through the properties of the serialized object.
+            SerializedProperty property = serializedObj.GetIterator();
+            property.NextVisible(true); // Skip the script property.
+
+            while (property.NextVisible(false))
+            {
+                // Create a PropertyField for each visible property.
+                var propertyField = new PropertyField(property);
+                propertyField.BindProperty(property);
+                root.Add(propertyField);
+            }
+
+            // Return the finished UI.
+            return root;
+        }
+#endif
     }
 }
