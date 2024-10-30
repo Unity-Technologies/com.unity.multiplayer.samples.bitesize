@@ -208,7 +208,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            m_TransferableObject = otherTransferableObject;
             // trivial case: other NetworkObject is owned by this client, we can attach to fixed joint
             if (otherNetworkObject.HasAuthority)
             {
@@ -247,15 +246,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 return;
             }
-            StartPickup(other);
+
+            if (other.TryGetComponent(out TransferableObject transferableObject))
+            {
+                StartPickup(transferableObject);
+            }
         }
 
-        void StartPickup(NetworkBehaviour other)
+        void StartPickup(TransferableObject other)
         {
             // For late joining players
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference(other);
+            m_TransferableObject = other;
             // set ownership status to request required, now that this object is being held
-            other.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
+            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
             m_TransferableObject.SetObjectState(TransferableObject.ObjectState.PickedUp);
             // For immediate notification
             OnObjectPickedUpRpc(m_CurrentTransferableObject.Value);
@@ -368,6 +372,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnDropAction()
         {
             ResetMainCollider();
+            if (m_TransferableObject == null)
+            {
+                // object may be destroyed while dropped
+                return;
+            }
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
@@ -399,6 +408,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnThrowAction()
         {
             ResetMainCollider();
+            if (m_TransferableObject == null)
+            {
+                // object may be destroyed while thrown
+                return;
+            }
             m_TransferableObject.SetObjectState(TransferableObject.ObjectState.Thrown);
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
