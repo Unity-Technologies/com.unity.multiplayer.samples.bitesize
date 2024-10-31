@@ -2,6 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using System;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
 {
@@ -13,6 +14,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action OnReturnToMainMenuButtonPressed;
         internal static event Action OnQuitGameButtonPressed;
         internal static event Action<Task> OnConnectToSessionCompleted;
+        internal static event Action OnExitedSession;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -42,6 +44,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static void ConnectToSessionComplete(Task task)
         {
             OnConnectToSessionCompleted?.Invoke(task);
+        }
+
+        internal static void ExitedSession()
+        {
+            OnExitedSession?.Invoke();
+        }
+
+        internal static void LoadMainMenuScene()
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        internal static void LoadInGameScene()
+        {
+            SceneManager.LoadScene("HubScene_TownMarket");
         }
     }
 }
