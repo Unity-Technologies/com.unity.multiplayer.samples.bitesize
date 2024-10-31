@@ -62,6 +62,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         static readonly int k_DropId = Animator.StringToHash("Drop");
         static readonly int k_ThrowId = Animator.StringToHash("Throw");
         static readonly int k_ThrowReleaseId = Animator.StringToHash("ThrowRelease");
+        static readonly int k_PickUpDefault = Animator.StringToHash("Pick-Up.Default");
 
         Vector3 m_InitialInteractColliderSize;
         Vector3 m_InitialInteractColliderLocalPosition;
@@ -193,7 +194,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void TryPickUp()
         {
-            if (m_PotentialPickupCollider != null && m_PotentialPickupCollider.TryGetComponent(out TransferableObject otherTransferableObject))
+            if (IsAbleToPickUp() && m_PotentialPickupCollider != null && m_PotentialPickupCollider.TryGetComponent(out TransferableObject otherTransferableObject))
             {
                 HandleOwnershipTransfer(otherTransferableObject);
             }
@@ -225,7 +226,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             else if (otherNetworkObject.IsOwnershipRequestRequired)
             {
                 // if not transferable, we must request access to become owner
-                if (m_Results[0].TryGetComponent(out IOwnershipRequestable otherRequestable))
+                if (otherTransferableObject is IOwnershipRequestable otherRequestable)
                 {
                     var ownershipRequestStatus = otherNetworkObject.RequestOwnership();
                     if (ownershipRequestStatus == NetworkObject.OwnershipRequestStatus.RequestSent)
@@ -483,6 +484,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 m_PotentialPickupCollider = null;
                 m_PickUpIndicator.ClearPickup();
             }
+        }
+
+        bool IsAbleToPickUp()
+        {
+            // Get the current state info for the base layer (layer 0)
+            var currentStateInfo = m_AvatarNetworkAnimator.Animator.GetCurrentAnimatorStateInfo(1);
+            return currentStateInfo.fullPathHash == k_PickUpDefault;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
