@@ -62,6 +62,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         static readonly int k_DropId = Animator.StringToHash("Drop");
         static readonly int k_ThrowId = Animator.StringToHash("Throw");
         static readonly int k_ThrowReleaseId = Animator.StringToHash("ThrowRelease");
+        static readonly int k_PickUpDefault = Animator.StringToHash("Pick-Up.Default");
 
         Vector3 m_InitialInteractColliderSize;
         Vector3 m_InitialInteractColliderLocalPosition;
@@ -193,7 +194,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void TryPickUp()
         {
-            if (m_PotentialPickupCollider != null && m_PotentialPickupCollider.TryGetComponent(out TransferableObject otherTransferableObject))
+            if (IsAbleToPickUp() && m_PotentialPickupCollider != null && m_PotentialPickupCollider.TryGetComponent(out TransferableObject otherTransferableObject))
             {
                 HandleOwnershipTransfer(otherTransferableObject);
             }
@@ -208,7 +209,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            m_TransferableObject = otherTransferableObject;
             // trivial case: other NetworkObject is owned by this client, we can attach to fixed joint
             if (otherNetworkObject.HasAuthority)
             {
@@ -226,7 +226,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             else if (otherNetworkObject.IsOwnershipRequestRequired)
             {
                 // if not transferable, we must request access to become owner
-                if (m_Results[0].TryGetComponent(out IOwnershipRequestable otherRequestable))
+                if (otherTransferableObject is IOwnershipRequestable otherRequestable)
                 {
                     var ownershipRequestStatus = otherNetworkObject.RequestOwnership();
                     if (ownershipRequestStatus == NetworkObject.OwnershipRequestStatus.RequestSent)
@@ -247,15 +247,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 return;
             }
-            StartPickup(other);
+
+            if (other.TryGetComponent(out TransferableObject transferableObject))
+            {
+                StartPickup(transferableObject);
+            }
         }
 
-        void StartPickup(NetworkBehaviour other)
+        void StartPickup(TransferableObject other)
         {
             // For late joining players
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference(other);
+            m_TransferableObject = other;
             // set ownership status to request required, now that this object is being held
-            other.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
+            m_TransferableObject.NetworkObject.SetOwnershipStatus(NetworkObject.OwnershipStatus.RequestRequired, clearAndSet: true);
             m_TransferableObject.SetObjectState(TransferableObject.ObjectState.PickedUp);
             // For immediate notification
             OnObjectPickedUpRpc(m_CurrentTransferableObject.Value);
@@ -368,6 +373,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnDropAction()
         {
             ResetMainCollider();
+            if (m_TransferableObject == null)
+            {
+                // object may be destroyed while dropped
+                return;
+            }
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
             transferableRigidbody.useGravity = true;
@@ -399,6 +409,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnThrowAction()
         {
             ResetMainCollider();
+            if (m_TransferableObject == null)
+            {
+                // object may be destroyed while thrown
+                return;
+            }
             m_TransferableObject.SetObjectState(TransferableObject.ObjectState.Thrown);
             var transferableRigidbody = m_TransferableObject.GetComponent<Rigidbody>();
             UnityEngine.Physics.IgnoreCollision(m_MainCollider, m_TransferableObject.GetComponent<Collider>(), false);
@@ -469,6 +484,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 m_PotentialPickupCollider = null;
                 m_PickUpIndicator.ClearPickup();
             }
+        }
+
+        bool IsAbleToPickUp()
+        {
+            // Get the current state info for the base layer (layer 0)
+            var currentStateInfo = m_AvatarNetworkAnimator.Animator.GetCurrentAnimatorStateInfo(1);
+            return currentStateInfo.fullPathHash == k_PickUpDefault;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

@@ -1,12 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using Unity.Services.Vivox;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
@@ -20,6 +20,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         Task m_SessionTask;
 
         ISession m_CurrentSession;
+        bool m_IsLeavingSession;
 
         void Awake()
         {
@@ -33,16 +34,28 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if (!s_InitialLoad)
             {
                 s_InitialLoad = true;
-                LoadMenuScene();
+                GameplayEventHandler.LoadMainMenuScene();
             }
+
+            NetworkManager.Singleton.OnClientStopped += OnClientStopped;
 
             GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
             GameplayEventHandler.OnReturnToMainMenuButtonPressed += OnReturnToMainMenuButtonPressed;
             GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
         }
 
+        void OnClientStopped(bool obj)
+        {
+            LeaveSession();
+        }
+
         void OnDestroy()
         {
+            if (NetworkManager.Singleton)
+            {
+                NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+            }
+
             GameplayEventHandler.OnStartButtonPressed -= OnStartButtonPressed;
             GameplayEventHandler.OnReturnToMainMenuButtonPressed -= OnReturnToMainMenuButtonPressed;
             GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
@@ -58,7 +71,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         void OnReturnToMainMenuButtonPressed()
         {
             LeaveSession();
-            LoadMenuScene();
         }
 
         void OnQuitGameButtonPressed()
@@ -69,16 +81,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void LeaveSession()
         {
-            if (m_CurrentSession != null)
+            if (m_CurrentSession != null && !m_IsLeavingSession)
             {
                 try
                 {
+                    m_IsLeavingSession = true;
                     await m_CurrentSession.LeaveAsync();
                 }
                 catch (Exception e)
                 {
                     Debug.LogException(e);
                     throw;
+                }
+                finally
+                {
+                    m_IsLeavingSession = false;
+                    ExitedSession();
                 }
             }
         }
@@ -94,16 +112,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             {
                 LogInToVivox();
             }
-        }
-
-        void LoadMenuScene()
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
-        void LoadHubScene()
-        {
-            SceneManager.LoadScene("HubScene_TownMarket");
         }
 
         async void LogInToVivox()
@@ -187,12 +195,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 }.WithDistributedAuthorityNetwork();
 
                 m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-
-                LoadHubScene();
+                m_CurrentSession.RemovedFromSession += RemovedFromSession;
+                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
+            }
+        }
+
+        void RemovedFromSession()
+        {
+            ExitedSession();
+        }
+
+        void CurrentSessionOnStateChanged(SessionState sessionState)
+        {
+            if (sessionState != SessionState.Connected)
+            {
+                ExitedSession();
+            }
+        }
+
+        void ExitedSession()
+        {
+            if (m_CurrentSession != null)
+            {
+                m_CurrentSession.RemovedFromSession -= RemovedFromSession;
+                m_CurrentSession.StateChanged -= CurrentSessionOnStateChanged;
+                m_CurrentSession = null;
+                GameplayEventHandler.ExitedSession();
             }
         }
     }
