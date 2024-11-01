@@ -6,7 +6,6 @@
 
 [![UnityVersion](https://img.shields.io/badge/Unity%20Version:-6000.0.24%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/6000.0.24)
 [![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-2.1.1-57b9d3.svg?logo=unity&color=2196F3)](https://docs-multiplayer.unity3d.com/netcode/2.1.1/about)
-[![LatestRelease](https://img.shields.io/badge/Latest%20Github%20Release:-v1.8.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.8.0)
 <br><br>
 
 Social Hub is a beginner-friendly sample project aimed to demonstrate Distributed Authority's core features and benefits, helping users seamlessly integrate Distributed Authority into their own game projects.
