@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0] 2024-10-31
+
+### Distributed Authority Social Hub
+
+#### Changed
+- This sample is no longer "Experimental", and it has been moved into the "Basic" folder
+
 ## [1.8.0] 2024-10-23
 
 ### Multiplayer Use Cases

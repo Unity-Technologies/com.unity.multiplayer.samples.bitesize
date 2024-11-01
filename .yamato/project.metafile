@@ -22,21 +22,21 @@ projects:
       - 2022.3
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
-    test_filter: 
+    test_filter:
   - name: clientdriven
     path: Basic/ClientDriven
     test_editors:
       - 2022.3
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
-    test_filter: 
+    test_filter:
   - name: dynamicaddressablesnetworkprefabs
     path: Basic/DynamicAddressablesNetworkPrefabs
     test_editors:
       - 2022.3
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
-    test_filter: 
+    test_filter:
   - name: dedicatedgameserver
     path: Experimental/DedicatedGameServer
     test_editors:
@@ -49,4 +49,10 @@ projects:
     test_editors:
       - 6000.0.23
     run_editor_tests: !!bool true
+    run_playmode_tests: !!bool false
+  - name: DistributedAuthoritySample
+    path: Basic/DistributedAuthoritySocialHub
+    test_editors:
+      - 6000.0.24
+    run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
