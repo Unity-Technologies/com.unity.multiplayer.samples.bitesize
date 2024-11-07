@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Services;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -143,6 +144,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         void LoggedInToVivox()
         {
             Debug.Log(nameof(LoggedInToVivox));
+            VivoxManager.Instance.JoinChannel(AuthenticationService.Instance.Profile);
         }
 
         async Task SignIn()
