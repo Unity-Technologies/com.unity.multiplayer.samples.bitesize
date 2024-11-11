@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.SocialHub.Services;
 using UnityEngine;
 using Unity.Services.Vivox;
 
@@ -16,8 +17,10 @@ namespace Services
         public static string PlayerProfileName { get; private set; }
         public string SessionName { get; set; }
 
-        private void Awake()
+        private async void Awake()
         {
+
+
             if (Instance == null)
             {
                 Instance = this;
@@ -29,39 +32,25 @@ namespace Services
             }
         }
 
-        public async Task InitializeVivoxAsync(string playerName)
-        {
-            PlayerProfileName = playerName;
-            await VivoxService.Instance.InitializeAsync();
-            await LoginToVivoxAsync();
-        }
-
-        private async Task LoginToVivoxAsync()
-        {
-            LoginOptions options = new LoginOptions();
-            options.DisplayName = "Player_" + PlayerProfileName;
-            options.EnableTTS = false;
-            VivoxService.Instance.LoggedIn += LoggedInToVivox;
-            await VivoxService.Instance.LoginAsync(options);
-        }
-
         public async void JoinChannel(string channelName)
         {
             SessionName = channelName;
             var channelOptions = new ChannelOptions();
 
-            await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.TextAndAudio,
-                new Channel3DProperties(), channelOptions);
+            // await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.TextAndAudio,
+            //     new Channel3DProperties(), channelOptions);
+            //
 
-            VivoxService.Instance.Set3DPosition(m_ParticipantPrefab, channelName);
 
+            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
+
+            //VivoxService.Instance.Set3DPosition(m_ParticipantPrefab, channelName);
+
+            GetComponent<TextChatManager>().BindSessionEvents(true);
             Debug.Log("Joined text and audio channel");
         }
 
-        void LoggedInToVivox()
-        {
-            Debug.Log(nameof(LoggedInToVivox));
-        }
+
 
         private void BindSessionEvents(bool doBind)
         {

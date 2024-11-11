@@ -107,26 +107,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             Debug.LogWarning($"{nameof(SignedIn)} obj.ErrorCode {obj.ErrorCode}");
         }
 
-        void SignedIn()
+        async void SignedIn()
         {
-            if (m_InitiateVivoxOnAuthentication)
-            {
-                LogInToVivox();
-            }
+
         }
 
-        async void LogInToVivox()
-        {
-            await VivoxService.Instance.InitializeAsync();
-
-            var options = new LoginOptions
-            {
-                DisplayName = AuthenticationService.Instance.Profile,
-                EnableTTS = true
-            };
-            VivoxService.Instance.LoggedIn += LoggedInToVivox;
-            await VivoxService.Instance.LoginAsync(options);
-        }
 
         static string GetRandomString(int length)
         {
@@ -139,12 +124,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
 
             return new string(result);
-        }
-
-        void LoggedInToVivox()
-        {
-            Debug.Log(nameof(LoggedInToVivox));
-            VivoxManager.Instance.JoinChannel(AuthenticationService.Instance.Profile);
         }
 
         async Task SignIn()
@@ -199,6 +178,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
                 m_CurrentSession.RemovedFromSession += RemovedFromSession;
                 m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
+
+                if (m_InitiateVivoxOnAuthentication)
+                {
+                    await VivoxService.Instance.InitializeAsync();
+                    VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
+                }
             }
             catch (Exception e)
             {

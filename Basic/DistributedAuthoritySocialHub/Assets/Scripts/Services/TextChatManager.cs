@@ -1,23 +1,32 @@
 using System;
+using System.Collections.Generic;
 using Unity.Services.Vivox;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Services
 {
     public class TextChatManager : MonoBehaviour
     {
-        public InputField m_ChatInputField;
-        public Text m_ChatDisplay;
-        public Button m_SendButton;
+        [SerializeField]
+        VisualTreeAsset m_Asset;
 
-        readonly string currentChannel = VivoxManager.Instance.SessionName;
+        ListView m_MessageView;
+        TextField m_MessageInputField;
+        Button m_SendButton;
+
         bool isChatActive = true;
         InputAction toggleChatAction;
 
+        [SerializeField, HideInInspector]
+        List<string> m_Messages = new List<string>();
+
+
+
         void Awake()
         {
+
             // Initialize the new input action
             toggleChatAction = new InputAction("ToggleChat", binding: "<Keyboard>/slash");
             toggleChatAction.performed += ctx => ToggleChat();
@@ -26,47 +35,53 @@ namespace Services
 
         void Start()
         {
-            m_SendButton.onClick.AddListener(SendMessage);
-            m_ChatInputField.onEndEdit.AddListener(OnChatInputEndEdit);
+            var uiDoc = GetComponent<UIDocument>();
+            m_MessageView = new ListView();
+            m_MessageInputField = new TextField();
+            m_SendButton = new Button();
 
-            BindSessionEvents(true);
+            uiDoc.rootVisualElement.Add(m_MessageView);
+            uiDoc.rootVisualElement.Add(m_MessageInputField);
+            uiDoc.rootVisualElement.Add(m_SendButton);
+
+            m_MessageView.makeItem = () =>
+            {
+                return new Label();
+            };
+
+            m_MessageView.bindItem = (element, i) =>
+            {
+                ((Label)(element)).text = m_Messages[i];
+            };
+
+            m_MessageView.dataSource = m_Messages;
+
+            m_SendButton.clicked += SendMessage;
+           // BindSessionEvents(true);
         }
 
         void OnDestroy()
         {
             toggleChatAction.Disable();
-            m_SendButton.onClick.RemoveListener(SendMessage);
-            m_ChatInputField.onEndEdit.RemoveListener(OnChatInputEndEdit);
+            m_SendButton.clicked -= SendMessage;
             BindSessionEvents(false);
         }
 
         private void ToggleChat()
         {
             isChatActive = !isChatActive;
-            m_ChatInputField.enabled = isChatActive;
-            m_SendButton.enabled = isChatActive;
-            Debug.Log("Chat: " + (isChatActive ? "Activated" : "Disabled"));
         }
 
         private async void SendMessage()
         {
-            if (!string.IsNullOrEmpty(m_ChatInputField.text))
+            if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
-                await VivoxService.Instance.SendChannelTextMessageAsync(currentChannel, m_ChatInputField.text);
-                m_ChatInputField.text = "";
+                await VivoxService.Instance.SendChannelTextMessageAsync(VivoxManager.Instance.SessionName, m_MessageInputField.value);
+                m_MessageInputField.value = "";
             }
         }
 
-        // Modified to use new input system key detection
-        private void OnChatInputEndEdit(string input)
-        {
-            if (Keyboard.current.enterKey.isPressed)
-            {
-                SendMessage();
-            }
-        }
-
-        private void BindSessionEvents(bool doBind)
+        public void BindSessionEvents(bool doBind)
         {
             if (doBind)
             {
@@ -82,8 +97,11 @@ namespace Services
         {
             var senderDisplayName = message.SenderDisplayName;
             var messageText = message.MessageText;
-
-            m_ChatDisplay.text += $"{senderDisplayName}: {messageText}\n";
+            m_Messages.Add($"{senderDisplayName}: {messageText}");
+            foreach (var se in m_Messages)
+            {
+                Debug.Log(se+"\n");
+            }
         }
     }
 }
