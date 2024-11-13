@@ -8,6 +8,7 @@ using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using Unity.Services.Vivox;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
@@ -134,6 +135,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 AuthenticationService.Instance.SignedIn += SignedIn;
                 AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                Debug.Log($"Signed in anonymously before. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
             }
             catch (Exception e)
             {
@@ -155,6 +157,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
 
             await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
+            Debug.Log($"Signed in anonymously after. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
 
             if (string.IsNullOrEmpty(sessionName))
             {
@@ -172,18 +175,27 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 var options = new SessionOptions()
                 {
                     Name = sessionName,
+
                     MaxPlayers = 64,
                 }.WithDistributedAuthorityNetwork();
 
-                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-                m_CurrentSession.RemovedFromSession += RemovedFromSession;
-                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
+
 
                 if (m_InitiateVivoxOnAuthentication)
                 {
                     await VivoxService.Instance.InitializeAsync();
-                    VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
+                    var loginOptions = new LoginOptions()
+                    {
+                        DisplayName = AuthenticationService.Instance.PlayerName,
+                        PlayerId = AuthenticationService.Instance.PlayerId,
+                    };
+                    await VivoxService.Instance.LoginAsync(loginOptions);
                 }
+
+                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
+                VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
+                m_CurrentSession.RemovedFromSession += RemovedFromSession;
+                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
             }
             catch (Exception e)
             {

@@ -56,6 +56,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 return;
             }
 
+            if (visualElement.panel == null)
+                return;
+
             var panelSpacePosition = RuntimePanelUtils.ScreenToPanel(visualElement.panel, new Vector2(screenSpacePosition.x, Screen.height - screenSpacePosition.y));
             visualElement.style.left = panelSpacePosition.x;
             visualElement.style.top = panelSpacePosition.y;

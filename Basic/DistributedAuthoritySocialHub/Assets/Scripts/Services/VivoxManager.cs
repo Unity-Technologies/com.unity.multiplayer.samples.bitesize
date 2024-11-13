@@ -17,7 +17,7 @@ namespace Services
         public static string PlayerProfileName { get; private set; }
         public string SessionName { get; set; }
 
-        private async void Awake()
+        private void Awake()
         {
 
 
@@ -42,15 +42,15 @@ namespace Services
             //
 
 
-            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
-
+            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextOnly, channelOptions);
+            var textChatManager = FindFirstObjectByType<TextChatManager>();
+            if(textChatManager != null)
+            {
+                textChatManager.Initialize();
+                Debug.Log("Joined text and audio channel");
+            }
             //VivoxService.Instance.Set3DPosition(m_ParticipantPrefab, channelName);
-
-            GetComponent<TextChatManager>().BindSessionEvents(true);
-            Debug.Log("Joined text and audio channel");
         }
-
-
 
         private void BindSessionEvents(bool doBind)
         {

@@ -104,7 +104,7 @@
     background-color: rgba(0, 0, 0, 0.95);
 }
 
-#menu {
+.ingame-panel {
     border-radius: var(--border-radius);
     -unity-font-definition: var(--script-font);
     transition-property: scale, opacity;
@@ -131,5 +131,75 @@
 .show {
     scale: 1;
     opacity: 1;
+}
+
+/* TextChat */
+
+.text-chat {
+    position: absolute;
+    left: -600px;
+    bottom: 0;
+    height: 560px;
+    width: 600px;
+    transition: left 0.5s ease-in-out;
+}
+
+.text-chat--visible{
+    left: 0px;
+}
+
+.text-chat--visible > .text-chat__collapsebutton{
+    scale: -1 1 ;
+}
+
+.text-chat__ui{
+    background-color: var(--main-color);
+    border-radius: var(--border-radius);
+    background-color: var(--main-color);
+    padding: 24px;
+}
+
+.text-chat__collapsebutton{
+    -unity-font-style: bold;
+    position: absolute;
+    padding-left: 16px;
+    right: -56px;
+    top: 30px;
+    width: 64px;
+
+}
+
+.text-chat__messagelist {
+    flex-grow: 1;
+    background-color: var(--pickup-background-color);
+    margin-bottom: 10px;
+    border-radius: var(--border-radius);
+    border-color: var(--secondary-color);
+    border-width: 3px;
+}
+
+.text-chat__messageinput{
+    flex-grow: 1;
+    margin-left: 0;
+}
+
+.text-chat__submit{
+
+}
+
+
+.message {
+    -unity-font-definition: var(--script-font);
+    font-size: 24px;
+    flex-direction: row;
+}
+
+.message__sender{
+
+}
+
+.message__text{
+    white-space: normal;
+    overflow: visible;
 }
 

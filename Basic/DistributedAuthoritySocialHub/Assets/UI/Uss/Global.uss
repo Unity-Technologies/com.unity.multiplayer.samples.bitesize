@@ -1,17 +1,12 @@
 * {
-    /* Fonts */
-    --sans-serif-font: url("project://database/Assets/Fonts/arial.ttf");
-    --script-font: url("project://database/Assets/Fonts/Grandstander-SemiBold.ttf");
-
-    /* Colors */
+    --sans-serif-font: url("project://database/Assets/Fonts/arial.ttf?fileID=12800000&guid=ae3fa31b7436b4541b1a40b4da1bfb37&type=3#arial");
+    --script-font: url("project://database/Assets/Fonts/Grandstander-SemiBold.ttf?fileID=12800000&guid=01732851f19ed41ffa80b26ee3b16cf5&type=3#Grandstander-SemiBold");
     --secondary-color: rgb(83, 51, 33);
     --main-color: rgb(188, 130, 99);
-    --light-text-color: rgb(246, 246, 256);
+    --light-text-color: rgb(246, 246, 255);
     --highlight-color: rgb(255, 218, 70);
     --pickup-background-color: rgba(255, 255, 255, 0.5);
     --dark-text-color: rgb(16, 16, 16);
-
-    /* Sizes */
     --border-radius: 12px;
     --pickup-base-height: 24px;
     --mic-icon-size: 36px;
@@ -19,7 +14,6 @@
     --menu-button-font-size: 30px;
 }
 
-/* Buttons */
 .menu-button {
     border-radius: var(--border-radius);
     overflow: visible;
@@ -37,7 +31,7 @@
 
 .menu-button:hover {
     scale: 1.03 1.03;
-    text-shadow: 0px 2px 15px var(--main-color);
+    text-shadow: 0 2px 15px var(--main-color);
 }
 
 .menu-button:focus .menu-button__focus-indicator {
@@ -50,7 +44,7 @@
 
 .menu-button:disabled .menu-button__focus-indicator {
     opacity: 0;
-    text-shadow: 0px 0px 0px var(--main-color);
+    text-shadow: 0 0 0 var(--main-color);
 }
 
 .menu-button__focus-indicator {
@@ -60,7 +54,7 @@
     top: 20%;
     height: 60%;
     width: 25px;
-    background-image: url("project://database/Assets/UI/Textures/menu_button_selection_indicator.png");
+    background-image: url("project://database/Assets/UI/Textures/menu_button_selection_indicator.png?fileID=2800000&guid=9aef6e97aa57aa24c879459f6419dd56&type=3#menu_button_selection_indicator");
     -unity-background-scale-mode: scale-to-fit;
     opacity: 0;
     transition-property: opacity, width;
@@ -69,7 +63,7 @@
 }
 
 .menu-button:disabled {
-    scale: 1.0 1.0;
+    scale: 1 1;
 }
 
 .menu-button__focus-indicator--right {
@@ -77,7 +71,7 @@
     left: 100%;
 }
 
-.menu-button--round{
+.menu-button--round {
     min-height: 50px;
     min-width: 50px;
     border-radius: 25px;
@@ -86,17 +80,32 @@
     transition-timing-function: ease-in-out-back;
 }
 
-.menu-button--round .menu-button__focus-indicator{
+.menu-button--round .menu-button__focus-indicator {
     display: none;
 }
 
-.menu-button--round:focus{
+.menu-button--round:focus {
     -unity-text-outline-color: var(--main-color);
     -unity-text-outline-width: 2px;
     rotate: 360deg;
 }
 
+.textfield {
+    font-size: 20px;
+    color: var(--highlight-color);
+    -unity-text-align: middle-left;
+    min-height: 40px;
+    margin-bottom: 10px;
+}
 
+.textfield > .unity-base-field__label {
+    color: var(--highlight-color);
+    -unity-font-definition: var(--script-font);
+}
 
-
-
+.unity-base-field__input {
+    border-radius: var(--border-radius);
+    border-color: var(--secondary-color);
+    border-width: 3px;
+    color: var(--dark-text-color);
+}
