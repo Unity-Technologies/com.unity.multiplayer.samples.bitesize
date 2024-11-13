@@ -92,7 +92,6 @@
 
 .textfield {
     font-size: 20px;
-    color: var(--highlight-color);
     -unity-text-align: middle-left;
     min-height: 40px;
     margin-bottom: 10px;
@@ -103,9 +102,30 @@
     -unity-font-definition: var(--script-font);
 }
 
-.unity-base-field__input {
+.textfield .unity-base-text-field__input {
     border-radius: var(--border-radius);
-    border-color: var(--secondary-color);
     border-width: 3px;
-    color: var(--dark-text-color);
+}
+
+
+.unity-base-slider__tracker{
+    background-color: var(--secondary-color);
+    opacity: 0.5;
+    border-width: 0px;
+}
+
+.unity-base-slider__dragger{
+    background-color: rgba(83, 51, 33,0.5);
+    height: 16px;
+    border-radius: 6px;
+}
+
+.unity-repeat-button{
+    border-radius: 0px 10px 0px 0px;
+    background-color: rgba(83, 51, 33,0.5);
+    border-width: 0px;
+}
+
+.unity-scroller__high-button{
+    border-radius:  0px 0px 10px 0px;
 }

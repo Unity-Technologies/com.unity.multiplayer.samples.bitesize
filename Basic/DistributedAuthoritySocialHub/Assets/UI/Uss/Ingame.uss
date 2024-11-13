@@ -164,7 +164,7 @@
     position: absolute;
     padding-left: 16px;
     right: -56px;
-    top: 30px;
+    bottom: 100px;
     width: 64px;
 
 }
@@ -181,6 +181,10 @@
 .text-chat__messageinput{
     flex-grow: 1;
     margin-left: 0;
+}
+
+.text-chat .unity-scroll-view__content-container{
+    padding-left: 16px;
 }
 
 .text-chat__submit{
