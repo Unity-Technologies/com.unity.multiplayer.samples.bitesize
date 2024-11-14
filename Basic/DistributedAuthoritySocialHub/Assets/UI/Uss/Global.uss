@@ -12,6 +12,7 @@
     --mic-icon-size: 36px;
     --menu-button-size: 60px;
     --menu-button-font-size: 30px;
+    -unity-font-definition: var(--script-font);
 }
 
 .menu-button {
@@ -72,9 +73,9 @@
 }
 
 .menu-button--round {
-    min-height: 50px;
-    min-width: 50px;
-    border-radius: 25px;
+    max-width: var(--menu-button-size);
+    min-width: var(--menu-button-size);
+    border-radius: 30px;
     transition-property: rotate;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out-back;
@@ -87,7 +88,18 @@
 .menu-button--round:focus {
     -unity-text-outline-color: var(--main-color);
     -unity-text-outline-width: 2px;
-    rotate: 360deg;
+    scale: 1.2 1.2;
+}
+
+.menu-button--ingame {
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out-back;
+}
+
+.menu-button--ingame:focus {
+    -unity-text-outline-color: var(--main-color);
+    -unity-text-outline-width: 2px;
+    scale: 1.2 1.2;
 }
 
 .textfield {
@@ -107,25 +119,30 @@
     border-width: 3px;
 }
 
-
-.unity-base-slider__tracker{
+.unity-base-slider__tracker {
     background-color: var(--secondary-color);
     opacity: 0.5;
-    border-width: 0px;
+    border-width: 0;
 }
 
-.unity-base-slider__dragger{
-    background-color: rgba(83, 51, 33,0.5);
+.unity-base-slider__dragger {
+    background-color: rgba(83, 51, 33, 0.5);
     height: 16px;
     border-radius: 6px;
 }
 
-.unity-repeat-button{
-    border-radius: 0px 10px 0px 0px;
-    background-color: rgba(83, 51, 33,0.5);
-    border-width: 0px;
+.unity-repeat-button {
+    border-radius: 0 10px 0 0;
+    background-color: rgba(83, 51, 33, 0.5);
+    border-width: 0;
 }
 
-.unity-scroller__high-button{
-    border-radius:  0px 0px 10px 0px;
+.unity-scroller__high-button {
+    border-radius: 0 0 0 0;
+}
+
+.border--standard {
+    border-radius: var(--border-radius);
+    border-width: 3px;
+    border-color: var(--dark-text-color);
 }

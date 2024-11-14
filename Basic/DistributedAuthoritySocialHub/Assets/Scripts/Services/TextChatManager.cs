@@ -30,7 +30,6 @@ namespace Services
 
         void Awake()
         {
-
             // Initialize the new input action
             toggleChatAction = new InputAction("ToggleChat", binding: "<Keyboard>/slash");
             toggleChatAction.performed += ctx => ToggleChat();
@@ -46,12 +45,29 @@ namespace Services
             m_SendButton = m_Root.Q<Button>("submit");
             m_MessageInputField = m_Root.Q<TextField>("input-text");
             m_Root.Q<Button>("visibilty-button").clicked += ToggleChat;
+            m_MessageInputField.RegisterCallback<KeyDownEvent>(evt =>
+            {
+                if(evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
+                    SendMessage();
+            }, TrickleDown.TrickleDown);
 
             m_MessageView.dataSource = this;
             var dataBinding =  new DataBinding(){dataSourcePath = new PropertyPath("m_Messages")};
             dataBinding.bindingMode = BindingMode.TwoWay;
             m_MessageView.SetBinding("itemsSource",dataBinding);
             m_SendButton.clicked += SendMessage;
+
+            for (int i = 0; i < 20; i++)
+            {
+                var pad = "";
+                for (int j = 0; j < i; j++)
+                {
+                    pad += "x";
+                }
+
+                m_Messages.Add(new ChatMessage("Robi"+pad,"ogle Messages is a text messaging software application developed by Google for its Android and Wear OS mobile operating systems. It is also available as a web app. Google's official universal messaging platform for the Android ecosystem, Messages employs SMS and Rich "));
+            }
+
         }
 
         void OnDestroy()
@@ -65,6 +81,7 @@ namespace Services
         {
             isChatActive = !isChatActive;
             BindSessionEvents(isChatActive);
+            m_TextChatView.focusable = isChatActive;
             m_TextChatView.RemoveFromClassList("text-chat--visible");
             if(isChatActive)
                 m_TextChatView.AddToClassList("text-chat--visible");
@@ -117,7 +134,8 @@ namespace Services
         }
     }
 
-    struct ChatMessage
+    [Serializable]
+    class ChatMessage
     {
         public string Name;
         public string Message;

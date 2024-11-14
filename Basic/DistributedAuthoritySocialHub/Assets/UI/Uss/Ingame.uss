@@ -1,4 +1,3 @@
-/* Pickup Indicator shown when player is close to an object */
 .pickup-indicator {
     -unity-font-definition: var(--script-font);
     position: absolute;
@@ -39,8 +38,8 @@
 
 .pickup-indicator__border {
     position: absolute;
-    left:0px;
-    top:0px;
+    left: 0;
+    top: 0;
     min-width: 100%;
     min-height: 100%;
     border-color: var(--secondary-color);
@@ -48,20 +47,15 @@
     border-width: 2px;
 }
 
-/* Carry Box Info box uses the same style as the pickup indicator
-   just remove scale transition because gets scaled by distance
-*/
-.carrybox{
-        transition-property: scale;
-        transition-duration: 0ms;
+.carrybox {
+    transition-property: scale;
+    transition-duration: 0ms;
 }
 
-/* Player UI above the player */
 .player-top-ui {
     position: absolute;
     align-items: center;
     translate: -50% 0;
-
 }
 
 .player-mic-icon {
@@ -78,7 +72,6 @@
     -unity-text-outline-width: 1px;
 }
 
-/* Ingame Menu */
 #in-game-menu {
     justify-content: center;
     width: 100%;
@@ -109,7 +102,7 @@
     -unity-font-definition: var(--script-font);
     transition-property: scale, opacity;
     transition-duration: 200ms;
-    transition-timing-function:ease-in-out-bounce;
+    transition-timing-function: ease-in-out-bounce;
     justify-content: center;
     background-color: var(--main-color);
     align-self: center;
@@ -117,7 +110,7 @@
     padding: 32px;
 }
 
-#menu #btn-close-menu{
+#menu #btn-close-menu {
     position: absolute;
     right: -25px;
     top: -32px;
@@ -133,77 +126,84 @@
     opacity: 1;
 }
 
-/* TextChat */
-
 .text-chat {
     position: absolute;
     left: -600px;
-    bottom: 0;
+    bottom: 50px;
     height: 560px;
     width: 600px;
-    transition: left 0.5s ease-in-out;
+    transition: left 0.2s ease-in-out;
 }
 
-.text-chat--visible{
-    left: 0px;
+.text-chat--visible {
+    left: -3px;
 }
 
-.text-chat--visible > .text-chat__collapsebutton{
-    scale: -1 1 ;
+.text-chat--visible > .text-chat__collapsebutton {
+    scale: -1 1;
 }
 
-.text-chat__ui{
+.text-chat__ui {
+    font-size: 18px;
     background-color: var(--main-color);
     border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
     background-color: var(--main-color);
-    padding: 24px;
 }
 
-.text-chat__collapsebutton{
+.text-chat__collapsebutton {
     -unity-font-style: bold;
     position: absolute;
-    padding-left: 16px;
-    right: -56px;
+    padding-left: 10px;
     bottom: 100px;
-    width: 64px;
-
+    width: 80px;
+    right:-75px;
 }
 
 .text-chat__messagelist {
     flex-grow: 1;
-    background-color: var(--pickup-background-color);
     margin-bottom: 10px;
-    border-radius: var(--border-radius);
-    border-color: var(--secondary-color);
-    border-width: 3px;
+    border-top-right-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-.text-chat__messageinput{
+.text-chat__messageinput {
     flex-grow: 1;
+    flex-shrink: 1;
     margin-left: 0;
+    min-width: auto;
 }
 
-.text-chat .unity-scroll-view__content-container{
+.text-chat .unity-scroll-view__content-container {
     padding-left: 16px;
+    padding-right: 16px;
 }
 
-.text-chat__submit{
-
+.text-chat__submit {
+    font-size: 29px;
+    min-width: 60px;
 }
 
+#input-container {
+    padding: 8px;
+}
 
 .message {
-    -unity-font-definition: var(--script-font);
-    font-size: 24px;
     flex-direction: row;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
-.message__sender{
-
+.message__sender {
+    -unity-text-align: upper-right;
+    opacity: 0.8;
 }
 
-.message__text{
+.message__text {
     white-space: normal;
     overflow: visible;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
-
