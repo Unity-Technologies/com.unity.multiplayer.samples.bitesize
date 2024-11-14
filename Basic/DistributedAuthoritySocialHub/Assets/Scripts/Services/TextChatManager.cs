@@ -58,18 +58,6 @@ namespace Services
             dataBinding.bindingMode = BindingMode.TwoWay;
             m_MessageView.SetBinding("itemsSource",dataBinding);
             m_SendButton.clicked += SendMessage;
-
-            for (int i = 0; i < 20; i++)
-            {
-                var pad = "";
-                for (int j = 0; j < i; j++)
-                {
-                    pad += "x";
-                }
-
-                m_Messages.Add(new ChatMessage("Robi"+pad,"ogle Messages is a text messaging software application developed by Google for its Android and Wear OS mobile operating systems. It is also available as a web app. Google's official universal messaging platform for the Android ecosystem, Messages employs SMS and Rich "));
-            }
-
         }
 
         void OnDestroy()
@@ -95,6 +83,7 @@ namespace Services
             {
                 await VivoxService.Instance.SendChannelTextMessageAsync(VivoxManager.Instance.SessionName, m_MessageInputField.value);
                 m_MessageInputField.value = "";
+                m_MessageInputField.Focus();
             }
         }
 
@@ -129,10 +118,10 @@ namespace Services
         {
             if (vivoxMessage.FromSelf)
             {
-                return new ChatMessage("me:", vivoxMessage.MessageText);
+                return new ChatMessage("me", vivoxMessage.MessageText);
             }
 
-            return new ChatMessage(vivoxMessage.SenderDisplayName.Split('#')[0]+":", vivoxMessage.MessageText);
+            return new ChatMessage(vivoxMessage.SenderDisplayName.Split('#')[0], vivoxMessage.MessageText);
         }
     }
 

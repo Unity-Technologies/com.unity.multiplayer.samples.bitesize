@@ -6,7 +6,7 @@
         <ui:VisualElement class="text-chat__ui border--standard" style="flex-grow: 1;">
             <ui:ListView name="message-list" data-source-type="Services.TextChatManager, Unity.Multiplayer.Samples.SocialHub.Services" binding-source-selection-mode="AutoAssign" item-template="project://database/Assets/UI/Uxml/Ingame/TextChat/MessageItem.uxml?fileID=9197481963319205126&amp;guid=074af7e65339c44568d0bea5b558d5de&amp;type=3#MessageItem" virtualization-method="DynamicHeight" horizontal-scrolling="false" class="list-view text-chat__messagelist" />
             <ui:VisualElement name="input-container" style="flex-grow: 0; flex-direction: row; flex-shrink: 0;">
-                <ui:TextField name="input-text" placeholder-text="filler text" tabindex="1" class="textfield text-chat__messageinput" />
+                <ui:TextField name="input-text" placeholder-text="" tabindex="1" class="textfield text-chat__messageinput" />
                 <ui:Button name="submit" text="✔" tabindex="2" class="menu-button text-chat__submit menu-button--ingame" />
             </ui:VisualElement>
         </ui:VisualElement>
