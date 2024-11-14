@@ -19,6 +19,9 @@
     "m_Keywords": [
         {
             "m_Id": "6c07a028187c488f94325aefacd51977"
+        },
+        {
+            "m_Id": "4f9c35621bb646019e97b753e48fe39f"
         }
     ],
     "m_Dropdowns": [],
@@ -587,6 +590,9 @@
         },
         {
             "m_Id": "6c07a028187c488f94325aefacd51977"
+        },
+        {
+            "m_Id": "4f9c35621bb646019e97b753e48fe39f"
         }
     ]
 }
@@ -923,7 +929,7 @@
     "m_Title": "Specular from all lights",
     "m_Position": {
         "x": -3617.33349609375,
-        "y": -61.3333740234375
+        "y": -61.333251953125
     }
 }
 
@@ -1298,12 +1304,37 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.ShaderKeyword",
+    "m_ObjectId": "4f9c35621bb646019e97b753e48fe39f",
+    "m_Guid": {
+        "m_GuidSerialized": "6557e20f-3234-4e6a-85b8-db947a32c95a"
+    },
+    "m_Name": "_MAIN_LIGHT_SHADOWS_CASCADE",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "_MAIN_LIGHT_SHADOWS_CASCADE",
+    "m_DefaultReferenceName": "_MAIN_LIGHT_SHADOWS_CASCADE",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_KeywordType": 0,
+    "m_KeywordDefinition": 1,
+    "m_KeywordScope": 1,
+    "m_KeywordStages": 63,
+    "m_Entries": [],
+    "m_Value": 1,
+    "m_IsEditable": true
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "50865b0f887d40b8b6d35c6c6e3cc095",
     "m_Title": "Additional Lights",
     "m_Position": {
-        "x": -4629.3330078125,
+        "x": -4629.33349609375,
         "y": -923.3333129882813
     }
 }
@@ -1872,8 +1903,8 @@
     "m_ObjectId": "7bddd2d1023f4fd1801ff7dad3e00ed1",
     "m_Title": "Albedo",
     "m_Position": {
-        "x": -2030.0,
-        "y": -640.6666870117188
+        "x": -2030.00048828125,
+        "y": -640.666748046875
     }
 }
 
@@ -1883,8 +1914,8 @@
     "m_ObjectId": "7c74a36ed8fa4f438f5c67d1121da360",
     "m_Title": "Lighting from all lights",
     "m_Position": {
-        "x": -3630.0,
-        "y": -922.6666870117188
+        "x": -3630.000244140625,
+        "y": -922.666748046875
     }
 }
 
@@ -2336,7 +2367,7 @@
     "m_Title": "Main Directional Light + Lightmap",
     "m_Position": {
         "x": -4423.33349609375,
-        "y": -64.666748046875
+        "y": -64.66685485839844
     }
 }
 
@@ -2774,7 +2805,7 @@
     "m_Title": "Specular masking and tinting",
     "m_Position": {
         "x": -3125.33349609375,
-        "y": -405.3333740234375
+        "y": -405.3338623046875
     }
 }
 
