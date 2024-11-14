@@ -1,4 +1,4 @@
-﻿#ifndef CUSTOM_LIGHTING_INCLUDED
+#ifndef CUSTOM_LIGHTING_INCLUDED
 #define CUSTOM_LIGHTING_INCLUDED
 
 #if defined(SHADERGRAPH_PREVIEW)
@@ -27,15 +27,15 @@ void MainLight_float(float3 WorldPos, out float3 Direction, out float3 Color, ou
     Direction = mainLight.direction;
     Color = mainLight.color;
 
-	#if !defined(_MAIN_LIGHT_SHADOWS) || defined(_RECEIVE_SHADOWS_OFF)
-		ShadowAtten = 1.0h;
-    #else
+	//#if !defined(_MAIN_LIGHT_SHADOWS) || defined(_RECEIVE_SHADOWS_OFF)
+	//	ShadowAtten = 1.0h;
+    //#else
 	    ShadowSamplingData shadowSamplingData = GetMainLightShadowSamplingData();
 	    float shadowStrength = GetMainLightShadowStrength();
 	    ShadowAtten = SampleShadowmap(shadowCoord, TEXTURE2D_ARGS(_MainLightShadowmapTexture,
 	    sampler_MainLightShadowmapTexture),
 	    shadowSamplingData, shadowStrength, false);
-    #endif
+    //#endif
 #endif
 }
 
