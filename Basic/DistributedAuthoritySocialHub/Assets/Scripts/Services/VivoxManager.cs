@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.Services;
 using UnityEngine;
 using Unity.Services.Vivox;
@@ -19,8 +20,6 @@ namespace Services
 
         private void Awake()
         {
-
-
             if (Instance == null)
             {
                 Instance = this;
@@ -32,26 +31,35 @@ namespace Services
             }
         }
 
+        public async void LoginVivox(string playerName, string playerId)
+        {
+            await VivoxService.Instance.InitializeAsync();
+            var loginOptions = new LoginOptions()
+            {
+                DisplayName = playerName,
+                PlayerId = playerId,
+            };
+            await VivoxService.Instance.LoginAsync(loginOptions);
+        }
+
         public async void JoinChannel(string channelName)
         {
             SessionName = channelName;
             var channelOptions = new ChannelOptions();
-
-            // await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.TextAndAudio,
-            //     new Channel3DProperties(), channelOptions);
-            //
+            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
 
 
-            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextOnly, channelOptions);
+            //Todo: this is a temporary solution to initialize the text chat manager
+            //it is not guarenteed that TExtchatmanger is available already
             var textChatManager = FindFirstObjectByType<TextChatManager>();
             if(textChatManager != null)
             {
                 textChatManager.Initialize();
                 Debug.Log("Joined text and audio channel");
             }
-            //VivoxService.Instance.Set3DPosition(m_ParticipantPrefab, channelName);
         }
 
+        // Todo: readd when adding Positional VoiceChat
         private void BindSessionEvents(bool doBind)
         {
             if(doBind)

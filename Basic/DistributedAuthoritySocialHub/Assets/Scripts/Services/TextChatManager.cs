@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 
 namespace Services
 {
+
+    // Todo: This class should get decoupled from Vivox and be more generic
     public class TextChatManager : MonoBehaviour
     {
         [SerializeField]

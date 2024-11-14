@@ -8,15 +8,11 @@ using Unity.Services.Core;
 using Unity.Services.Multiplayer;
 using Unity.Services.Vivox;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
     class ServicesHelper : MonoBehaviour
     {
-        [SerializeField]
-        bool m_InitiateVivoxOnAuthentication;
-
         static bool s_InitialLoad;
 
         Task m_SessionTask;
@@ -42,25 +38,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             NetworkManager.Singleton.OnClientStopped += OnClientStopped;
 
             GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
-            GameplayEventHandler.OnReturnToMainMenuButtonPressed += OnReturnToMainMenuButtonPressed;
+            GameplayEventHandler.OnReturnToMainMenuButtonPressed += LeaveSession;
             GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
-        }
-
-        void OnClientStopped(bool obj)
-        {
-            LeaveSession();
-        }
-
-        void OnDestroy()
-        {
-            if (NetworkManager.Singleton)
-            {
-                NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
-            }
-
-            GameplayEventHandler.OnStartButtonPressed -= OnStartButtonPressed;
-            GameplayEventHandler.OnReturnToMainMenuButtonPressed -= OnReturnToMainMenuButtonPressed;
-            GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
         }
 
         async void OnStartButtonPressed(string playerName, string sessionName)
@@ -70,9 +49,71 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             GameplayEventHandler.ConnectToSessionComplete(connectTask);
         }
 
-        void OnReturnToMainMenuButtonPressed()
+        async Task ConnectToSession(string playerName, string sessionName)
         {
-            LeaveSession();
+            if (AuthenticationService.Instance == null)
+            {
+                return;
+            }
+
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                await SignIn();
+            }
+
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
+            Debug.Log($"Signed in anonymously after. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
+
+            if (string.IsNullOrEmpty(sessionName))
+            {
+                Debug.LogError("Session name is empty. Cannot connect.");
+                return;
+            }
+
+            await ConnectThroughLiveService(sessionName);
+        }
+
+        async Task SignIn()
+        {
+            try
+            {
+                AuthenticationService.Instance.SignInFailed += SignInFailed;
+                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                Debug.Log($"Signed in anonymously before. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                throw;
+            }
+        }
+
+        async Task ConnectThroughLiveService(string sessionName)
+        {
+            try
+            {
+                // Sign in Vivox first, because
+                // Sign in Vivox first, because of possible race condition
+                // with AutoSpawning when joining a session.
+                VivoxManager.Instance.LoginVivox(AuthenticationService.Instance.PlayerName, AuthenticationService.Instance.PlayerId);
+
+                // Join Session
+                var options = new SessionOptions()
+                {
+                    Name = sessionName,
+                    MaxPlayers = 64,
+                }.WithDistributedAuthorityNetwork();
+
+                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
+                VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
+                m_CurrentSession.RemovedFromSession += RemovedFromSession;
+                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
 
         void OnQuitGameButtonPressed()
@@ -105,102 +146,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void SignInFailed(RequestFailedException obj)
         {
-            Debug.LogWarning($"{nameof(SignedIn)} obj.ErrorCode {obj.ErrorCode}");
-        }
-
-        async void SignedIn()
-        {
-
-        }
-
-
-        static string GetRandomString(int length)
-        {
-            var r = new System.Random();
-            var result = new char[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                result[i] = (char)r.Next('a', 'z' + 1);
-            }
-
-            return new string(result);
-        }
-
-        async Task SignIn()
-        {
-            try
-            {
-                AuthenticationService.Instance.SignInFailed += SignInFailed;
-                AuthenticationService.Instance.SignedIn += SignedIn;
-                AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Debug.Log($"Signed in anonymously before. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                throw;
-            }
-        }
-
-        async Task ConnectToSession(string playerName, string sessionName)
-        {
-            if (AuthenticationService.Instance == null)
-            {
-                return;
-            }
-
-            if (!AuthenticationService.Instance.IsSignedIn)
-            {
-                await SignIn();
-            }
-
-            await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
-            Debug.Log($"Signed in anonymously after. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
-
-            if (string.IsNullOrEmpty(sessionName))
-            {
-                Debug.LogError("Session name is empty. Cannot connect.");
-                return;
-            }
-
-            await ConnectThroughLiveService(sessionName);
-        }
-
-        async Task ConnectThroughLiveService(string sessionName)
-        {
-            try
-            {
-                var options = new SessionOptions()
-                {
-                    Name = sessionName,
-
-                    MaxPlayers = 64,
-                }.WithDistributedAuthorityNetwork();
-
-
-
-                if (m_InitiateVivoxOnAuthentication)
-                {
-                    await VivoxService.Instance.InitializeAsync();
-                    var loginOptions = new LoginOptions()
-                    {
-                        DisplayName = AuthenticationService.Instance.PlayerName,
-                        PlayerId = AuthenticationService.Instance.PlayerId,
-                    };
-                    await VivoxService.Instance.LoginAsync(loginOptions);
-                }
-
-                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-                VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
-                m_CurrentSession.RemovedFromSession += RemovedFromSession;
-                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+            Debug.LogWarning($"Sign in via Authentication failed: obj.ErrorCode {obj.ErrorCode}");
         }
 
         void RemovedFromSession()
@@ -225,6 +171,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 m_CurrentSession = null;
                 GameplayEventHandler.ExitedSession();
             }
+        }
+
+        void OnClientStopped(bool obj)
+        {
+            LeaveSession();
+        }
+
+        void OnDestroy()
+        {
+            if (NetworkManager.Singleton)
+            {
+                NetworkManager.Singleton.OnClientStopped -= OnClientStopped;
+            }
+
+            GameplayEventHandler.OnStartButtonPressed -= OnStartButtonPressed;
+            GameplayEventHandler.OnReturnToMainMenuButtonPressed -= LeaveSession;
+            GameplayEventHandler.OnQuitGameButtonPressed -= OnQuitGameButtonPressed;
+        }
+
+        static string GetRandomString(int length)
+        {
+            var r = new System.Random();
+            var result = new char[length];
+
+            for (var i = 0; i < length; i++)
+            {
+                result[i] = (char)r.Next('a', 'z' + 1);
+            }
+
+            return new string(result);
         }
     }
 }
