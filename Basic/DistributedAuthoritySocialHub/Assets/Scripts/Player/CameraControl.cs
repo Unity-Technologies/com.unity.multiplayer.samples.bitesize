@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
@@ -10,10 +11,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
     {
         [SerializeField]
         CinemachineCamera m_FreeLookVCamera;
-        [SerializeField]
-        InputActionReference m_RotateActionReference;
-        [SerializeField]
-        InputActionReference m_LookActionReference;
         const float k_MouseLookMultiplier = 15f;
         const float k_GamepadLookMultiplier = 100f;
         const float k_VerticalScaling = 0.01f;
@@ -25,12 +22,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void Awake()
         {
-            if (m_RotateActionReference != null)
-            {
-                m_RotateActionReference.action.started += OnRotateStarted;
-                m_RotateActionReference.action.canceled += OnRotateCanceled;
-                m_RotateActionReference.action.Enable();
-            }
+            GameInput.Actions.Player.Rotate.started += OnRotateStarted;
+            GameInput.Actions.Player.Rotate.canceled += OnRotateCanceled;
 
             m_OrbitalFollow = m_FreeLookVCamera.GetComponent<CinemachineOrbitalFollow>();
             m_FreeLookVCamera.Follow = null;
@@ -38,31 +31,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnDestroy()
         {
-            if (m_RotateActionReference != null)
-            {
-                m_RotateActionReference.action.started -= OnRotateStarted;
-                m_RotateActionReference.action.canceled -= OnRotateCanceled;
-            }
+            GameInput.Actions.Player.Rotate.started -= OnRotateStarted;
+            GameInput.Actions.Player.Rotate.canceled -= OnRotateCanceled;
 
             StopAllCoroutines();
-        }
-
-        void OnEnable()
-        {
-            if (m_RotateActionReference != null && m_LookActionReference != null)
-            {
-                m_RotateActionReference.action.Enable();
-                m_LookActionReference.action.Enable();
-            }
-        }
-
-        void OnDisable()
-        {
-            if (m_RotateActionReference != null && m_LookActionReference != null)
-            {
-                m_RotateActionReference.action.Disable();
-                m_LookActionReference.action.Disable();
-            }
         }
 
         internal void SetTransform(Transform newTransform)
@@ -71,7 +43,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             SetupProtagonistVirtualCamera();
         }
 
-        void OnRotateStarted(InputAction.CallbackContext context)
+        void OnRotateStarted(InputAction.CallbackContext _)
         {
             m_IsRotatePressed = true;
             Cursor.lockState = CursorLockMode.Locked;
@@ -80,7 +52,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             StartCoroutine(DisableMouseControlForFrame());
         }
 
-        void OnRotateCanceled(InputAction.CallbackContext context)
+        void OnRotateCanceled(InputAction.CallbackContext _)
         {
             m_IsRotatePressed = false;
             Cursor.lockState = CursorLockMode.None;
@@ -96,16 +68,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void Update()
         {
-            if (m_LookActionReference.action.activeControl == null)
+            if (GameInput.Actions.Player.Look.activeControl == null)
             {
                 return;
             }
 
-            var device = m_LookActionReference.action.activeControl.device;
+            var device = GameInput.Actions.Player.Look.activeControl.device;
             switch (device)
             {
                 case Mouse:
                     HandleRotateMouse();
+                    break;
+                case Touchscreen:
+                    HandleRotateTouchscreen();
                     break;
                 case Gamepad:
                     HandleRotateGamepad();
@@ -120,7 +95,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            var cameraMovement = m_LookActionReference.action.ReadValue<Vector2>();
+            var cameraMovement = GameInput.Actions.Player.Look.ReadValue<Vector2>();
+            var deviceScaling = k_MouseLookMultiplier * Time.deltaTime;
+            m_OrbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceScaling;
+            m_OrbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceScaling * k_VerticalScaling;
+        }
+
+        void HandleRotateTouchscreen()
+        {
+            var cameraMovement = GameInput.Actions.Player.Look.ReadValue<Vector2>();
             var deviceScaling = k_MouseLookMultiplier * Time.deltaTime;
             m_OrbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceScaling;
             m_OrbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceScaling * k_VerticalScaling;
@@ -128,7 +111,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void HandleRotateGamepad()
         {
-            var cameraMovement = m_LookActionReference.action.ReadValue<Vector2>();
+            var cameraMovement = GameInput.Actions.Player.Look.ReadValue<Vector2>();
             var deviceScaling = k_GamepadLookMultiplier * Time.deltaTime;
             m_OrbitalFollow.HorizontalAxis.Value += cameraMovement.x * deviceScaling;
             m_OrbitalFollow.VerticalAxis.Value += cameraMovement.y * deviceScaling * k_VerticalScaling;
