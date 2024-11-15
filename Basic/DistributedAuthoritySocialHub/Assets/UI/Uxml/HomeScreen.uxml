@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Uss/HomeScreen.uss?fileID=7433441132597879392&amp;guid=c08c9106b0ec56748be4248cef38da1f&amp;type=3#HomeScreen" />
+    <ui:VisualElement name="background" />
+    <ui:VisualElement name="container_global">
+        <ui:VisualElement name="game-titel">
+            <ui:Label text="Social Hub" />
+            <ui:Label text="Sample" name="line-2" />
+        </ui:VisualElement>
+        <ui:VisualElement name="container_menu">
+            <ui:TextField label="Player Name" name="tf_player_name" class="textfield" />
+            <ui:TextField label="Session Name" name="tf_session_name" class="textfield" />
+            <ui:VisualElement name="container_buttons">
+                <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton name="bt_start" text="Start" />
+                <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton name="bt_quit" text="Quit" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label text="This sample is built with the Distributed Authority topology, showcasing recommended approaches to designing gameplay features with the&#10;new framework inside Netcode for GameObjects v2.0 in tandem with the Multiplayer SDK. This sample serves as the educational entry point for users who are looking to implement a similar networking topology inside their projects.&#10;&#10;We are deeply grateful for the creative talents of all contributors to the Unity Open Project #1 Chop Chop repository, as the beautiful assets and scenes from Chop Chop became the foundation for this sample project.&#10;The original repository of the open project can be found here: https://github.com/UnityTechnologies/open-project-1" name="info_text" />
+    </ui:VisualElement>
+</ui:UXML>

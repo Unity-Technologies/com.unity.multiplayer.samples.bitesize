@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="in-game-menu" style="flex-grow: 1;">
+        <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="☰" name="burger-button" class="menu-button--round" />
+        <ui:VisualElement name="sceen-overlay" style="flex-grow: 1; top: 0; left: 0;" />
+        <ui:VisualElement name="menu">
+            <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="Go to Main Menu" name="btn-goto-main" />
+            <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="Exit Application" name="btn-exit" />
+            <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="x" name="btn-close-menu" class="menu-button--round" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
