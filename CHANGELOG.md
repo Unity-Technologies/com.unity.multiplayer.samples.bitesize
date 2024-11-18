@@ -1,5 +1,12 @@
 # Changelog
 
+## [unreleased] yyyy-mm-dd
+
+### Distributed Authority Social Hub
+
+#### Added
+- Mobile and gamepad support, with associated UI (first draft) for mobile controls using UIToolkit has been integrated to the sample (#256)
+
 ## [1.9.0] 2024-10-31
 
 ### Distributed Authority Social Hub
