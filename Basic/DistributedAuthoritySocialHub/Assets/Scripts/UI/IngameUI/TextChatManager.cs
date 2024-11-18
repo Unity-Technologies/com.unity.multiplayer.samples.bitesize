@@ -4,6 +4,7 @@ using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Unity.Multiplayer.Samples.SocialHub.GameManagement.GameplayEventHandler;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
@@ -17,7 +18,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         // Serializable for Bindings.
         [SerializeField, HideInInspector]
-        readonly List<ChatMessage> m_Messages = new();
+        List<ChatMessage> m_Messages = new();
 
         ListView m_MessageView;
         TextField m_MessageInputField;
@@ -31,30 +32,40 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("textchat-container");
             m_Asset.CloneTree(m_Root);
+
+            m_Root.Q<Button>("visibility-button").clicked += ToggleChat;
             m_TextChatView = m_Root.Q<VisualElement>("text-chat");
-            m_MessageView = m_Root.Q<ListView>("message-list");
+
             m_SendButton = m_Root.Q<Button>("submit");
+            m_SendButton.clicked += SendMessage;
+
             m_MessageInputField = m_Root.Q<TextField>("input-text");
-            m_Root.Q<Button>("visibilty-button").clicked += ToggleChat;
+            m_MessageInputField.RegisterCallback<FocusInEvent>(evt => BlockPlayerControls(true));
+            m_MessageInputField.RegisterCallback<FocusOutEvent>(evt => BlockPlayerControls(false));
+
             m_MessageInputField.RegisterCallback<KeyDownEvent>(evt =>
             {
-                if(evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
+                if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
                     SendMessage();
             }, TrickleDown.TrickleDown);
 
+            m_MessageView = m_Root.Q<ListView>("message-list");
             m_MessageView.dataSource = this;
-            var dataBinding =  new DataBinding(){dataSourcePath = new PropertyPath("m_Messages")};
-            dataBinding.bindingMode = BindingMode.TwoWay;
-            m_MessageView.SetBinding("itemsSource",dataBinding);
-            m_SendButton.clicked += SendMessage;
+            m_MessageView.SetBinding("itemsSource", new DataBinding
+            {
+                dataSourcePath = new PropertyPath("m_Messages"),
+                bindingMode = BindingMode.TwoWay
+            });
 
             SetViewFocusable(m_IsChatActive);
             BindSessionEvents(true);
+
+            m_Messages.Clear();
+            m_Messages.Add(new ChatMessage("Sample Devs", "Hey, we hope you enjoy our sample :)"));
         }
 
         void OnDestroy()
         {
-            //m_ToggleChatAction.Disable();
             m_SendButton.clicked -= SendMessage;
             BindSessionEvents(false);
         }
@@ -62,17 +73,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void ToggleChat()
         {
             m_IsChatActive = !m_IsChatActive;
-            BindSessionEvents(m_IsChatActive);
-            m_TextChatView.focusable = m_IsChatActive;
-            m_TextChatView.RemoveFromClassList("text-chat--visible");
-            if(m_IsChatActive)
-                m_TextChatView.AddToClassList("text-chat--visible");
-
             SetViewFocusable(m_IsChatActive);
+
+            if (m_IsChatActive)
+            {
+                m_TextChatView.AddToClassList("text-chat--visible");
+                return;
+            }
+
+            m_TextChatView.RemoveFromClassList("text-chat--visible");
         }
 
         void SetViewFocusable(bool focusable)
         {
+            m_TextChatView.focusable = m_IsChatActive;
             m_MessageInputField.focusable = focusable;
             m_SendButton.focusable = focusable;
             m_MessageView.focusable = focusable;
@@ -82,7 +96,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
-                GameplayEventHandler.SendTextMessage(m_MessageInputField.value);
+                SendTextMessage(m_MessageInputField.value);
                 m_MessageInputField.value = "";
                 m_MessageInputField.Focus();
             }
@@ -92,12 +106,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             if (doBind)
             {
-                GameplayEventHandler.OnTextMessageReceived -= OnChannelMessageReceived;
-                GameplayEventHandler.OnTextMessageReceived += OnChannelMessageReceived;
+                OnTextMessageReceived -= OnChannelMessageReceived;
+                OnTextMessageReceived += OnChannelMessageReceived;
             }
             else
             {
-                GameplayEventHandler.OnTextMessageReceived -= OnChannelMessageReceived;
+                OnTextMessageReceived -= OnChannelMessageReceived;
             }
         }
 
@@ -120,4 +134,3 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         }
     }
 }
-

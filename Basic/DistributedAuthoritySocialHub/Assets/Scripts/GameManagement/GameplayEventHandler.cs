@@ -15,9 +15,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action OnQuitGameButtonPressed;
         internal static event Action<Task> OnConnectToSessionCompleted;
         internal static event Action OnExitedSession;
-
         internal static event Action<string, string, bool> OnTextMessageReceived;
         internal static event Action<string> OnSendTextMessage;
+        internal static event Action<bool> OnBlockPlayerControls;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -72,6 +72,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static void SendTextMessage(string message)
         {
             OnSendTextMessage?.Invoke(message);
+        }
+
+        public static void BlockPlayerControls(bool disable)
+        {
+            OnBlockPlayerControls?.Invoke(disable);
         }
     }
 }
