@@ -16,6 +16,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<Task> OnConnectToSessionCompleted;
         internal static event Action OnExitedSession;
 
+        internal static event Action<string, string, bool> OnTextMessageReceived;
+        internal static event Action<string> OnSendTextMessage;
+
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
             OnNetworkObjectDespawned?.Invoke(networkObject);
@@ -59,6 +62,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static void LoadInGameScene()
         {
             SceneManager.LoadScene("HubScene_TownMarket");
+        }
+
+        internal static void ProcessTextMessageReceived(string senderName, string message, bool fromSelf)
+        {
+            OnTextMessageReceived?.Invoke(senderName, message, fromSelf);
+        }
+
+        internal static void SendTextMessage(string message)
+        {
+            OnSendTextMessage?.Invoke(message);
         }
     }
 }

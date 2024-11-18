@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Properties;
-using Unity.Services.Vivox;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-namespace Services
+namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
-
-    // Todo: This class should get decoupled from Vivox and be more generic
     public class TextChatManager : MonoBehaviour
     {
         [SerializeField]
@@ -22,21 +19,13 @@ namespace Services
         TextField m_MessageInputField;
         Button m_SendButton;
 
-        bool isChatActive = true;
-        InputAction toggleChatAction;
+        bool m_IsChatActive;
 
-        [SerializeField]
-        readonly List<ChatMessage> m_Messages = new List<ChatMessage>();
+        // Serializable for Bindings.
+        [SerializeField, HideInInspector]
+        readonly List<ChatMessage> m_Messages = new();
         VisualElement m_Root;
         VisualElement m_TextChatView;
-
-        void Awake()
-        {
-            // Initialize the new input action
-            toggleChatAction = new InputAction("ToggleChat", binding: "<Keyboard>/slash");
-            toggleChatAction.performed += ctx => ToggleChat();
-            toggleChatAction.Enable();
-        }
 
         void Start()
         {
@@ -58,42 +47,44 @@ namespace Services
             dataBinding.bindingMode = BindingMode.TwoWay;
             m_MessageView.SetBinding("itemsSource",dataBinding);
             m_SendButton.clicked += SendMessage;
+
+            SetViewFocusable(m_IsChatActive);
+            BindSessionEvents(true);
         }
 
         void OnDestroy()
         {
-            toggleChatAction.Disable();
+            //m_ToggleChatAction.Disable();
             m_SendButton.clicked -= SendMessage;
             BindSessionEvents(false);
         }
 
-        private void ToggleChat()
+        void ToggleChat()
         {
-            isChatActive = !isChatActive;
-            BindSessionEvents(isChatActive);
-            m_TextChatView.focusable = isChatActive;
+            m_IsChatActive = !m_IsChatActive;
+            BindSessionEvents(m_IsChatActive);
+            m_TextChatView.focusable = m_IsChatActive;
             m_TextChatView.RemoveFromClassList("text-chat--visible");
-            if(isChatActive)
+            if(m_IsChatActive)
                 m_TextChatView.AddToClassList("text-chat--visible");
+
+            SetViewFocusable(m_IsChatActive);
         }
 
-        private async void SendMessage()
+        void SetViewFocusable(bool focusable)
+        {
+            m_MessageInputField.focusable = focusable;
+            m_SendButton.focusable = focusable;
+            m_MessageView.focusable = focusable;
+        }
+
+        void SendMessage()
         {
             if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
-                await VivoxService.Instance.SendChannelTextMessageAsync(VivoxManager.Instance.SessionName, m_MessageInputField.value);
+                GameplayEventHandler.SendTextMessage(m_MessageInputField.value);
                 m_MessageInputField.value = "";
                 m_MessageInputField.Focus();
-            }
-        }
-
-        public async void Initialize()
-        {
-            BindSessionEvents(true);
-            var lastMessages = await VivoxService.Instance.GetChannelTextMessageHistoryAsync(VivoxManager.Instance.SessionName, 100, null);
-            foreach (var vivoxMessage in lastMessages)
-            {
-                m_Messages.Add(CreateChatMessage(vivoxMessage));
             }
         }
 
@@ -101,27 +92,17 @@ namespace Services
         {
             if (doBind)
             {
-                VivoxService.Instance.ChannelMessageReceived += OnChannelMessageReceived;
+                GameplayEventHandler.OnTextMessageReceived += OnChannelMessageReceived;
             }
             else
             {
-                VivoxService.Instance.ChannelMessageReceived -= OnChannelMessageReceived;
+                GameplayEventHandler.OnTextMessageReceived -= OnChannelMessageReceived;
             }
         }
 
-        void OnChannelMessageReceived(VivoxMessage message)
+        void OnChannelMessageReceived(string sender, string message, bool fromSelf)
         {
-            m_Messages.Add(CreateChatMessage(message));
-        }
-
-        ChatMessage CreateChatMessage(VivoxMessage vivoxMessage)
-        {
-            if (vivoxMessage.FromSelf)
-            {
-                return new ChatMessage("me", vivoxMessage.MessageText);
-            }
-
-            return new ChatMessage(vivoxMessage.SenderDisplayName.Split('#')[0], vivoxMessage.MessageText);
+            m_Messages.Add(fromSelf ? new ChatMessage("me", message) : new ChatMessage(sender, message));
         }
     }
 
