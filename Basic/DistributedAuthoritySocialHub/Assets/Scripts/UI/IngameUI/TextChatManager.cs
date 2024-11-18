@@ -15,17 +15,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         [SerializeField]
         VisualTreeAsset m_Asset;
 
-        ListView m_MessageView;
-        TextField m_MessageInputField;
-        Button m_SendButton;
-
-        bool m_IsChatActive;
-
         // Serializable for Bindings.
         [SerializeField, HideInInspector]
         readonly List<ChatMessage> m_Messages = new();
+
+        ListView m_MessageView;
+        TextField m_MessageInputField;
+        Button m_SendButton;
         VisualElement m_Root;
         VisualElement m_TextChatView;
+
+        bool m_IsChatActive;
 
         void Start()
         {
@@ -92,6 +92,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             if (doBind)
             {
+                GameplayEventHandler.OnTextMessageReceived -= OnChannelMessageReceived;
                 GameplayEventHandler.OnTextMessageReceived += OnChannelMessageReceived;
             }
             else
