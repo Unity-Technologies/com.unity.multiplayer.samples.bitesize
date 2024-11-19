@@ -119,6 +119,10 @@
     border-width: 3px;
 }
 
+.textfield:focus .unity-base-text-field__input {
+    border-color: var(--secondary-color);
+}
+
 .unity-base-slider__tracker {
     background-color: var(--secondary-color);
     opacity: 0.5;
