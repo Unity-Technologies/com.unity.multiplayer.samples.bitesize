@@ -145,6 +145,7 @@
 
 .text-chat__ui {
     font-size: 18px;
+    flex-grow: 1;
     background-color: var(--main-color);
     border-radius: var(--border-radius);
     border-bottom-left-radius: 0;
@@ -187,6 +188,9 @@
 
 #input-container {
     padding: 8px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: row;
 }
 
 .message {

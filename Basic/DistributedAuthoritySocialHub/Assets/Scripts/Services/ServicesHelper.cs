@@ -91,29 +91,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async Task ConnectThroughLiveService(string sessionName)
         {
-            try
-            {
-                // Sign in Vivox first, because
-                // Sign in Vivox first, because of possible race condition
-                // with AutoSpawning when joining a session.
-                VivoxManager.Instance.LoginVivox(AuthenticationService.Instance.PlayerName, AuthenticationService.Instance.PlayerId);
+            // Sign in Vivox first, because of possible race condition
+            // with AutoSpawning when joining a session.
+            await VivoxManager.Instance.LoginVivox(AuthenticationService.Instance.PlayerName, AuthenticationService.Instance.PlayerId);
 
-                // Join Session
-                var options = new SessionOptions()
-                {
-                    Name = sessionName,
-                    MaxPlayers = 64,
-                }.WithDistributedAuthorityNetwork();
-
-                m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-                VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
-                m_CurrentSession.RemovedFromSession += RemovedFromSession;
-                m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
-            }
-            catch (Exception e)
+            // Join Session
+            var options = new SessionOptions()
             {
-                Debug.LogException(e);
-            }
+                Name = sessionName,
+                MaxPlayers = 64,
+            }.WithDistributedAuthorityNetwork();
+
+            m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
+            await VivoxService.Instance.InitializeAsync();
+            VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
+            m_CurrentSession.RemovedFromSession += RemovedFromSession;
+            m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
         }
 
         void OnQuitGameButtonPressed()

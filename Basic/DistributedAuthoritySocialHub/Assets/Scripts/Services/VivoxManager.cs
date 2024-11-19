@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using Unity.Services.Vivox;
@@ -23,7 +24,7 @@ namespace Services
             }
         }
 
-        public async void LoginVivox(string playerName, string playerId)
+        public async Task LoginVivox(string playerName, string playerId)
         {
             await VivoxService.Instance.InitializeAsync();
             var loginOptions = new LoginOptions()
@@ -38,6 +39,7 @@ namespace Services
         {
             SessionName = channelName;
             var channelOptions = new ChannelOptions();
+
             await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
             GameplayEventHandler.OnSendTextMessage -= SendVivoxMessage;
             GameplayEventHandler.OnSendTextMessage += SendVivoxMessage;
@@ -47,7 +49,8 @@ namespace Services
 
         static void OnMessageReceived(VivoxMessage vivoxMessage)
         {
-            GameplayEventHandler.ProcessTextMessageReceived(vivoxMessage.SenderDisplayName, vivoxMessage.MessageText, vivoxMessage.FromSelf);
+            var senderName = vivoxMessage.SenderDisplayName.Split("#")[0];
+            GameplayEventHandler.ProcessTextMessageReceived(senderName, vivoxMessage.MessageText, vivoxMessage.FromSelf);
         }
 
         async void SendVivoxMessage(string message)
