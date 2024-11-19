@@ -4,7 +4,7 @@ using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using Unity.Services.Vivox;
 
-namespace Services
+namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
     public class VivoxManager : MonoBehaviour
     {
