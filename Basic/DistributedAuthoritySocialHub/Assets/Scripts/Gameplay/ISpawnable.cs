@@ -10,6 +10,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             get;
         }
 
-        void Init(SessionOwnerNetworkObjectSpawner networkObjectSpawner);
+        void Init(NetworkBehaviour networkObjectSpawner, int key = 0, int index = 0);
     }
 }

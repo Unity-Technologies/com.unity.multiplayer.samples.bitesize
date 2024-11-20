@@ -100,7 +100,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
             if (networkTransformState.HasRotAngleChange && !Rigidbody.isKinematic)
             {
-                if (Vector3.Distance(GetObjectAngularVelocity(), Rigidbody.angularVelocity) > RotAngleThreshold)
+                if (Vector3.Distance(GetObjectAngularVelocity(), Rigidbody.angularVelocity) > (10 * RotAngleThreshold))
                 {
                     UpdateAngularVelocity(Rigidbody.angularVelocity);
                 }
@@ -109,7 +109,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             if (networkTransformState.HasPositionChange && !Rigidbody.isKinematic)
             {
                 var velocity = GetObjectVelocity();
-                if (Vector3.Distance(GetObjectVelocity(true), velocity) > PositionThreshold)
+                if (Vector3.Distance(GetObjectVelocity(true), velocity) > (10 * PositionThreshold))
                 {
                     UpdateVelocity(velocity, false);
                 }

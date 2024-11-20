@@ -13,12 +13,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         NetworkVariable<int> m_TickToRespawn = new NetworkVariable<int>();
 
-        public override void OnNetworkSpawn()
+        protected override void OnNetworkSessionSynchronized()
         {
             if (IsSessionOwner)
             {
                 Spawn();
             }
+            base.OnNetworkSessionSynchronized();
         }
 
         public override void OnNetworkDespawn()

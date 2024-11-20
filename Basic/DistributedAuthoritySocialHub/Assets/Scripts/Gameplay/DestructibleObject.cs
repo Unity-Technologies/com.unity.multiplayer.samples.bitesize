@@ -26,6 +26,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         NetworkVariable<NetworkBehaviourReference> m_SessionOwnerNetworkObjectSpawner = new NetworkVariable<NetworkBehaviourReference>(writePerm: NetworkVariableWritePermission.Owner);
 
+        NetworkVariable<MultiSpawnInfo> m_MultiSpawnInstanceInfo = new NetworkVariable<MultiSpawnInfo>(default);
+        private struct MultiSpawnInfo : INetworkSerializable
+        {
+            public int Key;
+            public int Index;
+
+            public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+            {
+                serializer.SerializeValue(ref Key);
+                serializer.SerializeValue(ref Index);
+            }
+        }
+
         int m_LastDamageTick;
 
         [SerializeField]
@@ -41,6 +54,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         NetworkVariable<bool> m_Initialized = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         NetworkVariable<float> m_Health = new NetworkVariable<float>(0.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+
 
         Vector3 m_OriginalPosition;
         Quaternion m_OriginalRotation;
@@ -68,9 +83,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             base.OnNetworkDespawn();
         }
 
-        public void Init(SessionOwnerNetworkObjectSpawner spawner)
+        public void Init(NetworkBehaviour spawner, int key = 0, int index = 0)
         {
             m_SessionOwnerNetworkObjectSpawner.Value = new NetworkBehaviourReference(spawner);
+            m_MultiSpawnInstanceInfo.Value = new MultiSpawnInfo() { Key = key, Index = index };
         }
 
         protected override bool ProvideNonRigidbodyContactEvents()
@@ -164,9 +180,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             fxInstance.transform.position = transform.position;
             ChangeObjectVisuals(false);
             SpawnRubble(transform.position);
-            m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager);
             var tickToRespawn = NetworkManager.NetworkTickSystem.ServerTime.Tick + Mathf.RoundToInt(m_SecondsUntilRespawn * NetworkManager.NetworkTickSystem.ServerTime.TickRate);
-            spawner.RespawnRpc(tickToRespawn);
+            if (!m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager))
+            {
+                if(m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out MultiNetworkObjectSpawner multiSpawner, NetworkManager))
+                {
+                    multiSpawner.RespawnRpc(tickToRespawn, m_MultiSpawnInstanceInfo.Value.Key, m_MultiSpawnInstanceInfo.Value.Index);
+                }
+            }
+            else
+            {
+                spawner.RespawnRpc(tickToRespawn);
+            }
+            
             base.OnDeferringDespawn(despawnTick);
         }
 

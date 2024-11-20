@@ -105,6 +105,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: PositionThreshold
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: destructionVFXType
       value: Crate
       objectReference: {fileID: 0}
@@ -113,8 +117,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4975332333728566176}
     - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: UseHalfFloatPrecision
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_SecondsUntilRespawn
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: UseQuaternionCompression
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: UseQuaternionSynchronization
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_Name

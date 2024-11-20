@@ -211,7 +211,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         public void SendCollisionMessage(CollisionMessageInfo collisionMessage)
         {
             LogCollision(collisionMessage);
-            HandleCollisionRpc(collisionMessage);
+            if (IsSessionOwner && NetworkManager.ConnectedClientsIds.Count > 1)
+            {
+                HandleCollisionRpc(collisionMessage);
+            }
+            else
+            {
+                m_CollisionMessage.SourceOwner = NetworkManager.LocalClientId;
+                m_CollisionMessage.TargetOwner = OwnerClientId;
+                HandleCollision(collisionMessage);
+            }
         }
 
         /// <summary>
