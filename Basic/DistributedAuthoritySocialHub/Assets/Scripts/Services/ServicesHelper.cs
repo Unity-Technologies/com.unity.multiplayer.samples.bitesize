@@ -5,7 +5,6 @@ using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
-using Unity.Services.Vivox;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
@@ -39,13 +38,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             GameplayEventHandler.OnStartButtonPressed += OnStartButtonPressed;
             GameplayEventHandler.OnReturnToMainMenuButtonPressed += LeaveSession;
             GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
+
+            await VivoxManager.Instance.Initialize();
         }
 
         async void OnStartButtonPressed(string playerName, string sessionName)
         {
             var connectTask = ConnectToSession(playerName, sessionName);
             await connectTask;
-            GameplayEventHandler.ConnectToSessionComplete(connectTask);
+            GameplayEventHandler.ConnectToSessionComplete(connectTask, sessionName);
         }
 
         async Task ConnectToSession(string playerName, string sessionName)
@@ -90,10 +91,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async Task ConnectThroughLiveService(string sessionName)
         {
-            // Sign in Vivox first, because of possible race condition
-            // with AutoSpawning when joining a session.
-            await VivoxManager.Instance.LoginVivox(AuthenticationService.Instance.PlayerName, AuthenticationService.Instance.PlayerId);
-
             // Join Session
             var options = new SessionOptions()
             {
@@ -102,8 +99,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }.WithDistributedAuthorityNetwork();
 
             m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
-            await VivoxService.Instance.InitializeAsync();
-            VivoxManager.Instance.JoinChannel(m_CurrentSession.Id);
             m_CurrentSession.RemovedFromSession += RemovedFromSession;
             m_CurrentSession.StateChanged += CurrentSessionOnStateChanged;
         }

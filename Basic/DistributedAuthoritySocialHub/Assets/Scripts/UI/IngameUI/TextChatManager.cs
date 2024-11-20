@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -30,6 +29,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void Start()
         {
+
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("textchat-container");
             m_Asset.CloneTree(m_Root);
 
@@ -58,6 +58,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             });
 
             SetViewFocusable(m_IsChatActive);
+            m_TextChatView.SetEnabled(false);
             BindSessionEvents(true);
 
             m_Messages.Clear();
@@ -106,13 +107,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             if (doBind)
             {
+                OnChatIsReady += OnOnChatIsReady;
                 OnTextMessageReceived -= OnChannelMessageReceived;
                 OnTextMessageReceived += OnChannelMessageReceived;
             }
             else
             {
+                OnChatIsReady -= OnOnChatIsReady;
                 OnTextMessageReceived -= OnChannelMessageReceived;
             }
+        }
+
+        void OnOnChatIsReady(bool isReady)
+        {
+            m_TextChatView.SetEnabled(isReady);
         }
 
         void OnChannelMessageReceived(string sender, string message, bool fromSelf)

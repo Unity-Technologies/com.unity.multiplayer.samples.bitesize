@@ -13,11 +13,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<string, string> OnStartButtonPressed;
         internal static event Action OnReturnToMainMenuButtonPressed;
         internal static event Action OnQuitGameButtonPressed;
-        internal static event Action<Task> OnConnectToSessionCompleted;
+        internal static event Action<Task, string> OnConnectToSessionCompleted;
         internal static event Action OnExitedSession;
         internal static event Action<string, string, bool> OnTextMessageReceived;
         internal static event Action<string> OnSendTextMessage;
         internal static event Action<bool> OnBlockPlayerControls;
+        internal static event Action<bool> OnChatIsReady;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -44,9 +45,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             OnQuitGameButtonPressed?.Invoke();
         }
 
-        internal static void ConnectToSessionComplete(Task task)
+        internal static void ConnectToSessionComplete(Task task, string sessionName)
         {
-            OnConnectToSessionCompleted?.Invoke(task);
+            OnConnectToSessionCompleted?.Invoke(task, sessionName);
         }
 
         internal static void ExitedSession()
@@ -77,6 +78,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         public static void BlockPlayerControls(bool disable)
         {
             OnBlockPlayerControls?.Invoke(disable);
+        }
+
+        public static void SetTextChatReady(bool enabled)
+        {
+            OnChatIsReady?.Invoke(enabled);
         }
     }
 }
