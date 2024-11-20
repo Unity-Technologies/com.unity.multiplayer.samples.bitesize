@@ -18,8 +18,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
-                // Sign in Vivox first, because of possible race condition
-                // with AutoSpawning when joining a session.
             }
             else
             {
@@ -30,7 +28,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         internal async Task Initialize()
         {
             await VivoxService.Instance.InitializeAsync();
-            GameplayEventHandler.OnExitedSession += async () => await logoutVivox();
+            GameplayEventHandler.OnExitedSession += async () => await LogoutVivox();
             GameplayEventHandler.OnConnectToSessionCompleted += async (Task t, string sessionName) =>
             {
                 await LoginVivox(AuthenticationService.Instance.PlayerName, AuthenticationService.Instance.PlayerId);
@@ -39,7 +37,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             };
         }
 
-        async Task logoutVivox()
+        async Task LogoutVivox()
         {
             GameplayEventHandler.SetTextChatReady(false);
             await VivoxService.Instance.LogoutAsync();
