@@ -18,7 +18,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<string, string, bool> OnTextMessageReceived;
         internal static event Action<string> OnSendTextMessage;
         internal static event Action<bool> OnBlockPlayerControls;
-        internal static event Action<bool> OnChatIsReady;
+        internal static event Action<bool, string> OnChatIsReady;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -80,9 +80,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             OnBlockPlayerControls?.Invoke(disable);
         }
 
-        public static void SetTextChatReady(bool enabled)
+        public static void SetTextChatReady(bool enabled, string channelName)
         {
-            OnChatIsReady?.Invoke(enabled);
+            OnChatIsReady?.Invoke(enabled, channelName);
         }
     }
 }

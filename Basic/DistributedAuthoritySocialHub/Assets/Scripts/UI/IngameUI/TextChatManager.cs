@@ -118,7 +118,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-        void OnOnChatIsReady(bool isReady)
+        void OnOnChatIsReady(bool isReady, string channelName)
         {
             m_TextChatView.SetEnabled(isReady);
         }

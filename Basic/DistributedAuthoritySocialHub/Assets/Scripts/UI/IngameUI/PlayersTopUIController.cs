@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -109,6 +110,34 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
             m_PlayerHeadDisplayPool.Clear();
             m_PlayerToPlayerDisplayDict.Clear();
+        }
+
+        public void ConnectVivoxParticipant(VivoxParticipant vivoxParticipant)
+        {
+            foreach (var playerHeadDisplay in m_PlayerToPlayerDisplayDict)
+            {
+                var headDisplay = playerHeadDisplay.Value;
+                var vivoxName = vivoxParticipant.DisplayName.Split("#")[0];
+
+                if(headDisplay.GetPlayerName == vivoxName)
+                {
+                    Debug.Log("Found user init: " + vivoxName);
+                    headDisplay.InitVivox(vivoxParticipant);
+                }
+            }
+        }
+
+        public void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
+        {
+            foreach (var playerHeadDisplay in m_PlayerToPlayerDisplayDict)
+            {
+                var headDisplay = playerHeadDisplay.Value;
+                if(headDisplay.VivoxParticipant == vivoxParticipant)
+                {
+                    headDisplay.RemoveVivox(vivoxParticipant);
+                }
+
+            }
         }
     }
 }

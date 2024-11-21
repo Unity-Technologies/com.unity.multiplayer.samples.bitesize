@@ -302,6 +302,20 @@ MonoBehaviour:
     TransitionDuration: 0.1
     TriggerNameHash: -1243957561
     TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: -1413593168
+    DestinationState: -802706916
+    TransitionDuration: 0.25
+    TriggerNameHash: -802706916
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 1177697483
+    DestinationState: -802706916
+    TransitionDuration: 0.25
+    TriggerNameHash: -802706916
+    TransitionIndex: 1
   m_Animator: {fileID: 7006295767383679619}
   m_PhysicsPlayerController: {fileID: 4655812346339390596}
   m_AvatarInputs: {fileID: 8197190117666738524}
@@ -423,6 +437,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8353930243667998089, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3050276823525430539}
+    - targetCorrespondingSourceObject: {fileID: 8353930243667998089, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4683992500645973501}
   m_SourcePrefab: {fileID: 100100000, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
 --- !u!136 &36137897785899347 stripped
 CapsuleCollider:
@@ -456,6 +473,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f398d1c0abd4744eb035893ea7619cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4683992500645973501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3745480105526614893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee830f09ba1465fa953159de83e882e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!4 &4085133075368149463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8693301772691271475, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
