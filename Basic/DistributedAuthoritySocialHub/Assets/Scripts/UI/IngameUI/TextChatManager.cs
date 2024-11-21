@@ -7,7 +7,7 @@ using static Unity.Multiplayer.Samples.SocialHub.GameManagement.GameplayEventHan
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
-    public class TextChatManager : MonoBehaviour
+    class TextChatManager : MonoBehaviour
     {
         [SerializeField]
         UIDocument m_UIDocument;

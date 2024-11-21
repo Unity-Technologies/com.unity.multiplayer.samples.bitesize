@@ -10,7 +10,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
     class VivoxManager : MonoBehaviour
     {
         internal static VivoxManager Instance { get; set; }
-        string SessionName { get; set; }
+        string ChannelName { get; set; }
 
         void Awake()
         {
@@ -28,35 +28,31 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         internal async Task Initialize()
         {
             await VivoxService.Instance.InitializeAsync();
-            GameplayEventHandler.OnExitedSession += async () => await LogoutVivox();
-            GameplayEventHandler.OnConnectToSessionCompleted += async (Task t, string sessionName) =>
-            {
-                await LoginVivox(AuthenticationService.Instance.PlayerName, AuthenticationService.Instance.PlayerId);
-                await JoinChannel(sessionName);
-                GameplayEventHandler.SetTextChatReady(true);
-            };
+            GameplayEventHandler.OnConnectToSessionCompleted += LoginVivox;
+            VivoxService.Instance.LoggedIn += OnLoggedInVivox;
+            VivoxService.Instance.ChannelJoined += OnChannelJoined;
+            GameplayEventHandler.OnExitedSession += LogoutVivox;
         }
 
-        async Task LogoutVivox()
+        async void LoginVivox(Task t, string sessionName)
         {
-            GameplayEventHandler.SetTextChatReady(false);
-            await VivoxService.Instance.LogoutAsync();
-        }
-
-        async Task LoginVivox(string playerName, string playerId)
-        {
+            ChannelName = sessionName;
             await VivoxService.Instance.InitializeAsync();
             var loginOptions = new LoginOptions()
             {
-                DisplayName = playerName,
-                PlayerId = playerId,
+                DisplayName = AuthenticationService.Instance.PlayerName,
+                PlayerId = AuthenticationService.Instance.PlayerId
             };
             await VivoxService.Instance.LoginAsync(loginOptions);
         }
 
+        async void OnLoggedInVivox()
+        {
+            await JoinChannel(ChannelName);
+        }
+
         async Task JoinChannel(string channelName)
         {
-            SessionName = channelName;
             var channelOptions = new ChannelOptions();
 
             await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
@@ -66,21 +62,35 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             VivoxService.Instance.ChannelMessageReceived += OnMessageReceived;
         }
 
-        static void OnMessageReceived(VivoxMessage vivoxMessage)
+        void OnChannelJoined(string channelName)
         {
-            var senderName = vivoxMessage.SenderDisplayName.Split("#")[0];
-            GameplayEventHandler.ProcessTextMessageReceived(senderName, vivoxMessage.MessageText, vivoxMessage.FromSelf);
+            GameplayEventHandler.SetTextChatReady(true);
+        }
+
+        async void LogoutVivox()
+        {
+            GameplayEventHandler.SetTextChatReady(false);
+            await VivoxService.Instance.LogoutAsync();
         }
 
         async void SendVivoxMessage(string message)
         {
-            await VivoxService.Instance.SendChannelTextMessageAsync(VivoxManager.Instance.SessionName, message);
+            await VivoxService.Instance.SendChannelTextMessageAsync(VivoxManager.Instance.ChannelName, message);
+        }
+
+        void OnMessageReceived(VivoxMessage vivoxMessage)
+        {
+            var senderName = vivoxMessage.SenderDisplayName.Split("#")[0];
+            GameplayEventHandler.ProcessTextMessageReceived(senderName, vivoxMessage.MessageText, vivoxMessage.FromSelf);
         }
 
         void OnDestroy()
         {
             GameplayEventHandler.OnSendTextMessage -= SendVivoxMessage;
             VivoxService.Instance.ChannelMessageReceived -= OnMessageReceived;
+            GameplayEventHandler.OnExitedSession -= LogoutVivox;
+            GameplayEventHandler.OnConnectToSessionCompleted -= LoginVivox;
+            VivoxService.Instance.LoggedIn -= OnLoggedInVivox;
         }
     }
 }
