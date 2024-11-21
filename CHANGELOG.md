@@ -5,7 +5,7 @@
 ### Distributed Authority Social Hub
 
 #### Added
-- Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. [(#258)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/pull/258)
+- Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
 
 ## [1.9.0] 2024-10-31
 
