@@ -110,6 +110,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             foreach (var display in m_PlayerToPlayerDisplayDict.Values)
             {
                 display.RemoveFromHierarchy();
+                display.RemoveVivoxParticipant();
             }
             m_PlayerHeadDisplayPool.Clear();
             m_PlayerToPlayerDisplayDict.Clear();
@@ -121,6 +122,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             {
                 if(headDisplay.PlayerId == vivoxParticipant.PlayerId)
                 {
+                    Debug.Log("Attaching User"+ vivoxParticipant.DisplayName);
                     headDisplay.AttachVivoxParticipant(vivoxParticipant);
                 }
             }
@@ -130,9 +132,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {
-                if(headDisplay.VivoxParticipant == vivoxParticipant)
+                if(headDisplay.VivoxParticipant != null && headDisplay.VivoxParticipant== vivoxParticipant)
                 {
-                    headDisplay.RemoveVivoxParticipant(vivoxParticipant);
+                    Debug.Log("Removing User"+ vivoxParticipant.DisplayName);
+                    headDisplay.RemoveVivoxParticipant();
                 }
             }
         }

@@ -96,21 +96,23 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if(vivoxParticipant.ChannelName != VoiceChannelName)
                 return;
 
-            var controller = FindFirstObjectByType<PlayersTopUIController>();
-            controller.RemoveVivoxParticipant(vivoxParticipant);
+            if(PlayersTopUIController != null)
+                PlayersTopUIController.RemoveVivoxParticipant(vivoxParticipant);
         }
 
         void OnParticipantAddedToChannel(VivoxParticipant vivoxParticipant)
         {
             if(vivoxParticipant.ChannelName != VoiceChannelName)
                 return;
-            var controller = FindFirstObjectByType<PlayersTopUIController>();
-            controller.ConnectVivoxParticipant(vivoxParticipant);
+
+            if(PlayersTopUIController != null)
+                PlayersTopUIController.ConnectVivoxParticipant(vivoxParticipant);
         }
 
         void OnChannelJoined(string channelName)
         {
-            GameplayEventHandler.SetTextChatReady(true, channelName);
+            if(channelName == TextChannelName)
+                GameplayEventHandler.SetTextChatReady(true, TextChannelName);
         }
 
         async void LogoutVivox()
@@ -121,12 +123,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void SendVivoxMessage(string message)
         {
-            await VivoxService.Instance.SendChannelTextMessageAsync(TextChannelName+"_text", message);
+            await VivoxService.Instance.SendChannelTextMessageAsync(TextChannelName, message);
         }
 
         internal void SetPlayer3DPosition(GameObject avatar)
         {
-            VivoxService.Instance.Set3DPosition(avatar, TextChannelName);
+            VivoxService.Instance.Set3DPosition(avatar, VoiceChannelName);
         }
 
         void OnMessageReceived(VivoxMessage vivoxMessage)

@@ -34,8 +34,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Participant.ParticipantSpeechDetected += OnParticipantSpeechDetected;
         }
 
-        internal void RemoveVivoxParticipant(VivoxParticipant participant)
+        internal void RemoveVivoxParticipant()
         {
+            if(m_Participant == null)
+                return;
+
             m_Participant.ParticipantMuteStateChanged -= OnParticipantMuteStateChanged;
             m_Participant.ParticipantSpeechDetected -= OnParticipantSpeechDetected;
             m_Participant = null;
