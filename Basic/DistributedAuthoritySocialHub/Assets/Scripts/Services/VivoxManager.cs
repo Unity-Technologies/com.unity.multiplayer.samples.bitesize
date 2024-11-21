@@ -64,13 +64,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             VivoxService.Instance.ParticipantAddedToChannel += OnParticipantAddedToChannel;
             VivoxService.Instance.ParticipantRemovedFromChannel += OnParticipantLeftChannel;
 
-            var positionalChannelProperties = new Channel3DProperties()
-            {
+            var positionalChannelProperties = new Channel3DProperties(10,1,1f,AudioFadeModel.InverseByDistance);
 
-            };
+            await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.AudioOnly, positionalChannelProperties);
+            await VivoxService.Instance.JoinGroupChannelAsync(channelName+"_text", ChatCapability.TextOnly);
 
-            await VivoxService.Instance.JoinPositionalChannelAsync(channelName, ChatCapability.TextAndAudio, positionalChannelProperties);
-            //await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, new ChannelOptions());
             var activeParticipants = VivoxService.Instance.ActiveChannels[channelName];
 
             foreach (var participant in activeParticipants)
@@ -86,13 +84,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void OnParticipantLeftChannel(VivoxParticipant vivoxParticipant)
         {
+            if(vivoxParticipant.ChannelName != SessionName)
+                return;
             var controller = FindFirstObjectByType<PlayersTopUIController>();
             controller.RemoveVivoxParticipant(vivoxParticipant);
         }
 
         void OnParticipantAddedToChannel(VivoxParticipant vivoxParticipant)
         {
-            Debug.Log("User Joined" + vivoxParticipant.DisplayName);
+            if(vivoxParticipant.ChannelName != SessionName)
+                return;
             var controller = FindFirstObjectByType<PlayersTopUIController>();
             controller.ConnectVivoxParticipant(vivoxParticipant);
         }
@@ -105,12 +106,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void SendVivoxMessage(string message)
         {
-            await VivoxService.Instance.SendChannelTextMessageAsync(VivoxManager.Instance.SessionName, message);
+            await VivoxService.Instance.SendChannelTextMessageAsync(SessionName+"_text", message);
         }
 
         internal void SetPlayer3DPosition(GameObject avatar)
         {
-            VivoxService.Instance.Set3DPosition(gameObject, SessionName);
+            VivoxService.Instance.Set3DPosition(avatar, SessionName);
         }
 
         void OnDestroy()
