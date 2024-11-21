@@ -29,6 +29,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         PlayersTopUIController m_TopUIController;
 
         NetworkVariable<FixedString32Bytes> m_PlayerName = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+        NetworkVariable<FixedString32Bytes> m_PlayerId = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+
 
         public override void OnNetworkSpawn()
         {
@@ -44,6 +46,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
+            m_PlayerId.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerId);
             // a randomly-generated suffix consisting of a hash and four digits (e.g. #1234) is automatically appended to the requested name
             m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerName.Split('#')[0]);
             m_PlayerInput.enabled = true;
@@ -123,7 +126,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_TopUIController.AddPlayer(gameObject, newValue.Value);
+            m_TopUIController.AddPlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
         }
 
         void OnBlockPlayerControls(bool blockInput)

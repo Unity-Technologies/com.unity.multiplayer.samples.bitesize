@@ -56,17 +56,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-        internal void AddPlayer(GameObject player, string playerName)
+        internal void AddPlayer(GameObject player, string playerName, string playerId)
         {
             // if player has already been added, update name and return
             if (m_PlayerToPlayerDisplayDict.TryGetValue(player, out var playerHeadDisplay))
             {
                 playerHeadDisplay.SetPlayerName(playerName);
+                playerHeadDisplay.PlayerId = playerId;
                 return;
             }
 
             var display = GetDisplayForPlayer();
             display.SetPlayerName(playerName);
+            display.PlayerId = playerId;
+
             UpdateDisplayPosition(player.transform, display);
             m_PlayerToPlayerDisplayDict.Add(player, display);
         }
@@ -104,9 +107,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnDisable()
         {
-            foreach (var playerPair in m_PlayerToPlayerDisplayDict)
+            foreach (var display in m_PlayerToPlayerDisplayDict.Values)
             {
-                playerPair.Value.RemoveFromHierarchy();
+                display.RemoveFromHierarchy();
             }
             m_PlayerHeadDisplayPool.Clear();
             m_PlayerToPlayerDisplayDict.Clear();
@@ -114,29 +117,23 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         public void ConnectVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
-            foreach (var playerHeadDisplay in m_PlayerToPlayerDisplayDict)
+            foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {
-                var headDisplay = playerHeadDisplay.Value;
-                var vivoxName = vivoxParticipant.DisplayName.Split("#")[0];
-
-                if(headDisplay.GetPlayerName == vivoxName)
+                if(headDisplay.PlayerId == vivoxParticipant.PlayerId)
                 {
-                    Debug.Log("Found user init: " + vivoxName);
-                    headDisplay.InitVivox(vivoxParticipant);
+                    headDisplay.AttachVivoxParticipant(vivoxParticipant);
                 }
             }
         }
 
         public void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
-            foreach (var playerHeadDisplay in m_PlayerToPlayerDisplayDict)
+            foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {
-                var headDisplay = playerHeadDisplay.Value;
                 if(headDisplay.VivoxParticipant == vivoxParticipant)
                 {
-                    headDisplay.RemoveVivox(vivoxParticipant);
+                    headDisplay.RemoveVivoxParticipant(vivoxParticipant);
                 }
-
             }
         }
     }

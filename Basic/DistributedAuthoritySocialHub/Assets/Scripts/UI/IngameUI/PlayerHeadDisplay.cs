@@ -9,6 +9,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VivoxParticipant m_Participant;
         IVisualElementScheduledItem m_Scheduler;
         VisualElement m_MicIcon;
+        Label m_PlayerNameLabel;
+
+        internal VivoxParticipant VivoxParticipant => m_Participant;
+        internal string PlayerId { get; set; }
 
         /// <summary>
         /// Display that is shown above a players head
@@ -18,21 +22,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             AddToClassList("player-top-ui");
             Add(asset.CloneTree());
+            m_PlayerNameLabel = this.Q<Label>();
             m_MicIcon = this.Q<VisualElement>("mic-icon");
             ShowMicIcon(false);
         }
 
-        public VivoxParticipant VivoxParticipant => m_Participant;
-        public string GetPlayerName => this.Q<Label>().text;
-
-        internal void InitVivox(VivoxParticipant participant)
+        internal void AttachVivoxParticipant(VivoxParticipant participant)
         {
             m_Participant = participant;
             m_Participant.ParticipantMuteStateChanged += OnParticipantMuteStateChanged;
             m_Participant.ParticipantSpeechDetected += OnParticipantSpeechDetected;
         }
 
-        internal void RemoveVivox(VivoxParticipant participant)
+        internal void RemoveVivoxParticipant(VivoxParticipant participant)
         {
             m_Participant.ParticipantMuteStateChanged -= OnParticipantMuteStateChanged;
             m_Participant.ParticipantSpeechDetected -= OnParticipantSpeechDetected;
@@ -45,19 +47,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Scheduler.ExecuteLater(3000);
         }
 
-        void FadeOutMicIcon()
-        {
-            ShowMicIcon(false);
-        }
-
         void OnParticipantMuteStateChanged()
         {
 
         }
 
+        void FadeOutMicIcon()
+        {
+            ShowMicIcon(false);
+        }
+
         internal void SetPlayerName(string playerName)
         {
-            this.Q<Label>().text = playerName;
+            m_PlayerNameLabel.text = playerName;
         }
 
         void ShowMicIcon(bool show)

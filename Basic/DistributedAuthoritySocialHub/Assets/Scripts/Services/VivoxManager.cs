@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Services.Authentication;
 using UnityEngine;
 using Unity.Services.Vivox;
-using UnityEditor;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Services
 {

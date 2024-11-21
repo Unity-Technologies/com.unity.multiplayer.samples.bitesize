@@ -59,9 +59,26 @@
 }
 
 .player-mic-icon {
-    width: var(--mic-icon-size);
-    height: var(--mic-icon-size);
-    background-color: red;
+    padding: 0;
+    border-radius: 48px;
+    border-color: var(--secondary-color);
+    border-width: 4px;
+    translate: -50% 0;
+    left: 50%;
+    background-color: var(--pickup-background-color);
+    width: 96px;
+    height: 96px;
+    background-image: url("project://database/Assets/UI/Textures/announcement-icon.png?fileID=2800000&guid=4d053bc77d6ef4386ba76d053b365f00&type=3#announcement-icon");
+    position: absolute;
+    top: -96px;
+    background-size: 70% 70%;
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+}
+
+.player-mic-icon--disable{
+    opacity: 0;
 }
 
 .player-name {
