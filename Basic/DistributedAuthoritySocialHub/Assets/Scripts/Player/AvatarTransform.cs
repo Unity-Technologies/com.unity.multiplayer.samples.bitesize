@@ -1,5 +1,6 @@
 using System;
 using Unity.Collections;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
@@ -68,6 +69,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
 
+            GameplayEventHandler.OnBlockPlayerControls += OnBlockPlayerControls;
+
             base.OnNetworkSpawn();
         }
 
@@ -88,6 +91,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 cameraControl.SetTransform(null);
             }
 
+            GameplayEventHandler.OnBlockPlayerControls -= OnBlockPlayerControls;
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
@@ -117,6 +121,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
             m_TopUIController.AddPlayer(gameObject, newValue.Value);
+        }
+
+        void OnBlockPlayerControls(bool blockInput)
+        {
+            m_PlayerInput.enabled = !blockInput;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
