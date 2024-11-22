@@ -1,5 +1,6 @@
 using System;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
+using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -35,8 +36,31 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Menu.Q<Button>("btn-exit").clicked += QuitGame;
             m_Menu.Q<Button>("btn-goto-main").clicked += GoToMainScene;
             m_Menu.Q<Button>("btn-close-menu").clicked += HideMenu;
+            var audioDropdown = m_Menu.Q<DropdownField>();
 
+
+            foreach (var inputDevice in VivoxService.Instance.AvailableInputDevices)
+            {
+                audioDropdown.choices.Add(inputDevice.DeviceName);
+            }
+            audioDropdown.value = VivoxService.Instance.ActiveInputDevice.DeviceName;
+            audioDropdown.RegisterValueChangedCallback(evt =>
+            {
+                SetVivoxInputDevice(evt.newValue);
+            });
             HideMenu();
+        }
+
+        async void SetVivoxInputDevice(string deviceName)
+        {
+            foreach (var inputDevice in VivoxService.Instance.AvailableInputDevices)
+            {
+                if (inputDevice.DeviceName == deviceName)
+                {
+                    await VivoxService.Instance.SetActiveInputDeviceAsync(inputDevice);
+                    break;
+                }
+            }
         }
 
         void OnDisable()
