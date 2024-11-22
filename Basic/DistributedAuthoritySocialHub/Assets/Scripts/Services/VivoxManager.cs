@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.UI;
@@ -31,12 +32,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if (Instance == null)
             {
                 Instance = this;
+                StartCoroutine(RequestMicrophonePermissions());
                 DontDestroyOnLoad(gameObject);
             }
             else
             {
                 Destroy(gameObject);
             }
+        }
+
+        IEnumerator RequestMicrophonePermissions()
+        {
+            yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
         }
 
         internal async Task Initialize()
