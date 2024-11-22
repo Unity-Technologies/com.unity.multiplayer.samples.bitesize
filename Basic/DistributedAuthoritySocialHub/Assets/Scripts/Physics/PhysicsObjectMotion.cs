@@ -26,6 +26,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         protected NetworkVariable<Vector3> m_Torque = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         protected NetworkVariable<Vector3> m_Force = new NetworkVariable<Vector3>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+        const float k_VelocityThreshold = 20f;
+
         protected override Vector3 OnGetObjectVelocity(bool getReference = false)
         {
             if (getReference)
@@ -261,7 +263,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             var thisKineticForce = (Rigidbody.mass / collidingBody.mass) * -collisionNormal * thisVelocity;
             var otherKineticForce = (collidingBody.mass / Rigidbody.mass) * collisionNormal * otherVelocity;
 
-            if (!Rigidbody.isKinematic && collidingBody.isKinematic && thisVelocity > 0.01f)
+            if (!Rigidbody.isKinematic && collidingBody.isKinematic && thisVelocity > k_VelocityThreshold)
             {
                 m_CollisionMessage.CollisionForce = thisKineticForce;
                 m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
@@ -274,7 +276,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                 EventCollision(averagedCollisionNormal, collidingBodyPhys);
             }
 
-            if (Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
+            if (Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > k_VelocityThreshold)
             {
                 // our kinematic Rigidbody was hit by a non-kinematic physics-moving Rigidbody
 
@@ -286,14 +288,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
                     Debug.Log($"[{collidingBodyPhys.name}][FirstBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(otherKineticForce)} to {name}.", this);
                 }
             }
-            else if (!Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > 0.01f)
+            else if (!Rigidbody.isKinematic && !collidingBody.isKinematic && otherVelocity > k_VelocityThreshold)
             {
                 // Both bodies are non-kinematic (i.e. local client has authority over both) so we create and process event collisions for both
                 m_CollisionMessage.CollisionForce = thisKineticForce;
                 m_CollisionMessage.SetFlag(true, (uint)CollisionCategoryFlags.CollisionForce);
 
                 // Send collision to owner of kinematic body
+                Debug.Log($"Sending from {NetworkObjectId} to {collidingBaseObjectMotion.NetworkObjectId} otherVelocity {otherVelocity}");
                 EventCollision(averagedCollisionNormal, collidingBodyPhys);
+
                 if (m_DebugCollisions)
                 {
                     Debug.Log($"[{name}][SecondBody][Collision Stay: {hasCollisionStay}] Sending impulse thrust {MathUtils.GetVector3Values(thisKineticForce)} to {collidingBody.name}.", this);

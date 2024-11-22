@@ -64,16 +64,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected virtual Vector3 OnGetObjectVelocity(bool getReference = false)
         {
-            if (Rigidbody != null)
-            {
-#if UNITY_2023_3_OR_NEWER
-                return Rigidbody.linearVelocity;
-#else
-            return m_Rigidbody.velocity;
-#endif
-            }
-
-            return Vector3.zero;
+            return Rigidbody != null ? Rigidbody.linearVelocity : Vector3.zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -81,11 +72,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         {
             if (Rigidbody != null)
             {
-#if UNITY_2023_3_OR_NEWER
                 Rigidbody.linearVelocity = velocity;
-#else
-            m_Rigidbody.velocity = velocity;
-#endif
             }
         }
 
@@ -97,34 +84,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual Vector3 OnGetObjectAngularVelocity()
         {
-            if (Rigidbody != null)
-            {
-                return Rigidbody.angularVelocity;
-            }
-
-            return Vector3.zero;
-        }
-
-        protected void IgnoreCollision(GameObject objectA, GameObject objectB, bool shouldIgnore)
-        {
-            if (objectA == null || objectB == null)
-            {
-                return;
-            }
-
-            var rootA = objectA.transform.root.gameObject;
-            var rootB = objectB.transform.root.gameObject;
-
-            var collidersA = rootA.GetComponentsInChildren<Collider>();
-            var collidersB = rootB.GetComponentsInChildren<Collider>();
-
-            foreach (var colliderA in collidersA)
-            {
-                foreach (var colliderB in collidersB)
-                {
-                    UnityEngine.Physics.IgnoreCollision(colliderA, colliderB, shouldIgnore);
-                }
-            }
+            return Rigidbody != null ? Rigidbody.angularVelocity : Vector3.zero;
         }
 
         protected override void Awake()

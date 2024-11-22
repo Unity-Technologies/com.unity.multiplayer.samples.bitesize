@@ -116,6 +116,10 @@ PrefabInstance:
       propertyPath: m_SecondsUntilRespawn
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2004954010814667909, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      propertyPath: m_SessionOwnerNetworkObjectRespawner
+      value: 
+      objectReference: {fileID: -8148071850303553654}
     - target: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_Name
       value: Chest_CarryableObject
@@ -206,7 +210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8778270557094879703, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_Mass
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8778270557094879703, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       propertyPath: m_IsKinematic
@@ -234,6 +238,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
       insertIndex: 1
       addedObject: {fileID: 5832966791020054508}
+    - targetCorrespondingSourceObject: {fileID: 5622352566631732085, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8148071850303553654}
   m_SourcePrefab: {fileID: 100100000, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
 --- !u!1 &291901203331741842 stripped
 GameObject:
@@ -265,6 +272,20 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &-8148071850303553654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291901203331741842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea4e07da167d4da7beddb67532a15f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_SecondsUntilRespawn: 5
 --- !u!65 &4959042433798655250 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1070061854055180021, guid: b35b44635b9b3ec43b189ea3a1400750, type: 3}
