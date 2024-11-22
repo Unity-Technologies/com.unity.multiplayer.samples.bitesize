@@ -10,6 +10,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         protected override void OnNetworkSessionSynchronized()
         {
+            Debug.Assert(m_PlayerPrefab != null, $"Prefab reference '{nameof(m_PlayerPrefab)}' is missing or not assigned.");
+
             if (m_PlayerPrefab != null)
             {
                 var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
