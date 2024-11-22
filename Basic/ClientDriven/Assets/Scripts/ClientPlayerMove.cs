@@ -69,7 +69,7 @@ public class ClientPlayerMove : NetworkBehaviour
         // position on owning clients
         m_CharacterController.enabled = true;
 
-        var cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        var cinemachineVirtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
         cinemachineVirtualCamera.Follow = m_CameraFollow;
     }
 
