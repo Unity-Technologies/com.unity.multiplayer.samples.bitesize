@@ -281,14 +281,6 @@ PrefabInstance:
       value: BigRock4 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_RootOrder
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.62971
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 43.128407
       objectReference: {fileID: 0}
@@ -328,8 +320,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 87.798
       objectReference: {fileID: 0}
+    - target: {fileID: 8433333730125293061, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+      propertyPath: m_LODs.Array.data[1].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8433333730125293061, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+      propertyPath: m_LODs.Array.data[2].renderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5716313173523284214, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    - {fileID: 806111595864211883, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
@@ -553,14 +555,6 @@ PrefabInstance:
       value: BigRock4
       objectReference: {fileID: 0}
     - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_RootOrder
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.62971
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 45.115
       objectReference: {fileID: 0}
@@ -600,8 +594,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 85.936
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 8433333730125293061, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 5716313173523284214, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    - {fileID: 806111595864211883, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
@@ -857,18 +854,6 @@ PrefabInstance:
       value: BigRock4 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.62971
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.895
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 45.698
       objectReference: {fileID: 0}
@@ -908,8 +893,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 88.489
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 8433333730125293061, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 5716313173523284214, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    - {fileID: 806111595864211883, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
@@ -1387,22 +1375,6 @@ PrefabInstance:
       value: BigRock4 (3)
       objectReference: {fileID: 0}
     - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_RootOrder
-      value: 17
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.7123269
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.895
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.28457484
-      objectReference: {fileID: 0}
-    - target: {fileID: 2160840990172296561, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 46.5
       objectReference: {fileID: 0}
@@ -1442,8 +1414,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -85.138
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 8433333730125293061, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 5716313173523284214, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
+    - {fileID: 806111595864211883, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecaa81714d5a6439382bb795b33f9d45, type: 3}
