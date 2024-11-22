@@ -128,7 +128,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             m_TopUIController.AddPlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
         }
-
+        
         void OnBlockPlayerControls(bool blockInput)
         {
             m_PlayerInput.enabled = !blockInput;

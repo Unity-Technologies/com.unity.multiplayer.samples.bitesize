@@ -11,6 +11,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
     class VivoxManager : MonoBehaviour
     {
         internal static VivoxManager Instance { get; set; }
+
         string TextChannelName { get; set; }
         string VoiceChannelName { get; set; }
 
@@ -52,6 +53,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         {
             TextChannelName = sessionName+"_text";
             VoiceChannelName = sessionName+"_voice";
+
             await VivoxService.Instance.InitializeAsync();
             var loginOptions = new LoginOptions()
             {
@@ -89,7 +91,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             VivoxService.Instance.ChannelMessageReceived -= OnMessageReceived;
             VivoxService.Instance.ChannelMessageReceived += OnMessageReceived;
         }
-
 
         void OnParticipantLeftChannel(VivoxParticipant vivoxParticipant)
         {

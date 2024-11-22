@@ -20,6 +20,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<bool> OnBlockPlayerControls;
         internal static event Action<bool, string> OnChatIsReady;
 
+
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
             OnNetworkObjectDespawned?.Invoke(networkObject);
