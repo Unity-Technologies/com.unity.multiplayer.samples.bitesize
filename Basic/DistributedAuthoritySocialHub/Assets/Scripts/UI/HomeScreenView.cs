@@ -78,9 +78,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             GameplayEventHandler.QuitGamePressed();
         }
 
-        void OnConnectToSessionCompleted(Task obj)
+        void OnConnectToSessionCompleted(Task task, string sessionName )
         {
-            if (!obj.IsCompletedSuccessfully)
+            if (!task.IsCompletedSuccessfully)
             {
                 m_StartButton.enabledSelf = true;
             }

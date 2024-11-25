@@ -17,7 +17,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             GameplayEventHandler.OnConnectToSessionCompleted -= OnConnectToSessionCompleted;
         }
 
-        void OnConnectToSessionCompleted(Task task)
+        void OnConnectToSessionCompleted(Task task, string sessionName)
         {
             if (task.IsCompletedSuccessfully)
             {

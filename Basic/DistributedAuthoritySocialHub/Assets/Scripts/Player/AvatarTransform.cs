@@ -1,5 +1,6 @@
 using System;
 using Unity.Collections;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
@@ -49,9 +50,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
-            // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
-            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
-            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
@@ -67,6 +65,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
+
+            GameplayEventHandler.OnBlockPlayerControls += OnBlockPlayerControls;
 
             base.OnNetworkSpawn();
         }
@@ -85,6 +85,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 cameraControl.SetTransform(null);
             }
 
+            GameplayEventHandler.OnBlockPlayerControls -= OnBlockPlayerControls;
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
@@ -116,6 +117,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
             m_TopUIController.AddPlayer(gameObject, newValue.Value);
+        }
+
+        void OnBlockPlayerControls(bool blockInput)
+        {
+            m_PlayerInput.enabled = !blockInput;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

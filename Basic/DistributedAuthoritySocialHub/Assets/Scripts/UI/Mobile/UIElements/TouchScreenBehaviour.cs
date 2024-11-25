@@ -38,14 +38,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
 
             var root = GetComponent<UIDocument>().rootVisualElement;
-
-            root.SetBinding("style.display", new DataBinding
-            {
-                dataSource = this,
-                dataSourcePath = new PropertyPath(nameof(DisplayStyle.Flex)),
-                bindingMode = BindingMode.ToTarget,
-            });
-
             m_RuntimeState = MobileGamepadState.GetOrCreate;
 
             // Bindings
@@ -85,20 +77,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 bindingMode = BindingMode.ToSource,
             });
 
+            // TODO: revisit if necessary to add button
             /*var buttonToggleNetworkStats = root.Q<Toggle>(UIElementNames.ButtonToggleNetworkStats);
             buttonToggleNetworkStats.SetBinding("value", new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(MobileGamepadState.ButtonToggleNetworkStats)),
                 bindingMode = BindingMode.ToSource,
             });*/
-
-            var playerActions = root.Q<VisualElement>(UIElementNames.PlayerContainer);
-            playerActions.SetBinding("style.display", new DataBinding
-            {
-                dataSource = this,
-                dataSourcePath = new PropertyPath(nameof(DisplayStyle.Flex)),
-                bindingMode = BindingMode.ToTarget,
-            });
         }
 
         void OnJoystickLeftMoved(Vector2 position) => m_RuntimeState.LeftJoystick = position;

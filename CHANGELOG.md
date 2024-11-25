@@ -5,7 +5,11 @@
 ### Distributed Authority Social Hub
 
 #### Added
-- Mobile and gamepad support, with associated UI (first draft) for mobile controls using UIToolkit has been integrated to the sample (#256)
+- Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
+- Mobile and gamepad support, with associated UI for mobile controls using UIToolkit has been integrated to the sample (#256)
+
+#### Changed
+- Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
 
 ## [1.9.0] 2024-10-31
 
