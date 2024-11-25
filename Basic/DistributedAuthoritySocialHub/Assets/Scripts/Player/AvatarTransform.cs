@@ -56,9 +56,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
-            // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
-            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
-            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
