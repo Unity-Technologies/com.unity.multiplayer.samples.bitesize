@@ -59,7 +59,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         public event Action<string, Vector2> JoystickStateChanged;
 
         /// <summary>
-        /// This method let the UI updates when a property bound with <see cref="BindingMode.ToTarget"/> is calling it.
+        /// This method lets the UI update when a property bound with <see cref="BindingMode.ToTarget"/> is calling it.
         /// </summary>
         /// <param name="property">The property bound in the UI using <see cref="BindingMode.ToTarget"/></param>
         void NotifyUI([CallerMemberName] string property = "")
@@ -68,7 +68,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         }
 
         /// <summary>
-        /// This method lets the Input system updates when a property value is changed.
+        /// This method lets the Input system update when a property value is changed.
         /// </summary>
         /// <seealso cref="NotifyInput(Vector2,string)"/>
         /// <param name="value">The new value of the property</param>
@@ -79,7 +79,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         }
 
         /// <summary>
-        /// This method lets the Input system updates when a property value is changed.
+        /// This method lets the Input system update when a property value is changed.
         /// </summary>
         /// <seealso cref="NotifyInput(float,string)"/>
         /// <param name="value">The new value of the property</param>
@@ -138,7 +138,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The UI is bound to <see cref="RightJoystickTop"/> and <see cref="RightJoystickLeft"/>
         /// which converts the Vector2 position into a percent <see cref="StyleLength"/>.
         /// <para>The <see cref="TouchScreenBehaviour"/> is reading the UI pointer
-        /// to directly write the delta in this property, which in returns updates the VisualElement position.</para>
+        /// to directly write the delta in this property, which in return updates the VisualElement position.</para>
         /// </remarks>
         public Vector2 RightJoystick
         {
