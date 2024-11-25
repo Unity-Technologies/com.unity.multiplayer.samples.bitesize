@@ -36,30 +36,94 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Menu.Q<Button>("btn-exit").clicked += QuitGame;
             m_Menu.Q<Button>("btn-goto-main").clicked += GoToMainScene;
             m_Menu.Q<Button>("btn-close-menu").clicked += HideMenu;
-            var audioDropdown = m_Menu.Q<DropdownField>();
 
+            var muteCheckbox = m_Menu.Q<Toggle>("mute-checkbox");
+            muteCheckbox.SetValueWithoutNotify(VivoxService.Instance.IsInputDeviceMuted);
+            muteCheckbox.RegisterValueChangedCallback(evt => OnMuteCheckboxChanged(evt));
 
+            var inputDevices = m_Menu.Q<DropdownField>("audio-input");
             foreach (var inputDevice in VivoxService.Instance.AvailableInputDevices)
             {
-                audioDropdown.choices.Add(inputDevice.DeviceName);
+                inputDevices.choices.Add(inputDevice.DeviceName);
             }
-            audioDropdown.value = VivoxService.Instance.ActiveInputDevice.DeviceName;
-            audioDropdown.RegisterValueChangedCallback(evt =>
+            inputDevices.value = VivoxService.Instance.ActiveInputDevice.DeviceName;
+            inputDevices.RegisterValueChangedCallback(evt => OnInputDeviceDropDownChanged(evt));
+
+            var inputVolumeSlider = m_Menu.Q<Slider>("input-volume");
+            inputVolumeSlider.value =  VivoxService.Instance.InputDeviceVolume + 50;
+            // Volume is from -50 to 50
+            inputVolumeSlider.RegisterValueChangedCallback(evt =>
             {
-                SetVivoxInputDevice(evt.newValue);
+                var vol = evt.newValue - 50 ;
+                VivoxService.Instance.SetInputDeviceVolume((int)vol);
             });
+
+            // Volume is from -50 to 50
+            var outputVolumeSlider = m_Menu.Q<Slider>("output-volume");
+            outputVolumeSlider.value = VivoxService.Instance.OutputDeviceVolume + 50;
+            outputVolumeSlider.RegisterValueChangedCallback(evt =>
+            {
+                var vol = evt.newValue - 50 ;
+                VivoxService.Instance.SetInputDeviceVolume((int)vol);
+            });
+
+            var outputDevices = m_Menu.Q<DropdownField>("audio-output");
+            foreach (var outputDevice in VivoxService.Instance.AvailableOutputDevices)
+            {
+                outputDevices.choices.Add(outputDevice.DeviceName);
+            }
+            outputDevices.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
+            outputDevices.RegisterValueChangedCallback(evt => OnOutputDeviceDropdownChanged(evt));
             HideMenu();
         }
 
-        async void SetVivoxInputDevice(string deviceName)
+        void OnMuteCheckboxChanged(ChangeEvent<bool> evt)
         {
+            if(evt.newValue)
+                VivoxService.Instance.MuteInputDevice();
+            else
+                VivoxService.Instance.UnmuteInputDevice();
+        }
+
+        async void OnOutputDeviceDropdownChanged(ChangeEvent<string> evt)
+        {
+            var newValue = evt.newValue;
+            DropdownField dropdown = (DropdownField)evt.target;
+
+            foreach (var outputDevice in VivoxService.Instance.AvailableOutputDevices)
+            {
+                if (outputDevice.DeviceName == newValue)
+                {
+                    await VivoxService.Instance.SetActiveOutputDeviceAsync(outputDevice);
+                    break;
+                }
+            }
+
+            if (VivoxService.Instance.ActiveOutputDevice.DeviceName != newValue)
+            {
+                Debug.LogWarning("Could not set Audio Output Device " +  newValue);
+                dropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
+            }
+        }
+
+        async void OnInputDeviceDropDownChanged(ChangeEvent<string> evt)
+        {
+            // capture the values because we need them if something goes wrong.
+            var newValue = evt.newValue;
+            DropdownField dropdown = (DropdownField)evt.target;
+
             foreach (var inputDevice in VivoxService.Instance.AvailableInputDevices)
             {
-                if (inputDevice.DeviceName == deviceName)
+                if (inputDevice.DeviceName == newValue)
                 {
                     await VivoxService.Instance.SetActiveInputDeviceAsync(inputDevice);
                     break;
                 }
+            }
+            if (VivoxService.Instance.ActiveInputDevice.DeviceName != newValue)
+            {
+                Debug.LogWarning("Could not set Audio Input Device " +  newValue);
+                dropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
             }
         }
 

@@ -77,7 +77,28 @@
     transition-duration: 0.2s;
 }
 
-.player-mic-icon--disable{
+.player-mic-icon__mute-indicator {
+    flex-grow: 1;
+    max-height: 5px;
+    min-height: 5px;
+    min-width: 103%;
+    max-width: 103%;
+    background-color: var(--secondary-color);
+    position: absolute;
+    top: 50%;
+    rotate: -29deg;
+    display: none;
+}
+
+.player-mic-icon--muted{
+    background-image: url("project://database/Assets/UI/Textures/announcement-icon_mute.png?fileID=2800000&guid=acad70a62480a491789d7313f1ba2806&type=3#announcement-icon_mute");
+}
+
+.player-mic-icon--muted .player-mic-icon__mute-indicator {
+    display: flex;
+}
+
+.player-mic-icon--disable {
     opacity: 0;
 }
 

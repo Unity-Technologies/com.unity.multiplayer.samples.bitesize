@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -30,7 +31,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         internal void AttachVivoxParticipant(VivoxParticipant participant)
         {
             m_Participant = participant;
+
+            m_Participant.ParticipantMuteStateChanged -= OnParticipantMuteStateChanged;
             m_Participant.ParticipantMuteStateChanged += OnParticipantMuteStateChanged;
+
+            m_Participant.ParticipantSpeechDetected -= OnParticipantSpeechDetected;
             m_Participant.ParticipantSpeechDetected += OnParticipantSpeechDetected;
         }
 
@@ -46,19 +51,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnParticipantSpeechDetected()
         {
-            ShowMicIcon(true);
-            m_Scheduler ??= schedule.Execute(FadeOutMicIcon);
-            m_Scheduler.ExecuteLater(3000);
+            if(m_Participant.IsMuted)
+                return;
+
+            ShowMicIcon(m_Participant.SpeechDetected);
         }
 
         void OnParticipantMuteStateChanged()
         {
+            if (m_Participant.IsMuted)
+            {
+                m_MicIcon.AddToClassList("player-mic-icon--muted");
+                ShowMicIcon(true);
+                return;
+            }
+            m_MicIcon.RemoveFromClassList("player-mic-icon--muted");
 
-        }
-
-        void FadeOutMicIcon()
-        {
-            ShowMicIcon(false);
         }
 
         internal void SetPlayerName(string playerName)

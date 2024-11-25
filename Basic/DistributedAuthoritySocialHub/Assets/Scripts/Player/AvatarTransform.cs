@@ -38,6 +38,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
             m_PlayerName.OnValueChanged += OnPlayerNameChanged;
+            m_PlayerId.OnValueChanged += OnPlayerIdChanged;
             OnPlayerNameChanged(string.Empty, m_PlayerName.Value);
 
             if (!HasAuthority)
@@ -47,8 +48,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             m_PlayerId.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerId);
-            // a randomly-generated suffix consisting of a hash and four digits (e.g. #1234) is automatically appended to the requested name
-            m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerName.Split('#')[0]);
+            m_PlayerName.Value = new FixedString32Bytes(UIUtils.GetPlayerNameAuthenticationPlayerName(AuthenticationService.Instance.PlayerName));
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
             m_AvatarInputs.Jumped += OnJumped;
@@ -126,9 +126,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_TopUIController.AddPlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
+            m_TopUIController.AddOrUpdatePlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
         }
-        
+
+        void OnPlayerIdChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+        {
+            m_TopUIController.AddOrUpdatePlayer(gameObject, m_PlayerName.Value.Value,newValue.Value);
+        }
+
         void OnBlockPlayerControls(bool blockInput)
         {
             m_PlayerInput.enabled = !blockInput;
