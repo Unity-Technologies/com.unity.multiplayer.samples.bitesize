@@ -7,6 +7,9 @@
 #### Added
 - Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
 
+#### Changed
+- Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
+
 ## [1.9.0] 2024-10-31
 
 ### Distributed Authority Social Hub
