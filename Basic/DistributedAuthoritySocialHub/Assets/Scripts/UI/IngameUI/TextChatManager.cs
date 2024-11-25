@@ -40,8 +40,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_SendButton.clicked += SendMessage;
 
             m_MessageInputField = m_Root.Q<TextField>("input-text");
-            m_MessageInputField.RegisterCallback<FocusInEvent>(evt => BlockPlayerControls(true));
-            m_MessageInputField.RegisterCallback<FocusOutEvent>(evt => BlockPlayerControls(false));
 
             m_MessageInputField.RegisterCallback<KeyDownEvent>(evt =>
             {
@@ -98,8 +96,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
                 SendTextMessage(m_MessageInputField.value);
-                m_MessageInputField.value = "";
-                m_MessageInputField.Focus();
+                m_MessageInputField.SetValueWithoutNotify("");
+                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(10);
             }
         }
 

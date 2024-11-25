@@ -76,11 +76,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             OnSendTextMessage?.Invoke(message);
         }
 
-        public static void BlockPlayerControls(bool disable)
-        {
-            OnBlockPlayerControls?.Invoke(disable);
-        }
-
         public static void SetTextChatReady(bool enabled, string channelName)
         {
             OnChatIsReady?.Invoke(enabled, channelName);
