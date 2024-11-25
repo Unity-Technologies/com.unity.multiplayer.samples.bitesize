@@ -122,10 +122,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             {
                 if(headDisplay.PlayerId == vivoxParticipant.PlayerId)
                 {
-                    Debug.Log("Attaching User"+ vivoxParticipant.DisplayName);
                     headDisplay.AttachVivoxParticipant(vivoxParticipant);
+                    return;
                 }
             }
+
+            Debug.LogWarning("Could not find player avatar to attach vivox user.");
         }
 
         public void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
@@ -134,10 +136,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             {
                 if(headDisplay.VivoxParticipant != null && headDisplay.VivoxParticipant== vivoxParticipant)
                 {
-                    Debug.Log("Removing User"+ vivoxParticipant.DisplayName);
                     headDisplay.RemoveVivoxParticipant();
+                    return;
                 }
             }
+
+            Debug.LogWarning("Could not find player avatar display to remove vivox participant");
         }
     }
 }

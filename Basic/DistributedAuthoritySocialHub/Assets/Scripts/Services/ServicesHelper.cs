@@ -131,9 +131,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
         }
 
-        void SignInFailed(RequestFailedException obj)
+        void SignInFailed(RequestFailedException e)
         {
-            Debug.LogWarning($"Sign in via Authentication failed: obj.ErrorCode {obj.ErrorCode}");
+            Debug.LogWarning($"Sign in via Authentication failed: obj.ErrorCode {e.ErrorCode}");
         }
 
         void RemovedFromSession()

@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,6 +13,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         internal VivoxParticipant VivoxParticipant => m_Participant;
         internal string PlayerId { get; set; }
+
+        const string k_PlayerMutedUSSClass = "player-mic-icon--muted";
+        const string k_PlayerMicIconHidden = "player-mic-icon--disable";
 
         /// <summary>
         /// Display that is shown above a players head
@@ -61,11 +63,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             if (m_Participant.IsMuted)
             {
-                m_MicIcon.AddToClassList("player-mic-icon--muted");
+                m_MicIcon.AddToClassList(k_PlayerMutedUSSClass);
                 ShowMicIcon(true);
                 return;
             }
-            m_MicIcon.RemoveFromClassList("player-mic-icon--muted");
+            m_MicIcon.RemoveFromClassList(k_PlayerMutedUSSClass);
 
         }
 
@@ -77,13 +79,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void ShowMicIcon(bool show)
         {
             if (show)
-            {
-                m_MicIcon.RemoveFromClassList("player-mic-icon--disable");
-            }
+                m_MicIcon.RemoveFromClassList(k_PlayerMicIconHidden);
             else
-            {
-                m_MicIcon.AddToClassList("player-mic-icon--disable");
-            }
+                m_MicIcon.AddToClassList(k_PlayerMicIconHidden);
         }
     }
 }

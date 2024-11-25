@@ -13,17 +13,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         {
             GameplayEventHandler.OnChatIsReady -= OnChatIsReady;
             GameplayEventHandler.OnChatIsReady += OnChatIsReady;
-            GameplayEventHandler.OnExitedSession += OnExitSession;
-        }
 
-        void OnExitSession()
-        {
-            m_Initialized = false;
+            GameplayEventHandler.OnExitedSession -= OnExitSession;
+            GameplayEventHandler.OnExitedSession += OnExitSession;
         }
 
         void OnChatIsReady(bool chatIsReady, string channelName)
         {
             m_Initialized = chatIsReady;
+        }
+
+        void OnExitSession()
+        {
+            m_Initialized = false;
         }
 
         void Update()

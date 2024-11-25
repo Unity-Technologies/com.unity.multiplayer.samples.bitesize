@@ -73,7 +73,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             await JoinChannel(m_TextChannelName);
         }
 
-        async Task JoinChannel(string channelName)
+        async Task JoinChannel(string _)
         {
             var positionalChannelProperties = new Channel3DProperties(10, 1, 1f, AudioFadeModel.InverseByDistance);
 

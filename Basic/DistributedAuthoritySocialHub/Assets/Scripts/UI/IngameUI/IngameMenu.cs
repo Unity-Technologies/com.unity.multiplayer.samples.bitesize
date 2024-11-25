@@ -18,68 +18,131 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VisualTreeAsset m_IngameMenuAsset;
 
         VisualElement m_Root;
-
         VisualElement m_Menu;
-
         VisualElement m_SceenOverlay;
+
+        Button m_BurgerButton;
+        Button m_ExitButton;
+        Button m_GotoMainButton;
+        Button m_CloseMenuButton;
+
+        Toggle m_MuteToggle;
+
+        Slider m_InputVolumeSlider;
+        Slider m_OutputVolumeSlider;
+
+        DropdownField m_InputDevicesDropdown;
+        DropdownField m_OutputDevicesDropdown;
 
         void OnEnable()
         {
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("ingame-menu-container");
             m_Root.Add(m_IngameMenuAsset.CloneTree().GetFirstChild());
-            m_Root.Q<Button>("burger-button").clicked += ShowMenu;
+
+            m_SceenOverlay = m_Root.Q<VisualElement>("sceen-overlay");
+
+            m_BurgerButton = m_Root.Q<Button>("burger-button");
+            m_BurgerButton.clicked += ShowMenu;
 
             m_Menu = m_Root.Q<VisualElement>("menu");
-            m_SceenOverlay = m_Root.Q<VisualElement>("sceen-overlay");
             m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
 
-            m_Menu.Q<Button>("btn-exit").clicked += QuitGame;
-            m_Menu.Q<Button>("btn-goto-main").clicked += GoToMainScene;
-            m_Menu.Q<Button>("btn-close-menu").clicked += HideMenu;
+            m_ExitButton = m_Menu.Q<Button>("btn-exit");
+            m_ExitButton.clicked += QuitGame;
 
-            var muteCheckbox = m_Menu.Q<Toggle>("mute-checkbox");
-            muteCheckbox.SetValueWithoutNotify(VivoxService.Instance.IsInputDeviceMuted);
-            muteCheckbox.RegisterValueChangedCallback(evt => OnMuteCheckboxChanged(evt));
+            m_GotoMainButton = m_Menu.Q<Button>("btn-goto-main");
+            m_GotoMainButton.clicked += GoToMainScene;
 
-            var inputDevices = m_Menu.Q<DropdownField>("audio-input");
+            m_CloseMenuButton = m_Menu.Q<Button>("btn-close-menu");
+            m_CloseMenuButton.clicked += HideMenu;
+
+            // Audio settings
+
+            // Input Selection
+            m_InputDevicesDropdown = m_Menu.Q<DropdownField>("audio-input");
+            PopulateAudioInputDevices();
+            m_InputDevicesDropdown.RegisterValueChangedCallback(evt => OnInputDeviceDropDownChanged(evt));
+
+            // Output Selection
+            m_OutputDevicesDropdown = m_Menu.Q<DropdownField>("audio-output");
+            PopulateAudioOutputDevices();
+            m_OutputDevicesDropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
+            m_OutputDevicesDropdown.RegisterValueChangedCallback(evt => OnOutputDeviceDropdownChanged(evt));
+
+            // Input Volume
+            m_InputVolumeSlider = m_Menu.Q<Slider>("input-volume");
+            m_InputVolumeSlider.value = VivoxService.Instance.InputDeviceVolume + 50;
+            m_InputVolumeSlider.RegisterValueChangedCallback(evt => OnInputVolumeChanged(evt));
+
+            // Output Volume
+            m_OutputVolumeSlider = m_Menu.Q<Slider>("output-volume");
+            m_OutputVolumeSlider.value = VivoxService.Instance.OutputDeviceVolume + 50;
+            m_OutputVolumeSlider.RegisterValueChangedCallback(evt => OnOutputVolumeChanged(evt));
+
+            // Mute Button
+            m_MuteToggle = m_Menu.Q<Toggle>("mute-checkbox");
+            m_MuteToggle.SetValueWithoutNotify(VivoxService.Instance.IsInputDeviceMuted);
+            m_MuteToggle.RegisterValueChangedCallback(evt => OnMuteCheckboxChanged(evt));
+
+            HideMenu();
+        }
+
+        void OnOutputVolumeChanged(ChangeEvent<float> evt)
+        {
+            var vol = evt.newValue - 50;
+            VivoxService.Instance.SetOutputDeviceVolume((int)vol);
+        }
+
+        void OnInputVolumeChanged(ChangeEvent<float> evt)
+        {
+            var vol = evt.newValue - 50;
+            VivoxService.Instance.SetInputDeviceVolume((int)vol);
+        }
+
+        void ShowMenu()
+        {
+            PopulateAudioInputDevices();
+            PopulateAudioOutputDevices();
+
+            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
+            m_SceenOverlay.style.display = DisplayStyle.Flex;
+            m_Menu.SetEnabled(true);
+        }
+
+        void HideMenu()
+        {
+            m_SceenOverlay.style.display = DisplayStyle.None;
+            m_Menu.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
+            m_Menu.SetEnabled(false);
+        }
+
+        void PopulateAudioInputDevices()
+        {
+            m_InputDevicesDropdown.choices.Clear();
             foreach (var inputDevice in VivoxService.Instance.AvailableInputDevices)
             {
-                inputDevices.choices.Add(inputDevice.DeviceName);
+                m_InputDevicesDropdown.choices.Add(inputDevice.DeviceName);
             }
-            inputDevices.value = VivoxService.Instance.ActiveInputDevice.DeviceName;
-            inputDevices.RegisterValueChangedCallback(evt => OnInputDeviceDropDownChanged(evt));
 
-            var inputVolumeSlider = m_Menu.Q<Slider>("input-volume");
-            inputVolumeSlider.value =  VivoxService.Instance.InputDeviceVolume + 50;
-            // Volume is from -50 to 50
-            inputVolumeSlider.RegisterValueChangedCallback(evt =>
-            {
-                var vol = evt.newValue - 50 ;
-                VivoxService.Instance.SetInputDeviceVolume((int)vol);
-            });
+            m_InputDevicesDropdown.value = VivoxService.Instance.ActiveInputDevice.DeviceName;
+        }
 
-            // Volume is from -50 to 50
-            var outputVolumeSlider = m_Menu.Q<Slider>("output-volume");
-            outputVolumeSlider.value = VivoxService.Instance.OutputDeviceVolume + 50;
-            outputVolumeSlider.RegisterValueChangedCallback(evt =>
-            {
-                var vol = evt.newValue - 50 ;
-                VivoxService.Instance.SetInputDeviceVolume((int)vol);
-            });
-
-            var outputDevices = m_Menu.Q<DropdownField>("audio-output");
+        void PopulateAudioOutputDevices()
+        {
+            m_OutputDevicesDropdown.choices.Clear();
             foreach (var outputDevice in VivoxService.Instance.AvailableOutputDevices)
             {
-                outputDevices.choices.Add(outputDevice.DeviceName);
+                m_OutputDevicesDropdown.choices.Add(outputDevice.DeviceName);
             }
-            outputDevices.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
-            outputDevices.RegisterValueChangedCallback(evt => OnOutputDeviceDropdownChanged(evt));
-            HideMenu();
+
+            m_OutputDevicesDropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
         }
 
         void OnMuteCheckboxChanged(ChangeEvent<bool> evt)
         {
-            if(evt.newValue)
+            if (evt.newValue)
                 VivoxService.Instance.MuteInputDevice();
             else
                 VivoxService.Instance.UnmuteInputDevice();
@@ -87,6 +150,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         async void OnOutputDeviceDropdownChanged(ChangeEvent<string> evt)
         {
+            // capture the values because we need them if something goes wrong.
             var newValue = evt.newValue;
             DropdownField dropdown = (DropdownField)evt.target;
 
@@ -101,7 +165,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             if (VivoxService.Instance.ActiveOutputDevice.DeviceName != newValue)
             {
-                Debug.LogWarning("Could not set Audio Output Device " +  newValue);
+                Debug.LogWarning("Could not set Audio Output Device " + newValue);
                 dropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
             }
         }
@@ -120,27 +184,26 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                     break;
                 }
             }
+
             if (VivoxService.Instance.ActiveInputDevice.DeviceName != newValue)
             {
-                Debug.LogWarning("Could not set Audio Input Device " +  newValue);
+                Debug.LogWarning("Could not set Audio Input Device " + newValue);
                 dropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
             }
         }
 
         void OnDisable()
         {
-            m_Root.Q<Button>("burger-button").clicked -= ShowMenu;
-            m_Menu.Q<Button>("btn-exit").clicked -= QuitGame;
-            m_Menu.Q<Button>("btn-goto-main").clicked -= GoToMainScene;
-            m_Menu.Q<Button>("btn-close-menu").clicked -= HideMenu;
-        }
+            m_BurgerButton.clicked -= ShowMenu;
+            m_ExitButton.clicked -= QuitGame;
+            m_GotoMainButton.clicked -= GoToMainScene;
+            m_CloseMenuButton.clicked -= HideMenu;
 
-        void HideMenu()
-        {
-            m_SceenOverlay.style.display = DisplayStyle.None;
-            m_Menu.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
-            m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
-            m_Menu.SetEnabled(false);
+            m_InputDevicesDropdown.UnregisterValueChangedCallback(evt => OnInputDeviceDropDownChanged(evt));
+            m_OutputDevicesDropdown.UnregisterValueChangedCallback(evt => OnOutputDeviceDropdownChanged(evt));
+
+            m_InputVolumeSlider.UnregisterValueChangedCallback(evt => OnInputVolumeChanged(evt));
+            m_OutputVolumeSlider.UnregisterValueChangedCallback(evt => OnOutputVolumeChanged(evt));
         }
 
         static void GoToMainScene()
@@ -151,14 +214,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         static void QuitGame()
         {
             GameplayEventHandler.QuitGamePressed();
-        }
-
-        void ShowMenu()
-        {
-            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
-            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
-            m_SceenOverlay.style.display = DisplayStyle.Flex;
-            m_Menu.SetEnabled(true);
         }
     }
 }
