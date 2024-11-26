@@ -48,7 +48,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_Participant.ParticipantMuteStateChanged -= OnParticipantMuteStateChanged;
             m_Participant.ParticipantSpeechDetected -= OnParticipantSpeechDetected;
-            m_Participant = null;
         }
 
         void OnParticipantSpeechDetected()

@@ -76,34 +76,36 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         async Task JoinChannel(string _)
         {
             var positionalChannelProperties = new Channel3DProperties(10, 1, 1f, AudioFadeModel.InverseByDistance);
-
+            BindChannelEvents(true);
             await VivoxService.Instance.JoinPositionalChannelAsync(m_VoiceChannelName, ChatCapability.AudioOnly, positionalChannelProperties);
             await VivoxService.Instance.JoinGroupChannelAsync(m_TextChannelName, ChatCapability.TextOnly);
 
-            BindChannelEvents(true);
-
-            var activeVoiceChatUsers = VivoxService.Instance.ActiveChannels[m_TextChannelName];
-            foreach (var participant in activeVoiceChatUsers)
-            {
-                OnParticipantAddedToChannel(participant);
-            }
+            // var activeVoiceChatUsers = VivoxService.Instance.ActiveChannels[m_TextChannelName];
+            // foreach (var participant in activeVoiceChatUsers)
+            // {
+            //     OnParticipantAddedToChannel(participant);
+            // }
         }
 
         void OnParticipantLeftChannel(VivoxParticipant vivoxParticipant)
         {
+
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
 
+            Debug.Log("Left Channel");
             if (PlayersTopUIController != null)
                 PlayersTopUIController.RemoveVivoxParticipant(vivoxParticipant);
         }
 
         void OnParticipantAddedToChannel(VivoxParticipant vivoxParticipant)
         {
+
             // UI only reacts to VoiceChannel participants.
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
 
+            Debug.Log("Joined Channel");
             if (PlayersTopUIController != null)
                 PlayersTopUIController.AttachVivoxParticipant(vivoxParticipant);
         }
