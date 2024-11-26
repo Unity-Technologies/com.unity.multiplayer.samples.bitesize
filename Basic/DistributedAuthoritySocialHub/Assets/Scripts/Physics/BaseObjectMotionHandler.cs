@@ -319,6 +319,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             }
 
             var distance = Vector3.Distance(transform.position, objectHit.transform.position);
+            return;
             Debug.Log($"[{Time.realtimeSinceStartup}][LocalCollision][{name}][collided with][{objectHit.name}][Collider:{name}][Distance: {distance}]" +
                 $"{OnLogCollision(ref objectHit)}.", this);
         }
@@ -336,7 +337,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             }
 
             var additionalInfo = OnLogCollision(collisionMessage);
-            Debug.Log($"[{name}][++Damaged++][Client-{collisionMessage.TargetOwner}][{collisionMessage.GetCollisionType()}][Dmg:{collisionMessage.Damage}] {additionalInfo}", this);
+ //           Debug.Log($"[{name}][++Damaged++][Client-{collisionMessage.TargetOwner}][{collisionMessage.GetCollisionType()}][Dmg:{collisionMessage.Damage}] {additionalInfo}", this);
         }
 
         /// <summary>
@@ -355,7 +356,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             {
                 distance = Vector3.Distance(transform.position, NetworkManager.SpawnManager.SpawnedObjects[collisionMessage.DestinationNetworkObjId].transform.position);
             }
-
+            return;
             var distStr = distance == -1.0f ? $"{collisionMessage.DestinationNetworkObjId} DNE!!" : $"Distance: {distance}";
             Debug.Log($"[{collisionMessage.CollisionId}][{collisionMessage.Time}][CollisionMessage][IsLocal: {isLocal}][{name}][Src:{collisionMessage.Source}][Dest:{collisionMessage.Destination}]" +
                 $"[NObjId:{collisionMessage.DestinationNetworkObjId}][NBvrId:{collisionMessage.DestinationBehaviourId}][{distStr}]{OnLogHandleCollision(ref collisionMessage)}.", this);
@@ -363,7 +364,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected void LogMessage(string msg, bool forceMessage = false, float messageTime = 10.0f)
         {
-            Debug.Log($"[{name}]{msg} {messageTime} {forceMessage}");
+//            Debug.Log($"[{name}]{msg} {messageTime} {forceMessage}");
         }
 
         #endregion

@@ -118,6 +118,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         public void AttachVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
+            Debug.Log("Looking For Player Avatar to attach vivox user");
             foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {
                 if(headDisplay.PlayerId == vivoxParticipant.PlayerId)

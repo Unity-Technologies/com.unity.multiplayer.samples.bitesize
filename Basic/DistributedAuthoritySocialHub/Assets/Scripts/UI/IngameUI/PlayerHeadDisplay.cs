@@ -34,11 +34,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             m_Participant = participant;
 
-            m_Participant.ParticipantMuteStateChanged -= OnParticipantMuteStateChanged;
-            m_Participant.ParticipantMuteStateChanged += OnParticipantMuteStateChanged;
+            m_Participant.ParticipantMuteStateChanged -= EvaluateMuteState;
+            m_Participant.ParticipantMuteStateChanged += EvaluateMuteState;
 
             m_Participant.ParticipantSpeechDetected -= OnParticipantSpeechDetected;
             m_Participant.ParticipantSpeechDetected += OnParticipantSpeechDetected;
+            Debug.Log("Done Attaching + " + m_Participant.DisplayName);
+            EvaluateMuteState();
         }
 
         internal void RemoveVivoxParticipant()
@@ -46,20 +48,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if(m_Participant == null)
                 return;
 
-            m_Participant.ParticipantMuteStateChanged -= OnParticipantMuteStateChanged;
+            m_Participant.ParticipantMuteStateChanged -= EvaluateMuteState;
             m_Participant.ParticipantSpeechDetected -= OnParticipantSpeechDetected;
         }
 
         void OnParticipantSpeechDetected()
         {
+            Debug.Log("Speaking + " + m_Participant.DisplayName + "is Muted" + m_Participant.IsMuted);
             if(m_Participant.IsMuted)
                 return;
 
             ShowMicIcon(m_Participant.SpeechDetected);
         }
 
-        void OnParticipantMuteStateChanged()
+        void EvaluateMuteState()
         {
+            Debug.Log("Checking Mic state for + " + m_Participant.DisplayName +"---"+ m_Participant.IsMuted);
             if (m_Participant.IsMuted)
             {
                 m_MicIcon.AddToClassList(k_PlayerMutedUSSClass);
@@ -67,7 +71,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 return;
             }
             m_MicIcon.RemoveFromClassList(k_PlayerMutedUSSClass);
-
         }
 
         internal void SetPlayerName(string playerName)

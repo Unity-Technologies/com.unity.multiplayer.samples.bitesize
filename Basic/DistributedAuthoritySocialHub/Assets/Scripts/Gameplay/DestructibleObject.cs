@@ -84,7 +84,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
             {
                 if (m_DebugCollisions)
                 {
-                    Debug.Log($"{name}-{NetworkObjectId} collision with non-rigidbody.");
+                    // Debug.Log($"{name}-{NetworkObjectId} collision with non-rigidbody.");
                 }
 
                 var collisionMessageInfo = new CollisionMessageInfo()
@@ -122,6 +122,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
             if (m_DebugCollisions || m_DebugDamage)
             {
+                return;
                 if (NetworkManager.SpawnManager.SpawnedObjects.ContainsKey(collisionMessage.Source))
                 {
                     var sourceCollider = NetworkManager.SpawnManager.SpawnedObjects[collisionMessage.Source];
