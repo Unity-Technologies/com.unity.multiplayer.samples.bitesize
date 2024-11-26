@@ -84,6 +84,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_MuteToggle.SetValueWithoutNotify(VivoxService.Instance.IsInputDeviceMuted);
             m_MuteToggle.RegisterValueChangedCallback(evt => OnMuteCheckboxChanged(evt));
 
+            VivoxService.Instance.AvailableInputDevicesChanged += PopulateAudioInputDevices;
+            VivoxService.Instance.AvailableOutputDevicesChanged += PopulateAudioOutputDevices;
+
             HideMenu();
         }
 
@@ -101,9 +104,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void ShowMenu()
         {
-            PopulateAudioInputDevices();
-            PopulateAudioOutputDevices();
-
             m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
             m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
             m_SceenOverlay.style.display = DisplayStyle.Flex;
@@ -126,7 +126,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 m_InputDevicesDropdown.choices.Add(inputDevice.DeviceName);
             }
 
-            m_InputDevicesDropdown.value = VivoxService.Instance.ActiveInputDevice.DeviceName;
+            m_InputDevicesDropdown.SetValueWithoutNotify(VivoxService.Instance.ActiveInputDevice.DeviceName);
         }
 
         void PopulateAudioOutputDevices()
@@ -137,7 +137,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 m_OutputDevicesDropdown.choices.Add(outputDevice.DeviceName);
             }
 
-            m_OutputDevicesDropdown.value = VivoxService.Instance.ActiveOutputDevice.DeviceName;
+            m_OutputDevicesDropdown.SetValueWithoutNotify(VivoxService.Instance.ActiveOutputDevice.DeviceName);
         }
 
         void OnMuteCheckboxChanged(ChangeEvent<bool> evt)
@@ -204,6 +204,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_InputVolumeSlider.UnregisterValueChangedCallback(evt => OnInputVolumeChanged(evt));
             m_OutputVolumeSlider.UnregisterValueChangedCallback(evt => OnOutputVolumeChanged(evt));
+
+            VivoxService.Instance.AvailableInputDevicesChanged -= PopulateAudioInputDevices;
+            VivoxService.Instance.AvailableOutputDevicesChanged -= PopulateAudioOutputDevices;
         }
 
         static void GoToMainScene()

@@ -70,21 +70,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void OnLoggedInVivox()
         {
-            await JoinChannel(m_TextChannelName);
+            await JoinChannels(m_TextChannelName);
         }
 
-        async Task JoinChannel(string _)
+        async Task JoinChannels(string _)
         {
             var positionalChannelProperties = new Channel3DProperties(10, 1, 1f, AudioFadeModel.InverseByDistance);
             BindChannelEvents(true);
             await VivoxService.Instance.JoinPositionalChannelAsync(m_VoiceChannelName, ChatCapability.AudioOnly, positionalChannelProperties);
             await VivoxService.Instance.JoinGroupChannelAsync(m_TextChannelName, ChatCapability.TextOnly);
-
-            // var activeVoiceChatUsers = VivoxService.Instance.ActiveChannels[m_TextChannelName];
-            // foreach (var participant in activeVoiceChatUsers)
-            // {
-            //     OnParticipantAddedToChannel(participant);
-            // }
         }
 
         void OnParticipantLeftChannel(VivoxParticipant vivoxParticipant)
@@ -138,14 +132,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             VivoxService.Instance.Set3DPosition(avatar, m_VoiceChannelName, false);
         }
 
-        void BindGlobalEvents(bool bind)
+        void BindGlobalEvents(bool doBind)
         {
             GameplayEventHandler.OnConnectToSessionCompleted -= LoginVivox;
             VivoxService.Instance.LoggedIn -= OnLoggedInVivox;
             VivoxService.Instance.ChannelJoined -= OnChannelJoined;
             GameplayEventHandler.OnExitedSession -= LogoutVivox;
 
-            if (bind)
+            if (doBind)
             {
                 GameplayEventHandler.OnConnectToSessionCompleted += LoginVivox;
                 VivoxService.Instance.LoggedIn += OnLoggedInVivox;
@@ -154,14 +148,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
         }
 
-        void BindChannelEvents(bool bind)
+        void BindChannelEvents(bool doBind)
         {
             VivoxService.Instance.ParticipantAddedToChannel -= OnParticipantAddedToChannel;
             VivoxService.Instance.ParticipantRemovedFromChannel -= OnParticipantLeftChannel;
             GameplayEventHandler.OnSendTextMessage -= SendVivoxMessage;
             VivoxService.Instance.ChannelMessageReceived -= OnMessageReceived;
 
-            if (bind)
+            if (doBind)
             {
                 VivoxService.Instance.ParticipantAddedToChannel += OnParticipantAddedToChannel;
                 VivoxService.Instance.ParticipantRemovedFromChannel += OnParticipantLeftChannel;
