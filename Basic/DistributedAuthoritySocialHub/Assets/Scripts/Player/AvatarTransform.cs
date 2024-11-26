@@ -1,7 +1,5 @@
 using System;
 using Unity.Collections;
-using Unity.Multiplayer.Samples.SocialHub.GameManagement;
-using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
@@ -48,7 +46,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             m_PlayerId.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerId);
-            m_PlayerName.Value = new FixedString32Bytes(UIUtils.GetPlayerNameAuthenticationPlayerName(AuthenticationService.Instance.PlayerName));
+            m_PlayerName.Value = new FixedString32Bytes(UIUtils.ExtractPlayerNameFromAuthUserName(AuthenticationService.Instance.PlayerName));
             m_PlayerInput.enabled = true;
             m_AvatarInputs.enabled = true;
             m_AvatarInputs.Jumped += OnJumped;
@@ -72,8 +70,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
 
-            GameplayEventHandler.OnBlockPlayerControls += OnBlockPlayerControls;
-
             base.OnNetworkSpawn();
         }
 
@@ -94,7 +90,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 cameraControl.SetTransform(null);
             }
 
-            GameplayEventHandler.OnBlockPlayerControls -= OnBlockPlayerControls;
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
@@ -129,11 +124,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         void OnPlayerIdChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
             m_TopUIController.AddOrUpdatePlayer(gameObject, m_PlayerName.Value.Value,newValue.Value);
-        }
-
-        void OnBlockPlayerControls(bool blockInput)
-        {
-            m_PlayerInput.enabled = !blockInput;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

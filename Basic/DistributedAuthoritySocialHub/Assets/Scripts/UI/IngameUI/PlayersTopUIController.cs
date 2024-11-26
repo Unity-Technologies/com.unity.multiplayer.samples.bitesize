@@ -58,7 +58,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         internal void AddOrUpdatePlayer(GameObject player, string playerName, string playerId)
         {
-            // if player has already been added, update name and id and return
+            // if player has already been added, update values and return
             if (m_PlayerToPlayerDisplayDict.TryGetValue(player, out var playerHeadDisplay))
             {
                 playerHeadDisplay.SetPlayerName(playerName);
@@ -116,7 +116,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_PlayerToPlayerDisplayDict.Clear();
         }
 
-        public void AttachVivoxParticipant(VivoxParticipant vivoxParticipant)
+        internal void AttachVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
             foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {
@@ -130,7 +130,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             Debug.LogWarning("Could not find player avatar to attach vivox user.");
         }
 
-        public void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
+        internal void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
             foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {

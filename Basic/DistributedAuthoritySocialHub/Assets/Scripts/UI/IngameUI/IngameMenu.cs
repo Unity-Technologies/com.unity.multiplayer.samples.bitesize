@@ -92,12 +92,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnOutputVolumeChanged(ChangeEvent<float> evt)
         {
+            // Vivox Volume is from  -50 to 50
             var vol = evt.newValue - 50;
             VivoxService.Instance.SetOutputDeviceVolume((int)vol);
         }
 
         void OnInputVolumeChanged(ChangeEvent<float> evt)
         {
+            // Vivox Volume is from  -50 to 50
             var vol = evt.newValue - 50;
             VivoxService.Instance.SetInputDeviceVolume((int)vol);
         }
@@ -150,7 +152,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         async void OnOutputDeviceDropdownChanged(ChangeEvent<string> evt)
         {
-            // capture the values because we need them if something goes wrong.
+            // Capture the values because we need them if something goes wrong.
             var newValue = evt.newValue;
             DropdownField dropdown = (DropdownField)evt.target;
 
@@ -172,7 +174,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         async void OnInputDeviceDropDownChanged(ChangeEvent<string> evt)
         {
-            // capture the values because we need them if something goes wrong.
+            // Capture the values because we need them if something goes wrong.
             var newValue = evt.newValue;
             DropdownField dropdown = (DropdownField)evt.target;
 

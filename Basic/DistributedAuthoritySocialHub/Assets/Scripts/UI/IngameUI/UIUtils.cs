@@ -76,7 +76,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         /// </summary>
         /// <param name="authenticationUserName">Name with # appended</param>
         /// <returns>Name without the last hash and following numbers</returns>
-        public static string GetPlayerNameAuthenticationPlayerName(string authenticationUserName)
+        public static string ExtractPlayerNameFromAuthUserName(string authenticationUserName)
         {
             var lastHashIndex = authenticationUserName.LastIndexOf('#');
             return lastHashIndex != -1 ? authenticationUserName[..lastHashIndex] : authenticationUserName;

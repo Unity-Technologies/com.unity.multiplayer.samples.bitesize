@@ -61,7 +61,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             await VivoxService.Instance.InitializeAsync();
             var loginOptions = new LoginOptions()
             {
-                ParticipantUpdateFrequency = ParticipantPropertyUpdateFrequency.OnePerSecond,
                 DisplayName = AuthenticationService.Instance.PlayerName,
                 PlayerId = AuthenticationService.Instance.PlayerId
             };
@@ -83,23 +82,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void OnParticipantLeftChannel(VivoxParticipant vivoxParticipant)
         {
-
+            // UI only needs to react to VoiceChannel participants.
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
 
-            Debug.Log("Left Channel");
             if (PlayersTopUIController != null)
                 PlayersTopUIController.RemoveVivoxParticipant(vivoxParticipant);
         }
 
         void OnParticipantAddedToChannel(VivoxParticipant vivoxParticipant)
         {
-
-            // UI only reacts to VoiceChannel participants.
+            // UI only needs to react to VoiceChannel participants.
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
 
-            Debug.Log("Joined Channel");
             if (PlayersTopUIController != null)
                 PlayersTopUIController.AttachVivoxParticipant(vivoxParticipant);
         }
@@ -123,7 +119,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void OnMessageReceived(VivoxMessage vivoxMessage)
         {
-            var senderName =   UIUtils.GetPlayerNameAuthenticationPlayerName(vivoxMessage.SenderDisplayName);
+            var senderName = UIUtils.ExtractPlayerNameFromAuthUserName(vivoxMessage.SenderDisplayName);
             GameplayEventHandler.ProcessTextMessageReceived(senderName, vivoxMessage.MessageText, vivoxMessage.FromSelf);
         }
 

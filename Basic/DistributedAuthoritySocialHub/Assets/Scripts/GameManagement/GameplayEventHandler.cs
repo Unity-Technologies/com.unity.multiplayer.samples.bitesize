@@ -17,9 +17,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action OnExitedSession;
         internal static event Action<string, string, bool> OnTextMessageReceived;
         internal static event Action<string> OnSendTextMessage;
-        internal static event Action<bool> OnBlockPlayerControls;
         internal static event Action<bool, string> OnChatIsReady;
-
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
