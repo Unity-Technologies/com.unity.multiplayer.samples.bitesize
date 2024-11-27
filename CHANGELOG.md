@@ -11,6 +11,12 @@
 #### Changed
 - Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
 
+### Client Driven
+
+#### Changed
+- Updated project to Unity 6
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+
 ## [1.9.0] 2024-10-31
 
 ### Distributed Authority Social Hub
@@ -34,7 +40,7 @@
 - Disabled compatibility mode for RenderGraph, as it's going to be deprecated and throws warnings
 - Removed runtime network stats monitor from the scene to improve readability
 - Removed deprecated visual studio code package
-- Updated packages: Rider to 3.0.31, Input System to 1.11.1, Tutorial Framework to 4.0.2, Multiplayer Tools to 2.2.1, Netcode For GameObejcts to 2.0.0, UGUI to 2.0.0, Test Framework to 1.4.5, Universal Render Pipeline to 17.0.3
+- Updated packages: Rider to 3.0.31, Input System to 1.11.1, Tutorial Framework to 4.0.2, Multiplayer Tools to 2.2.1, Netcode For GameObjects to 2.0.0, UGUI to 2.0.0, Test Framework to 1.4.5, Universal Render Pipeline to 17.0.3
 
 #### Fixed
 - Fixed "Build Profile" window not being clickable during the last page of each tutorial

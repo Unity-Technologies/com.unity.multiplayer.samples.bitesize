@@ -1,6 +1,6 @@
 using System;
-using Cinemachine;
 using StarterAssets;
+using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -69,7 +69,7 @@ public class ClientPlayerMove : NetworkBehaviour
         // position on owning clients
         m_CharacterController.enabled = true;
 
-        var cinemachineVirtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        var cinemachineVirtualCamera = FindFirstObjectByType<CinemachineCamera>();
         cinemachineVirtualCamera.Follow = m_CameraFollow;
     }
 
