@@ -21,23 +21,37 @@ MonoBehaviour:
   m_Title:
     m_Untranslated: Welcome to the ClientDriven Sample!
   m_Description:
-    m_Untranslated: 'The ClientDriven sample is a sample project made with Netcode
-      for GameObjects designed to demonstrate responsive 3rd-person WASD character
-      movements even under unfavourable network conditions.
-
-
-      Run around the
-      scene using WASD, and pick up orbs using the spacebar. Convert orbs from one
-      color to another by dropping them in the converters in the middle of the level.
-      Deposit orbs into the drop spots of the same color to earn points. '
+    m_Untranslated: "The ClientDriven sample is a sample project designed to demonstrate
+      responsive 3rd-person WASD character movements even under unfavourable network
+      conditions. It also showcases how to interact with shared physics objects in
+      a scene. The sample leverages Netcode for GameObject's (Netcode) ClientNetworkTransform
+      component and moves the owning player client-side, client authoritatively.
+      \n\nThe entry scene for this game is the Bootstrap scene. From there a game
+      can be hosted or an existing game can be joined. Run around the scene using
+      WASD, and pick up orbs using the spacebar. Convert orbs from one color to another
+      by dropping them in the converters in the middle of the level. Deposit orbs
+      into the drop spots of the same color to earn points.\n"
   m_Buttons:
   - Text:
-      m_Untranslated: Close
+      m_Untranslated: Go to Bootstrap scene
     Tooltip:
       m_Untranslated: 
     OnClick:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 11400000, guid: 4fc958a22fa5e164bb90a69d4b589f77, type: 2}
+          m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
+            Unity.Tutorials.Core.Editor
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
         - m_Target: {fileID: 11400000}
           m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
             Unity.Tutorials.Core.Editor
