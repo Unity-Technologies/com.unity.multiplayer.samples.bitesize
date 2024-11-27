@@ -55,7 +55,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         {
             var channelOptions = new ChannelOptions();
 
-            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextAndAudio, channelOptions);
+            await VivoxService.Instance.JoinGroupChannelAsync(channelName, ChatCapability.TextOnly, channelOptions);
             GameplayEventHandler.OnSendTextMessage -= SendVivoxMessage;
             GameplayEventHandler.OnSendTextMessage += SendVivoxMessage;
             VivoxService.Instance.ChannelMessageReceived -= OnMessageReceived;
