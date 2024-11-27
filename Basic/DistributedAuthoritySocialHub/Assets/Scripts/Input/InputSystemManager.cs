@@ -42,7 +42,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
 
 #if UNITY_EDITOR
         [Header("Debug"), Tooltip("This option is only used in Playmode in the Editor")]
-        public bool ForceMobileInput;
+        internal bool ForceMobileInput;
 #endif
 
         AvatarActions.UIActions m_UIInputs;

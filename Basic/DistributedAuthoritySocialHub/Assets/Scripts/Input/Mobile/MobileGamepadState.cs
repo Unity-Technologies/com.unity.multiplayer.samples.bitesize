@@ -13,7 +13,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
     /// The singleton instance is written into by the visual inputs from the <see cref="TouchScreenBehaviour"/> UI
     /// and read by the <see cref="MobileGamepadBehaviour"/> which forwards changed values to the InputSystem.
     /// </remarks>
-    public class MobileGamepadState : INotifyBindablePropertyChanged
+    class MobileGamepadState : INotifyBindablePropertyChanged
     {
         // UI Y axis is inversed compared to a gamepad joystick, invert it by default
         static readonly Vector2 k_InvertY = new(1, -1);
@@ -22,7 +22,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// <summary>
         /// The instance is only created when used at runtime.
         /// </summary>
-        public static MobileGamepadState GetOrCreate
+        internal static MobileGamepadState GetOrCreate
         {
             get
             {
@@ -52,11 +52,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// <summary>
         /// Event fired when a button bound to the InputSystem is changed.
         /// </summary>
-        public event Action<string, float> ButtonStateChanged;
+        internal event Action<string, float> ButtonStateChanged;
         /// <summary>
         /// Event fired when a joystick position bound to the InputSystem is changed.
         /// </summary>
-        public event Action<string, Vector2> JoystickStateChanged;
+        internal event Action<string, Vector2> JoystickStateChanged;
 
         /// <summary>
         /// This method lets the UI update when a property bound with <see cref="BindingMode.ToTarget"/> is calling it.
@@ -103,7 +103,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The InputSystem is being sent the Vector2 value with the Y axis inverted
         /// because UIToolkit has its origin in the top-left corner.
         /// </remarks>
-        public Vector2 LeftJoystick
+        internal Vector2 LeftJoystick
         {
             set
             {
@@ -122,10 +122,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             }
         }
 
-        public string LeftJoystickTopName => nameof(LeftJoystickTop);
+        internal string LeftJoystickTopName => nameof(LeftJoystickTop);
         [CreateProperty]
         StyleLength LeftJoystickTop => ConvertJoystickRangeToUIPosition(m_LeftJoystick.y);
-        public string LeftJoystickLeftName => nameof(LeftJoystickLeft);
+        internal string LeftJoystickLeftName => nameof(LeftJoystickLeft);
         [CreateProperty]
         StyleLength LeftJoystickLeft => ConvertJoystickRangeToUIPosition(m_LeftJoystick.x);
 
@@ -140,7 +140,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// <para>The <see cref="TouchScreenBehaviour"/> is reading the UI pointer
         /// to directly write the delta in this property, which in return updates the VisualElement position.</para>
         /// </remarks>
-        public Vector2 RightJoystick
+        internal Vector2 RightJoystick
         {
             set
             {
@@ -158,10 +158,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
                 }
             }
         }
-        public string RightJoystickTopName => nameof(RightJoystickTop);
+        internal string RightJoystickTopName => nameof(RightJoystickTop);
         [CreateProperty]
         StyleLength RightJoystickTop => ConvertJoystickRangeToUIPosition(m_RightJoystick.y);
-        public string RightJoystickLeftName => nameof(RightJoystickLeft);
+        internal string RightJoystickLeftName => nameof(RightJoystickLeft);
         [CreateProperty]
         StyleLength RightJoystickLeft => ConvertJoystickRangeToUIPosition(m_RightJoystick.x);
 
@@ -174,7 +174,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The InputSystem is using a float value to describe button states.
         /// </remarks>
         [CreateProperty]
-        public bool ButtonMenu
+        internal bool ButtonMenu
         {
             get => m_ButtonMenu;
             set
@@ -197,7 +197,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The InputSystem is using a float value to describe button states.
         /// </remarks>
         [CreateProperty]
-        public bool ButtonInteract
+        internal bool ButtonInteract
         {
             get => m_ButtonInteract;
             set
@@ -220,7 +220,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The InputSystem is using a float value to describe button states.
         /// </remarks>
         [CreateProperty]
-        public bool ButtonSprint
+        internal bool ButtonSprint
         {
             get => m_ButtonSprint;
             set
@@ -243,7 +243,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The InputSystem is using a float value to describe button states.
         /// </remarks>
         [CreateProperty]
-        public bool ButtonJump
+        internal bool ButtonJump
         {
             get => m_ButtonJump;
             set
@@ -257,7 +257,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
             }
         }
 
-        bool m_ButtonToggleNetworkStats;
+        // TODO: revisit if necessary
+        /*bool m_ButtonToggleNetworkStats;
         /// <summary>
         /// The current state of the toggle network stats button.
         /// </summary>
@@ -266,7 +267,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         /// The InputSystem is using a float value to describe button states.
         /// </remarks>
         [CreateProperty]
-        public bool ButtonToggleNetworkStats
+        internal bool ButtonToggleNetworkStats
         {
             get => m_ButtonToggleNetworkStats;
             set
@@ -278,7 +279,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
                 NotifyUI();
                 NotifyInput(value ? 1f : 0f);
             }
-        }
+        }*/
 
         /// <summary>
         /// This method converts an Input Joystick position with a float[-1:1] range
