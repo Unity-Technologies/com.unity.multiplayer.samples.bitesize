@@ -28,7 +28,7 @@ MonoBehaviour:
       component and moves the owning player client-side, client authoritatively.
       \n\nThe entry scene for this game is the Bootstrap scene. From there a game
       can be hosted or an existing game can be joined. Run around the scene using
-      WASD, and pick up orbs using the spacebar. Convert orbs from one color to another
+      WASD, and pick up orbs using the E key. Convert orbs from one color to another
       by dropping them in the converters in the middle of the level. Deposit orbs
       into the drop spots of the same color to earn points.\n"
   m_Buttons:
@@ -39,14 +39,14 @@ MonoBehaviour:
     OnClick:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 4fc958a22fa5e164bb90a69d4b589f77, type: 2}
-          m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
-            Unity.Tutorials.Core.Editor
-          m_MethodName: 
+        - m_Target: {fileID: 11400000, guid: e687e1aeb2b8b8e47ba822539895d4a1, type: 2}
+          m_TargetAssemblyTypeName: Unity.Multiplayer.Samples.ClientDriven.Editor.Tutorials.TutorialCallbacks,
+            Unity.Multiplayer.Samples.ClientDriven.Editor.Tutorials
+          m_MethodName: LoadBootstrapScene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 

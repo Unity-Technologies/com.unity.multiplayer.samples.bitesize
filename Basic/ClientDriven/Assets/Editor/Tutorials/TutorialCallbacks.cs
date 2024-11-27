@@ -2,7 +2,7 @@
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
 
-namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
+namespace Unity.Multiplayer.Samples.ClientDriven.Editor.Tutorials
 {
     /// <summary>
     /// Implement your Tutorial callbacks here.
