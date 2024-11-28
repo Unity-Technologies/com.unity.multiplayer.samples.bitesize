@@ -41,7 +41,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Input
         static TaskCompletionSource<bool> s_IsMobile;
 
 #if UNITY_EDITOR
-        [Header("Debug"), Tooltip("This option is only used in Playmode in the Editor")]
+        [Header("Debug"), Tooltip("This option is only used in Playmode in the Editor"), SerializeField]
         internal bool ForceMobileInput;
 #endif
 
