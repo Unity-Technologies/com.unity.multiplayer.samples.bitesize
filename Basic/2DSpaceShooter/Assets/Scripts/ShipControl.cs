@@ -191,7 +191,7 @@ public class ShipControl : NetworkBehaviour
             Energy.Value = 100;
             // reset ship to start position
             transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
-            GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+            GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
         }
     }
@@ -210,7 +210,7 @@ public class ShipControl : NetworkBehaviour
         var bulletGo = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
         bulletGo.transform.position = transform.position + direction;
 
-        var velocity = m_Rigidbody2D.velocity;
+        var velocity = m_Rigidbody2D.linearVelocity;
         velocity += (Vector2)(direction) * 10;
         bulletGo.GetComponent<NetworkObject>().Spawn(true);
         var bullet = bulletGo.GetComponent<Bullet>();
@@ -292,9 +292,9 @@ public class ShipControl : NetworkBehaviour
                 top *= 1.5f;
             }
 
-            if (m_Rigidbody2D.velocity.magnitude > top)
+            if (m_Rigidbody2D.linearVelocity.magnitude > top)
             {
-                m_Rigidbody2D.velocity = m_Rigidbody2D.velocity.normalized * top;
+                m_Rigidbody2D.linearVelocity = m_Rigidbody2D.linearVelocity.normalized * top;
             }
         }
     }

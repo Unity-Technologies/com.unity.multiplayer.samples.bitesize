@@ -90,7 +90,7 @@ public class Spawner : MonoBehaviour
             go.transform.rotation = Quaternion.Euler(0, 0, dir);
             var rigidbody2D = go.GetComponent<Rigidbody2D>();
             rigidbody2D.angularVelocity = dir;
-            rigidbody2D.velocity = new Vector2(dx, dy);
+            rigidbody2D.linearVelocity = new Vector2(dx, dy);
             asteroid.asteroidPrefab = m_AsteroidPrefab;
             asteroid.NetworkObject.Spawn(true);
         }
