@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -42,9 +43,24 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryUI.Q<Label>("call-to-action").text = "tap - drop \nhold - throw";
             m_CarryUI.AddToClassList("carrybox");
             m_CarryUI.AddToClassList(UIUtils.s_InactiveUSSClass);
+
+            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
+            GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
         }
 
-        internal void ShowCarry(Transform t)
+        private void OnPickupStateChanged(PickupState state, Transform pickupTransform)
+        {
+            if (state == PickupState.Carry)
+            {
+                ShowCarry(pickupTransform);
+            }
+            else
+            {
+                HideCarry();
+            }
+        }
+
+        void ShowCarry(Transform t)
         {
             if (m_IsShown)
                 return;
@@ -57,7 +73,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_IsShown = true;
         }
 
-        internal void HideCarry()
+        void HideCarry()
         {
             if(m_IsShown == false)
                 return;
@@ -83,6 +99,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             var distance = Vector3.Distance(m_Camera.transform.position, m_CarryTransform.position);
             var mappedScale = Mathf.Lerp(m_PanelMaxSize, m_PanelMinSize, Mathf.InverseLerp(5, 20, distance));
             m_CarryUI.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
+        }
+
+        private void OnDestroy()
+        {
+            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }
     }
 }

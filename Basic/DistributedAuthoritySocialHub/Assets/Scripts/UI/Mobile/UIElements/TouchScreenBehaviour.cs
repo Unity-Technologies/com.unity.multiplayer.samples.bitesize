@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Properties;
 using UnityEngine;
@@ -6,10 +7,6 @@ using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
-    /// <summary>
-    /// This class is managing the data binding between the TouchScreen
-    /// </summary>
-    [RequireComponent(typeof(UIDocument))]
     class TouchScreenBehaviour : MonoBehaviour
     {
         static class UIElementNames
@@ -24,20 +21,27 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             internal const string PlayerContainer = "PlayerContainer";
         }
 
+        [SerializeField]
+        UIDocument m_Document;
+
+        [SerializeField]
+        VisualTreeAsset m_TouchscreenUI;
+
         VirtualJoystick m_JoystickLeft;
         VirtualJoystick m_JoystickRight;
         MobileGamepadState m_RuntimeState;
+        PressedButton m_ButtonInteract;
 
         async void OnEnable()
         {
             var isMobile = await InputSystemManager.IsMobile;
             if (!isMobile)
             {
-                GetComponent<UIDocument>().enabled = false;
                 return;
             }
 
-            var root = GetComponent<UIDocument>().rootVisualElement;
+            var root = m_Document.rootVisualElement.Q("touch-ui-container");
+            m_TouchscreenUI.CloneTree(root);
             m_RuntimeState = MobileGamepadState.GetOrCreate;
 
             // Bindings
@@ -63,8 +67,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 bindingMode = BindingMode.ToSource,
             });
 
-            var buttonInteract = root.Q<PressedButton>(UIElementNames.ButtonInteract);
-            buttonInteract.SetBinding("value", new DataBinding
+            m_ButtonInteract = root.Q<PressedButton>(UIElementNames.ButtonInteract);
+            m_ButtonInteract.SetBinding("value", new DataBinding
             {
                 dataSourcePath = new PropertyPath(nameof(MobileGamepadState.ButtonInteract)),
                 bindingMode = BindingMode.ToSource,
@@ -77,13 +81,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 bindingMode = BindingMode.ToSource,
             });
 
-            // TODO: revisit if necessary to add button
-            /*var buttonToggleNetworkStats = root.Q<Toggle>(UIElementNames.ButtonToggleNetworkStats);
-            buttonToggleNetworkStats.SetBinding("value", new DataBinding
+            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
+            GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
+        }
+
+        private void OnPickupStateChanged(PickupState state, Transform _)
+        {
+            m_ButtonInteract.enabledSelf = state != PickupState.Inactive;
+
+            if(state == PickupState.Carry)
             {
-                dataSourcePath = new PropertyPath(nameof(MobileGamepadState.ButtonToggleNetworkStats)),
-                bindingMode = BindingMode.ToSource,
-            });*/
+                m_ButtonInteract.AddToClassList("state-carry");
+                return;
+            }
+
+            m_ButtonInteract.RemoveFromClassList("state-carry");
         }
 
         void OnJoystickLeftMoved(Vector2 position) => m_RuntimeState.LeftJoystick = position;
@@ -95,6 +107,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_JoystickLeft = null;
             m_JoystickRight?.Dispose();
             m_JoystickRight = null;
+            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }
 
         /// <summary>

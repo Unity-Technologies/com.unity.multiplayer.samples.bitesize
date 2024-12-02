@@ -20,6 +20,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<bool> OnBlockPlayerControls;
         internal static event Action<bool> OnChatIsReady;
 
+        internal static event Action<PickupState, Transform> OnPickupStateChanged;
+
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
             OnNetworkObjectDespawned?.Invoke(networkObject);
@@ -84,5 +86,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         {
             OnChatIsReady?.Invoke(enabled);
         }
+
+        internal static void SetAvatarPickupState(PickupState state, Transform pickup)
+        {
+            OnPickupStateChanged?.Invoke(state, pickup);
+        }
+    }
+
+    internal enum PickupState
+    {
+        Inactive,
+        PickupInRange,
+        Carry
     }
 }
