@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 1
   m_FogColor: {r: 0.9093371, g: 0.228102, b: 0.99607843, a: 1}
   m_FogMode: 1
@@ -38,13 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21890238, g: 0.16790517, b: 0.6703396, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -67,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -679,6 +675,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &1114774665
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,6 +707,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProtocolType: 0
+  m_UseWebSockets: 0
+  m_UseEncryption: 0
   m_MaxPacketQueueSize: 256
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
@@ -736,6 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NetworkManagerExpanded: 0
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1114774666}
@@ -758,6 +758,11 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
+    NetworkTopology: 0
+    UseCMBService: 0
+    AutoSpawnPlayerPrefabClientSide: 1
+    NetworkMessageMetrics: 1
+    NetworkProfilingMetrics: 1
     OldPrefabList: []
   RunInBackground: 1
   LogLevel: 1
@@ -825,9 +830,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265101692}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -877,8 +881,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &1265101695
 Transform:
   m_ObjectHideFlags: 0
@@ -926,6 +934,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 2084257867
   InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -933,6 +943,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &1299635455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -945,6 +957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a63eee89507d4567ba9942e8d3b72ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!4 &1299635456
 Transform:
   m_ObjectHideFlags: 0
@@ -1043,7 +1056,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+    - {fileID: 302414353685223452, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1527,6 +1542,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 1374255023
   InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -1534,6 +1551,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &2060465723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1546,6 +1565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9fc72e2127848029b1e484d42a87db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_SpawnPoints:
   - {fileID: 1675346221}
   - {fileID: 406937058}
@@ -1590,7 +1610,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446108134725129, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 330446108437876620, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1598,7 +1618,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446108437876620, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 330446108483632075, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1606,7 +1626,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446108483632075, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 330446108483632077, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1618,7 +1638,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446108483864580, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 330446108491112687, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1626,7 +1646,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446108491112687, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 330446108690218393, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1678,7 +1698,7 @@ PrefabInstance:
       value: LevelGeometry
       objectReference: {fileID: 0}
     - target: {fileID: 330446108890523300, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 60d6e855c545d5346a46836036c89493, type: 2}
     - target: {fileID: 330446108928372035, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1698,7 +1718,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446109676110357, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 330446109869347218, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
@@ -1710,7 +1730,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 330446109950005816, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 80a1e6a5d1689444c8e2994a51639e98, type: 2}
     - target: {fileID: 351538546967969878, guid: d793abe7ff9aa094eb534e73a82fdab5, type: 3}

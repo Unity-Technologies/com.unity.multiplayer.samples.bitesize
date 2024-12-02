@@ -1,9 +1,11 @@
+using System;
 using Unity.Multiplayer.Tools.NetStatsMonitor;
 using UnityEngine;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-namespace Unity.Multiplayer.Samples.SocialHub.Misc
+namespace Unity.Multiplayer.Samples.SocialHub.UI.Tools
 {
     /// <summary>
     /// Adds a label to the RuntimeNetStatsMonitor UI to show how to toggle visibility.
@@ -12,27 +14,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Misc
     [RequireComponent(typeof(RuntimeNetStatsMonitor))]
     class RuntimeStatsMonitorController : MonoBehaviour
     {
-        [SerializeField]
-        InputActionReference m_InteractActionReference;
-
         RuntimeNetStatsMonitor m_RuntimeNetStatsMonitor;
 
-        string m_VisibilityLabelName = "toggle-visibility-label";
+        const string k_VisibilityLabelName = "toggle-visibility-label";
 
         void Start()
         {
             m_RuntimeNetStatsMonitor = GetComponent<RuntimeNetStatsMonitor>();
             var uiDocuments = FindObjectsByType<UIDocument>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
-            if(m_RuntimeNetStatsMonitor.PanelSettingsOverride == null)
+            if (m_RuntimeNetStatsMonitor.PanelSettingsOverride == null)
             {
                 Debug.LogWarning("Assign PanelSettingsOverride to this MonoBehaviour!", this);
-                return;
-            }
-
-            if(m_InteractActionReference == null)
-            {
-                Debug.LogWarning("Assign InputActionReference to this MonoBehaviour!", this);
                 return;
             }
 
@@ -47,16 +40,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Misc
                         return;
                     }
 
-                    if(rsnm.Q<VisualElement>(m_VisibilityLabelName) != null)
+                    if (rsnm.Q<VisualElement>(k_VisibilityLabelName) != null)
                     {
                         // Label already exists, do not add another
-                        return;
+                        break;
                     }
 
-
-                    var label = new Label("Toggle visibility with M")
+                    var inputText = InputSystemManager.IsMobile.Result ? "4-Finger Tap" : "M";
+                    var label = new Label($"Toggle visibility with {inputText}")
                     {
-                        name = m_VisibilityLabelName,
+                        name = k_VisibilityLabelName,
                         style =
                         {
                             backgroundColor = new StyleColor(Color.black),
@@ -67,8 +60,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Misc
                 }
             }
 
-            m_InteractActionReference.action.performed += OnToggleVisibility;
-            m_InteractActionReference.action.Enable();
+            GameInput.Actions.Player.ToggleNetworkStats.performed += OnToggleVisibility;
+        }
+
+        void OnDestroy()
+        {
+            GameInput.Actions.Player.ToggleNetworkStats.performed -= OnToggleVisibility;
         }
 
         void OnToggleVisibility(InputAction.CallbackContext obj)

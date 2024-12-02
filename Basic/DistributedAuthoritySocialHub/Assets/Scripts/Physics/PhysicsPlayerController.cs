@@ -32,13 +32,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             }
 
             UpdateGroundedStatus();
-
             ApplyMovement();
-
             ApplyJump();
-
             ApplyDrag();
-
             ApplyCustomGravity();
         }
 
