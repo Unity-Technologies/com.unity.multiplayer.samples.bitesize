@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
@@ -7,6 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
     {
         void Start()
         {
+            InputSystemManager.Instance.EnableGameplayInputs();
             GameplayEventHandler.OnReturnToMainMenuButtonPressed += GameplayEventHandler.LoadMainMenuScene;
             GameplayEventHandler.OnExitedSession += GameplayEventHandler.LoadMainMenuScene;
         }
