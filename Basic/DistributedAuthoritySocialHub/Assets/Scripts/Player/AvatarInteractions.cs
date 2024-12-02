@@ -6,10 +6,11 @@ using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
-    [RequireComponent(typeof(AvatarInputs))]
     class AvatarInteractions : NetworkBehaviour, INetworkUpdateSystem
     {
         [SerializeField]
@@ -19,9 +20,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         [SerializeField]
         Collider m_MainCollider;
-
-        [SerializeField]
-        AvatarInputs m_AvatarInputs;
 
         [SerializeField]
         FixedJoint m_PickupLocFixedJoint;
@@ -68,6 +66,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         Vector3 m_InitialInteractColliderLocalPosition;
         Vector3 m_BoneLocalPosition;
 
+        // tracking when a Hold interaction has started/ended
+        bool m_HoldingInteractionPerformed;
+
         void Awake()
         {
             m_PickupableLayerMask = 1 << LayerMask.NameToLayer("Pickupable");
@@ -89,20 +90,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            if (!m_AvatarInputs)
-            {
-                Debug.LogWarning("Assign AvatarInputs in the inspector!");
-                return;
-            }
-
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
 
             m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
             m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
 
-            m_AvatarInputs.TapInteractionPerformed += OnTapPerformed;
-            m_AvatarInputs.HoldInteractionPerformed += OnHoldStarted;
-            m_AvatarInputs.HoldInteractionCancelled += OnHoldReleased;
+            GameInput.Actions.Player.Interact.performed += OnInteractPerformed;
+            GameInput.Actions.Player.Interact.canceled += OnInteractCanceled;
 
             GameplayEventHandler.OnNetworkObjectDespawned += OnNetworkObjectDespawned;
             GameplayEventHandler.OnNetworkObjectOwnershipChanged += OnNetworkObjectOwnershipChanged;
@@ -113,12 +107,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-            if (m_AvatarInputs)
-            {
-                m_AvatarInputs.TapInteractionPerformed -= OnTapPerformed;
-                m_AvatarInputs.HoldInteractionPerformed -= OnHoldStarted;
-                m_AvatarInputs.HoldInteractionCancelled -= OnHoldReleased;
-            }
+
+            GameInput.Actions.Player.Interact.performed -= OnInteractPerformed;
+            GameInput.Actions.Player.Interact.canceled -= OnInteractCanceled;
 
             GameplayEventHandler.OnNetworkObjectDespawned -= OnNetworkObjectDespawned;
             GameplayEventHandler.OnNetworkObjectOwnershipChanged -= OnNetworkObjectOwnershipChanged;
@@ -161,6 +152,32 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if (m_TransferableObject != null && m_TransferableObject.NetworkObject == networkObject && !networkObject.HasAuthority)
             {
                 DropAction();
+            }
+        }
+
+        void OnInteractPerformed(InputAction.CallbackContext context)
+        {
+            switch (context.interaction)
+            {
+                case HoldInteraction:
+                    m_HoldingInteractionPerformed = true;
+                    OnHoldStarted();
+                    break;
+                case TapInteraction:
+                    OnTapPerformed();
+                    break;
+            }
+        }
+
+        void OnInteractCanceled(InputAction.CallbackContext context)
+        {
+            if (context.interaction is HoldInteraction)
+            {
+                if (m_HoldingInteractionPerformed)
+                {
+                    OnHoldReleased(context.duration);
+                }
+                m_HoldingInteractionPerformed = false;
             }
         }
 
