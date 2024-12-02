@@ -51,7 +51,7 @@ public class Bullet : NetworkBehaviour
         if (IsServer)
         {
             var bulletRb = GetComponent<Rigidbody2D>();
-            bulletRb.velocity = velocity;
+            bulletRb.linearVelocity = velocity;
             ClientSetVelocityRpc(velocity);
         }
     }
@@ -62,7 +62,7 @@ public class Bullet : NetworkBehaviour
         if (!IsHost)
         {
             var bulletRb = GetComponent<Rigidbody2D>();
-            bulletRb.velocity = velocity;
+            bulletRb.linearVelocity = velocity;
         }
     }
 
