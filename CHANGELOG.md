@@ -11,6 +11,12 @@
 #### Changed
 - Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
 
+### 2D Space Shooter
+
+#### Changed
+- Update Project to Unity 6
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+
 ### Client Driven
 
 #### Changed
