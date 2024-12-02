@@ -19,6 +19,9 @@
 
 ### Client Driven
 
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample
+
 #### Changed
 - Updated project to Unity 6
 - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
