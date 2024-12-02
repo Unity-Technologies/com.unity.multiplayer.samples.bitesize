@@ -1,0 +1,40 @@
+*{
+    --menu-button-size: 80px;
+}
+
+.pickup-indicator__keycode{
+    display: none;
+}
+
+#burger-button{
+    display: none;
+}
+
+.text-chat {
+    position: absolute;
+    top: -80%;
+    left: 50%;
+    height: 80%;
+    width: 60%;
+    translate: -50% 0;
+    transition: top 0.2s ease-in-out;
+}
+
+.text-chat__collapsebutton{
+    -unity-font-style: bold;
+    position: absolute;
+    padding-left: 10px;
+    bottom: -80px;
+    width: 80px;
+    height: 80px;
+    rotate: -270deg;
+    left: 50%;
+}
+
+.text-chat__ui{
+
+}
+.text-chat--visible {
+    top: 0px;
+}
+
