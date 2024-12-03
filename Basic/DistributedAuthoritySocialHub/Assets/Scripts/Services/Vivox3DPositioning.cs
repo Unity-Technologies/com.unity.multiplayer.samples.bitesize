@@ -9,8 +9,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
         bool m_Initialized;
         float m_NextPosUpdate;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
+            if (!HasAuthority)
+            {
+                base.OnNetworkSpawn();
+                enabled = false;
+                return;
+            }
+
             GameplayEventHandler.OnChatIsReady -= OnChatIsReady;
             GameplayEventHandler.OnChatIsReady += OnChatIsReady;
 
@@ -30,18 +37,21 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void Update()
         {
-            if (IsOwner && m_Initialized)
+            if (!m_Initialized)
             {
-                if (Time.time > m_NextPosUpdate)
-                {
-                    VivoxManager.Instance.SetPlayer3DPosition(gameObject);
-                    m_NextPosUpdate = Time.time + 0.3f;
-                }
+                return;
+            }
+
+            if (Time.time > m_NextPosUpdate)
+            {
+                VivoxManager.Instance.SetPlayer3DPosition(gameObject);
+                m_NextPosUpdate = Time.time + 0.3f;
             }
         }
 
-        public override void OnDestroy()
+        public override void OnNetworkDespawn()
         {
+            base.OnNetworkDespawn();
             GameplayEventHandler.OnChatIsReady -= OnChatIsReady;
             GameplayEventHandler.OnExitedSession -= OnExitSession;
         }
