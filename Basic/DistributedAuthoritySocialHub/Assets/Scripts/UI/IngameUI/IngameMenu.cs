@@ -1,7 +1,9 @@
-using System;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
+
 using Unity.Services.Vivox;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
@@ -43,6 +45,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_BurgerButton = m_Root.Q<Button>("burger-button");
             m_BurgerButton.clicked += ShowMenu;
+            GameInput.Actions.Player.TogglePauseMenu.performed += OnTogglePauseMenu;
 
             m_Menu = m_Root.Q<VisualElement>("menu");
             m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
@@ -51,7 +54,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_ExitButton.clicked += QuitGame;
 
             m_GotoMainButton = m_Menu.Q<Button>("btn-goto-main");
-            m_GotoMainButton.clicked += GoToMainScene;
+            m_GotoMainButton.clicked += GoToMainMenuScene;
 
             m_CloseMenuButton = m_Menu.Q<Button>("btn-close-menu");
             m_CloseMenuButton.clicked += HideMenu;
@@ -86,6 +89,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             VivoxService.Instance.AvailableInputDevicesChanged += PopulateAudioInputDevices;
             VivoxService.Instance.AvailableOutputDevicesChanged += PopulateAudioOutputDevices;
+            m_Menu.Q<Button>("btn-exit").clicked += QuitGame;
+            m_Menu.Q<Button>("btn-goto-main").clicked += GoToMainMenuScene;
+            m_Menu.Q<Button>("btn-close-menu").clicked += HideMenu;
 
             HideMenu();
         }
@@ -104,16 +110,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             VivoxService.Instance.SetInputDeviceVolume((int)vol);
         }
 
-        void ShowMenu()
+        void OnTogglePauseMenu(InputAction.CallbackContext _)
         {
-            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
-            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
-            m_SceenOverlay.style.display = DisplayStyle.Flex;
-            m_Menu.SetEnabled(true);
+            ShowMenu();
         }
 
         void HideMenu()
         {
+            InputSystemManager.Instance.EnableGameplayInputs();
             m_SceenOverlay.style.display = DisplayStyle.None;
             m_Menu.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
             m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
@@ -198,7 +202,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             m_BurgerButton.clicked -= ShowMenu;
             m_ExitButton.clicked -= QuitGame;
-            m_GotoMainButton.clicked -= GoToMainScene;
+            m_GotoMainButton.clicked -= GoToMainMenuScene;
             m_CloseMenuButton.clicked -= HideMenu;
 
             m_InputDevicesDropdown.UnregisterValueChangedCallback(evt => OnInputDeviceDropDownChanged(evt));
@@ -211,7 +215,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             VivoxService.Instance.AvailableOutputDevicesChanged -= PopulateAudioOutputDevices;
         }
 
-        static void GoToMainScene()
+        static void GoToMainMenuScene()
         {
             GameplayEventHandler.ReturnToMainMenuPressed();
         }
@@ -220,5 +224,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             GameplayEventHandler.QuitGamePressed();
         }
+
+        void ShowMenu()
+        {
+            InputSystemManager.Instance.EnableUIInputs();
+            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
+            m_SceenOverlay.style.display = DisplayStyle.Flex;
+            m_Menu.SetEnabled(true);
+        }
     }
-}
+    }

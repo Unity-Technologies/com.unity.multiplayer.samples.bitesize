@@ -16,8 +16,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         PlayerInput m_PlayerInput;
         [SerializeField]
-        AvatarInputs m_AvatarInputs;
-        [SerializeField]
         AvatarInteractions m_AvatarInteractions;
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
@@ -48,8 +46,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PlayerId.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerId);
             m_PlayerName.Value = new FixedString32Bytes(UIUtils.ExtractPlayerNameFromAuthUserName(AuthenticationService.Instance.PlayerName));
             m_PlayerInput.enabled = true;
-            m_AvatarInputs.enabled = true;
-            m_AvatarInputs.Jumped += OnJumped;
+            GameInput.Actions.Player.Jump.performed += OnJumped;
             m_AvatarInteractions.enabled = true;
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
@@ -77,10 +74,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             base.OnNetworkDespawn();
 
-            if (m_AvatarInputs != null)
-            {
-                m_AvatarInputs.Jumped -= OnJumped;
-            }
+            GameInput.Actions.Player.Jump.performed -= OnJumped;
 
             this.UnregisterAllNetworkUpdates();
 
@@ -93,7 +87,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
-        void OnJumped()
+        void OnJumped(InputAction.CallbackContext _)
         {
             m_PhysicsPlayerController.SetJump(true);
         }
@@ -102,17 +96,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (m_MainCamera != null)
             {
-                Vector3 forward = m_MainCamera.transform.forward;
-                Vector3 right = m_MainCamera.transform.right;
+                var forward = m_MainCamera.transform.forward;
+                var right = m_MainCamera.transform.right;
 
                 forward.y = 0f;
                 right.y = 0f;
                 forward.Normalize();
                 right.Normalize();
 
-                Vector3 movement = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
+                var moveInput = GameInput.Actions.Player.Move.ReadValue<Vector2>();
+                var movement = forward * moveInput.y + right * moveInput.x;
                 m_PhysicsPlayerController.SetMovement(movement);
-                m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+                var isSprinting = GameInput.Actions.Player.Sprint.ReadValue<float>() > 0f;
+                m_PhysicsPlayerController.SetSprint(isSprinting);
             }
         }
 

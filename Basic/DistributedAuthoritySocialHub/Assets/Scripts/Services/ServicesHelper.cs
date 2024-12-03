@@ -62,7 +62,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
 
             await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
-            Debug.Log($"Signed in anonymously after. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
 
             if (string.IsNullOrEmpty(sessionName))
             {
@@ -80,7 +79,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 AuthenticationService.Instance.SignInFailed += SignInFailed;
                 AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Debug.Log($"Signed in anonymously before. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
             }
             catch (Exception e)
             {

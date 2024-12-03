@@ -78,6 +78,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void OnParticipantLeftChannel(VivoxParticipant vivoxParticipant)
         {
+            var channelOptions = new ChannelOptions();
             // UI only needs to react to VoiceChannel participants.
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
