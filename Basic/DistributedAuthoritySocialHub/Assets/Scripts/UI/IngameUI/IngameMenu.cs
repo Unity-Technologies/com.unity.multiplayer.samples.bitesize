@@ -45,7 +45,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_BurgerButton = m_Root.Q<Button>("burger-button");
             m_BurgerButton.clicked += ShowMenu;
-            GameInput.Actions.Player.TogglePauseMenu.performed += OnTogglePauseMenu;
 
             m_Menu = m_Root.Q<VisualElement>("menu");
             m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
@@ -58,6 +57,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_CloseMenuButton = m_Menu.Q<Button>("btn-close-menu");
             m_CloseMenuButton.clicked += HideMenu;
+
+            GameInput.Actions.Player.TogglePauseMenu.performed += OnTogglePauseMenu;
 
             // Audio settings
 
@@ -89,10 +90,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             VivoxService.Instance.AvailableInputDevicesChanged += PopulateAudioInputDevices;
             VivoxService.Instance.AvailableOutputDevicesChanged += PopulateAudioOutputDevices;
-            m_Menu.Q<Button>("btn-exit").clicked += QuitGame;
-            m_Menu.Q<Button>("btn-goto-main").clicked += GoToMainMenuScene;
-            m_Menu.Q<Button>("btn-close-menu").clicked += HideMenu;
-
             HideMenu();
         }
 
@@ -113,6 +110,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void OnTogglePauseMenu(InputAction.CallbackContext _)
         {
             ShowMenu();
+        }
+
+        void ShowMenu()
+        {
+            InputSystemManager.Instance.EnableUIInputs();
+            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
+            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
+            m_SceenOverlay.style.display = DisplayStyle.Flex;
+            m_Menu.SetEnabled(true);
         }
 
         void HideMenu()
@@ -213,6 +219,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             VivoxService.Instance.AvailableInputDevicesChanged -= PopulateAudioInputDevices;
             VivoxService.Instance.AvailableOutputDevicesChanged -= PopulateAudioOutputDevices;
+
+            GameInput.Actions.Player.TogglePauseMenu.performed -= OnTogglePauseMenu;
         }
 
         static void GoToMainMenuScene()
@@ -224,14 +232,5 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         {
             GameplayEventHandler.QuitGamePressed();
         }
-
-        void ShowMenu()
-        {
-            InputSystemManager.Instance.EnableUIInputs();
-            m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
-            m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
-            m_SceenOverlay.style.display = DisplayStyle.Flex;
-            m_Menu.SetEnabled(true);
-        }
     }
-    }
+}
