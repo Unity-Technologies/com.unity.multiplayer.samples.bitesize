@@ -65,10 +65,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void OnLoggedInVivox()
         {
-            await JoinChannels(m_TextChannelName);
+            await JoinChannels();
         }
 
-        async Task JoinChannels(string _)
+        async Task JoinChannels()
         {
             var positionalChannelProperties = new Channel3DProperties(10, 1, 1f, AudioFadeModel.InverseByDistance);
             BindChannelEvents(true);
