@@ -1,7 +1,7 @@
 using Unity.Netcode;
-using UnityEngine;
 using System;
 using System.Threading.Tasks;
+using Unity.Services.Vivox;
 using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
@@ -18,6 +18,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<string, string, bool> OnTextMessageReceived;
         internal static event Action<string> OnSendTextMessage;
         internal static event Action<bool, string> OnChatIsReady;
+        internal static event Action<VivoxParticipant> OnParticipantJoinedVoiceChat;
+        internal static event Action<VivoxParticipant> OnParticipantLeftVoiceChat;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -77,6 +79,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         public static void SetTextChatReady(bool enabled, string channelName)
         {
             OnChatIsReady?.Invoke(enabled, channelName);
+        }
+
+        public static void ParticipantJoinedVoiceChat(VivoxParticipant vivoxParticipant)
+        {
+            OnParticipantJoinedVoiceChat?.Invoke(vivoxParticipant);
+        }
+
+        public static void ParticipantLeftVoiceChat(VivoxParticipant vivoxParticipant)
+        {
+            OnParticipantLeftVoiceChat?.Invoke(vivoxParticipant);
         }
     }
 }

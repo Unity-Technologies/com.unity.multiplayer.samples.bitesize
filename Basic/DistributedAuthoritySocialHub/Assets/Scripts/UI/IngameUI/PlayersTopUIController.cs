@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -46,6 +47,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
 
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("player-top-display-container");
+
+            GameplayEventHandler.OnParticipantJoinedVoiceChat -= AttachVivoxParticipant;
+            GameplayEventHandler.OnParticipantJoinedVoiceChat += AttachVivoxParticipant;
+
+            GameplayEventHandler.OnParticipantLeftVoiceChat -= RemoveVivoxParticipant;
+            GameplayEventHandler.OnParticipantLeftVoiceChat += RemoveVivoxParticipant;
         }
 
         void Update()
@@ -114,9 +121,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
             m_PlayerHeadDisplayPool.Clear();
             m_PlayerToPlayerDisplayDict.Clear();
+
+            GameplayEventHandler.OnParticipantJoinedVoiceChat -= AttachVivoxParticipant;
+            GameplayEventHandler.OnParticipantLeftVoiceChat -= RemoveVivoxParticipant;
         }
 
-        internal void AttachVivoxParticipant(VivoxParticipant vivoxParticipant)
+        void AttachVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
             foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {
@@ -130,7 +140,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             Debug.LogWarning("Could not find player avatar to attach vivox user.");
         }
 
-        internal void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
+        void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
         {
             foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
             {

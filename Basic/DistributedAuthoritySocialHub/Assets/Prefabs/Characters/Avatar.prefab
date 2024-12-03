@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 539700041658036575}
   - component: {fileID: 4655812346339390596}
   - component: {fileID: 7543523986693376117}
+  - component: {fileID: 7299541020628638958}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Player
@@ -319,6 +320,19 @@ MonoBehaviour:
   m_Animator: {fileID: 7006295767383679619}
   m_PhysicsPlayerController: {fileID: 4655812346339390596}
   m_AvatarInputs: {fileID: 8197190117666738524}
+--- !u!114 &7299541020628638958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478015027486214707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee830f09ba1465fa953159de83e882e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &9009864878170659705
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,9 +451,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8353930243667998089, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3050276823525430539}
-    - targetCorrespondingSourceObject: {fileID: 8353930243667998089, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4683992500645973501}
   m_SourcePrefab: {fileID: 100100000, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}
 --- !u!136 &36137897785899347 stripped
 CapsuleCollider:
@@ -473,19 +484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f398d1c0abd4744eb035893ea7619cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4683992500645973501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3745480105526614893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bee830f09ba1465fa953159de83e882e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!4 &4085133075368149463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8693301772691271475, guid: d1d89ad5a0ed99e499fe819ca87ae4c8, type: 3}

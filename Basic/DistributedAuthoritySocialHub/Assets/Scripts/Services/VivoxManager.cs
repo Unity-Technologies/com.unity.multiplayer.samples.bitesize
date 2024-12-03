@@ -17,18 +17,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         internal static VivoxManager Instance { get; private set; }
 
-        PlayersTopUIController m_PlayersTopUIController;
-        PlayersTopUIController PlayersTopUIController
-        {
-            get
-            {
-                if (m_PlayersTopUIController == null)
-                    m_PlayersTopUIController = FindFirstObjectByType<PlayersTopUIController>();
-
-                return m_PlayersTopUIController;
-            }
-        }
-
         void Awake()
         {
             if (Instance == null)
@@ -94,8 +82,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
 
-            if (PlayersTopUIController != null)
-                PlayersTopUIController.RemoveVivoxParticipant(vivoxParticipant);
+            GameplayEventHandler.ParticipantLeftVoiceChat(vivoxParticipant);
         }
 
         void OnParticipantAddedToChannel(VivoxParticipant vivoxParticipant)
@@ -104,8 +91,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if (vivoxParticipant.ChannelName != m_VoiceChannelName)
                 return;
 
-            if (PlayersTopUIController != null)
-                PlayersTopUIController.AttachVivoxParticipant(vivoxParticipant);
+            GameplayEventHandler.ParticipantJoinedVoiceChat(vivoxParticipant);
         }
 
         void OnChannelJoined(string channelName)
