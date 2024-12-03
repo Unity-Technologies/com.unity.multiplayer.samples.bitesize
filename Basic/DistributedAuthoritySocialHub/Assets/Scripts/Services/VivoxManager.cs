@@ -13,6 +13,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
     {
         string m_TextChannelName;
         string m_VoiceChannelName;
+        bool m_MicPermissionChecked;
 
         internal static VivoxManager Instance { get; private set; }
 
@@ -33,7 +34,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             if (Instance == null)
             {
                 Instance = this;
-                StartCoroutine(RequestMicrophonePermissions());
                 DontDestroyOnLoad(gameObject);
             }
             else
@@ -42,9 +42,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
         }
 
-        IEnumerator RequestMicrophonePermissions()
+        IEnumerator RequestMicrophonePermissionsIOsMacOS()
         {
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
+            m_MicPermissionChecked = true;
         }
 
         internal async Task Initialize()
@@ -55,9 +56,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void LoginVivox(Task t, string sessionName)
         {
+#if UNITY_STANDALONE_OSX || UNITY_IOS
+            // Vivox is not allowed to access the microphone on iOS and macOS without user permission.
+            StartCoroutine(RequestMicrophonePermissionsIOsMacOS());
+            while (m_MicPermissionChecked == false)
+            {
+                await Task.Yield();
+            }
+#endif
             m_TextChannelName = sessionName + "_text";
             m_VoiceChannelName = sessionName + "_voice";
-
             await VivoxService.Instance.InitializeAsync();
             var loginOptions = new LoginOptions()
             {
