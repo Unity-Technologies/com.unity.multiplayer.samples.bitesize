@@ -43,5 +43,31 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
         {
             UnityEditor.SceneManagement.EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(m_BootstrapScene));
         }
+
+        public bool IsConnectedToUgs()
+        {
+            return CloudProjectSettings.projectBound;
+        }
+
+        public void ShowServicesSettings()
+        {
+            SettingsService.OpenProjectSettings("Project/Services");
+        }
+
+        [ContextMenu("Show Vivox Settings")]
+        public void ShowVivoxSettings()
+        {
+            SettingsService.OpenProjectSettings("Project/Services/Vivox");
+        }
+
+        public bool IsVirtualPlayerCreated()
+        {
+            return false;
+        }
+
+        public bool IsNetSceneVisEnabled()
+        {
+            return false;
+        }
     }
 }
