@@ -17,7 +17,7 @@ namespace StarterAssets
         [MenuItem(MenuRoot + "/Reset Third Person Controller Armature", false)]
         static void ResetThirdPersonControllerArmature()
         {
-            var thirdPersonControllers = FindObjectsOfType<ThirdPersonController>();
+            var thirdPersonControllers = FindObjectsByType<ThirdPersonController>(FindObjectsSortMode.None);
 
             ThirdPersonController player = null;
             foreach (var controller in thirdPersonControllers)
@@ -58,7 +58,7 @@ namespace StarterAssets
         [MenuItem(MenuRoot + "/Reset Third Person Controller Capsule", false)]
         static void ResetThirdPersonControllerCapsule()
         {
-            var thirdPersonControllers = FindObjectsOfType<ThirdPersonController>();
+            var thirdPersonControllers = FindObjectsByType<ThirdPersonController>(FindObjectsSortMode.None);
 
             ThirdPersonController player = null;
             foreach (var controller in thirdPersonControllers)

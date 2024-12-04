@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Uss/Global.uss?fileID=7433441132597879392&amp;guid=dd4dac81c4e217440a3543f354c31a02&amp;type=3#Global" />
+    <Style src="project://database/Assets/UI/Uss/Ingame.uss?fileID=7433441132597879392&amp;guid=a4ed441e385d14fd08257a42a99ce094&amp;type=3#Ingame" />
+    <ui:VisualElement name="message-item" data-source-type="Unity.Multiplayer.Samples.SocialHub.UI.ChatMessage, Unity.Multiplayer.Samples.SocialHub.UI" class="message">
+        <ui:Label text="Sender" name="name" class="message__sender">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="Name" data-source-type="Unity.Multiplayer.Samples.SocialHub.UI.ChatMessage, Unity.Multiplayer.Samples.SocialHub.UI" binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Label>
+        <ui:Label text="Hello there!" name="message" class="message__text">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="Message" data-source-type="Unity.Multiplayer.Samples.SocialHub.UI.ChatMessage, Unity.Multiplayer.Samples.SocialHub.UI" binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Label>
+    </ui:VisualElement>
+</ui:UXML>

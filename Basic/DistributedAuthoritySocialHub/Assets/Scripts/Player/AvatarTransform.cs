@@ -1,5 +1,6 @@
 using System;
 using Unity.Collections;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
@@ -16,8 +17,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
     {
         [SerializeField]
         PlayerInput m_PlayerInput;
-        [SerializeField]
-        AvatarInputs m_AvatarInputs;
         [SerializeField]
         AvatarInteractions m_AvatarInteractions;
         [SerializeField]
@@ -46,15 +45,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // a randomly-generated suffix consisting of a hash and four digits (e.g. #1234) is automatically appended to the requested name
             m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerName.Split('#')[0]);
             m_PlayerInput.enabled = true;
-            m_AvatarInputs.enabled = true;
-            m_AvatarInputs.Jumped += OnJumped;
+            GameInput.Actions.Player.Jump.performed += OnJumped;
             m_AvatarInteractions.enabled = true;
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
-            // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
-            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
-            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
@@ -71,6 +66,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
 
+            GameplayEventHandler.OnBlockPlayerControls += OnBlockPlayerControls;
+
             base.OnNetworkSpawn();
         }
 
@@ -78,10 +75,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             base.OnNetworkDespawn();
 
-            if (m_AvatarInputs != null)
-            {
-                m_AvatarInputs.Jumped -= OnJumped;
-            }
+            GameInput.Actions.Player.Jump.performed -= OnJumped;
 
             this.UnregisterAllNetworkUpdates();
 
@@ -91,10 +85,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 cameraControl.SetTransform(null);
             }
 
+            GameplayEventHandler.OnBlockPlayerControls -= OnBlockPlayerControls;
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
-        void OnJumped()
+        void OnJumped(InputAction.CallbackContext _)
         {
             m_PhysicsPlayerController.SetJump(true);
         }
@@ -103,23 +98,30 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (m_MainCamera != null)
             {
-                Vector3 forward = m_MainCamera.transform.forward;
-                Vector3 right = m_MainCamera.transform.right;
+                var forward = m_MainCamera.transform.forward;
+                var right = m_MainCamera.transform.right;
 
                 forward.y = 0f;
                 right.y = 0f;
                 forward.Normalize();
                 right.Normalize();
 
-                Vector3 movement = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
+                var moveInput = GameInput.Actions.Player.Move.ReadValue<Vector2>();
+                var movement = forward * moveInput.y + right * moveInput.x;
                 m_PhysicsPlayerController.SetMovement(movement);
-                m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+                var isSprinting = GameInput.Actions.Player.Sprint.ReadValue<float>() > 0f;
+                m_PhysicsPlayerController.SetSprint(isSprinting);
             }
         }
 
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
             m_TopUIController.AddPlayer(gameObject, newValue.Value);
+        }
+
+        void OnBlockPlayerControls(bool blockInput)
+        {
+            m_PlayerInput.enabled = !blockInput;
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)
