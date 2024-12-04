@@ -7,6 +7,8 @@
 #### Added
 - Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
 - Mobile and gamepad support, with associated UI for mobile controls using UIToolkit has been integrated to the sample (#256)
+- Positional voicechat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. See limitations in PR.(#261)
+
 
 #### Changed
 - Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.

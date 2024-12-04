@@ -122,10 +122,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
                 SendTextMessage(m_MessageInputField.value);
-                m_MessageInputField.value = "";
-#if !UNITY_IOS && !UNITY_ANDROID
+                m_MessageInputField.SetValueWithoutNotify("");
                 m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(10);
-#endif
             }
         }
 
@@ -144,7 +142,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-        void OnOnChatIsReady(bool isReady)
+        void OnOnChatIsReady(bool isReady, string channelName)
         {
             m_TextChatView.SetEnabled(isReady);
         }

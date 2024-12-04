@@ -1,7 +1,8 @@
 using Unity.Netcode;
-using UnityEngine;
 using System;
 using System.Threading.Tasks;
+using Unity.Services.Vivox;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
@@ -17,8 +18,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action OnExitedSession;
         internal static event Action<string, string, bool> OnTextMessageReceived;
         internal static event Action<string> OnSendTextMessage;
-        internal static event Action<bool> OnBlockPlayerControls;
-        internal static event Action<bool> OnChatIsReady;
+        internal static event Action<bool, string> OnChatIsReady;
+        internal static event Action<VivoxParticipant> OnParticipantJoinedVoiceChat;
+        internal static event Action<VivoxParticipant> OnParticipantLeftVoiceChat;
 
         internal static event Action<PickupState, Transform> OnPickupStateChanged;
 
@@ -77,14 +79,19 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             OnSendTextMessage?.Invoke(message);
         }
 
-        public static void BlockPlayerControls(bool disable)
+        public static void SetTextChatReady(bool enabled, string channelName)
         {
-            OnBlockPlayerControls?.Invoke(disable);
+            OnChatIsReady?.Invoke(enabled, channelName);
         }
 
-        public static void SetTextChatReady(bool enabled)
+        public static void ParticipantJoinedVoiceChat(VivoxParticipant vivoxParticipant)
         {
-            OnChatIsReady?.Invoke(enabled);
+            OnParticipantJoinedVoiceChat?.Invoke(vivoxParticipant);
+        }
+
+        public static void ParticipantLeftVoiceChat(VivoxParticipant vivoxParticipant)
+        {
+            OnParticipantLeftVoiceChat?.Invoke(vivoxParticipant);
         }
 
         internal static void SetAvatarPickupState(PickupState state, Transform pickup)
