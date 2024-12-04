@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -40,8 +41,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_SendButton.clicked += SendMessage;
 
             m_MessageInputField = m_Root.Q<TextField>("input-text");
-            m_MessageInputField.RegisterCallback<FocusInEvent>(evt => BlockPlayerControls(true));
-            m_MessageInputField.RegisterCallback<FocusOutEvent>(evt => BlockPlayerControls(false));
+            m_MessageInputField.RegisterCallback<FocusInEvent>(evt => InputSystemManager.Instance.EnableUIInputs());
+            m_MessageInputField.RegisterCallback<FocusOutEvent>(evt => InputSystemManager.Instance.EnableGameplayInputs());
 
             m_MessageInputField.RegisterCallback<KeyDownEvent>(evt =>
             {
@@ -63,6 +64,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_Messages.Clear();
             m_Messages.Add(new ChatMessage("Sample Devs", "Hey, we hope you enjoy our sample :)"));
+        }
+
+        private void Update()
+        {
+            if (m_MessageInputField != null && m_MessageInputField.touchScreenKeyboard != null)
+            {
+                if (m_MessageInputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Done)
+                {
+                    SendMessage();
+                }
+            }
         }
 
         void OnDestroy()

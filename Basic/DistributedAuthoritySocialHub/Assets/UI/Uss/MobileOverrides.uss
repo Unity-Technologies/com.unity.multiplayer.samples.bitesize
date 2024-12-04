@@ -1,0 +1,90 @@
+* {
+    --menu-button-size: 80px;
+    --menu-button-font-size: 36px;
+    --regular-font-size: 30px;
+}
+
+.pickup-indicator__keycode{
+    display: none;
+}
+
+
+#burger-button{
+    display: none;
+}
+
+.menu-button {
+    margin-bottom: 20px;
+}
+
+.textfield{
+    min-height: 60px;
+    margin-bottom: 20px;
+}
+
+.textfield > .unity-base-field__label {
+    min-width: 210px;
+    overflow: visible;
+}
+
+.text-chat {
+    position: absolute;
+    top: -80%;
+    left: 50%;
+    height: 80%;
+    width: 60%;
+    translate: -50% 0;
+    transition: top 0.2s ease-in-out;
+}
+
+.text-chat__collapsebutton{
+    -unity-font-style: bold;
+    position: absolute;
+    padding-left: 10px;
+    bottom: -100px;
+    width: 120px;
+    height: 90px;
+    rotate: -270deg;
+    left: 50%;
+    translate: -50% 0;
+    background-position-x: left 35px;
+}
+
+.text-chat_background-overlay{
+    display: none;
+    width: 3000px;
+    height: 3000px;
+    position: absolute;
+    background-color: rgba(62, 43, 39, 0.80);
+    opacity: 0;
+    left: -50%;
+    top:-3000px;
+    transition: opacity 0.2s linear;
+}
+
+.text-chat--visible > .text-chat_background-overlay {
+    opacity: 1;
+    display: flex;
+    top: 0;
+}
+
+.text-chat--visible > .text-chat__collapsebutton {
+    background-position-x: left 0px;
+}
+
+.text-chat__ui{
+    border-radius: var(--border-radius);
+}
+.text-chat__submit {
+    min-width: 120px;
+}
+
+.text-chat--visible {
+    top: 0px;
+}
+
+.ingame-panel {
+    min-width: 600px;
+    padding: 48px;
+}
+

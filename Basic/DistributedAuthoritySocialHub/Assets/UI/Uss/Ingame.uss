@@ -81,7 +81,7 @@
 #burger-button {
     position: absolute;
     -unity-font-style: bold;
-    font-size: 18px;
+    font-size: var(--regular-font-size);
     left: 20px;
     top: 20px;
 }
@@ -141,10 +141,11 @@
 
 .text-chat--visible > .text-chat__collapsebutton {
     scale: -1 1;
+    background-position-x: left 0px;
 }
 
 .text-chat__ui {
-    font-size: 18px;
+    font-size: var(--regular-font-size);
     flex-grow: 1;
     background-color: var(--main-color);
     border-radius: var(--border-radius);
@@ -155,7 +156,8 @@
 .text-chat__collapsebutton {
     -unity-font-style: bold;
     position: absolute;
-    padding-left: 10px;
+    background-position-x: left 15px;
+    padding-left: 20px;
     bottom: 100px;
     width: 80px;
     right: -75px;
@@ -181,8 +183,12 @@
 }
 
 .text-chat__submit {
-    font-size: 29px;
+    font-size: var(--menu-button-font-size);
     min-width: 60px;
+}
+
+.text-chat_background-overlay{
+    display: none;
 }
 
 #input-container {
@@ -212,4 +218,14 @@
     overflow: visible;
     flex-grow: 1;
     flex-shrink: 1;
+}
+
+.icon-submit{
+    background-image: url("project://database/Assets/UI/Textures/icon_send.png?fileID=2800000&amp;guid=72b7d5348da81408099819d725e06390&amp;type=3#icon_send");
+    background-size: contain;
+}
+
+.icon-arrow{
+    background-image: url("project://database/Assets/UI/Textures/icon_arrow.png?fileID=2800000&amp;guid=26de36c45382b4176ac53bc7a2e74e90&amp;type=3#icon_arrow");
+    background-size: contain;
 }
