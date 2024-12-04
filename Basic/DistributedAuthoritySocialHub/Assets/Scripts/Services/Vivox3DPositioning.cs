@@ -11,9 +11,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         public override void OnNetworkSpawn()
         {
+            base.OnNetworkSpawn();
             if (!HasAuthority)
             {
-                base.OnNetworkSpawn();
                 enabled = false;
                 return;
             }
