@@ -1,5 +1,6 @@
-using System;
+#if UNITY_STANDALONE_OSX || UNITY_IOS
 using System.Collections;
+#endif
 using System.Threading.Tasks;
 using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using Unity.Multiplayer.Samples.SocialHub.UI;
@@ -13,7 +14,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
     {
         string m_TextChannelName;
         string m_VoiceChannelName;
+
+#if UNITY_STANDALONE_OSX || UNITY_IOS
         bool m_MicPermissionChecked;
+#endif
 
         internal static VivoxManager Instance { get; private set; }
 
@@ -30,11 +34,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
         }
 
+#if UNITY_STANDALONE_OSX || UNITY_IOS
         IEnumerator RequestMicrophonePermissionsIOsMacOS()
         {
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
             m_MicPermissionChecked = true;
         }
+#endif
 
         internal async Task Initialize()
         {
