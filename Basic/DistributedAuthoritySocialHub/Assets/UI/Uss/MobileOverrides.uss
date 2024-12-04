@@ -1,7 +1,7 @@
 * {
     --menu-button-size: 80px;
     --menu-button-font-size: 36px;
-    --regular-font-size: 30px;
+    --regular-font-size: 28px;
 }
 
 .pickup-indicator__keycode{
@@ -87,4 +87,42 @@
     min-width: 600px;
     padding: 48px;
 }
+
+.slider {
+}
+
+.slider .unity-base-slider__tracker {
+    border-radius: 9px;
+    height: 18px;
+    opacity: 0.5;
+    border-color: transparent;
+}
+
+.slider .unity-base-slider__dragger {
+    width: 36px;
+    height: 36px;
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+    border-width: 0;
+}
+
+.unity-toggle__checkmark{
+    width: 36px;
+    height: 36px;
+}
+
+.unity-base-field{
+    margin-bottom: 16px;
+}
+
+.setting--section{
+    font-size: var(--regular-font-size);
+}
+
+.unity-base-field__label, .unity-base-field__input {
+    font-size: var(--menu-button-font-size);
+}
+
+
+
 
