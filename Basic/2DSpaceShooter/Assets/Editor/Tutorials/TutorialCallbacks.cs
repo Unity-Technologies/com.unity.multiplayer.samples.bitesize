@@ -29,33 +29,4 @@ public class TutorialCallbacks : ScriptableObject
         Selection.activeObject = asset;
         return asset;
     }
-
-    /// <summary>
-    /// Example callback for basic UnityEvent
-    /// </summary>
-    public void ExampleMethod()
-    {
-        Debug.Log("ExampleMethod");
-    }
-
-    /// <summary>
-    /// Example callbacks for ArbitraryCriterion's BoolCallback
-    /// </summary>
-    /// <returns></returns>
-    public bool DoesFooExist()
-    {
-        return GameObject.Find("Foo") != null;
-    }
-
-    /// <summary>
-    /// Implement the logic to automatically complete the criterion here, if wanted/needed.
-    /// </summary>
-    /// <returns>True if the auto-completion logic succeeded.</returns>
-    public bool AutoComplete()
-    {
-        var foo = GameObject.Find("Foo");
-        if (!foo)
-            foo = new GameObject("Foo");
-        return foo != null;
-    }
 }
