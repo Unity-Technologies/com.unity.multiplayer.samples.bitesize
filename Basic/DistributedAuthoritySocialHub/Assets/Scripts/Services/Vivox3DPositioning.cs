@@ -18,10 +18,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 return;
             }
 
-            GameplayEventHandler.OnChatIsReady -= OnChatIsReady;
             GameplayEventHandler.OnChatIsReady += OnChatIsReady;
-
-            GameplayEventHandler.OnExitedSession -= OnExitSession;
             GameplayEventHandler.OnExitedSession += OnExitSession;
         }
 
