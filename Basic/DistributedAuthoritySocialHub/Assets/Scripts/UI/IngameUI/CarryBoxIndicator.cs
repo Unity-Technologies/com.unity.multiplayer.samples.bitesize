@@ -44,7 +44,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryUI.AddToClassList("carrybox");
             m_CarryUI.AddToClassList(UIUtils.s_InactiveUSSClass);
 
-            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
             GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
         }
 
@@ -101,7 +100,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryUI.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }

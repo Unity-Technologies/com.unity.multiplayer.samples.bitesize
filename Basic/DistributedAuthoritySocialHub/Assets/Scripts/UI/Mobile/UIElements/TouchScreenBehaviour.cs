@@ -81,7 +81,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
                 bindingMode = BindingMode.ToSource,
             });
 
-            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
             GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
         }
 
@@ -107,6 +106,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_JoystickLeft = null;
             m_JoystickRight?.Dispose();
             m_JoystickRight = null;
+            
             GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }
 
