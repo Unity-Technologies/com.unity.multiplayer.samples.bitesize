@@ -2,12 +2,13 @@ using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Unity.Multiplayer.Samples.SocialHub.UI
+namespace Unity.Multiplayer.Samples.SocialHub.UI.IngameUI
 {
     [RequireComponent(typeof(UIDocument))]
-    public class MobileStylesheet : MonoBehaviour
+    public class MobileStylesheetAdder : MonoBehaviour
     {
-        [SerializeField] StyleSheet[] m_Stylesheet;
+        [SerializeField]
+        StyleSheet[] m_Stylesheet;
 
         async void Awake()
         {
