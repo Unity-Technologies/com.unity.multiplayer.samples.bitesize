@@ -73,7 +73,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
         }
 
-        private void OnPickupStateChanged(PickupState state, Transform pickupTransform)
+        void OnPickupStateChanged(PickupState state, Transform pickupTransform)
         {
             switch (state)
             {

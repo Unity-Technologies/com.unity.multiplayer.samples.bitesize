@@ -17,7 +17,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             internal const string ButtonJump = "ButtonJump";
             internal const string ButtonSprint = "ButtonSprint";
             internal const string ButtonInteract = "ButtonInteract";
-            //public const string ButtonToggleNetworkStats = "ButtonToggleNetworkStats";
             internal const string PlayerContainer = "PlayerContainer";
         }
 
@@ -84,7 +83,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
         }
 
-        private void OnPickupStateChanged(PickupState state, Transform _)
+        void OnPickupStateChanged(PickupState state, Transform _)
         {
             m_ButtonInteract.enabledSelf = state != PickupState.Inactive;
 
@@ -106,7 +105,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_JoystickLeft = null;
             m_JoystickRight?.Dispose();
             m_JoystickRight = null;
-            
+
             GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }
 

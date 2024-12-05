@@ -47,16 +47,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
         }
 
-        private void OnPickupStateChanged(PickupState state, Transform pickupTransform)
+        void OnPickupStateChanged(PickupState state, Transform pickupTransform)
         {
             if (state == PickupState.Carry)
             {
                 ShowCarry(pickupTransform);
+                return;
             }
-            else
-            {
-                HideCarry();
-            }
+            HideCarry();
         }
 
         void ShowCarry(Transform t)
