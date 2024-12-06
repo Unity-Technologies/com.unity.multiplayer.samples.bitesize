@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
+    /// <summary>
+    /// This class is managing the data binding between the TouchScreen
+    /// </summary>
     class TouchScreenBehaviour : MonoBehaviour
     {
         static class UIElementNames
