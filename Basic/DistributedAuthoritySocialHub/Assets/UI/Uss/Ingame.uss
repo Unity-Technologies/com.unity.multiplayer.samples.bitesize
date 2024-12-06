@@ -125,17 +125,6 @@
     top: 20px;
 }
 
-#sceen-overlay {
-    transition-property: opacity;
-    transition-duration: 100ms;
-    transition-timing-function: ease-in-out-sine;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-}
-
 .ingame-panel {
     border-radius: var(--border-radius);
     -unity-font-definition: var(--script-font);
@@ -226,8 +215,15 @@
     min-width: 60px;
 }
 
-.text-chat_background-overlay{
+.background-overlay{
     display: none;
+    width: 3000px;
+    height: 3000px;
+    position: absolute;
+    background-color: rgba(62, 43, 39, 0.80);
+    opacity: 1;
+    left: -50%;
+    transition: opacity 0.2s linear;
 }
 
 #input-container {

@@ -28,7 +28,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         bool m_IsChatActive;
 
-        void Start()
+        void OnEnable()
         {
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("textchat-container");
             m_Asset.CloneTree(m_Root);
@@ -40,9 +40,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_SendButton.clicked += SendMessage;
 
             m_MessageInputField = m_Root.Q<TextField>("input-text");
+
+#if !UNITY_IOS && !UNITY_ANDROID
             m_MessageInputField.RegisterCallback<FocusInEvent>(OnTextfieldFocusIn);
             m_MessageInputField.RegisterCallback<FocusOutEvent>(OnTextfieldFocusOut);
             m_MessageInputField.RegisterCallback<KeyDownEvent>(OnTextEnter, TrickleDown.TrickleDown);
+#endif
 
             m_MessageView = m_Root.Q<ListView>("message-list");
             m_MessageView.dataSource = this;
@@ -63,7 +66,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         private void OnTextEnter(KeyDownEvent evt)
         {
             if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
+            {
                 SendMessage();
+                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(10);
+            }
         }
 
         void OnTextfieldFocusIn(FocusInEvent _)
@@ -86,7 +92,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         }
 #endif
 
-        void OnDestroy()
+        void OnDisable()
         {
             m_SendButton.clicked -= SendMessage;
             m_MessageInputField.UnregisterCallback<FocusInEvent>(OnTextfieldFocusIn);
@@ -122,8 +128,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
                 SendTextMessage(m_MessageInputField.value);
-                m_MessageInputField.SetValueWithoutNotify("");
-                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(10);
+                m_MessageInputField.value = "";
             }
         }
 

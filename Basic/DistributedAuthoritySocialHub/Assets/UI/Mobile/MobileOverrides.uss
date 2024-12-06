@@ -1,7 +1,7 @@
 * {
     --menu-button-size: 80px;
-    --menu-button-font-size: 36px;
-    --regular-font-size: 28px;
+    --menu-button-font-size: 32px;
+    --regular-font-size: 26px;
 }
 
 .pickup-indicator__keycode{
@@ -23,7 +23,7 @@
 }
 
 .textfield > .unity-base-field__label {
-    min-width: 210px;
+    min-width: 220px;
     overflow: visible;
 }
 
@@ -50,22 +50,10 @@
     background-position-x: left 35px;
 }
 
-.text-chat_background-overlay{
-    display: none;
-    width: 3000px;
-    height: 3000px;
-    position: absolute;
-    background-color: rgba(62, 43, 39, 0.80);
-    opacity: 0;
-    left: -50%;
-    top:-3000px;
-    transition: opacity 0.2s linear;
-}
 
 .text-chat--visible > .text-chat_background-overlay {
     opacity: 1;
     display: flex;
-    top: 0;
 }
 
 .text-chat--visible > .text-chat__collapsebutton {

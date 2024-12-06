@@ -21,7 +21,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         VisualElement m_Root;
         VisualElement m_Menu;
-        VisualElement m_SceenOverlay;
+        VisualElement m_ScreenOverlay;
 
         Button m_BurgerButton;
         Button m_ExitButton;
@@ -41,7 +41,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("ingame-menu-container");
             m_Root.Add(m_IngameMenuAsset.CloneTree().GetFirstChild());
 
-            m_SceenOverlay = m_Root.Q<VisualElement>("sceen-overlay");
+            m_ScreenOverlay = m_Root.Q<VisualElement>("screen-overlay");
 
             m_BurgerButton = m_Root.Q<Button>("burger-button");
             m_BurgerButton.clicked += ShowMenu;
@@ -117,14 +117,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             InputSystemManager.Instance.EnableUIInputs();
             m_Menu.RemoveFromClassList(UIUtils.s_InactiveUSSClass);
             m_Menu.AddToClassList(UIUtils.s_ActiveUSSClass);
-            m_SceenOverlay.style.display = DisplayStyle.Flex;
+            m_ScreenOverlay.style.display = DisplayStyle.Flex;
             m_Menu.SetEnabled(true);
         }
 
         void HideMenu()
         {
             InputSystemManager.Instance.EnableGameplayInputs();
-            m_SceenOverlay.style.display = DisplayStyle.None;
+            m_ScreenOverlay.style.display = DisplayStyle.None;
             m_Menu.RemoveFromClassList(UIUtils.s_ActiveUSSClass);
             m_Menu.AddToClassList(UIUtils.s_InactiveUSSClass);
             m_Menu.SetEnabled(false);
