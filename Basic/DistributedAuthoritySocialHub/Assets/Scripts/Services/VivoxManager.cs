@@ -76,7 +76,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async Task JoinChannels()
         {
-            var positionalChannelProperties = new Channel3DProperties(10, 1, 1f, AudioFadeModel.InverseByDistance);
+            var positionalChannelProperties = new Channel3DProperties(20, 1, 1f, AudioFadeModel.InverseByDistance);
             BindChannelEvents(true);
             await VivoxService.Instance.JoinPositionalChannelAsync(m_VoiceChannelName, ChatCapability.AudioOnly, positionalChannelProperties);
             await VivoxService.Instance.JoinGroupChannelAsync(m_TextChannelName, ChatCapability.TextOnly);
