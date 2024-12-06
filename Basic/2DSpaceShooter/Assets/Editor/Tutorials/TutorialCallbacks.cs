@@ -8,6 +8,8 @@ using Unity.Tutorials.Core.Editor;
 [CreateAssetMenu(fileName = DefaultFileName, menuName = "Tutorials/" + DefaultFileName + " Instance")]
 public class TutorialCallbacks : ScriptableObject
 {
+    [SerializeField] SceneAsset m_NetworkScene;
+
     /// <summary>
     /// The default file name used to create asset of this class type.
     /// </summary>
@@ -28,5 +30,10 @@ public class TutorialCallbacks : ScriptableObject
         EditorUtility.FocusProjectWindow(); // needed in order to make the selection of newly created asset to really work
         Selection.activeObject = asset;
         return asset;
+    }
+
+    public void LoadSelectionScene()
+    {
+        UnityEditor.SceneManagement.EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(m_NetworkScene));
     }
 }

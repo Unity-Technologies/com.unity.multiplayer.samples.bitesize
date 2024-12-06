@@ -31,6 +31,25 @@ MonoBehaviour:
       increased fly speed or shooting extra bullets)."
   m_Buttons:
   - Text:
+      m_Untranslated: Open network scene
+    Tooltip:
+      m_Untranslated: 
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 8542e6feb6e590c469cc4cf87b0dc005, type: 2}
+          m_TargetAssemblyTypeName: TutorialCallbacks, Assembly-CSharp-Editor
+          m_MethodName: LoadSelectionScene
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - Text:
       m_Untranslated: Close
     Tooltip:
       m_Untranslated: 
