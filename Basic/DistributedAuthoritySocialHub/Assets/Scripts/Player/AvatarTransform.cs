@@ -1,7 +1,5 @@
 using System;
 using Unity.Collections;
-using Unity.Multiplayer.Samples.SocialHub.GameManagement;
-using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
@@ -27,6 +25,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         PlayersTopUIController m_TopUIController;
 
         NetworkVariable<FixedString32Bytes> m_PlayerName = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+        NetworkVariable<FixedString32Bytes> m_PlayerId = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+
 
         public override void OnNetworkSpawn()
         {
@@ -34,6 +34,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
             m_PlayerName.OnValueChanged += OnPlayerNameChanged;
+            m_PlayerId.OnValueChanged += OnPlayerIdChanged;
             OnPlayerNameChanged(string.Empty, m_PlayerName.Value);
 
             if (!HasAuthority)
@@ -42,8 +43,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            // a randomly-generated suffix consisting of a hash and four digits (e.g. #1234) is automatically appended to the requested name
-            m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerName.Split('#')[0]);
+            m_PlayerId.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerId);
+            m_PlayerName.Value = new FixedString32Bytes(UIUtils.ExtractPlayerNameFromAuthUserName(AuthenticationService.Instance.PlayerName));
             m_PlayerInput.enabled = true;
             GameInput.Actions.Player.Jump.performed += OnJumped;
             m_AvatarInteractions.enabled = true;
@@ -66,8 +67,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
 
-            GameplayEventHandler.OnBlockPlayerControls += OnBlockPlayerControls;
-
             base.OnNetworkSpawn();
         }
 
@@ -85,7 +84,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 cameraControl.SetTransform(null);
             }
 
-            GameplayEventHandler.OnBlockPlayerControls -= OnBlockPlayerControls;
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
@@ -116,12 +114,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_TopUIController.AddPlayer(gameObject, newValue.Value);
+            m_TopUIController.AddOrUpdatePlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
         }
 
-        void OnBlockPlayerControls(bool blockInput)
+        void OnPlayerIdChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_PlayerInput.enabled = !blockInput;
+            m_TopUIController.AddOrUpdatePlayer(gameObject, m_PlayerName.Value.Value,newValue.Value);
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

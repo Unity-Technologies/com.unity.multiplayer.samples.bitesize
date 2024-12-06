@@ -70,5 +70,16 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
             return null;
         }
+
+        /// <summary>
+        /// Authentication UserName gets a # with a number appended at the end. This method returns the player name without the number.
+        /// </summary>
+        /// <param name="authenticationUserName">Name with # appended</param>
+        /// <returns>Name without the last hash and following numbers</returns>
+        internal static string ExtractPlayerNameFromAuthUserName(string authenticationUserName)
+        {
+            var lastHashIndex = authenticationUserName.LastIndexOf('#');
+            return lastHashIndex != -1 ? authenticationUserName[..lastHashIndex] : authenticationUserName;
+        }
     }
 }
