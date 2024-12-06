@@ -8,6 +8,8 @@
     --pickup-background-color: rgba(255, 255, 255, 0.5);
     --dark-text-color: rgb(16, 16, 16);
     --border-radius: 12px;
+    --border-radius--small: 4px;
+    --border-width: 3px;
     --pickup-base-height: 24px;
     --mic-icon-size: 36px;
     --menu-button-size: 60px;
@@ -21,7 +23,7 @@
     min-height: var(--menu-button-size);
     font-size: var(--menu-button-font-size);
     border-color: var(--dark-text-color);
-    border-width: 3px;
+    border-width: var(--border-width);
     padding: 10px;
     margin-bottom: 10px;
     background-color: var(--highlight-color);
@@ -116,23 +118,60 @@
 
 .textfield .unity-base-text-field__input {
     border-radius: var(--border-radius);
-    border-width: 3px;
+    border-width: var(--border-width);
 }
 
 .textfield:focus .unity-base-text-field__input {
     border-color: var(--secondary-color);
 }
 
-.unity-base-slider__tracker {
+.slider {
+}
+
+.slider .unity-base-slider__tracker {
+    border-radius: 2px;
+    height: 5px;
+    background-color: black;
+    border-color: transparent;
+}
+
+.slider .unity-base-slider__dragger {
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+    border-width: 0;
+}
+
+.dropdown {
+    margin: 0;
+}
+
+.dropdown .unity-popup-field__input {
+    margin: 0;
+    border-radius: var(--border-radius);
+    border-color: black;
+    border-width: var(--border-width);
+}
+
+.unity-toggle__checkmark {
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+}
+
+.setting--section {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.unity-scroller__slider .unity-base-slider__tracker {
     background-color: var(--secondary-color);
     opacity: 0.5;
     border-width: 0;
 }
 
-.unity-base-slider__dragger {
+.unity-scroller__slider .unity-base-slider__dragger {
     background-color: rgba(83, 51, 33, 0.5);
     height: 16px;
-    border-radius: 6px;
+    border-radius: var(--border-radius--small);
 }
 
 .unity-repeat-button {
@@ -150,3 +189,9 @@
     border-width: 3px;
     border-color: var(--dark-text-color);
 }
+
+.text-big {
+    font-size: 20px;
+    margin: 0;
+}
+
