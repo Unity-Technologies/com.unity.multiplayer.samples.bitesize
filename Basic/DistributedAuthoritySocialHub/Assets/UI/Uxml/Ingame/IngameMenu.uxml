@@ -7,7 +7,7 @@
         <ui:VisualElement name="menu" class="ingame-panel">
             <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="Go to Main Menu" name="btn-goto-main" />
             <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="Exit Application" name="btn-exit" />
-            <ui:Label text="Audio Settings&#10;" name="Label" style="-unity-text-align: upper-center;" />
+            <ui:Label text="Audio Settings&#10;" name="Label" class="setting--section--headline" style="-unity-text-align: upper-center;" />
             <ui:VisualElement name="audio" class="border--standard setting--section">
                 <ui:Label text="Input:&#10;" name="input-label" />
                 <ui:DropdownField name="audio-input" class="dropdown" />
