@@ -15,6 +15,9 @@
 
 ### 2D Space Shooter
 
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to 2D Space Shooter Sample
+
 #### Changed
 - Update Project to Unity 6
 - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
