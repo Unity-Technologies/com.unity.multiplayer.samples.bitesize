@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 3-CreateClone
+  m_Name: 4-Validate Network Scene Visualization
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Connect Vivox Voice Chat Service
+    m_Untranslated: Enable  Network Scene Visualization
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -38,25 +38,26 @@ MonoBehaviour:
             m_TypeName: 
           m_FocusEditorWindow: 1
           m_EditorWindowType:
-            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
-              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
+            m_TypeName: UnityEditor.SceneView, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
-          m_MaskType: 0
+          m_MaskType: 1
           m_MaskSizeModifier: 0
           m_UnmaskedControls:
-          - m_SelectorMode: 0
+          - m_SelectorMode: 5
             m_SelectorMatchType: 0
             m_GUIContent:
-              m_Text: 
+              m_Text: Open
               m_Image: {fileID: 0}
               m_Tooltip: 
               m_TextWithWhitespace: 
-            m_ControlName: 
+            m_ControlName: ButtonText
             m_PropertyPath: 
             m_TargetType:
-              m_TypeName: 
+              m_TypeName: Unity.Multiplayer.Tools.Editor.MultiplayerToolsWindow.MultiplayerToolsWindow,
+                com.unity.multiplayer.tools.window, Version=0.0.0.0, Culture=neutral,
+                PublicKeyToken=null
             m_GUIStyleName: 
             m_ObjectReference:
               m_SceneObjectReference:
@@ -69,8 +70,35 @@ MonoBehaviour:
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: 
+            m_VisualElementName: Network Visualization
             m_VisualElementTypeName: 
+          - m_SelectorMode: 5
+            m_SelectorMatchType: 1
+            m_GUIContent:
+              m_Text: Open
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+              m_TextWithWhitespace: 
+            m_ControlName: ButtonText
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: Unity.Multiplayer.Tools.Editor.MultiplayerToolsWindow.MultiplayerToolsWindow,
+                com.unity.multiplayer.tools.window, Version=0.0.0.0, Culture=neutral,
+                PublicKeyToken=null
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 
+                m_GameObjectGuid: 
+                m_SerializedComponentType:
+                  m_TypeName: 
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 0}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: NetVisPanelOverlayButton
+            m_VisualElementName: OwnershipToggle
+            m_VisualElementTypeName: UnityEditor.UIElements.ToolbarToggle
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -80,7 +108,7 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: <create-virtual-project-text>
+        m_Untranslated: <descriptive-text>
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -100,7 +128,7 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Creating A Virtual Project
+        m_Untranslated: Open Network Scene Visualization Tool
       Text:
         m_Untranslated: Press <b>Next</b> to continue.
       m_CodeSample: 
@@ -150,7 +178,20 @@ MonoBehaviour:
       m_Calls: []
   Staying:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
+        m_TargetAssemblyTypeName: Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials.TutorialCallbacks,
+          Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
+        m_MethodName: ForceNetworkVisualizationOverlayDisplayed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
   CriteriaValidated:
     m_PersistentCalls:
       m_Calls: []

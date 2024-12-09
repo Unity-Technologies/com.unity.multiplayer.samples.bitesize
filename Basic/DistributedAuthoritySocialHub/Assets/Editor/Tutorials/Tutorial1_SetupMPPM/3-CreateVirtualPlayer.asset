@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 1-Verify Tools
+  m_Name: 3-CreateVirtualPlayer
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: <Tools-title>
+    m_Untranslated: Create a Virtual Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -32,7 +32,45 @@ MonoBehaviour:
         m_Items: []
       m_MaskingSettings:
         m_MaskingEnabled: 1
-        m_UnmaskedViews: []
+        m_UnmaskedViews:
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: 
+          m_FocusEditorWindow: 1
+          m_EditorWindowType:
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls:
+          - m_SelectorMode: 0
+            m_SelectorMatchType: 0
+            m_GUIContent:
+              m_Text: 
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+              m_TextWithWhitespace: 
+            m_ControlName: 
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: 
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 
+                m_GameObjectGuid: 
+                m_SerializedComponentType:
+                  m_TypeName: 
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 0}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: 
+            m_VisualElementName: 
+            m_VisualElementTypeName: 
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -42,7 +80,29 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: <Tools-description>
+        m_Untranslated: <create-virtual-project-text>
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
+      m_Tutorial: {fileID: 0}
+      m_Image: {fileID: 0}
+      m_VideoUrl: 
+      m_Video: {fileID: 0}
+      m_CriteriaCompletion: 0
+      m_Criteria:
+        m_Items: []
+      m_MaskingSettings:
+        m_MaskingEnabled: 0
+        m_UnmaskedViews: []
+      m_Summary: 
+      m_Description: 
+      m_InstructionBoxTitle: 
+      m_InstructionText: 
+      m_TutorialButtonText: 
+    - m_Type: 1
+      Title:
+        m_Untranslated: Creating A Virtual Project
+      Text:
+        m_Untranslated: Press <b>Next</b> to continue.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
