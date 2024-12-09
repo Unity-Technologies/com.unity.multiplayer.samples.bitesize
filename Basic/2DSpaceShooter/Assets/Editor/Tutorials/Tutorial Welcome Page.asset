@@ -31,7 +31,7 @@ MonoBehaviour:
       increased fly speed or shooting extra bullets)."
   m_Buttons:
   - Text:
-      m_Untranslated: Open network scene
+      m_Untranslated: I'll explore on my own
     Tooltip:
       m_Untranslated: 
     OnClick:
@@ -49,13 +49,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 1
-  - Text:
-      m_Untranslated: Close
-    Tooltip:
-      m_Untranslated: 
-    OnClick:
-      m_PersistentCalls:
-        m_Calls:
         - m_Target: {fileID: 11400000}
           m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
             Unity.Tutorials.Core.Editor
@@ -63,7 +56,7 @@ MonoBehaviour:
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
