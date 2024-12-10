@@ -6,8 +6,6 @@ using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
-using UnityEditor.Overlays;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
