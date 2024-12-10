@@ -175,19 +175,6 @@
     border-width: var(--border-width);
 }
 
-.unity-toggle{
-    margin: 0;
-    padding: 4px;
-    border-radius: var(--border-radius);
-    border-color: transparent;
-    border-width: var(--border-width);
-    scale: 1.005 1.005;
-}
-
-.unity-toggle:focus {
-    border-color: var(--highlight-color);
-}
-
 .unity-toggle__checkmark {
     background-color: var(--highlight-color);
     border-radius: var(--border-radius--small);
@@ -200,6 +187,19 @@
 .setting--section {
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.setting--section .unity-toggle{
+    margin: 0;
+    padding: 4px;
+    border-radius: var(--border-radius);
+    border-color: transparent;
+    border-width: var(--border-width);
+    scale: 1.005 1.005;
+}
+
+.setting--section .unity-toggle:focus {
+    border-color: var(--highlight-color);
 }
 
 .unity-scroller__slider .unity-base-slider__tracker {
