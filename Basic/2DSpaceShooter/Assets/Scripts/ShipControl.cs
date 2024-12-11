@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class Buff
 {
@@ -111,6 +112,8 @@ public class ShipControl : NetworkBehaviour
     float m_Spin;
 
     Rigidbody2D m_Rigidbody2D;
+    InputAction shootAction;
+    InputAction moveAction;
 
     void Awake()
     {
@@ -134,6 +137,8 @@ public class ShipControl : NetworkBehaviour
     {
         DontDestroyOnLoad(gameObject);
         SetPlayerUIVisibility(true);
+        shootAction = InputSystem.actions.FindAction("Fire");
+        moveAction = InputSystem.actions.FindAction("Move");
     }
 
     public override void OnNetworkSpawn()
@@ -148,6 +153,7 @@ public class ShipControl : NetworkBehaviour
                 SetPlayerUIVisibility(false);
             }
         }
+
         Energy.OnValueChanged += OnEnergyChanged;
         Health.OnValueChanged += OnHealthChanged;
         OnEnergyChanged(0, Energy.Value);
@@ -180,6 +186,7 @@ public class ShipControl : NetworkBehaviour
         if (Health.Value <= 0)
         {
             Health.Value = 0;
+
             // reset all values and buffs
             Health.Value = 100;
             LatestShipColor.Value = m_ShipGlowDefaultColor;
@@ -189,6 +196,7 @@ public class ShipControl : NetworkBehaviour
             DoubleShotTimer.Value = 0;
             QuadDamageTimer.Value = 0;
             Energy.Value = 100;
+
             // reset ship to start position
             transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
             GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
@@ -216,7 +224,6 @@ public class ShipControl : NetworkBehaviour
         var bullet = bulletGo.GetComponent<Bullet>();
         bullet.Config(this, damage, bounce, m_BulletLifetime);
         bullet.SetVelocity(velocity);
-
     }
 
     void Update()
@@ -342,23 +349,25 @@ public class ShipControl : NetworkBehaviour
 
         // movement
         int spin = 0;
-        if (Input.GetKey(KeyCode.LeftArrow))
+        // use move composite left and right parts for rotating the ship
+        if (moveAction.ReadValue<Vector2>().x < -0.5f)
         {
             spin += 1;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (moveAction.ReadValue<Vector2>().x > 0.5f)
         {
             spin -= 1;
         }
 
         int moveForce = 0;
-        if (Input.GetKey(KeyCode.UpArrow))
+        // use move composite up and down parts for thrusting the ship
+        if (moveAction.ReadValue<Vector2>().y > 0.5f)
         {
             moveForce += 1;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (moveAction.ReadValue<Vector2>().y < -0.5f)
         {
             moveForce -= 1;
         }
@@ -385,7 +394,7 @@ public class ShipControl : NetworkBehaviour
         }
 
         // fire
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (shootAction.WasPressedThisFrame())
         {
             ServerFireRpc();
         }
