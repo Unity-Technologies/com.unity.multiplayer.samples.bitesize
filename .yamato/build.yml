@@ -11,21 +11,22 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
   agent:
     type: {{ platform.type }}
     image: {{ platform.image }}
-    flavor: {{ platform.flavor}}
+    flavor: {{ platform.flavor }}
   commands:
     - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
-{% if project.name == "dedicatedgameserver" -%} #dedicatedgameserver sample builds via custom editor script. This script generates client and server builds on the Mac, Windows, and Linux platforms
-    - unity-downloader-cli -u {{ editor }} -c editor -c macOS -c Windows -c Linux -c macOSDedicatedServerBuildSupport -c LinuxDedicatedServerBuildSupport -c WindowsDedicatedServerBuildSupport --wait --published --fast
-{% if platform.name == "win" -%} #windows
+{% if project.name == "dedicatedgameserver" -%} # dedicatedgameserver sample builds via custom editor script
+{% if platform.name == "win" -%} # windows
+    - unity-downloader-cli -u {{ editor }} -c editor -c Windows -c macOS -c Linux -c WindowsDedicatedServerBuildSupport --wait --published --fast
     - .Editor\Unity.exe -batchmode -nographics -logfile build.log -executeMethod Unity.DedicatedGameServerSample.Editor.BuildHelpers.BuildEverything -projectPath {{ project.path }} -quit
-{% else -%}
+{% else %} # macOS or Linux
+    - unity-downloader-cli -u {{ editor }} -c editor -c macOS -c Linux -c macOSDedicatedServerBuildSupport -c LinuxDedicatedServerBuildSupport --wait --published --fast
     - .Editor/Unity.app/Contents/MacOS/Unity -batchmode -nographics -logfile build.log -executeMethod Unity.DedicatedGameServerSample.Editor.BuildHelpers.BuildEverything -projectPath {{ project.path }} -quit
-{% endif -%}
+{% endif %}
 {% else -%}
     - unity-downloader-cli -u {{ editor }} -c editor --wait --published --fast
-{% if platform.name == "win" -%} #windows
+{% if platform.name == "win" -%} # windows
     - .Editor\Unity.exe -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildWindowsPlayer build\players\test.exe
-{% else -%}
+{% else -%} # macOS or Linux
     - .Editor/Unity.app/Contents/MacOS/Unity -projectpath {{ project.path }} -batchmode -quit -logfile build.log -buildOSXUniversalPlayer ./build/players/test
 {% endif -%}
 {% endif -%}
@@ -33,7 +34,7 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
   artifacts:
     players:
         paths:
-{% if project.name == "dedicatedgameserver" -%} #dedicatedgameserver sample builds via custom editor script into different location
+{% if project.name == "dedicatedgameserver" -%} # dedicatedgameserver sample builds via custom editor script into different location
           - "{{ project.path }}/Builds/**"
 {% else -%}
           - "{{ project.path }}/build/players/**"
