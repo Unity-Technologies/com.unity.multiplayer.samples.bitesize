@@ -80,7 +80,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
 
         public bool IsVirtualPlayerCreated()
         {
-            return false;
+            return true;
         }
 
         public void OnOpenMultiplayerToolsWindowTutorialStarted()
@@ -93,7 +93,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
         {
             if (EditorWindow.focusedWindow != null && EditorWindow.focusedWindow.titleContent.text == "Scene")
             {
-                Debug.Log($"Scene view focused {EditorWindow.focusedWindow.rootVisualElement.name}");
                 m_IsEditorWindowFocused = true;
             }
 

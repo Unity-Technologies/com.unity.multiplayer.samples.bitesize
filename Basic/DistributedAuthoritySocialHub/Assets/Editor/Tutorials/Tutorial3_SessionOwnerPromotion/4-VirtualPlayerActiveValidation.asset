@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9152502701440422765
+--- !u!114 &-7312589315956182056
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21,7 +21,7 @@ MonoBehaviour:
   isTesting: 0
   m_Callback:
     _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-    _methodName: IsSceneViewFocused
+    _methodName: IsVirtualPlayerCreated
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
@@ -29,7 +29,7 @@ MonoBehaviour:
     dirty: 0
   m_AutoCompleteCallback:
     _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-    _methodName: IsSceneViewFocused
+    _methodName: IsVirtualPlayerCreated
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 2-Open Network Scene Visualization
+  m_Name: 4-VirtualPlayerActiveValidation
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Multiplayer Tools Window
+    m_Untranslated: Activate a Virtual Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -70,43 +70,17 @@ MonoBehaviour:
         m_UnmaskedViews:
         - m_SelectorType: 1
           m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
+            m_TypeName: 
+          m_FocusEditorWindow: 1
           m_EditorWindowType:
-            m_TypeName: Unity.Multiplayer.Tools.Editor.MultiplayerToolsWindow.MultiplayerToolsWindow,
-              com.unity.multiplayer.tools.window, Version=0.0.0.0, Culture=neutral,
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
               PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
           m_MaskSizeModifier: 0
-          m_UnmaskedControls:
-          - m_SelectorMode: 5
-            m_SelectorMatchType: 1
-            m_GUIContent:
-              m_Text: 
-              m_Image: {fileID: 0}
-              m_Tooltip: 
-              m_TextWithWhitespace: 
-            m_ControlName: 
-            m_PropertyPath: 
-            m_TargetType:
-              m_TypeName: 
-            m_GUIStyleName: 
-            m_ObjectReference:
-              m_SceneObjectReference:
-                m_SceneGuid: 
-                m_GameObjectGuid: 
-                m_SerializedComponentType:
-                  m_TypeName: 
-                m_ComponentIndex: 0
-                m_AssetObject: {fileID: 0}
-                m_Prefab: {fileID: 0}
-              m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: unity-button
-            m_VisualElementName: OpenButton
-            m_VisualElementTypeName: UnityEngine.UIElements.Button
+          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -114,18 +88,10 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 0
       Title:
-        m_Untranslated: 
+        m_Untranslated: Page title
       Text:
-        m_Untranslated: 'Open the Multiplayer Tools window by navigating to Window
-          > Multiplayer > Multiplayer Tools.
-
-
-          The Network Visualization
-          toolbar is available in the scene view of the Unity Editor.
-
-
-          Pressing
-          the <b>Open</b> button will redirect you to the Scene view.'
+        m_Untranslated: Activate a Virtual Player inside the Multiplayer Play Mode
+          Window.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -145,9 +111,9 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Open Network Scene Visualization
+        m_Untranslated: 
       Text:
-        m_Untranslated: Press <b>Next</b> to continue.
+        m_Untranslated: 
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -160,7 +126,29 @@ MonoBehaviour:
         - Type:
             m_TypeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion, Unity.Tutorials.Core.Editor,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: -9152502701440422765}
+          Criterion: {fileID: -7312589315956182056}
+      m_MaskingSettings:
+        m_MaskingEnabled: 0
+        m_UnmaskedViews: []
+      m_Summary: 
+      m_Description: 
+      m_InstructionBoxTitle: 
+      m_InstructionText: 
+      m_TutorialButtonText: 
+    - m_Type: 2
+      Title:
+        m_Untranslated: 
+      Text:
+        m_Untranslated: 'Tutorial: Multiplayer Play Mode Setup'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
+      m_Tutorial: {fileID: 11400000, guid: 3fbaca52b7aa145468af4adcdc8de777, type: 2}
+      m_Image: {fileID: 0}
+      m_VideoUrl: 
+      m_Video: {fileID: 0}
+      m_CriteriaCompletion: 0
+      m_Criteria:
+        m_Items: []
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -193,20 +181,7 @@ MonoBehaviour:
   m_AutoAdvance: 1
   Showing:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-        m_TargetAssemblyTypeName: Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials.TutorialCallbacks,
-          Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
-        m_MethodName: OnOpenMultiplayerToolsWindowTutorialStarted
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
   Shown:
     m_PersistentCalls:
       m_Calls: []

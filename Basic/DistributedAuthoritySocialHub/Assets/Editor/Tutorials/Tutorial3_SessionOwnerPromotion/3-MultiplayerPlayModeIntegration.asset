@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 1-Open Multiplayer Tools Window
+  m_Name: 3-MultiplayerPlayModeIntegration
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: <Tools-title>
+    m_Untranslated: Entering Play Mode with a Virtual Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -32,7 +32,20 @@ MonoBehaviour:
         m_Items: []
       m_MaskingSettings:
         m_MaskingEnabled: 1
-        m_UnmaskedViews: []
+        m_UnmaskedViews:
+        - m_SelectorType: 1
+          m_ViewType:
+            m_TypeName: 
+          m_FocusEditorWindow: 1
+          m_EditorWindowType:
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -40,12 +53,57 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 0
       Title:
-        m_Untranslated: 
+        m_Untranslated: Page title
       Text:
-        m_Untranslated: <Tools-description>
+        m_Untranslated: Additionally, this tutorial requires a Virtual Player to
+          be active when entering <b>Play Mode</b>.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
+      m_Image: {fileID: 0}
+      m_VideoUrl: 
+      m_Video: {fileID: 0}
+      m_CriteriaCompletion: 0
+      m_Criteria:
+        m_Items: []
+      m_MaskingSettings:
+        m_MaskingEnabled: 0
+        m_UnmaskedViews: []
+      m_Summary: 
+      m_Description: 
+      m_InstructionBoxTitle: 
+      m_InstructionText: 
+      m_TutorialButtonText: 
+    - m_Type: 1
+      Title:
+        m_Untranslated: 
+      Text:
+        m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
+      m_Tutorial: {fileID: 0}
+      m_Image: {fileID: 0}
+      m_VideoUrl: 
+      m_Video: {fileID: 0}
+      m_CriteriaCompletion: 0
+      m_Criteria:
+        m_Items: []
+      m_MaskingSettings:
+        m_MaskingEnabled: 0
+        m_UnmaskedViews: []
+      m_Summary: 
+      m_Description: 
+      m_InstructionBoxTitle: 
+      m_InstructionText: 
+      m_TutorialButtonText: 
+    - m_Type: 2
+      Title:
+        m_Untranslated: 
+      Text:
+        m_Untranslated: 'Tutorial: Multiplayer Play Mode Setup'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
+      m_Tutorial: {fileID: 11400000, guid: 3fbaca52b7aa145468af4adcdc8de777, type: 2}
       m_Image: {fileID: 0}
       m_VideoUrl: 
       m_Video: {fileID: 0}

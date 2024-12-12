@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5263886208739629731
+--- !u!114 &-2450625152419032921
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7231e8df50e16c74c979c4a2affab91b, type: 3}
+  m_Script: {fileID: 11500000, guid: 641211c85919e4aceb79a0d364004d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Completed:
@@ -18,23 +18,8 @@ MonoBehaviour:
   Invalidated:
     m_PersistentCalls:
       m_Calls: []
-  isTesting: 0
-  m_Callback:
-    _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-    _methodName: IsOnlyEditorInSession
-    _args: []
-    _dynamic: 0
-    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    dirty: 0
-  m_AutoCompleteCallback:
-    _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-    _methodName: IsOnlyEditorInSession
-    _args: []
-    _dynamic: 0
-    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    dirty: 0
+  isTesting: 1
+  m_RequiredPlayModeState: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,13 +30,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 6-LeaveSessionAsVirtualPlayer
+  m_Name: 5-EnterPlayModeWithVirtualPlayer
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Leave Session As Virtual Player
+    m_Untranslated: Enter Play Mode With A Virtual Player
   m_Paragraphs:
     m_Items:
-    - m_Type: 7
+    - m_Type: 6
       Title:
         m_Untranslated: 
       Text:
@@ -68,12 +53,49 @@ MonoBehaviour:
       m_MaskingSettings:
         m_MaskingEnabled: 1
         m_UnmaskedViews:
+        - m_SelectorType: 0
+          m_ViewType:
+            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
+          m_EditorWindowType:
+            m_TypeName: 
+          m_AlternateEditorWindowTypes:
+            m_Items: []
+          m_MaskType: 0
+          m_MaskSizeModifier: 0
+          m_UnmaskedControls:
+          - m_SelectorMode: 5
+            m_SelectorMatchType: 0
+            m_GUIContent:
+              m_Text: 
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+              m_TextWithWhitespace: 
+            m_ControlName: 
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: 
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 
+                m_GameObjectGuid: 
+                m_SerializedComponentType:
+                  m_TypeName: 
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 0}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: 
+            m_VisualElementName: Play
+            m_VisualElementTypeName: 
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
-          m_FocusEditorWindow: 1
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
-            m_TypeName: UnityEditor.SceneView, UnityEditor.CoreModule, Version=0.0.0.0,
+            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
@@ -89,7 +111,12 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: <descriptive-text>
+        m_Untranslated: 'Start by entering <b>Play Mode</b> to try out the game!
+
+
+          You
+          can select <b>Play</b> in the <b>Toolbar</b> at the top of the default
+          layout.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -109,9 +136,9 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Leave Session On The Virtual Player
+        m_Untranslated: Enter Play Mode
       Text:
-        m_Untranslated: <instruction-description-text>
+        m_Untranslated: Select <b>Play</b> to enter <b>Play Mode</b>
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -122,9 +149,9 @@ MonoBehaviour:
       m_Criteria:
         m_Items:
         - Type:
-            m_TypeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion, Unity.Tutorials.Core.Editor,
+            m_TypeName: Unity.Tutorials.Core.Editor.PlayModeStateCriterion, Unity.Tutorials.Core.Editor,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: -5263886208739629731}
+          Criterion: {fileID: -2450625152419032921}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -134,12 +161,12 @@ MonoBehaviour:
       m_InstructionText: 
       m_TutorialButtonText: 
   m_CameraSettings:
-    m_CameraMode: 1
+    m_CameraMode: 0
     m_FocusMode: 0
     m_Orthographic: 0
-    m_Size: 0.5571572
-    m_Pivot: {x: 56.48537, y: 21.16088, z: 12.940574}
-    m_Rotation: {x: -0.059794042, y: 0.91824806, z: -0.36141726, w: -0.1514815}
+    m_Size: 0
+    m_Pivot: {x: 0, y: 0, z: 0}
+    m_Rotation: {x: 0, y: 0, z: 0, w: 0}
     m_FrameObject:
       m_SceneGuid: 
       m_GameObjectGuid: 
@@ -148,13 +175,13 @@ MonoBehaviour:
       m_ComponentIndex: 0
       m_AssetObject: {fileID: 0}
       m_Prefab: {fileID: 0}
-    m_Enabled: 1
+    m_Enabled: 0
   NextButton:
     m_Untranslated: Next
   DoneButton:
     m_Untranslated: Done
   m_CompletedSound: {fileID: 0}
-  m_AutoAdvance: 0
+  m_AutoAdvance: 1
   Showing:
     m_PersistentCalls:
       m_Calls: []

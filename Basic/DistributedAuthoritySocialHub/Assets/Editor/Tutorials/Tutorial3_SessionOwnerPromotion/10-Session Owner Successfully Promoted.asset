@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 1-SessionMigration
+  m_Name: 10-Session Owner Successfully Promoted
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Session Migration With Distributed Authority
+    m_Untranslated: Session Owner Successfully Promoted!
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -31,7 +31,7 @@ MonoBehaviour:
       m_Criteria:
         m_Items: []
       m_MaskingSettings:
-        m_MaskingEnabled: 1
+        m_MaskingEnabled: 0
         m_UnmaskedViews: []
       m_Summary: 
       m_Description: 
@@ -42,7 +42,14 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: <session-migration-description>
+        m_Untranslated: 'In the <b>Scene</b> view, you will notice that all NetworkObjects
+          that had once belonged to the virtual player that was once part of the
+          session have been successfully migrated to the editor client.
+
+
+          The
+          editor client has been promoted to now be the <b>Session Owner</b> for
+          this <b>Session</b>.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -62,9 +69,9 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: 
+        m_Untranslated: Session Owner Promotion Successfully Completed
       Text:
-        m_Untranslated: <intro-description-text>
+        m_Untranslated: Press <b>Done</b> to exit this tutorial.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -99,7 +106,7 @@ MonoBehaviour:
       m_Prefab: {fileID: 0}
     m_Enabled: 0
   NextButton:
-    m_Untranslated: Start
+    m_Untranslated: Next
   DoneButton:
     m_Untranslated: Done
   m_CompletedSound: {fileID: 0}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 4-CreateASessionOnVirtualPlayer
+  m_Name: 7-JoinSessionAsEditor
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Create a Session On Virtual Player
+    m_Untranslated: Join Session As Editor
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -36,7 +36,7 @@ MonoBehaviour:
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
-          m_FocusEditorWindow: 0
+          m_FocusEditorWindow: 1
           m_EditorWindowType:
             m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
@@ -54,7 +54,8 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: <descriptive-text>
+        m_Untranslated: Populate the <b>Player Name</b> field and populate the <b>Session
+          Name</b> field with the same session name you used on your virtual player.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -74,9 +75,9 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Create a Session On The Virtual Player
+        m_Untranslated: Join Session Inside The Editor
       Text:
-        m_Untranslated: <instruction-description-text>
+        m_Untranslated: Press <b>Start</b> button in the editor's <b>Game</b> view
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -89,7 +90,7 @@ MonoBehaviour:
         - Type:
             m_TypeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion, Unity.Tutorials.Core.Editor,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: 6038608911332296212}
+          Criterion: {fileID: 2344275070860271023}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -126,7 +127,7 @@ MonoBehaviour:
       - m_Target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
         m_TargetAssemblyTypeName: Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials.TutorialCallbacks,
           Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
-        m_MethodName: OnCreatingSessionTutorialStarted
+        m_MethodName: OnJoiningSessionTutorialStarted
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -145,7 +146,7 @@ MonoBehaviour:
       - m_Target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
         m_TargetAssemblyTypeName: Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials.TutorialCallbacks,
           Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
-        m_MethodName: QuerySessions
+        m_MethodName: QueryJoinedSessions
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -178,7 +179,7 @@ MonoBehaviour:
       m_Calls: []
   m_NextButton: Next
   m_DoneButton: Done
---- !u!114 &6038608911332296212
+--- !u!114 &2344275070860271023
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,7 +200,7 @@ MonoBehaviour:
   isTesting: 0
   m_Callback:
     _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-    _methodName: IsVirtualPlayerSessionCreated
+    _methodName: IsSessionJoinedByEditor
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
@@ -207,7 +208,7 @@ MonoBehaviour:
     dirty: 0
   m_AutoCompleteCallback:
     _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
-    _methodName: IsVirtualPlayerSessionCreated
+    _methodName: IsSessionJoinedByEditor
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,

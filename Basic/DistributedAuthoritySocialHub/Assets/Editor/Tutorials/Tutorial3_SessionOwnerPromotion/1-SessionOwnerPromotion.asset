@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 1-Open Multiplayer Play Mode Window
+  m_Name: 1-SessionOwnerPromotion
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: <Tools-title>
+    m_Untranslated: Session Owner Promotion With Distributed Authority
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -40,12 +40,84 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 0
       Title:
-        m_Untranslated: 
+        m_Untranslated: Page title
       Text:
-        m_Untranslated: <Tools-description>
+        m_Untranslated: 'Netcode for GameObjects v2.0+ supports building games with
+          a <b>distributed authority</b> topology, providing more options for ownership
+          and authority over NetworkObjects.
+
+
+          Distributed authority provides
+          additional permissions to manage object distribution while also incorporating
+          the concept of a session owner. The session owner is given host-like permissions
+          to handle global game state-related tasks that a typical client-server
+          host handles.
+
+
+          As long as global game states are persisted via
+          <b>NetworkVariable</b> states, a client will be promoted to session owner
+          if the current session owner leaves a distributed authority session. The
+          newly promoted session owner takes over the management of these global
+          game states.
+
+
+          This is referred to as <b>Session Owner Promotion</b>.
+
+
+          This
+          tutorial will walk you through a typical session owner promotion.
+
+
+          <b>Important</b>:
+          This tutorial requires your project to be connected to a Unity cloud project.
+          To do this, complete the Unity Gaming Services tutorial.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
+      m_Image: {fileID: 0}
+      m_VideoUrl: 
+      m_Video: {fileID: 0}
+      m_CriteriaCompletion: 0
+      m_Criteria:
+        m_Items: []
+      m_MaskingSettings:
+        m_MaskingEnabled: 0
+        m_UnmaskedViews: []
+      m_Summary: 
+      m_Description: 
+      m_InstructionBoxTitle: 
+      m_InstructionText: 
+      m_TutorialButtonText: 
+    - m_Type: 1
+      Title:
+        m_Untranslated: 
+      Text:
+        m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
+      m_Tutorial: {fileID: 0}
+      m_Image: {fileID: 0}
+      m_VideoUrl: 
+      m_Video: {fileID: 0}
+      m_CriteriaCompletion: 0
+      m_Criteria:
+        m_Items: []
+      m_MaskingSettings:
+        m_MaskingEnabled: 0
+        m_UnmaskedViews: []
+      m_Summary: 
+      m_Description: 
+      m_InstructionBoxTitle: 
+      m_InstructionText: 
+      m_TutorialButtonText: 
+    - m_Type: 2
+      Title:
+        m_Untranslated: 
+      Text:
+        m_Untranslated: 'Tutorial: Unity Gaming Services Setup'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
+      m_Tutorial: {fileID: 11400000, guid: 6a5464225c4ee62499087728e8ee0a4d, type: 2}
       m_Image: {fileID: 0}
       m_VideoUrl: 
       m_Video: {fileID: 0}
