@@ -6,11 +6,26 @@
 
 #### Added
 - Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
+- Mobile and gamepad support, with associated UI for mobile controls using UIToolkit has been integrated to the sample (#256)
+- Positional voicechat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. See limitations in PR.(#261)
+
 
 #### Changed
 - Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
 
+### 2D Space Shooter
+
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to 2D Space Shooter Sample
+
+#### Changed
+- Update Project to Unity 6
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+
 ### Client Driven
+
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample
 
 #### Changed
 - Updated project to Unity 6

@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 4745766379562620470}
   - component: {fileID: -8100831418301897270}
   - component: {fileID: 4903152183366241606}
-  - component: {fileID: 8197190117666738524}
   - component: {fileID: 539700041658036575}
   - component: {fileID: 4655812346339390596}
   - component: {fileID: 7543523986693376117}
+  - component: {fileID: 4616764017061829939}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Player
@@ -112,7 +112,6 @@ MonoBehaviour:
   m_MaxAngularVelocity: 10
   m_MaxVelocity: 10
   m_PlayerInput: {fileID: 4903152183366241606}
-  m_AvatarInputs: {fileID: 8197190117666738524}
   m_AvatarInteractions: {fileID: 539700041658036575}
   m_PhysicsPlayerController: {fileID: 4655812346339390596}
 --- !u!54 &4745766379562620470
@@ -189,25 +188,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &8197190117666738524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5478015027486214707}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e9f71718dd134b14b300e378e98c718, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractActionReference: {fileID: 1781555164194001046, guid: dcd1b4eb76b964f40afe6c0a3ca65c82, type: 3}
-  Move: {x: 0, y: 0}
-  Look: {x: 0, y: 0}
-  Sprint: 0
-  AnalogMovement: 0
-  CursorLocked: 0
-  CursorInputForLook: 1
 --- !u!114 &539700041658036575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +204,6 @@ MonoBehaviour:
   m_AvatarNetworkAnimator: {fileID: 7543523986693376117}
   m_AnimationEventRelayer: {fileID: 3050276823525430539}
   m_MainCollider: {fileID: 36137897785899347}
-  m_AvatarInputs: {fileID: 8197190117666738524}
   m_PickupLocFixedJoint: {fileID: 3522541554063944713}
   m_PickupLocChild: {fileID: 1191881578848548316}
   m_LeftHandContact: {fileID: 8336303498504233401}
@@ -302,9 +281,35 @@ MonoBehaviour:
     TransitionDuration: 0.1
     TriggerNameHash: -1243957561
     TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: -1413593168
+    DestinationState: -802706916
+    TransitionDuration: 0.25
+    TriggerNameHash: -802706916
+    TransitionIndex: 1
+  - IsCrossFadeExit: 0
+    Layer: 1
+    OriginatingState: 1177697483
+    DestinationState: -802706916
+    TransitionDuration: 0.25
+    TriggerNameHash: -802706916
+    TransitionIndex: 1
   m_Animator: {fileID: 7006295767383679619}
   m_PhysicsPlayerController: {fileID: 4655812346339390596}
-  m_AvatarInputs: {fileID: 8197190117666738524}
+--- !u!114 &4616764017061829939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5478015027486214707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee830f09ba1465fa953159de83e882e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &9009864878170659705
 GameObject:
   m_ObjectHideFlags: 0
