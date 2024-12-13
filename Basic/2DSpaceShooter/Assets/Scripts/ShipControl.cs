@@ -85,6 +85,12 @@ public class ShipControl : NetworkBehaviour
     [SerializeField]
     UIDocument m_UIDocument;
 
+    [SerializeField]
+    InputAction fireAction;
+
+    [SerializeField]
+    InputAction moveAction;
+
     VisualElement m_RootVisualElement;
 
     ProgressBar m_HealthBar;
@@ -112,8 +118,6 @@ public class ShipControl : NetworkBehaviour
     float m_Spin;
 
     Rigidbody2D m_Rigidbody2D;
-    InputAction shootAction;
-    InputAction moveAction;
 
     void Awake()
     {
@@ -137,8 +141,9 @@ public class ShipControl : NetworkBehaviour
     {
         DontDestroyOnLoad(gameObject);
         SetPlayerUIVisibility(true);
-        shootAction = InputSystem.actions.FindAction("Fire");
-        moveAction = InputSystem.actions.FindAction("Move");
+        //enable input
+        fireAction.Enable();
+        moveAction.Enable();
     }
 
     public override void OnNetworkSpawn()
@@ -394,7 +399,7 @@ public class ShipControl : NetworkBehaviour
         }
 
         // fire
-        if (shootAction.WasPressedThisFrame())
+        if (fireAction.WasPressedThisFrame())
         {
             ServerFireRpc();
         }
