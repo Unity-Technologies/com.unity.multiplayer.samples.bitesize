@@ -52,6 +52,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
             return asset;
         }
 
+        public void StartTutorial(Tutorial tutorial)
+        {
+            TutorialWindow.StartTutorial(tutorial);
+        }
+
         public void OpenURL(string url)
         {
             TutorialEditorUtils.OpenUrl(url);
@@ -80,7 +85,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
 
         public bool IsVirtualPlayerCreated()
         {
-            return true;
+            // TODO: fetch virtual player state
+            return false;
         }
 
         public void OnOpenMultiplayerToolsWindowTutorialStarted()
