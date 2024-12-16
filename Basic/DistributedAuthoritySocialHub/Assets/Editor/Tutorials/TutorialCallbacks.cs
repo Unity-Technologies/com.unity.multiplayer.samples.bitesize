@@ -86,7 +86,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
         public bool IsVirtualPlayerCreated()
         {
             // TODO: fetch virtual player state
-            return false;
+            return true;
         }
 
         public void OnOpenMultiplayerToolsWindowTutorialStarted()
