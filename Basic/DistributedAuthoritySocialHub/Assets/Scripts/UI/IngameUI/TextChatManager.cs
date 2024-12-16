@@ -26,7 +26,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VisualElement m_Root;
         VisualElement m_TextChatView;
 
-        const int s_FocusDelay = 10;
+        const int k_FocusDelay = 10;
         bool m_IsChatActive;
 
         void OnEnable()
@@ -69,7 +69,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
             {
                 SendMessage();
-                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(s_FocusDelay);
+                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(k_FocusDelay);
             }
         }
 

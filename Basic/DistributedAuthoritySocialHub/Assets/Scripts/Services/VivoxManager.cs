@@ -12,9 +12,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 {
     class VivoxManager : MonoBehaviour
     {
-        const int s_AudibleDistance = 20;
-        const int s_ConventionalDistance = 1;
-        const float s_AudioFadeByDistance = 1f;
+        const int k_AudibleDistance = 20;
+        const int k_ConventionalDistance = 1;
+        const float k_AudioFadeByDistance = 1f;
 
         string m_TextChannelName;
         string m_VoiceChannelName;
@@ -81,7 +81,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async Task JoinChannels()
         {
-            var positionalChannelProperties = new Channel3DProperties(s_AudibleDistance, s_ConventionalDistance, s_AudioFadeByDistance, AudioFadeModel.InverseByDistance);
+            var positionalChannelProperties = new Channel3DProperties(k_AudibleDistance, k_ConventionalDistance, k_AudioFadeByDistance, AudioFadeModel.InverseByDistance);
             BindChannelEvents(true);
             await VivoxService.Instance.JoinPositionalChannelAsync(m_VoiceChannelName, ChatCapability.AudioOnly, positionalChannelProperties);
             await VivoxService.Instance.JoinGroupChannelAsync(m_TextChannelName, ChatCapability.TextOnly);
