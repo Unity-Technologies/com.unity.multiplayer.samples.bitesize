@@ -63,7 +63,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
 
         internal static void LoadInGameScene()
         {
-            SceneManager.LoadScene("HubScene_TownMarket");
+            SceneManager.LoadScene("HubScene_TownMarket1");
         }
 
         internal static void ProcessTextMessageReceived(string senderName, string message, bool fromSelf)

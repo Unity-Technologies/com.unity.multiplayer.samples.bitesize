@@ -4,10 +4,13 @@ using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 {
-    class SessionOwnerNetworkObjectSpawner : NetworkBehaviour
+    public class SessionOwnerNetworkObjectSpawner : NetworkBehaviour
     {
         [SerializeField]
         NetworkObject m_NetworkObjectToSpawn;
+
+        [HideInInspector]
+        public NetworkObject NetworkObjectToSpawn => m_NetworkObjectToSpawn;
 
         NetworkVariable<bool> m_IsRespawning = new NetworkVariable<bool>();
 

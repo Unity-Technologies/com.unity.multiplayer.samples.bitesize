@@ -45,13 +45,18 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         Vector3 m_OriginalPosition;
         Quaternion m_OriginalRotation;
 
+        protected override void Start()
+        {
+            base.Start();
+            m_OriginalPosition = transform.position;
+            m_OriginalRotation = transform.rotation;
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
             InitializeDestructible();
             gameObject.name = $"[NetworkObjectId-{NetworkObjectId}]{name}";
-            m_OriginalPosition = transform.position;
-            m_OriginalRotation = transform.rotation;
             m_DestructionFXPoolSystem = FXPrefabPool.GetFxPool(m_DestructionFX);
         }
 
@@ -144,11 +149,13 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
             if (currentHealth == 0.0f)
             {
+                m_Initialized.Value = false;
                 Rigidbody.isKinematic = true;
                 EnableColliders(false);
+                
                 m_Health.Value = currentHealth;
                 // TODO: add NetworkObject pool here
-                NetworkObject.DeferDespawn(m_DeferredDespawnTicks, destroy: true);
+                NetworkObject.DeferDespawn(m_DeferredDespawnTicks, destroy: false);
             }
             else
             {
@@ -162,12 +169,28 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
         {
             var fxInstance = m_DestructionFXPoolSystem.GetInstance();
             fxInstance.transform.position = transform.position;
+            
             ChangeObjectVisuals(false);
             SpawnRubble(transform.position);
-            m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager);
+            //m_SessionOwnerNetworkObjectSpawner.Value.TryGet(out SessionOwnerNetworkObjectSpawner spawner, NetworkManager);
             var tickToRespawn = NetworkManager.NetworkTickSystem.ServerTime.Tick + Mathf.RoundToInt(m_SecondsUntilRespawn * NetworkManager.NetworkTickSystem.ServerTime.TickRate);
-            spawner.RespawnRpc(tickToRespawn);
+            //spawner.RespawnRpc(tickToRespawn);
+            StartCoroutine(WaitToRespawn(tickToRespawn));
             base.OnDeferringDespawn(despawnTick);
+        }
+
+        System.Collections.IEnumerator WaitToRespawn(int tickToRespawn)
+        {
+            yield return new WaitUntil(() => NetworkManager.NetworkTickSystem.ServerTime.Tick > tickToRespawn);
+            // Set it active again
+            gameObject.SetActive(true);
+            // Enable colliders and mesh renderer
+            Rigidbody.isKinematic = false;
+            EnableColliders(false);
+            ChangeObjectVisuals(true);
+
+            // Spawn
+            NetworkObject.Spawn();
         }
 
         void ChangeObjectVisuals(bool enable)
@@ -204,7 +227,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Gameplay
 
         void InitializeDestructible()
         {
-            if (HasAuthority && !m_Initialized.Value)
+            if (HasAuthority && (!m_Initialized.Value || m_Health.Value == 0.0f))
             {
                 if (IsSpawned)
                 {
