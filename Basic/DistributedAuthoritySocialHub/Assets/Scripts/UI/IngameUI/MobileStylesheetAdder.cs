@@ -2,10 +2,10 @@ using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Unity.Multiplayer.Samples.SocialHub.UI.IngameUI
+namespace Unity.Multiplayer.Samples.SocialHub.UI
 {
     [RequireComponent(typeof(UIDocument))]
-    public class MobileStylesheetAdder : MonoBehaviour
+    class MobileStylesheetAdder : MonoBehaviour
     {
         [SerializeField]
         StyleSheet[] m_Stylesheet;

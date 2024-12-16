@@ -98,7 +98,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_CarryUI.style.scale = new StyleScale(new Vector2(mappedScale, mappedScale));
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }

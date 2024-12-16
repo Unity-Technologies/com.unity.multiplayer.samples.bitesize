@@ -26,6 +26,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VisualElement m_Root;
         VisualElement m_TextChatView;
 
+        const int s_FocusDelay = 10;
         bool m_IsChatActive;
 
         void OnEnable()
@@ -63,12 +64,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Messages.Add(new ChatMessage("Sample Devs", "Hey, we hope you enjoy our sample :)"));
         }
 
-        private void OnTextEnter(KeyDownEvent evt)
+        void OnTextEnter(KeyDownEvent evt)
         {
             if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
             {
                 SendMessage();
-                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(10);
+                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(s_FocusDelay);
             }
         }
 
@@ -83,7 +84,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         }
 
 #if UNITY_IOS || UNITY_ANDROID
-        private void Update()
+        void Update()
         {
             if (m_MessageInputField is { touchScreenKeyboard: { status: TouchScreenKeyboard.Status.Done } })
             {

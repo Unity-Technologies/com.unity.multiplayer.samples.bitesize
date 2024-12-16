@@ -111,7 +111,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             UIUtils.TransformUIDocumentWorldspace(m_WorldspaceUI, m_Camera, m_CurrentPickup, m_VerticalOffset);
         }
 
-        public void OnDisable()
+        void OnDisable()
         {
             GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }
