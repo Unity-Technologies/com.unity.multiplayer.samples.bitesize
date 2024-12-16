@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using Unity.Multiplayer.Tools.Editor.MultiplayerToolsWindow;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Multiplayer;
@@ -22,6 +24,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
         /// The default file name used to create asset of this class type.
         /// </summary>
         const string k_DefaultFileName = "TutorialCallbacks";
+
+        const string k_SystemDataPath = "../Library/VP/SystemData.json";
 
         bool m_IsEditorWindowFocused;
 
@@ -85,8 +89,22 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
 
         public bool IsVirtualPlayerCreated()
         {
-            // TODO: fetch virtual player state
-            return true;
+            var path = Path.Combine(Application.dataPath, k_SystemDataPath);
+
+            if (File.Exists(path))
+            {
+                string jsonContent = File.ReadAllText(path);
+
+                // Parse the JSON content using JObject
+                var jsonObject = JObject.Parse(jsonContent);
+
+                // Access the "Data" property and then the "2" player's "Active" state
+                var isPlayer2Active = jsonObject["Data"]["2"]["Active"].Value<bool>();
+
+                return isPlayer2Active;
+            }
+
+            return false;
         }
 
         public void OnOpenMultiplayerToolsWindowTutorialStarted()
