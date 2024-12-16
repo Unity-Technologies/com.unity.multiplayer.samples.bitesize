@@ -1,13 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Uss/Global.uss?fileID=7433441132597879392&amp;guid=dd4dac81c4e217440a3543f354c31a02&amp;type=3#Global" />
-    <Style src="project://database/Assets/UI/Uss/Ingame.uss?fileID=7433441132597879392&amp;guid=a4ed441e385d14fd08257a42a99ce094&amp;type=3#Ingame" />
     <ui:VisualElement name="text-chat" class="text-chat">
-        <ui:Button text="➜" name="visibility-button" focusable="false" class="menu-button text-chat__collapsebutton menu-button--ingame" />
+        <ui:VisualElement name="background-overlay" class="background-overlay text-chat_background-overlay" />
+        <ui:Button name="visibility-button" class="menu-button text-chat__collapsebutton menu-button--ingame icon-arrow" />
         <ui:VisualElement class="text-chat__ui border--standard">
             <ui:ListView name="message-list" data-source-type="Unity.Multiplayer.Samples.SocialHub.UI.TextChatManager, Unity.Multiplayer.Samples.SocialHub.UI" binding-source-selection-mode="AutoAssign" item-template="project://database/Assets/UI/Uxml/Ingame/TextChat/MessageItem.uxml?fileID=9197481963319205126&amp;guid=074af7e65339c44568d0bea5b558d5de&amp;type=3#MessageItem" virtualization-method="DynamicHeight" horizontal-scrolling="false" class="list-view text-chat__messagelist" />
             <ui:VisualElement name="input-container">
                 <ui:TextField name="input-text" tabindex="1" class="textfield text-chat__messageinput" />
-                <ui:Button name="submit" text="✔" tabindex="2" class="menu-button text-chat__submit menu-button--ingame" />
+                <ui:Button name="submit" tabindex="2" class="menu-button text-chat__submit menu-button--ingame icon-submit" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
