@@ -2,6 +2,7 @@ using Unity.Netcode;
 using System;
 using System.Threading.Tasks;
 using Unity.Services.Vivox;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
@@ -20,6 +21,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<bool, string> OnChatIsReady;
         internal static event Action<VivoxParticipant> OnParticipantJoinedVoiceChat;
         internal static event Action<VivoxParticipant> OnParticipantLeftVoiceChat;
+
+        internal static event Action<PickupState, Transform> OnPickupStateChanged;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -90,5 +93,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         {
             OnParticipantLeftVoiceChat?.Invoke(vivoxParticipant);
         }
+
+        internal static void SetAvatarPickupState(PickupState state, Transform pickup)
+        {
+            OnPickupStateChanged?.Invoke(state, pickup);
+        }
+    }
+
+    internal enum PickupState
+    {
+        Inactive,
+        PickupInRange,
+        Carry
     }
 }
