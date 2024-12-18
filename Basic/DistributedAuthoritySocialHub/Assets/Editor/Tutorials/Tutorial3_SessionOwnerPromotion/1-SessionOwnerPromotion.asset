@@ -54,7 +54,7 @@ MonoBehaviour:
           that a client-server host usually controls.
 
 
-          As long as global game states are persisted via
+          When the current session owner leaves a distributed authority session
           <b>NetworkVariable</b> states, a client will be promoted to session owner
           if the current session owner leaves a distributed authority session. The
           newly promoted session owner takes over the management of these global
