@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 378839173}
   - component: {fileID: 378839172}
   - component: {fileID: 378839174}
+  - component: {fileID: 378839175}
   m_Layer: 0
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -399,6 +400,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsModal: 0
   m_HomeView: {fileID: 2105351336}
+--- !u!114 &378839175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378839171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f1e8062945c4f4d846b5dd47a10b49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Stylesheet:
+  - {fileID: 7433441132597879392, guid: ea9efe379dfd4506ad59f7fe609e1c85, type: 3}
 --- !u!1 &1088131142
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,8 +733,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 0.9092675, b: 0.65723264, a: 1}
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

@@ -49,10 +49,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         TransferableObject m_TransferableObject;
 
-        PickUpIndicator m_PickUpIndicator;
-
-        CarryBoxIndicator m_CarryBoxIndicator;
-
         const float k_MinDurationHeld = 0f;
         const float k_MaxDurationHeld = 2f;
 
@@ -91,9 +87,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
-
-            m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
-            m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
 
             GameInput.Actions.Player.Interact.performed += OnInteractPerformed;
             GameInput.Actions.Player.Interact.canceled += OnInteractCanceled;
@@ -284,8 +277,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // Rotate the player to face the item smoothly
             StartCoroutine(SmoothLookAt(other.transform));
             m_AvatarNetworkAnimator.SetTrigger(k_PickupId);
-            m_PickUpIndicator.ClearPickup();
-            m_CarryBoxIndicator.ShowCarry(m_TransferableObject.transform);
+            GameplayEventHandler.SetAvatarPickupState(PickupState.Carry, m_TransferableObject.transform);
         }
 
         IEnumerator SmoothLookAt(Transform target)
@@ -383,7 +375,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             SetTransferableObjectAsTransferableDistributable();
             OnDropAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
-            m_CarryBoxIndicator.HideCarry();
+            GameplayEventHandler.SetAvatarPickupState(PickupState.Inactive, null);
         }
 
         // invoked on all clients
@@ -419,7 +411,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             OnThrowAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
-            m_CarryBoxIndicator.HideCarry();
+            GameplayEventHandler.SetAvatarPickupState(PickupState.Inactive, null);
         }
 
         // invoked on all clients
@@ -493,13 +485,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                         m_PotentialPickupCollider = resultCollider;
                     }
                 }
-
-                m_PickUpIndicator.ShowPickup(m_PotentialPickupCollider.transform);
+                GameplayEventHandler.SetAvatarPickupState(PickupState.PickupInRange, m_PotentialPickupCollider.transform);
             }
             else
             {
                 m_PotentialPickupCollider = null;
-                m_PickUpIndicator.ClearPickup();
+                GameplayEventHandler.SetAvatarPickupState(PickupState.Inactive, null);
             }
         }
 

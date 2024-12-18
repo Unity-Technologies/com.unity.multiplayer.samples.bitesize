@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -25,11 +26,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         VisualElement m_Root;
         VisualElement m_TextChatView;
 
+        const int k_FocusDelay = 10;
         bool m_IsChatActive;
 
-        void Start()
+        void OnEnable()
         {
-
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("textchat-container");
             m_Asset.CloneTree(m_Root);
 
@@ -41,11 +42,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
             m_MessageInputField = m_Root.Q<TextField>("input-text");
 
-            m_MessageInputField.RegisterCallback<KeyDownEvent>(evt =>
-            {
-                if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
-                    SendMessage();
-            }, TrickleDown.TrickleDown);
+#if !UNITY_IOS && !UNITY_ANDROID
+            m_MessageInputField.RegisterCallback<FocusInEvent>(OnTextfieldFocusIn);
+            m_MessageInputField.RegisterCallback<FocusOutEvent>(OnTextfieldFocusOut);
+            m_MessageInputField.RegisterCallback<KeyDownEvent>(OnTextEnter, TrickleDown.TrickleDown);
+#endif
 
             m_MessageView = m_Root.Q<ListView>("message-list");
             m_MessageView.dataSource = this;
@@ -63,9 +64,41 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_Messages.Add(new ChatMessage("Sample Devs", "Hey, we hope you enjoy our sample :)"));
         }
 
-        void OnDestroy()
+        void OnTextEnter(KeyDownEvent evt)
+        {
+            if (evt.keyCode is KeyCode.Return or KeyCode.KeypadEnter)
+            {
+                SendMessage();
+                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(k_FocusDelay);
+            }
+        }
+
+        void OnTextfieldFocusIn(FocusInEvent _)
+        {
+            InputSystemManager.Instance.EnableUIInputs();
+        }
+
+        void OnTextfieldFocusOut(FocusOutEvent _)
+        {
+            InputSystemManager.Instance.EnableGameplayInputs();
+        }
+
+#if UNITY_IOS || UNITY_ANDROID
+        void Update()
+        {
+            if (m_MessageInputField is { touchScreenKeyboard: { status: TouchScreenKeyboard.Status.Done } })
+            {
+                SendMessage();
+            }
+        }
+#endif
+
+        void OnDisable()
         {
             m_SendButton.clicked -= SendMessage;
+            m_MessageInputField.UnregisterCallback<FocusInEvent>(OnTextfieldFocusIn);
+            m_MessageInputField.UnregisterCallback<FocusOutEvent>(OnTextfieldFocusOut);
+            m_MessageInputField.UnregisterCallback<KeyDownEvent>(OnTextEnter, TrickleDown.TrickleDown);
             BindSessionEvents(false);
         }
 
@@ -96,8 +129,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             if (!string.IsNullOrEmpty(m_MessageInputField.text))
             {
                 SendTextMessage(m_MessageInputField.value);
-                m_MessageInputField.SetValueWithoutNotify("");
-                m_MessageInputField.schedule.Execute(() => m_MessageInputField.Focus()).ExecuteLater(10);
+                m_MessageInputField.value = "";
             }
         }
 
