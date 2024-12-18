@@ -238,7 +238,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
 
         public bool IsOnlyEditorInSession()
         {
-            return m_JoinedSession.Players.Count == 1 && m_JoinedSession.IsHost;
+            return m_JoinedSession != null && m_JoinedSession.Players.Count == 1 && m_JoinedSession.IsHost;
         }
     }
 }
