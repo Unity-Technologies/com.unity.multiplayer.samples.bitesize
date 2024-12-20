@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased] yyyy-mm-dd
+## [1.10.0] 2024-12-23
 
 ### Distributed Authority Social Hub
 
@@ -32,11 +32,11 @@
 ### Client Driven
 
 #### Added
-- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample (#262)
 
 #### Changed
-- Updated project to Unity 6
-- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+- Updated project to Unity 6 (#259)
+  - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
 
 ## [1.9.0] 2024-10-31
 
