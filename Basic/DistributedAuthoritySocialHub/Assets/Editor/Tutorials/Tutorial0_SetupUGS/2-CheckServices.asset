@@ -58,8 +58,8 @@ MonoBehaviour:
           Go to <b>Edit</b> and select the <b>Project Settings</b> window. \n\n2.
           Expand the <b>Services</b> tab.\n\n3. In the <b>Services General Settings</b>
           section, open the  <b>Organization</b> dropdown and select your organization.\n\n<b>NOTE:</b>
-          <i> To view a list of your organizations, you must be signed in to the
-          Unity Hub. </i> For more information, refer to <a href=\"https://docs.unity3d.com/Manual/SettingUpProjectServices.html#OrgsUnityOrganizations\">Configure
+          To view a list of your organizations, you must be signed in to the Unity
+          Hub. For more information, refer to <a href=\"https://docs.unity3d.com/Manual/SettingUpProjectServices.html#OrgsUnityOrganizations\">Configure
           a project for Unity Cloud.</a>\n\n\n4. Choose whether to <b>Use an existing
           Unity project ID</b> to link a project to an ID that exists on the <a href=\"https://cloud.unity.com/\">Developer
           Dashboard,</a> or <b>Create project ID</b> to link your project to a new
@@ -192,7 +192,7 @@ MonoBehaviour:
   Invalidated:
     m_PersistentCalls:
       m_Calls: []
-  isTesting: 0
+  isTesting: 1
   m_Callback:
     _target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
     _methodName: IsConnectedToUgs
