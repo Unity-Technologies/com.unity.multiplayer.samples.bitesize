@@ -31,6 +31,8 @@ Social Hub is compatible with the latest Unity Long Term Support (LTS) editor ve
 Social Hub has been developed and tested on the following platforms:
 - Windows
 - Mac
+- Android (Pixel 6)
+- iOS (iPhone 13)
 
 <br>
 
