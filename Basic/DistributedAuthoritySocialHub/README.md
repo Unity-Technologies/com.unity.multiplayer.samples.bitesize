@@ -1,4 +1,4 @@
-![Banner Image](Assets/Editor/Tutorials/social_hub_sample_banner.png)
+![Banner Image](Assets/Editor/Tutorials/Images/social_hub_sample_banner.png)
 <br><br>
 
 # Distributed Authority Social Hub Sample
