@@ -11,9 +11,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
 
-        [SerializeField]
-        AvatarInputs m_AvatarInputs;
-
         static readonly int k_GroundedId = Animator.StringToHash("Grounded");
         static readonly int k_MoveId = Animator.StringToHash("Move");
         static readonly int k_JumpId = Animator.StringToHash("Jump");
@@ -53,7 +50,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             }
 
             Animator.SetBool(k_GroundedId, m_PhysicsPlayerController.Grounded);
-            Animator.SetFloat(k_MoveId, m_AvatarInputs.Move.magnitude * (m_AvatarInputs.Sprint ? 2f : 1f));
+            var moveInput = GameInput.Actions.Player.Move.ReadValue<Vector2>();
+            var isSprinting = GameInput.Actions.Player.Sprint.ReadValue<float>() > 0f;
+            Animator.SetFloat(k_MoveId, moveInput.magnitude * (isSprinting ? 2f : 1f));
         }
     }
 }

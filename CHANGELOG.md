@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.10.0] 2024-12-23
+
+### Distributed Authority Social Hub
+
+#### Added
+- Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
+- Mobile and gamepad support, with associated UI for mobile controls using UIToolkit has been integrated to the sample (#256)
+- Positional voicechat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. See limitations in PR.(#261)
+- Improve usability on Mobile, general UI improvements. (#266)
+- In-editor tutorials have been added to the sample (#268) They walk you through:
+  - Associating your project with a Unity Cloud Id
+  - Creating a Virtual Player through Multiplayer Play Mode
+  - Enabling Network Scene Visualization through Multiplayer Tools
+  - A typical session owner promotion while connected to a session
+
+#### Changed
+- Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
+- Adjusted lighting and shadow settings and custom shaders to improve the overall look of the sample, also water transparency issue has been fixed (#265)
+
+### 2D Space Shooter
+
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to 2D Space Shooter Sample (#264)
+
+#### Changed
+- Update Project to Unity 6 (#263)
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode (#263)
+- Replaced old input system with new input system (#267)
+
+### Client Driven
+
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample (#262)
+
+#### Changed
+- Updated project to Unity 6 (#259)
+  - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+
 ## [1.9.0] 2024-10-31
 
 ### Distributed Authority Social Hub
@@ -23,7 +61,7 @@
 - Disabled compatibility mode for RenderGraph, as it's going to be deprecated and throws warnings
 - Removed runtime network stats monitor from the scene to improve readability
 - Removed deprecated visual studio code package
-- Updated packages: Rider to 3.0.31, Input System to 1.11.1, Tutorial Framework to 4.0.2, Multiplayer Tools to 2.2.1, Netcode For GameObejcts to 2.0.0, UGUI to 2.0.0, Test Framework to 1.4.5, Universal Render Pipeline to 17.0.3
+- Updated packages: Rider to 3.0.31, Input System to 1.11.1, Tutorial Framework to 4.0.2, Multiplayer Tools to 2.2.1, Netcode For GameObjects to 2.0.0, UGUI to 2.0.0, Test Framework to 1.4.5, Universal Render Pipeline to 17.0.3
 
 #### Fixed
 - Fixed "Build Profile" window not being clickable during the last page of each tutorial

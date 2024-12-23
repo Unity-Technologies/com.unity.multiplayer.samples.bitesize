@@ -1,7 +1,8 @@
 using Unity.Netcode;
-using UnityEngine;
 using System;
 using System.Threading.Tasks;
+using Unity.Services.Vivox;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
@@ -13,8 +14,15 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         internal static event Action<string, string> OnStartButtonPressed;
         internal static event Action OnReturnToMainMenuButtonPressed;
         internal static event Action OnQuitGameButtonPressed;
-        internal static event Action<Task> OnConnectToSessionCompleted;
+        internal static event Action<Task, string> OnConnectToSessionCompleted;
         internal static event Action OnExitedSession;
+        internal static event Action<string, string, bool> OnTextMessageReceived;
+        internal static event Action<string> OnSendTextMessage;
+        internal static event Action<bool, string> OnChatIsReady;
+        internal static event Action<VivoxParticipant> OnParticipantJoinedVoiceChat;
+        internal static event Action<VivoxParticipant> OnParticipantLeftVoiceChat;
+
+        internal static event Action<PickupState, Transform> OnPickupStateChanged;
 
         internal static void NetworkObjectDespawned(NetworkObject networkObject)
         {
@@ -41,9 +49,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             OnQuitGameButtonPressed?.Invoke();
         }
 
-        internal static void ConnectToSessionComplete(Task task)
+        internal static void ConnectToSessionComplete(Task task, string sessionName)
         {
-            OnConnectToSessionCompleted?.Invoke(task);
+            OnConnectToSessionCompleted?.Invoke(task, sessionName);
         }
 
         internal static void ExitedSession()
@@ -60,5 +68,42 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
         {
             SceneManager.LoadScene("HubScene_TownMarket");
         }
+
+        internal static void ProcessTextMessageReceived(string senderName, string message, bool fromSelf)
+        {
+            OnTextMessageReceived?.Invoke(senderName, message, fromSelf);
+        }
+
+        internal static void SendTextMessage(string message)
+        {
+            OnSendTextMessage?.Invoke(message);
+        }
+
+        public static void SetTextChatReady(bool enabled, string channelName)
+        {
+            OnChatIsReady?.Invoke(enabled, channelName);
+        }
+
+        public static void ParticipantJoinedVoiceChat(VivoxParticipant vivoxParticipant)
+        {
+            OnParticipantJoinedVoiceChat?.Invoke(vivoxParticipant);
+        }
+
+        public static void ParticipantLeftVoiceChat(VivoxParticipant vivoxParticipant)
+        {
+            OnParticipantLeftVoiceChat?.Invoke(vivoxParticipant);
+        }
+
+        internal static void SetAvatarPickupState(PickupState state, Transform pickup)
+        {
+            OnPickupStateChanged?.Invoke(state, pickup);
+        }
+    }
+
+    internal enum PickupState
+    {
+        Inactive,
+        PickupInRange,
+        Carry
     }
 }

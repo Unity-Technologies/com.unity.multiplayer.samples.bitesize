@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0885f594ab85594caa28e1a96cbe0d8, type: 3}
+  m_Name: Tutorial Welcome Page
+  m_EditorClassIdentifier: 
+  Modified:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Image: {fileID: 2800000, guid: fb640c5a52f88874cab3a8e28864c979, type: 3}
+  m_WindowTitle:
+    m_Untranslated: Window Title
+  m_Title:
+    m_Untranslated: Welcome to the 2D Space Shooter Sample!
+  m_Description:
+    m_Untranslated: "The 2DSpaceShooter sample is a bitesize sample designed to demonstrate
+      networked 2D and physics-based character movement. This sample leverages Netcode
+      for GameObject's NetworkRigidbody2D component and also showcases object pooling.
+      \n  \nThe entry scene for this game is the network scene. From there a game
+      can be hosted or an existing game can be joined. Control the ship using WASD
+      or the arrow keys and shoot asteroids (or other players!) using the spacebar.
+      Fly over pickups in the scene to get different temporary buffs for your ship
+      (like increased fly speed or shooting extra bullets)."
+  m_Buttons:
+  - Text:
+      m_Untranslated: I'll explore on my own
+    Tooltip:
+      m_Untranslated: 
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 8542e6feb6e590c469cc4cf87b0dc005, type: 2}
+          m_TargetAssemblyTypeName: TutorialCallbacks, Assembly-CSharp-Editor
+          m_MethodName: LoadSelectionScene
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+        - m_Target: {fileID: 11400000}
+          m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.TutorialWelcomePage,
+            Unity.Tutorials.Core.Editor
+          m_MethodName: CloseCurrentModalDialog
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1

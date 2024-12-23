@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
+using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -45,6 +47,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
 
             m_Root = m_UIDocument.rootVisualElement.Q<VisualElement>("player-top-display-container");
+
+            GameplayEventHandler.OnParticipantJoinedVoiceChat -= AttachVivoxParticipant;
+            GameplayEventHandler.OnParticipantJoinedVoiceChat += AttachVivoxParticipant;
+
+            GameplayEventHandler.OnParticipantLeftVoiceChat -= RemoveVivoxParticipant;
+            GameplayEventHandler.OnParticipantLeftVoiceChat += RemoveVivoxParticipant;
         }
 
         void Update()
@@ -55,17 +63,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-        internal void AddPlayer(GameObject player, string playerName)
+        internal void AddOrUpdatePlayer(GameObject player, string playerName, string playerId)
         {
-            // if player has already been added, update name and return
+            // if player has already been added, update values and return
             if (m_PlayerToPlayerDisplayDict.TryGetValue(player, out var playerHeadDisplay))
             {
                 playerHeadDisplay.SetPlayerName(playerName);
+                playerHeadDisplay.PlayerId = playerId;
                 return;
             }
 
             var display = GetDisplayForPlayer();
             display.SetPlayerName(playerName);
+            display.PlayerId = playerId;
+
             UpdateDisplayPosition(player.transform, display);
             m_PlayerToPlayerDisplayDict.Add(player, display);
         }
@@ -103,12 +114,44 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
 
         void OnDisable()
         {
-            foreach (var playerPair in m_PlayerToPlayerDisplayDict)
+            foreach (var display in m_PlayerToPlayerDisplayDict.Values)
             {
-                playerPair.Value.RemoveFromHierarchy();
+                display.RemoveFromHierarchy();
+                display.RemoveVivoxParticipant();
             }
             m_PlayerHeadDisplayPool.Clear();
             m_PlayerToPlayerDisplayDict.Clear();
+
+            GameplayEventHandler.OnParticipantJoinedVoiceChat -= AttachVivoxParticipant;
+            GameplayEventHandler.OnParticipantLeftVoiceChat -= RemoveVivoxParticipant;
+        }
+
+        void AttachVivoxParticipant(VivoxParticipant vivoxParticipant)
+        {
+            foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
+            {
+                if(headDisplay.PlayerId == vivoxParticipant.PlayerId)
+                {
+                    headDisplay.AttachVivoxParticipant(vivoxParticipant);
+                    return;
+                }
+            }
+
+            Debug.LogWarning("Could not find player avatar to attach vivox user.");
+        }
+
+        void RemoveVivoxParticipant(VivoxParticipant vivoxParticipant)
+        {
+            foreach (var headDisplay in m_PlayerToPlayerDisplayDict.Values)
+            {
+                if(headDisplay.VivoxParticipant != null && headDisplay.VivoxParticipant== vivoxParticipant)
+                {
+                    headDisplay.RemoveVivoxParticipant();
+                    return;
+                }
+            }
+
+            Debug.LogWarning("Could not find player avatar display to remove vivox participant");
         }
     }
 }

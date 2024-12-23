@@ -1,32 +1,30 @@
 * {
-    /* Fonts */
-    --sans-serif-font: url("project://database/Assets/Fonts/arial.ttf");
-    --script-font: url("project://database/Assets/Fonts/Grandstander-SemiBold.ttf");
-
-    /* Colors */
+    --sans-serif-font: url("project://database/Assets/Fonts/arial.ttf?fileID=12800000&guid=ae3fa31b7436b4541b1a40b4da1bfb37&type=3#arial");
+    --script-font: url("project://database/Assets/Fonts/Grandstander-SemiBold.ttf?fileID=12800000&guid=01732851f19ed41ffa80b26ee3b16cf5&type=3#Grandstander-SemiBold");
     --secondary-color: rgb(83, 51, 33);
     --main-color: rgb(188, 130, 99);
-    --light-text-color: rgb(246, 246, 256);
+    --light-text-color: rgb(246, 246, 255);
     --highlight-color: rgb(255, 218, 70);
     --pickup-background-color: rgba(255, 255, 255, 0.5);
     --dark-text-color: rgb(16, 16, 16);
-
-    /* Sizes */
     --border-radius: 12px;
+    --border-radius--small: 4px;
+    --border-width: 3px;
     --pickup-base-height: 24px;
     --mic-icon-size: 36px;
     --menu-button-size: 60px;
     --menu-button-font-size: 30px;
+    --regular-font-size: 20px;
+    -unity-font-definition: var(--script-font);
 }
 
-/* Buttons */
 .menu-button {
     border-radius: var(--border-radius);
     overflow: visible;
     min-height: var(--menu-button-size);
     font-size: var(--menu-button-font-size);
     border-color: var(--dark-text-color);
-    border-width: 3px;
+    border-width: var(--border-width);
     padding: 10px;
     margin-bottom: 10px;
     background-color: var(--highlight-color);
@@ -37,7 +35,7 @@
 
 .menu-button:hover {
     scale: 1.03 1.03;
-    text-shadow: 0px 2px 15px var(--main-color);
+    text-shadow: 0 2px 15px var(--main-color);
 }
 
 .menu-button:focus .menu-button__focus-indicator {
@@ -50,7 +48,7 @@
 
 .menu-button:disabled .menu-button__focus-indicator {
     opacity: 0;
-    text-shadow: 0px 0px 0px var(--main-color);
+    text-shadow: 0 0 0 var(--main-color);
 }
 
 .menu-button__focus-indicator {
@@ -60,7 +58,7 @@
     top: 20%;
     height: 60%;
     width: 25px;
-    background-image: url("project://database/Assets/UI/Textures/menu_button_selection_indicator.png");
+    background-image: url("project://database/Assets/UI/Textures/menu_button_selection_indicator.png?fileID=2800000&guid=9aef6e97aa57aa24c879459f6419dd56&type=3#menu_button_selection_indicator");
     -unity-background-scale-mode: scale-to-fit;
     opacity: 0;
     transition-property: opacity, width;
@@ -69,7 +67,7 @@
 }
 
 .menu-button:disabled {
-    scale: 1.0 1.0;
+    scale: 1 1;
 }
 
 .menu-button__focus-indicator--right {
@@ -77,26 +75,166 @@
     left: 100%;
 }
 
-.menu-button--round{
-    min-height: 50px;
-    min-width: 50px;
-    border-radius: 25px;
+.menu-button--round {
+    max-width: var(--menu-button-size);
+    min-width: var(--menu-button-size);
+    border-radius: 30px;
     transition-property: rotate;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out-back;
 }
 
-.menu-button--round .menu-button__focus-indicator{
+.menu-button--round .menu-button__focus-indicator {
     display: none;
 }
 
-.menu-button--round:focus{
+.menu-button--round:focus {
+    border-width: 5px;
+    border-color:  var(--secondary-color);
     -unity-text-outline-color: var(--main-color);
     -unity-text-outline-width: 2px;
-    rotate: 360deg;
+    scale: 1.1 1.1;
 }
 
+.menu-button--ingame {
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out-back;
+}
 
+.menu-button--ingame:focus {
+    border-width: 5px;
+    border-color:  var(--secondary-color);
+    -unity-text-outline-color: var(--main-color);
+    -unity-text-outline-width: 2px;
+    scale: 1.1 1.1;
+}
 
+.textfield {
+    font-size: var(--regular-font-size);
+    -unity-text-align: middle-left;
+    min-height: 40px;
+    margin-bottom: 10px;
+}
 
+.textfield > .unity-base-field__label {
+    color: var(--highlight-color);
+    -unity-font-definition: var(--script-font);
+}
+
+.textfield .unity-base-text-field__input {
+    border-radius: var(--border-radius);
+    border-width: var(--border-width);
+}
+
+.textfield:focus .unity-base-text-field__input {
+    border-color: var(--highlight-color);
+    scale: 1.005 1.005;
+}
+
+.slider{
+    margin: 0;
+    padding: 4px;
+    border-width: var(--border-width);
+    border-radius: var(--border-radius);
+    border-color: transparent;
+}
+
+.slider:focus {
+    border-width: var(--border-width);
+    border-radius: var(--border-radius);
+    border-color: var(--highlight-color);
+    scale: 1.005 1.005;
+}
+
+.slider .unity-base-slider__tracker {
+    border-radius: 2px;
+    height: 5px;
+    background-color: black;
+    border-color: transparent;
+}
+
+.slider .unity-base-slider__dragger {
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+    border-width: 0;
+}
+
+.dropdown {
+    margin: 0;
+}
+
+.dropdown:focus .unity-popup-field__input{
+    border-color: var(--highlight-color);
+    scale: 1.005 1.005;
+}
+
+.dropdown .unity-popup-field__input {
+    margin: 0;
+    border-radius: var(--border-radius);
+    border-color: black;
+    border-width: var(--border-width);
+}
+
+.unity-toggle__checkmark {
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+}
+
+.setting--section--headline{
+    font-size: var(--regular-font-size);
+}
+
+.setting--section {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.setting--section .unity-toggle{
+    margin: 0;
+    padding: 4px;
+    border-radius: var(--border-radius);
+    border-color: transparent;
+    border-width: var(--border-width);
+    scale: 1.005 1.005;
+}
+
+.setting--section .unity-toggle:focus {
+    border-color: var(--highlight-color);
+}
+
+.unity-scroller__slider .unity-base-slider__tracker {
+    background-color: var(--secondary-color);
+    opacity: 0.5;
+    border-width: 0;
+}
+
+.unity-scroller__slider .unity-base-slider__dragger {
+    background-color: rgba(83, 51, 33, 0.5);
+    height: 16px;
+    border-radius: var(--border-radius--small);
+}
+
+.unity-repeat-button {
+    border-radius: 0 10px 0 0;
+    background-color: rgba(83, 51, 33, 0.5);
+    border-width: 0;
+}
+
+.unity-scroller__high-button {
+    border-radius: 0 0 0 0;
+}
+
+.border--standard {
+    border-radius: var(--border-radius);
+    border-width: 3px;
+    border-color: var(--dark-text-color);
+}
+
+.unity-base-field__label, .unity-base-field__input {
+    font-size: var(--regular-font-size);
+}
+
+.fullscreen-container{
+    position: absolute; width: 100%; height: 100%;
+}
 

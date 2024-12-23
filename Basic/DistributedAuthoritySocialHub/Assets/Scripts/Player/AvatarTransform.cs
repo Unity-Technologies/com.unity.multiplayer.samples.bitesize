@@ -1,6 +1,5 @@
 using System;
 using Unity.Collections;
-using Unity.Multiplayer.Samples.SocialHub.Gameplay;
 using UnityEngine;
 using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.Physics;
@@ -17,8 +16,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         [SerializeField]
         PlayerInput m_PlayerInput;
         [SerializeField]
-        AvatarInputs m_AvatarInputs;
-        [SerializeField]
         AvatarInteractions m_AvatarInteractions;
         [SerializeField]
         PhysicsPlayerController m_PhysicsPlayerController;
@@ -28,6 +25,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         PlayersTopUIController m_TopUIController;
 
         NetworkVariable<FixedString32Bytes> m_PlayerName = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+        NetworkVariable<FixedString32Bytes> m_PlayerId = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
+
 
         public override void OnNetworkSpawn()
         {
@@ -35,6 +34,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
             m_PlayerName.OnValueChanged += OnPlayerNameChanged;
+            m_PlayerId.OnValueChanged += OnPlayerIdChanged;
             OnPlayerNameChanged(string.Empty, m_PlayerName.Value);
 
             if (!HasAuthority)
@@ -43,18 +43,14 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            // a randomly-generated suffix consisting of a hash and four digits (e.g. #1234) is automatically appended to the requested name
-            m_PlayerName.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerName.Split('#')[0]);
+            m_PlayerId.Value = new FixedString32Bytes(AuthenticationService.Instance.PlayerId);
+            m_PlayerName.Value = new FixedString32Bytes(UIUtils.ExtractPlayerNameFromAuthUserName(AuthenticationService.Instance.PlayerName));
             m_PlayerInput.enabled = true;
-            m_AvatarInputs.enabled = true;
-            m_AvatarInputs.Jumped += OnJumped;
+            GameInput.Actions.Player.Jump.performed += OnJumped;
             m_AvatarInteractions.enabled = true;
             m_PhysicsPlayerController.enabled = true;
             Rigidbody.isKinematic = false;
             Rigidbody.freezeRotation = true;
-            // important: modifying a transform's properties before invoking base.OnNetworkSpawn() will initialize everything based on the transform's current setting
-            var spawnPoint = PlayerSpawnPoints.Instance.GetRandomSpawnPoint();
-            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             Rigidbody.linearVelocity = Vector3.zero;
 
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.Update);
@@ -78,10 +74,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             base.OnNetworkDespawn();
 
-            if (m_AvatarInputs != null)
-            {
-                m_AvatarInputs.Jumped -= OnJumped;
-            }
+            GameInput.Actions.Player.Jump.performed -= OnJumped;
 
             this.UnregisterAllNetworkUpdates();
 
@@ -94,7 +87,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_TopUIController?.RemovePlayer(gameObject);
         }
 
-        void OnJumped()
+        void OnJumped(InputAction.CallbackContext _)
         {
             m_PhysicsPlayerController.SetJump(true);
         }
@@ -103,23 +96,30 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         {
             if (m_MainCamera != null)
             {
-                Vector3 forward = m_MainCamera.transform.forward;
-                Vector3 right = m_MainCamera.transform.right;
+                var forward = m_MainCamera.transform.forward;
+                var right = m_MainCamera.transform.right;
 
                 forward.y = 0f;
                 right.y = 0f;
                 forward.Normalize();
                 right.Normalize();
 
-                Vector3 movement = forward * m_AvatarInputs.Move.y + right * m_AvatarInputs.Move.x;
+                var moveInput = GameInput.Actions.Player.Move.ReadValue<Vector2>();
+                var movement = forward * moveInput.y + right * moveInput.x;
                 m_PhysicsPlayerController.SetMovement(movement);
-                m_PhysicsPlayerController.SetSprint(m_AvatarInputs.Sprint);
+                var isSprinting = GameInput.Actions.Player.Sprint.ReadValue<float>() > 0f;
+                m_PhysicsPlayerController.SetSprint(isSprinting);
             }
         }
 
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_TopUIController.AddPlayer(gameObject, newValue.Value);
+            m_TopUIController.AddOrUpdatePlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
+        }
+
+        void OnPlayerIdChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+        {
+            m_TopUIController.AddOrUpdatePlayer(gameObject, m_PlayerName.Value.Value,newValue.Value);
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

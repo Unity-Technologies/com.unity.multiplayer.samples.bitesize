@@ -1,0 +1,116 @@
+* {
+    --menu-button-size: 80px;
+    --menu-button-font-size: 32px;
+    --regular-font-size: 26px;
+}
+
+.pickup-indicator__keycode{
+    display: none;
+}
+
+
+#burger-button{
+    display: none;
+}
+
+.menu-button {
+    margin-bottom: 20px;
+}
+
+.textfield{
+    min-height: 60px;
+    margin-bottom: 20px;
+}
+
+.textfield > .unity-base-field__label {
+    min-width: 220px;
+    overflow: visible;
+}
+
+.text-chat {
+    position: absolute;
+    top: -80%;
+    left: 50%;
+    height: 80%;
+    width: 60%;
+    translate: -50% 0;
+    transition: top 0.2s ease-in-out;
+}
+
+.text-chat__collapsebutton{
+    -unity-font-style: bold;
+    position: absolute;
+    padding-left: 10px;
+    bottom: -100px;
+    width: 120px;
+    height: 90px;
+    rotate: -270deg;
+    left: 50%;
+    translate: -50% 0;
+    background-position-x: left 22px;
+}
+
+
+.text-chat--visible > .text-chat_background-overlay {
+    opacity: 1;
+    display: flex;
+}
+
+.text-chat--visible > .text-chat__collapsebutton {
+    background-position-x: left 0px;
+}
+
+.text-chat__ui{
+    border-radius: var(--border-radius);
+}
+.text-chat__submit {
+    min-width: 120px;
+}
+
+.text-chat--visible {
+    top: 0px;
+}
+
+.ingame-panel {
+    min-width: 600px;
+    padding: 48px;
+}
+
+.slider {
+}
+
+.slider .unity-base-slider__tracker {
+    border-radius: 9px;
+    height: 18px;
+    opacity: 0.5;
+    border-color: transparent;
+}
+
+.slider .unity-base-slider__dragger {
+    width: 36px;
+    height: 36px;
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+    border-width: 0;
+}
+
+.unity-toggle__checkmark{
+    width: 36px;
+    height: 36px;
+}
+
+.unity-base-field{
+    margin-bottom: 16px;
+}
+
+.setting--section{
+    font-size: var(--regular-font-size);
+}
+
+.unity-base-field__label, .unity-base-field__input {
+    font-size: var(--menu-button-font-size);
+}
+
+
+
+

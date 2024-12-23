@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Unity.Multiplayer.Samples.SocialHub.Input;
 using UnityEngine;
 
 namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
@@ -7,6 +8,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
     {
         void Start()
         {
+            InputSystemManager.Instance.EnableUIInputs();
             GameplayEventHandler.OnConnectToSessionCompleted += OnConnectToSessionCompleted;
         }
 
@@ -15,7 +17,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.GameManagement
             GameplayEventHandler.OnConnectToSessionCompleted -= OnConnectToSessionCompleted;
         }
 
-        void OnConnectToSessionCompleted(Task task)
+        void OnConnectToSessionCompleted(Task task, string sessionName)
         {
             if (task.IsCompletedSuccessfully)
             {

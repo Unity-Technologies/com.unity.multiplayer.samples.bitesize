@@ -1,10 +1,22 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="in-game-menu" style="flex-grow: 1;">
-        <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="☰" name="burger-button" class="menu-button--round" />
-        <ui:VisualElement name="sceen-overlay" style="flex-grow: 1; top: 0; left: 0;" />
-        <ui:VisualElement name="menu">
+    <Style src="project://database/Assets/UI/Uss/Global.uss?fileID=7433441132597879392&amp;guid=dd4dac81c4e217440a3543f354c31a02&amp;type=3#Global" />
+    <Style src="project://database/Assets/UI/Uss/Ingame.uss?fileID=7433441132597879392&amp;guid=a4ed441e385d14fd08257a42a99ce094&amp;type=3#Ingame" />
+    <ui:VisualElement name="in-game-menu" picking-mode="Ignore" style="flex-grow: 1;">
+        <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="☰" name="burger-button" focusable="false" class="menu-button--round" />
+        <ui:VisualElement name="screen-overlay" class="background-overlay" />
+        <ui:VisualElement name="menu" class="ingame-panel">
             <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="Go to Main Menu" name="btn-goto-main" />
             <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="Exit Application" name="btn-exit" />
+            <ui:Label text="Audio Settings&#10;" name="Label" class="setting--section--headline" style="-unity-text-align: upper-center;" />
+            <ui:VisualElement name="audio" class="border--standard setting--section">
+                <ui:Label text="Input:&#10;" name="input-label" />
+                <ui:DropdownField name="audio-input" class="dropdown" />
+                <ui:Slider value="42" high-value="100" name="input-volume" label="Volume" class="slider" />
+                <ui:Toggle label="Mute" name="mute-checkbox" />
+                <ui:Label text="Output:" name="output-label" />
+                <ui:DropdownField name="audio-output" class="dropdown" />
+                <ui:Slider value="42" high-value="100" name="output-volume" label="Volume" class="slider" />
+            </ui:VisualElement>
             <Unity.Multiplayer.Samples.SocialHub.UI.MenuButton text="x" name="btn-close-menu" class="menu-button--round" />
         </ui:VisualElement>
     </ui:VisualElement>

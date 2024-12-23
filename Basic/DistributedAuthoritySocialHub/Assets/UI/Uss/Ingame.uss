@@ -1,4 +1,3 @@
-/* Pickup Indicator shown when player is close to an object */
 .pickup-indicator {
     -unity-font-definition: var(--script-font);
     position: absolute;
@@ -39,8 +38,8 @@
 
 .pickup-indicator__border {
     position: absolute;
-    left:0px;
-    top:0px;
+    left: 0;
+    top: 0;
     min-width: 100%;
     min-height: 100%;
     border-color: var(--secondary-color);
@@ -48,26 +47,60 @@
     border-width: 2px;
 }
 
-/* Carry Box Info box uses the same style as the pickup indicator
-   just remove scale transition because gets scaled by distance
-*/
-.carrybox{
-        transition-property: scale;
-        transition-duration: 0ms;
+.carrybox {
+    transition-property: scale;
+    transition-duration: 0ms;
 }
 
-/* Player UI above the player */
 .player-top-ui {
     position: absolute;
     align-items: center;
     translate: -50% 0;
-
 }
 
 .player-mic-icon {
-    width: var(--mic-icon-size);
-    height: var(--mic-icon-size);
-    background-color: red;
+    display: none;
+    padding: 0;
+    border-radius: 48px;
+    border-color: var(--secondary-color);
+    border-width: 4px;
+    translate: -50% 0;
+    left: 50%;
+    background-color: var(--pickup-background-color);
+    width: 96px;
+    height: 96px;
+    background-image: url("project://database/Assets/UI/Textures/announcement-icon.png?fileID=2800000&guid=4d053bc77d6ef4386ba76d053b365f00&type=3#announcement-icon");
+    position: absolute;
+    top: -96px;
+    background-size: 70% 70%;
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+}
+
+.player-mic-icon__mute-indicator {
+    flex-grow: 1;
+    max-height: 5px;
+    min-height: 5px;
+    min-width: 103%;
+    max-width: 103%;
+    background-color: var(--secondary-color);
+    position: absolute;
+    top: 50%;
+    rotate: -29deg;
+    display: none;
+}
+
+.player-mic-icon--muted{
+    background-image: url("project://database/Assets/UI/Textures/announcement-icon_mute.png?fileID=2800000&guid=acad70a62480a491789d7313f1ba2806&type=3#announcement-icon_mute");
+}
+
+.player-mic-icon--muted .player-mic-icon__mute-indicator {
+    display: flex;
+}
+
+.player-mic-icon--disable {
+    opacity: 0;
 }
 
 .player-name {
@@ -78,7 +111,6 @@
     -unity-text-outline-width: 1px;
 }
 
-/* Ingame Menu */
 #in-game-menu {
     justify-content: center;
     width: 100%;
@@ -88,28 +120,17 @@
 #burger-button {
     position: absolute;
     -unity-font-style: bold;
-    font-size: 18px;
+    font-size: var(--regular-font-size);
     left: 20px;
     top: 20px;
 }
 
-#sceen-overlay {
-    transition-property: opacity;
-    transition-duration: 100ms;
-    transition-timing-function: ease-in-out-sine;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-}
-
-#menu {
+.ingame-panel {
     border-radius: var(--border-radius);
     -unity-font-definition: var(--script-font);
     transition-property: scale, opacity;
     transition-duration: 200ms;
-    transition-timing-function:ease-in-out-bounce;
+    transition-timing-function: ease-in-out-bounce;
     justify-content: center;
     background-color: var(--main-color);
     align-self: center;
@@ -117,7 +138,7 @@
     padding: 32px;
 }
 
-#menu #btn-close-menu{
+#menu #btn-close-menu {
     position: absolute;
     right: -25px;
     top: -32px;
@@ -133,3 +154,113 @@
     opacity: 1;
 }
 
+.text-chat {
+    position: absolute;
+    left: -600px;
+    bottom: 50px;
+    height: 560px;
+    width: 600px;
+    transition: left 0.2s ease-in-out;
+}
+
+.text-chat--visible {
+    left: -3px;
+}
+
+.text-chat--visible > .text-chat__collapsebutton {
+    scale: -1 1;
+    background-position-x: left 0px;
+}
+
+.text-chat__ui {
+    font-size: var(--regular-font-size);
+    flex-grow: 1;
+    background-color: var(--main-color);
+    border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.text-chat__collapsebutton {
+    -unity-font-style: bold;
+    position: absolute;
+    background-position-x: left 15px;
+    padding-left: 20px;
+    bottom: 100px;
+    width: 80px;
+    right: -75px;
+}
+
+.text-chat__messagelist {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    border-top-right-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.text-chat__messageinput {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-left: 0;
+    min-width: auto;
+}
+
+.text-chat .unity-scroll-view__content-container {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.text-chat__submit {
+    font-size: var(--menu-button-font-size);
+    min-width: 60px;
+}
+
+.background-overlay{
+    display: none;
+    width: 3000px;
+    height: 3000px;
+    position: absolute;
+    background-color: rgba(62, 43, 39, 0.80);
+    opacity: 1;
+    left: -50%;
+    transition: opacity 0.2s linear;
+}
+
+#input-container {
+    padding: 8px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: row;
+}
+
+.message {
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: var(--pickup-background-color);
+    border-radius: 16px;
+}
+
+.message__sender {
+    -unity-text-align: upper-right;
+    opacity: 0.8;
+}
+
+.message__text {
+    white-space: normal;
+    overflow: visible;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.icon-submit{
+    background-image: url("project://database/Assets/UI/Textures/icon_send.png?fileID=2800000&amp;guid=72b7d5348da81408099819d725e06390&amp;type=3#icon_send");
+    background-size: contain;
+}
+
+.icon-arrow{
+    background-image: url("project://database/Assets/UI/Textures/icon_arrow.png?fileID=2800000&amp;guid=26de36c45382b4176ac53bc7a2e74e90&amp;type=3#icon_arrow");
+    background-size: contain;
+}

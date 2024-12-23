@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Samples.SocialHub.GameManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -53,12 +54,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             }
         }
 
-        internal void ShowPickup(Transform t)
+        void ShowPickup(Transform t)
         {
             m_NextPickup = t;
         }
 
-        internal void ClearPickup()
+        void ClearPickup()
         {
             m_NextPickup = null;
         }
@@ -69,6 +70,20 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
             m_PickupUI = m_PickupAsset.CloneTree().GetFirstChild();
             m_PickupUI.AddToClassList(UIUtils.s_InactiveUSSClass);
             m_WorldspaceUI.rootVisualElement.Q<VisualElement>("Pickup").Add(m_PickupUI);
+            GameplayEventHandler.OnPickupStateChanged += OnPickupStateChanged;
+        }
+
+        void OnPickupStateChanged(PickupState state, Transform pickupTransform)
+        {
+            switch (state)
+            {
+                case PickupState.PickupInRange:
+                    ShowPickup(pickupTransform);
+                    break;
+                case PickupState.Inactive or PickupState.Carry:
+                    ClearPickup();
+                    break;
+            }
         }
 
         void Update()
@@ -94,6 +109,11 @@ namespace Unity.Multiplayer.Samples.SocialHub.UI
         void UpdatePickup()
         {
             UIUtils.TransformUIDocumentWorldspace(m_WorldspaceUI, m_Camera, m_CurrentPickup, m_VerticalOffset);
+        }
+
+        void OnDisable()
+        {
+            GameplayEventHandler.OnPickupStateChanged -= OnPickupStateChanged;
         }
     }
 }
