@@ -1,5 +1,17 @@
 # Changelog
 
+## [unreleased] yyyy-mm-dd
+
+### Dynamic Addressables Network Prefabs
+
+#### Added
+- Added Multiplayer Play Mode to the project (#271)
+
+#### Changed
+- Upgraded the project to Unity 6000.0.34f1 LTS (#271) Other changes include:
+  - Netcode for GameObjects upgraded from v1.7.1 to v2.2.0
+  - ParrelSync removed from the project
+
 ## [1.10.0] 2024-12-23
 
 ### Distributed Authority Social Hub
