@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Mobile/TouchScreenInputStyle.uss?fileID=7433441132597879392&amp;guid=65f131e357a5ced4b9f5d34f036bd440&amp;type=3#TouchScreenInputStyle" />
+    <ui:VisualElement picking-mode="Ignore" class="flex-grow">
+        <ui:VisualElement name="JoystickMove" class="joystick joystick--left">
+            <ui:VisualElement picking-mode="Ignore" usage-hints="DynamicTransform" name="Stick" class="touchscreen-button">
+                <ui:VisualElement name="Icon" class="button-icon" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="JoystickLook" class="joystick joystick--right">
+            <ui:VisualElement picking-mode="Ignore" usage-hints="DynamicTransform" name="Stick" class="touchscreen-button">
+                <ui:VisualElement name="Icon" class="button-icon" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement picking-mode="Ignore" name="PlayerContainer" class="flex-grow">
+            <Unity.Multiplayer.Samples.SocialHub.UI.PressedButton name="ButtonJump" class="touchscreen-button" />
+            <Unity.Multiplayer.Samples.SocialHub.UI.PressedButton name="ButtonSprint" class="touchscreen-button" />
+            <Unity.Multiplayer.Samples.SocialHub.UI.PressedButton name="ButtonInteract" class="touchscreen-button" />
+        </ui:VisualElement>
+        <Unity.Multiplayer.Samples.SocialHub.UI.PressedButton name="ButtonMenu" class="touchscreen-button" />
+    </ui:VisualElement>
+</ui:UXML>

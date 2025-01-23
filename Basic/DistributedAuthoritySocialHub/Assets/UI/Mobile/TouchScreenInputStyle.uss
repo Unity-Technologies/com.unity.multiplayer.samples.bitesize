@@ -1,0 +1,148 @@
+* {
+    --joystick-size: 330px;
+    --base-button-size: 110px;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.touchscreen-button {
+    margin: 0;
+    padding: 0;
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Circle_Grey_Base.png");
+}
+
+.touchscreen-button:checked {
+    translate: 3%;
+    -unity-background-image-tint-color: rgb(200, 200, 200);
+}
+
+.touchscreen-button > .unity-toggle__input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    translate: -50%;
+}
+
+.touchscreen-button > .unity-toggle__input > .unity-toggle__checkmark {
+    display: none;
+}
+
+.button-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    translate: -50%;
+}
+
+.joystick {
+    flex-grow: 1;
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Circle_Faded.png?fileID=21300000&guid=90ded0611e490aa4ba6961afbfc2280d&type=3#UI_Circle_Faded");
+    width: var(--joystick-size);
+    height: var(--joystick-size);
+}
+
+.joystick > .touchscreen-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130px;
+    height: 130px;
+    translate: -50%;
+}
+
+.joystick:active > .touchscreen-button {
+    -unity-background-image-tint-color: rgb(200, 200, 200);
+}
+
+.joystick--left {
+    position: absolute;
+    left: 100px;
+    bottom: 80px;
+}
+
+.joystick--left .button-icon {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Move.png?fileID=21300000&guid=ff7bfa7addf40784d86f62b8e4a034a6&type=3#UI_Icon_Move");
+}
+
+.joystick--right {
+    position: absolute;
+    right: 100px;
+    bottom: 180px;
+}
+
+.joystick--right .button-icon {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Look.png?fileID=21300000&guid=af0ae2dbf3d1efb4f82af377950704a2&type=3#UI_Icon_Look");
+}
+
+#PlayerContainer {
+    position: absolute;
+    bottom: 180px;
+    right: 100px;
+    width: var(--joystick-size);
+    height: var(--joystick-size);
+}
+
+#ButtonJump {
+    position: absolute;
+    width: var(--base-button-size);
+    height: var(--base-button-size);
+    left: -100px;
+    top: -80px;
+}
+
+#ButtonJump > .unity-toggle__input {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Jump.png?fileID=21300000&guid=751aa1b6637101946b2fdbb7aa27d6ad&type=3#UI_Icon_Jump");
+}
+
+#ButtonInteract {
+    position: absolute;
+    left: -190px;
+    top: 50%;
+    width: var(--base-button-size);
+    height: var(--base-button-size);
+    translate: 0 -50%;
+}
+
+#ButtonInteract > .unity-toggle__input {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Pickup.png?fileID=2800000&guid=9c35a306c5b6f45f3924517141faa229&type=3#UI_Icon_Pickup");
+}
+
+#ButtonInteract.state-carry > .unity-toggle__input {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Throw.png?fileID=2800000&guid=798694af43ba34d55bd37cf071869600&type=3#UI_Icon_Throw");
+}
+
+#ButtonMenu {
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    width: var(--base-button-size);
+    height: var(--base-button-size);
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Circle_Yellow_Base.png");
+}
+
+#ButtonMenu > .unity-toggle__input {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Menu.png?fileID=21300000&guid=19b39eab737618246a838095105404bc&type=3#UI_Icon_Menu");
+}
+
+#ButtonSprint {
+    position: absolute;
+    left: -100px;
+    width: var(--base-button-size);
+    height: var(--base-button-size);
+    bottom: -80px;
+}
+
+#ButtonSprint:checked {
+    -unity-background-image-tint-color: rgb(100, 150, 100);
+    translate: 0;
+}
+
+#ButtonSprint > .unity-toggle__input {
+    background-image: url("project://database/Assets/UI/Mobile/Images/UI_Icon_Sprint.png?fileID=2800000&guid=56cfe655155ed480ebbb4381cab94e76&type=3#UI_Icon_Sprint");
+}

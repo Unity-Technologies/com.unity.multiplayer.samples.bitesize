@@ -6,10 +6,11 @@ using Unity.Multiplayer.Samples.SocialHub.Input;
 using Unity.Multiplayer.Samples.SocialHub.UI;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 namespace Unity.Multiplayer.Samples.SocialHub.Player
 {
-    [RequireComponent(typeof(AvatarInputs))]
     class AvatarInteractions : NetworkBehaviour, INetworkUpdateSystem
     {
         [SerializeField]
@@ -19,9 +20,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         [SerializeField]
         Collider m_MainCollider;
-
-        [SerializeField]
-        AvatarInputs m_AvatarInputs;
 
         [SerializeField]
         FixedJoint m_PickupLocFixedJoint;
@@ -51,10 +49,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         TransferableObject m_TransferableObject;
 
-        PickUpIndicator m_PickUpIndicator;
-
-        CarryBoxIndicator m_CarryBoxIndicator;
-
         const float k_MinDurationHeld = 0f;
         const float k_MaxDurationHeld = 2f;
 
@@ -67,6 +61,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         Vector3 m_InitialInteractColliderSize;
         Vector3 m_InitialInteractColliderLocalPosition;
         Vector3 m_BoneLocalPosition;
+
+        // tracking when a Hold interaction has started/ended
+        bool m_HoldingInteractionPerformed;
 
         void Awake()
         {
@@ -89,20 +86,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                 return;
             }
 
-            if (!m_AvatarInputs)
-            {
-                Debug.LogWarning("Assign AvatarInputs in the inspector!");
-                return;
-            }
-
             this.RegisterNetworkUpdate(updateStage: NetworkUpdateStage.FixedUpdate);
 
-            m_PickUpIndicator = FindFirstObjectByType<PickUpIndicator>();
-            m_CarryBoxIndicator = FindFirstObjectByType<CarryBoxIndicator>();
-
-            m_AvatarInputs.TapInteractionPerformed += OnTapPerformed;
-            m_AvatarInputs.HoldInteractionPerformed += OnHoldStarted;
-            m_AvatarInputs.HoldInteractionCancelled += OnHoldReleased;
+            GameInput.Actions.Player.Interact.performed += OnInteractPerformed;
+            GameInput.Actions.Player.Interact.canceled += OnInteractCanceled;
 
             GameplayEventHandler.OnNetworkObjectDespawned += OnNetworkObjectDespawned;
             GameplayEventHandler.OnNetworkObjectOwnershipChanged += OnNetworkObjectOwnershipChanged;
@@ -113,12 +100,9 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-            if (m_AvatarInputs)
-            {
-                m_AvatarInputs.TapInteractionPerformed -= OnTapPerformed;
-                m_AvatarInputs.HoldInteractionPerformed -= OnHoldStarted;
-                m_AvatarInputs.HoldInteractionCancelled -= OnHoldReleased;
-            }
+
+            GameInput.Actions.Player.Interact.performed -= OnInteractPerformed;
+            GameInput.Actions.Player.Interact.canceled -= OnInteractCanceled;
 
             GameplayEventHandler.OnNetworkObjectDespawned -= OnNetworkObjectDespawned;
             GameplayEventHandler.OnNetworkObjectOwnershipChanged -= OnNetworkObjectOwnershipChanged;
@@ -161,6 +145,32 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             if (m_TransferableObject != null && m_TransferableObject.NetworkObject == networkObject && !networkObject.HasAuthority)
             {
                 DropAction();
+            }
+        }
+
+        void OnInteractPerformed(InputAction.CallbackContext context)
+        {
+            switch (context.interaction)
+            {
+                case HoldInteraction:
+                    m_HoldingInteractionPerformed = true;
+                    OnHoldStarted();
+                    break;
+                case TapInteraction:
+                    OnTapPerformed();
+                    break;
+            }
+        }
+
+        void OnInteractCanceled(InputAction.CallbackContext context)
+        {
+            if (context.interaction is HoldInteraction)
+            {
+                if (m_HoldingInteractionPerformed)
+                {
+                    OnHoldReleased(context.duration);
+                }
+                m_HoldingInteractionPerformed = false;
             }
         }
 
@@ -267,8 +277,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             // Rotate the player to face the item smoothly
             StartCoroutine(SmoothLookAt(other.transform));
             m_AvatarNetworkAnimator.SetTrigger(k_PickupId);
-            m_PickUpIndicator.ClearPickup();
-            m_CarryBoxIndicator.ShowCarry(m_TransferableObject.transform);
+            GameplayEventHandler.SetAvatarPickupState(PickupState.Carry, m_TransferableObject.transform);
         }
 
         IEnumerator SmoothLookAt(Transform target)
@@ -366,7 +375,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             SetTransferableObjectAsTransferableDistributable();
             OnDropAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
-            m_CarryBoxIndicator.HideCarry();
+            GameplayEventHandler.SetAvatarPickupState(PickupState.Inactive, null);
         }
 
         // invoked on all clients
@@ -402,7 +411,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
             OnThrowAction();
             m_CurrentTransferableObject.Value = new NetworkBehaviourReference();
-            m_CarryBoxIndicator.HideCarry();
+            GameplayEventHandler.SetAvatarPickupState(PickupState.Inactive, null);
         }
 
         // invoked on all clients
@@ -476,13 +485,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
                         m_PotentialPickupCollider = resultCollider;
                     }
                 }
-
-                m_PickUpIndicator.ShowPickup(m_PotentialPickupCollider.transform);
+                GameplayEventHandler.SetAvatarPickupState(PickupState.PickupInRange, m_PotentialPickupCollider.transform);
             }
             else
             {
                 m_PotentialPickupCollider = null;
-                m_PickUpIndicator.ClearPickup();
+                GameplayEventHandler.SetAvatarPickupState(PickupState.Inactive, null);
             }
         }
 

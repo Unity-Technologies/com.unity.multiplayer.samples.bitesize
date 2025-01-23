@@ -8,10 +8,13 @@
     --pickup-background-color: rgba(255, 255, 255, 0.5);
     --dark-text-color: rgb(16, 16, 16);
     --border-radius: 12px;
+    --border-radius--small: 4px;
+    --border-width: 3px;
     --pickup-base-height: 24px;
     --mic-icon-size: 36px;
     --menu-button-size: 60px;
     --menu-button-font-size: 30px;
+    --regular-font-size: 20px;
     -unity-font-definition: var(--script-font);
 }
 
@@ -21,7 +24,7 @@
     min-height: var(--menu-button-size);
     font-size: var(--menu-button-font-size);
     border-color: var(--dark-text-color);
-    border-width: 3px;
+    border-width: var(--border-width);
     padding: 10px;
     margin-bottom: 10px;
     background-color: var(--highlight-color);
@@ -86,9 +89,11 @@
 }
 
 .menu-button--round:focus {
+    border-width: 5px;
+    border-color:  var(--secondary-color);
     -unity-text-outline-color: var(--main-color);
     -unity-text-outline-width: 2px;
-    scale: 1.2 1.2;
+    scale: 1.1 1.1;
 }
 
 .menu-button--ingame {
@@ -97,13 +102,15 @@
 }
 
 .menu-button--ingame:focus {
+    border-width: 5px;
+    border-color:  var(--secondary-color);
     -unity-text-outline-color: var(--main-color);
     -unity-text-outline-width: 2px;
-    scale: 1.2 1.2;
+    scale: 1.1 1.1;
 }
 
 .textfield {
-    font-size: 20px;
+    font-size: var(--regular-font-size);
     -unity-text-align: middle-left;
     min-height: 40px;
     margin-bottom: 10px;
@@ -116,23 +123,95 @@
 
 .textfield .unity-base-text-field__input {
     border-radius: var(--border-radius);
-    border-width: 3px;
+    border-width: var(--border-width);
 }
 
 .textfield:focus .unity-base-text-field__input {
-    border-color: var(--secondary-color);
+    border-color: var(--highlight-color);
+    scale: 1.005 1.005;
 }
 
-.unity-base-slider__tracker {
+.slider{
+    margin: 0;
+    padding: 4px;
+    border-width: var(--border-width);
+    border-radius: var(--border-radius);
+    border-color: transparent;
+}
+
+.slider:focus {
+    border-width: var(--border-width);
+    border-radius: var(--border-radius);
+    border-color: var(--highlight-color);
+    scale: 1.005 1.005;
+}
+
+.slider .unity-base-slider__tracker {
+    border-radius: 2px;
+    height: 5px;
+    background-color: black;
+    border-color: transparent;
+}
+
+.slider .unity-base-slider__dragger {
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+    border-width: 0;
+}
+
+.dropdown {
+    margin: 0;
+}
+
+.dropdown:focus .unity-popup-field__input{
+    border-color: var(--highlight-color);
+    scale: 1.005 1.005;
+}
+
+.dropdown .unity-popup-field__input {
+    margin: 0;
+    border-radius: var(--border-radius);
+    border-color: black;
+    border-width: var(--border-width);
+}
+
+.unity-toggle__checkmark {
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius--small);
+}
+
+.setting--section--headline{
+    font-size: var(--regular-font-size);
+}
+
+.setting--section {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.setting--section .unity-toggle{
+    margin: 0;
+    padding: 4px;
+    border-radius: var(--border-radius);
+    border-color: transparent;
+    border-width: var(--border-width);
+    scale: 1.005 1.005;
+}
+
+.setting--section .unity-toggle:focus {
+    border-color: var(--highlight-color);
+}
+
+.unity-scroller__slider .unity-base-slider__tracker {
     background-color: var(--secondary-color);
     opacity: 0.5;
     border-width: 0;
 }
 
-.unity-base-slider__dragger {
+.unity-scroller__slider .unity-base-slider__dragger {
     background-color: rgba(83, 51, 33, 0.5);
     height: 16px;
-    border-radius: 6px;
+    border-radius: var(--border-radius--small);
 }
 
 .unity-repeat-button {
@@ -150,3 +229,12 @@
     border-width: 3px;
     border-color: var(--dark-text-color);
 }
+
+.unity-base-field__label, .unity-base-field__input {
+    font-size: var(--regular-font-size);
+}
+
+.fullscreen-container{
+    position: absolute; width: 100%; height: 100%;
+}
+

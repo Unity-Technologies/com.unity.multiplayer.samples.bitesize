@@ -25,6 +25,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void Start()
         {
+            UnityServices.Initialized += OnUnityServicesInitialized;
             await UnityServices.InitializeAsync();
 
             if (!s_InitialLoad)
@@ -40,6 +41,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
 
             await VivoxManager.Instance.Initialize();
+        }
+
+        async void OnUnityServicesInitialized()
+        {
+            UnityServices.Initialized -= OnUnityServicesInitialized;
+            await SignIn();
         }
 
         async void OnStartButtonPressed(string playerName, string sessionName)
@@ -62,7 +69,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
 
             await AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
-            Debug.Log($"Signed in anonymously after. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
 
             if (string.IsNullOrEmpty(sessionName))
             {
@@ -80,7 +86,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
                 AuthenticationService.Instance.SignInFailed += SignInFailed;
                 AuthenticationService.Instance.SwitchProfile(GetRandomString(5));
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                Debug.Log($"Signed in anonymously before. Name: {name}. ID: {AuthenticationService.Instance.PlayerName}");
             }
             catch (Exception e)
             {
@@ -96,6 +101,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             {
                 Name = sessionName,
                 MaxPlayers = 64,
+                IsPrivate = false,
             }.WithDistributedAuthorityNetwork();
 
             m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
@@ -131,9 +137,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             }
         }
 
-        void SignInFailed(RequestFailedException obj)
+        void SignInFailed(RequestFailedException e)
         {
-            Debug.LogWarning($"Sign in via Authentication failed: obj.ErrorCode {obj.ErrorCode}");
+            AuthenticationService.Instance.SignInFailed -= SignInFailed;
+            Debug.LogWarning($"Sign in via Authentication failed: e.ErrorCode {e.ErrorCode}");
         }
 
         void RemovedFromSession()

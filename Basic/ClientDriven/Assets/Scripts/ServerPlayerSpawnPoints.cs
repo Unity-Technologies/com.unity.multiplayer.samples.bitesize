@@ -14,7 +14,7 @@ public class ServerPlayerSpawnPoints : MonoBehaviour
         {
             if (s_Instance == null)
             {
-                s_Instance = FindObjectOfType<ServerPlayerSpawnPoints>();
+                s_Instance = FindFirstObjectByType<ServerPlayerSpawnPoints>();
             }
 
             return s_Instance;

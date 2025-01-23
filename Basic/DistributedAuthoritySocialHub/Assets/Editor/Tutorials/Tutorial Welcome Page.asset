@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0885f594ab85594caa28e1a96cbe0d8, type: 3}
   m_Name: Tutorial Welcome Page
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   Modified:
     m_PersistentCalls:
       m_Calls: []
@@ -21,18 +21,16 @@ MonoBehaviour:
   m_Title:
     m_Untranslated: Welcome to Social Hub!
   m_Description:
-    m_Untranslated: 'This sample is built with the Distributed Authority topology,
-      showcasing recommended approaches to designing gameplay features with the
-
-      new
-      framework inside Netcode for GameObjects v2.0 in tandem with the Multiplayer
-      SDK. This sample serves as the educational entry point for users who are looking
-      to implement a similar networking topology inside of their projects.'
+    m_Untranslated: This sample uses the Distributed Authority topology. It demonstrates
+      recommended ways to design gameplay features with the new framework inside
+      Netcode for GameObjects v2.0 in tandem with the Multiplayer SDK. This sample
+      serves as the educational entry point for users who are looking to implement
+      a similar networking topology inside of their projects.
   m_Buttons:
   - Text:
-      m_Untranslated: Go to Bootstrap scene
+      m_Untranslated: I'll explore on my own
     Tooltip:
-      m_Untranslated:
+      m_Untranslated: 
     OnClick:
       m_PersistentCalls:
         m_Calls:
@@ -46,7 +44,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument:
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 1
         - m_Target: {fileID: 11400000}
@@ -56,9 +54,30 @@ MonoBehaviour:
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName:
+            m_ObjectArgumentAssemblyTypeName: 
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument:
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - Text:
+      m_Untranslated: Start tutorials
+    Tooltip:
+      m_Untranslated: 
+    OnClick:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 024309aa8a1484adeb6d264bea7bc0b7, type: 2}
+          m_TargetAssemblyTypeName: Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials.TutorialCallbacks,
+            Unity.Multiplayer.Samples.SocialHub.Editor.Tutorials
+          m_MethodName: StartTutorial
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: 6a5464225c4ee62499087728e8ee0a4d, type: 2}
+            m_ObjectArgumentAssemblyTypeName: Unity.Tutorials.Core.Editor.Tutorial,
+              Unity.Tutorials.Core.Editor
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 1

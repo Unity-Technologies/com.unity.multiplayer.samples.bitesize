@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class Buff
 {
@@ -84,6 +85,12 @@ public class ShipControl : NetworkBehaviour
     [SerializeField]
     UIDocument m_UIDocument;
 
+    [SerializeField]
+    InputAction fireAction;
+
+    [SerializeField]
+    InputAction moveAction;
+
     VisualElement m_RootVisualElement;
 
     ProgressBar m_HealthBar;
@@ -134,6 +141,9 @@ public class ShipControl : NetworkBehaviour
     {
         DontDestroyOnLoad(gameObject);
         SetPlayerUIVisibility(true);
+        //enable input
+        fireAction.Enable();
+        moveAction.Enable();
     }
 
     public override void OnNetworkSpawn()
@@ -148,6 +158,7 @@ public class ShipControl : NetworkBehaviour
                 SetPlayerUIVisibility(false);
             }
         }
+
         Energy.OnValueChanged += OnEnergyChanged;
         Health.OnValueChanged += OnHealthChanged;
         OnEnergyChanged(0, Energy.Value);
@@ -180,6 +191,7 @@ public class ShipControl : NetworkBehaviour
         if (Health.Value <= 0)
         {
             Health.Value = 0;
+
             // reset all values and buffs
             Health.Value = 100;
             LatestShipColor.Value = m_ShipGlowDefaultColor;
@@ -189,9 +201,10 @@ public class ShipControl : NetworkBehaviour
             DoubleShotTimer.Value = 0;
             QuadDamageTimer.Value = 0;
             Energy.Value = 100;
+
             // reset ship to start position
             transform.position = NetworkManager.GetComponent<RandomPositionPlayerSpawner>().GetNextSpawnPosition();
-            GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+            GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
         }
     }
@@ -210,13 +223,12 @@ public class ShipControl : NetworkBehaviour
         var bulletGo = m_ObjectPool.GetNetworkObject(BulletPrefab).gameObject;
         bulletGo.transform.position = transform.position + direction;
 
-        var velocity = m_Rigidbody2D.velocity;
+        var velocity = m_Rigidbody2D.linearVelocity;
         velocity += (Vector2)(direction) * 10;
         bulletGo.GetComponent<NetworkObject>().Spawn(true);
         var bullet = bulletGo.GetComponent<Bullet>();
         bullet.Config(this, damage, bounce, m_BulletLifetime);
         bullet.SetVelocity(velocity);
-
     }
 
     void Update()
@@ -292,9 +304,9 @@ public class ShipControl : NetworkBehaviour
                 top *= 1.5f;
             }
 
-            if (m_Rigidbody2D.velocity.magnitude > top)
+            if (m_Rigidbody2D.linearVelocity.magnitude > top)
             {
-                m_Rigidbody2D.velocity = m_Rigidbody2D.velocity.normalized * top;
+                m_Rigidbody2D.linearVelocity = m_Rigidbody2D.linearVelocity.normalized * top;
             }
         }
     }
@@ -342,23 +354,25 @@ public class ShipControl : NetworkBehaviour
 
         // movement
         int spin = 0;
-        if (Input.GetKey(KeyCode.LeftArrow))
+        // use move composite left and right parts for rotating the ship
+        if (moveAction.ReadValue<Vector2>().x < -0.5f)
         {
             spin += 1;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (moveAction.ReadValue<Vector2>().x > 0.5f)
         {
             spin -= 1;
         }
 
         int moveForce = 0;
-        if (Input.GetKey(KeyCode.UpArrow))
+        // use move composite up and down parts for thrusting the ship
+        if (moveAction.ReadValue<Vector2>().y > 0.5f)
         {
             moveForce += 1;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (moveAction.ReadValue<Vector2>().y < -0.5f)
         {
             moveForce -= 1;
         }
@@ -385,7 +399,7 @@ public class ShipControl : NetworkBehaviour
         }
 
         // fire
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (fireAction.WasPressedThisFrame())
         {
             ServerFireRpc();
         }
