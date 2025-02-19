@@ -3,7 +3,7 @@ using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class GameMenuController : Controller<GameApplication>
+    class GameMenuController : Controller<GameApplication>
     {
         GameMenuView View => App.View.Menu;
 
@@ -69,7 +69,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 View.Hide();
             }
             App.Model.MenuVisible = isMenuActive;
-            App.Model.PlayerCharacter.SetInputsActive(!isMenuActive);
+            if (App.Model.PlayerCharacter != null)
+            {
+                App.Model.PlayerCharacter.SetInputsActive(!isMenuActive);
+            }
         }
     }
 }

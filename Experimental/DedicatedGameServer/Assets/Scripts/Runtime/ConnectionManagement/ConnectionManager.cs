@@ -17,7 +17,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
     /// NetworkManger callbacks and other outside calls and redirecting them to the current ConnectionState object.
     /// </summary>
     [MultiplayerRoleRestricted]
-    public class ConnectionManager : MonoBehaviour
+    public partial class ConnectionManager : MonoBehaviour
     {
         ConnectionState m_CurrentState;
 
@@ -43,17 +43,24 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         internal readonly OfflineState m_Offline = new();
         internal readonly ClientConnectingState m_ClientConnecting = new();
         internal readonly ClientConnectedState m_ClientConnected = new();
-        internal readonly StartingServerState m_StartingServer = new();
-        internal readonly ServerListeningState m_ServerListening = new();
 
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            List<ConnectionState> states = new() {m_Offline, m_ClientConnecting, m_ClientConnected, m_StartingServer, m_ServerListening};
+            List<ConnectionState> states = new() {m_Offline, m_ClientConnecting, m_ClientConnected};
             foreach (var state in states)
             {
                 state.ConnectionManager = this;
             }
+
+            #if UNITY_SERVER
+            InitializeServerStates();
+            #elif UNITY_EDITOR
+            if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
+            {
+                InitializeServerStates();
+            }
+            #endif
 
             m_CurrentState = m_Offline;
             NetworkManager.OnConnectionEvent += OnConnectionEvent;
@@ -72,6 +79,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             NetworkManager.OnServerStopped -= OnServerStopped;
         }
 
+        partial void InitializeServerStates();
+
         internal void ChangeState(ConnectionState nextState)
         {
             Debug.Log($"{name}: Changed connection state from {m_CurrentState.GetType().Name} to {nextState.GetType().Name}.");
@@ -89,6 +98,9 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         {
             switch (arg2.EventType)
             {
+                case Netcode.ConnectionEvent.PeerConnected:
+                case Netcode.ConnectionEvent.PeerDisconnected:
+                    break;
                 case Netcode.ConnectionEvent.ClientConnected:
                     m_CurrentState.OnClientConnected(arg2.ClientId);
                     break;
@@ -120,14 +132,19 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             m_CurrentState.OnServerStopped();
         }
 
-        public void StartClient(string ipaddress, ushort port)
+        public void StartClientIP(string ipaddress, ushort port)
         {
-            m_CurrentState.StartClient(ipaddress, port);
+            m_CurrentState.StartClientIP(ipaddress, port);
         }
 
-        public void StartServerMatchmaker()
+        public void StartClientMatchmaker(string queueName, int maxPlayers)
         {
-            m_CurrentState.StartServerMatchmaker();
+            m_CurrentState.StartClientMatchmaker(queueName, maxPlayers);
+        }
+
+        public void StartServerMatchmaker(int maxPlayers)
+        {
+            m_CurrentState.StartServerMatchmaker(maxPlayers);
         }
 
         public void StartServerIP(string ipaddress, ushort port)

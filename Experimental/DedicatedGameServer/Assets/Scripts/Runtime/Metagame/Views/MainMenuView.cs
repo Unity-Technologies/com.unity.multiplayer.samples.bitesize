@@ -39,7 +39,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnClickFindMatch(ClickEvent evt)
         {
-            Broadcast(new EnterMatchmakerQueueEvent("Queue01"));
+            Broadcast(new EnterMatchmakerQueueEvent());
         }
 
         void OnClickJoinDirectIP(ClickEvent evt)

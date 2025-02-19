@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class DirectIPController : Controller<MetagameApplication>
+    class DirectIPController : Controller<MetagameApplication>
     {
         DirectIPView View => App.View.DirectIP;
         ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
@@ -43,7 +43,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnJoinGame(JoinThroughDirectIPEvent evt)
         {
-            ConnectionManager.StartClient(evt.ipAddress, evt.port);
+            ConnectionManager.StartClientIP(evt.ipAddress, evt.port);
         }
 
         void OnConnectionEvent(ConnectionEvent evt)
