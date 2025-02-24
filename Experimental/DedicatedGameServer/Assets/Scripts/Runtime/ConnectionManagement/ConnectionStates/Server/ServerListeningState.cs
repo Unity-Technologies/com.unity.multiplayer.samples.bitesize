@@ -1,4 +1,3 @@
-#if UNITY_SERVER
 using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.Netcode;
 using UnityEngine;
@@ -127,4 +126,3 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         }
     }
 }
-#endif

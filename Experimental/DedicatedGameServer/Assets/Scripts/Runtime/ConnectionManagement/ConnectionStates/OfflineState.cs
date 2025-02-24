@@ -1,3 +1,5 @@
+using Unity.Multiplayer;
+
 namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 {
     /// <summary>
@@ -27,20 +29,24 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             ConnectionManager.ChangeState(ConnectionManager.m_ClientConnecting);
         }
 
-#if UNITY_SERVER
         public override void StartServerIP(string ipaddress, ushort port)
         {
-            var connectionMethod = new ConnectionMethodIP(ConnectionManager, ipaddress, port);
-            ConnectionManager.m_StartingServer.Configure(connectionMethod);
-            ConnectionManager.ChangeState(ConnectionManager.m_StartingServer);
+            if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
+            {
+                var connectionMethod = new ConnectionMethodIP(ConnectionManager, ipaddress, port);
+                ConnectionManager.m_StartingServer.Configure(connectionMethod);
+                ConnectionManager.ChangeState(ConnectionManager.m_StartingServer);
+            }
         }
 
         public override void StartServerMatchmaker(int maxPlayers)
         {
-            var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager, string.Empty, maxPlayers);
-            ConnectionManager.m_StartingServer.Configure(connectionMethod);
-            ConnectionManager.ChangeState(ConnectionManager.m_StartingServer);
+            if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
+            {
+                var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager, string.Empty, maxPlayers);
+                ConnectionManager.m_StartingServer.Configure(connectionMethod);
+                ConnectionManager.ChangeState(ConnectionManager.m_StartingServer);
+            }
         }
-#endif
     }
 }

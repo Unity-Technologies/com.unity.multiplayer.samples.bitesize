@@ -1,5 +1,5 @@
-#if UNITY_SERVER
 using System;
+using Unity.Multiplayer;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
@@ -11,9 +11,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         partial void InitializeServerStates()
         {
-            m_StartingServer.ConnectionManager = this;
-            m_ServerListening.ConnectionManager = this;
+            if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
+            {
+                m_StartingServer.ConnectionManager = this;
+                m_ServerListening.ConnectionManager = this;
+            }
         }
     }
 }
-#endif

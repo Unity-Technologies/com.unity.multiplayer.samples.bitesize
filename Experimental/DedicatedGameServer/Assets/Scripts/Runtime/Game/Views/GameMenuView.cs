@@ -1,4 +1,5 @@
 using System;
+using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using UnityEngine.UIElements;
 
 namespace Unity.DedicatedGameServerSample.Runtime
@@ -20,7 +21,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_ResumeButton = root.Q<Button>("resumeButton");
             m_ResumeButton.RegisterCallback<ClickEvent>(OnClickResume);
             m_QuitButton = root.Q<Button>("quitButton");
-            m_QuitButton.RegisterCallback<ClickEvent>(OnClickQuit);
+            if (ApplicationEntryPoint.Singleton.AutoConnectOnStartup)
+            {
+                m_QuitButton.SetEnabled(false);
+            }
+            else
+            {
+                m_QuitButton.RegisterCallback<ClickEvent>(OnClickQuit);
+            }
         }
 
         void OnDisable()

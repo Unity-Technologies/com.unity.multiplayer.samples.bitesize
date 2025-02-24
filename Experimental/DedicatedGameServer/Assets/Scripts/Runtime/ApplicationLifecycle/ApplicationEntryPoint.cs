@@ -24,11 +24,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         public static bool s_AreTestsRunning = false;
         public bool AreTestsRunning => s_AreTestsRunning;
 #endif
-        bool AutoConnectOnStartup
+        public bool AutoConnectOnStartup
         {
             get
             {
-                bool startAutomatically = false;
+                var startAutomatically = false;
                 switch (MultiplayerRolesManager.ActiveMultiplayerRoleMask)
                 {
                     case MultiplayerRoleFlags.Server:
@@ -99,7 +99,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                     Application.targetFrameRate = commandLineArgumentsParser.TargetFramerate;
                     QualitySettings.vSyncCount = 0;
 
-                    // MPPM Scenarios are as follows:
+                    // Multiplayer Play Mode Scenarios are as follows:
                     // * EditorAsClient (one Virtual Player with Server role, Editor and rest of Virtual Players autoconnect)
                     // * EditorAsServer (editor is Server role, rest of Virtual Players with Client role autoconnect)
                     // * DeployToUGS (deploys server to a separate fleet in UGS, Virtual Player clients can connect to the allocated server's IP & port)
@@ -152,8 +152,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                     case ConnectStatus.GenericDisconnect:
                     case ConnectStatus.UserRequestedDisconnect:
                     case ConnectStatus.ServerEndedSession:
-                        // If client is disconnected, return to metagame scene
-                        SceneManager.LoadScene(k_MetagameSceneName);
+                        if (!AutoConnectOnStartup)
+                        {
+                            // If client is disconnected, return to metagame scene
+                            SceneManager.LoadScene(k_MetagameSceneName);
+                        }
                         break;
                 }
             }

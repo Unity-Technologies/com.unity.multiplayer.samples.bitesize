@@ -53,15 +53,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 state.ConnectionManager = this;
             }
 
-            #if UNITY_SERVER
-            InitializeServerStates();
-            #elif UNITY_EDITOR
             if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
             {
                 InitializeServerStates();
             }
-            #endif
-
+            
             m_CurrentState = m_Offline;
             NetworkManager.OnConnectionEvent += OnConnectionEvent;
             NetworkManager.OnServerStarted += OnServerStarted;

@@ -1,5 +1,5 @@
-#if UNITY_SERVER
 using System;
+using Unity.Multiplayer;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
@@ -57,4 +57,3 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         }
     }
 }
-#endif
