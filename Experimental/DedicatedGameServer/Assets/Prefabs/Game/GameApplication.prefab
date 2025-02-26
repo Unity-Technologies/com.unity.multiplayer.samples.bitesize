@@ -57,6 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5873813210152660583}
   - component: {fileID: 2611669215631704512}
+  - component: {fileID: 4215337615736780738}
   m_Layer: 0
   m_Name: Views
   m_TagString: Untagged
@@ -98,6 +99,17 @@ MonoBehaviour:
   m_MatchView: {fileID: 2984461789708840317}
   m_GameMenuView: {fileID: 3885717122117595817}
   m_MatchRecapView: {fileID: 1235063626222470819}
+--- !u!1652712579 &4215337615736780738
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4725549617812107662}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 2611669215631704512}
+    m_RolesMask: 1
 --- !u!1 &5214451676404606949
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,12 +241,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &6358639672112253857
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +258,7 @@ GameObject:
   - component: {fileID: 8495312077754069265}
   - component: {fileID: 3593997297337162782}
   - component: {fileID: 1235063626222470819}
+  - component: {fileID: 3526862514973112565}
   m_Layer: 5
   m_Name: MatchRecapView
   m_TagString: Untagged
@@ -284,6 +297,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: b6805a5cab3d15443b2d1ed8c045e6eb, type: 3}
   m_SortingOrder: 1
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &1235063626222470819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +312,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc5ce18e77c2b34ea655c7f5cc75da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &3526862514973112565
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6358639672112253857}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 1235063626222470819}
+    m_RolesMask: 1
 --- !u!1 &7866452525617413525
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +417,7 @@ GameObject:
   - component: {fileID: 3270731372627773124}
   - component: {fileID: 3828751765032560145}
   - component: {fileID: 3885717122117595817}
+  - component: {fileID: 4371688875375132571}
   m_Layer: 0
   m_Name: GameMenuView
   m_TagString: Untagged
@@ -428,6 +456,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 1ff75d80c87cc2b489bd2814dcb04afd, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &3885717122117595817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +471,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96303d2e55be47b468191628fe6b95ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &4371688875375132571
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938230458218682338}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 3885717122117595817}
+    m_RolesMask: 1
 --- !u!1 &7979579331580006965
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +493,7 @@ GameObject:
   - component: {fileID: 78772956734522983}
   - component: {fileID: 4603705401790786008}
   - component: {fileID: 2984461789708840317}
+  - component: {fileID: 2126062413074753193}
   m_Layer: 5
   m_Name: MatchView
   m_TagString: Untagged
@@ -489,6 +532,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 858502808a6fb6f43b789452691e5766, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &2984461789708840317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +547,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aedc21ba435348e48851c5b98d981f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &2126062413074753193
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7979579331580006965}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 2984461789708840317}
+    m_RolesMask: 1
 --- !u!1 &8555614893495770896
 GameObject:
   m_ObjectHideFlags: 0

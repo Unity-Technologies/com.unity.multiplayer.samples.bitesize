@@ -19,6 +19,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
     [MultiplayerRoleRestricted]
     public partial class ConnectionManager : MonoBehaviour
     {
+        public static ConnectionManager Instance { get; private set; }
+
         ConnectionState m_CurrentState;
 
         [SerializeField]
@@ -47,6 +49,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+            }
             List<ConnectionState> states = new() {m_Offline, m_ClientConnecting, m_ClientConnected};
             foreach (var state in states)
             {
@@ -57,7 +63,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             {
                 InitializeServerStates();
             }
-            
+
             m_CurrentState = m_Offline;
             NetworkManager.OnConnectionEvent += OnConnectionEvent;
             NetworkManager.OnServerStarted += OnServerStarted;

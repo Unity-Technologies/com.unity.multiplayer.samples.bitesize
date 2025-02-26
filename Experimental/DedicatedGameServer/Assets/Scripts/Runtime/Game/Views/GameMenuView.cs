@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class GameMenuView : View<GameApplication>
+    class GameMenuView : View<GameApplication>
     {
         Button m_ResumeButton;
         Button m_QuitButton;
@@ -21,7 +21,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_ResumeButton = root.Q<Button>("resumeButton");
             m_ResumeButton.RegisterCallback<ClickEvent>(OnClickResume);
             m_QuitButton = root.Q<Button>("quitButton");
-            if (ApplicationEntryPoint.Singleton.AutoConnectOnStartup)
+            if (ApplicationEntryPoint.Instance.AutoConnectOnStartup)
             {
                 m_QuitButton.SetEnabled(false);
             }

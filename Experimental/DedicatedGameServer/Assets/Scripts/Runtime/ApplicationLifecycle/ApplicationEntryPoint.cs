@@ -18,7 +18,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
     {
         const string k_DefaultServerListenAddress = "0.0.0.0";
         const string k_DefaultClientAutoConnectServerAddress = "127.0.0.1";
-        public static ApplicationEntryPoint Singleton { get; private set; }
+        public static ApplicationEntryPoint Instance { get; private set; }
 
 #if UNITY_EDITOR
         public static bool s_AreTestsRunning = false;
@@ -47,7 +47,6 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 
         [SerializeField]
         ConnectionManager m_ConnectionManager;
-        public ConnectionManager ConnectionManager => m_ConnectionManager;
 
         internal const int k_MinPlayers = 2;
         internal const int k_MaxPlayers = 10;
@@ -60,9 +59,9 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            if (Singleton is null)
+            if (Instance is null)
             {
-                Singleton = this;
+                Instance = this;
             }
             m_ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
         }
@@ -75,11 +74,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
         [RuntimeInitializeOnLoadMethod]
         static void OnApplicationStarted()
         {
-            if (!Singleton) //this happens during PlayMode tests
+            if (!Instance) //this happens during PlayMode tests
             {
                 return;
             }
-            Singleton.InitializeNetworkLogic(); //note: this is the entry point for all autoconnected instances (including standalone servers)
+            Instance.InitializeNetworkLogic(); //note: this is the entry point for all autoconnected instances (including standalone servers)
         }
 
         /// <summary>

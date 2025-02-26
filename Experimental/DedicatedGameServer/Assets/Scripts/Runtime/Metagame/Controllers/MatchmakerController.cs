@@ -8,7 +8,6 @@ namespace Unity.DedicatedGameServerSample.Runtime
     class MatchmakerController : Controller<MetagameApplication>
     {
         MatchmakerView View => App.View.Matchmaker;
-        ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
 
         const string k_QueueName = "Queue01";
 
@@ -16,7 +15,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             AddListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
             AddListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
-            ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            }
         }
 
         void OnDestroy()
@@ -28,16 +30,16 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             RemoveListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
             RemoveListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
-            if (ConnectionManager != null)
+            if (ConnectionManager.Instance != null)
             {
-                ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+                ConnectionManager.Instance.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
             }
         }
 
         void OnEnterMatchmakerQueue(EnterMatchmakerQueueEvent evt)
         {
             View.Show();
-            ConnectionManager.StartClientMatchmaker(k_QueueName, ApplicationEntryPoint.k_MaxPlayers);
+            ConnectionManager.Instance.StartClientMatchmaker(k_QueueName, ApplicationEntryPoint.k_MaxPlayers);
         }
 
         void OnExitMatchmakerQueue(ExitMatchmakerQueueEvent evt)

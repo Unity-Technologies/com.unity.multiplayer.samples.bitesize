@@ -1,5 +1,5 @@
 using System;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
+using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
@@ -44,7 +44,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnClientQuitButtonClicked(QuitButtonClickedEvent evt)
         {
-            ApplicationEntryPoint.Singleton.ConnectionManager.RequestShutdown();
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.RequestShutdown();
+            }
         }
 
         void OnMenuToggled(MenuToggleEvent evt)

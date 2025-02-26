@@ -1,5 +1,4 @@
 using System;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 using UnityEngine;
 
@@ -8,14 +7,16 @@ namespace Unity.DedicatedGameServerSample.Runtime
     class DirectIPController : Controller<MetagameApplication>
     {
         DirectIPView View => App.View.DirectIP;
-        ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
 
         void Awake()
         {
             AddListener<EnterIPConnectionEvent>(OnEnterIPConnection);
             AddListener<ExitIPConnectionEvent>(OnExitIPConnection);
             AddListener<JoinThroughDirectIPEvent>(OnJoinGame);
-            ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            }
         }
 
         void OnDestroy()
@@ -28,7 +29,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             RemoveListener<EnterIPConnectionEvent>(OnEnterIPConnection);
             RemoveListener<ExitIPConnectionEvent>(OnExitIPConnection);
             RemoveListener<JoinThroughDirectIPEvent>(OnJoinGame);
-            ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            }
         }
 
         void OnEnterIPConnection(EnterIPConnectionEvent evt)
@@ -43,7 +47,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnJoinGame(JoinThroughDirectIPEvent evt)
         {
-            ConnectionManager.StartClientIP(evt.ipAddress, evt.port);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.StartClientIP(evt.ipAddress, evt.port);
+            }
         }
 
         void OnConnectionEvent(ConnectionEvent evt)
