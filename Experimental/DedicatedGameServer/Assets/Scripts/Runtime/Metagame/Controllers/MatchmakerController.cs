@@ -9,8 +9,6 @@ namespace Unity.DedicatedGameServerSample.Runtime
     {
         MatchmakerView View => App.View.Matchmaker;
 
-        const string k_QueueName = "Queue01";
-
         void Awake()
         {
             AddListener<EnterMatchmakerQueueEvent>(OnEnterMatchmakerQueue);
@@ -40,7 +38,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
         {
             View.Show();
             App.Model.ClientConnecting.InitializeTimer();
-            ConnectionManager.Instance.StartClientMatchmaker(k_QueueName, ApplicationEntryPoint.k_MaxPlayers);
+            ConnectionManager.Instance.StartClientMatchmaker();
         }
 
         void OnExitMatchmakerQueue(ExitMatchmakerQueueEvent evt)

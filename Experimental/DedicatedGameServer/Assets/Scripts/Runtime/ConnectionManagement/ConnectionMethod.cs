@@ -1,8 +1,6 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Unity.Netcode.Transports.UTP;
-using Unity.Services.Multiplayer;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
@@ -95,19 +93,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
     /// </summary>
     partial class ConnectionMethodMatchmaker : ConnectionMethodBase
     {
-        int m_MaxPlayers;
-        string m_QueueName;
-
-        CancellationTokenSource m_CancellationTokenSource;
-
-        public ConnectionMethodMatchmaker(
-            ConnectionManager connectionManager,
-            string queueName,
-            int maxPlayers)
-            : base(connectionManager)
+        public ConnectionMethodMatchmaker(ConnectionManager connectionManager) : base(connectionManager)
         {
-            m_QueueName = queueName;
-            m_MaxPlayers = maxPlayers;
             m_ConnectionManager = connectionManager;
         }
 
@@ -118,24 +105,12 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         public override async Task ConnectClientAsync()
         {
-            var matchmakerOptions = new MatchmakerOptions
-            {
-                QueueName = m_QueueName
-            };
-
-            var sessionOptions = new SessionOptions()
-            {
-                MaxPlayers = m_MaxPlayers
-            }.WithDirectNetwork();
-
-            m_CancellationTokenSource = new CancellationTokenSource();
-
-            await MultiplayerService.Instance.MatchmakeSessionAsync(matchmakerOptions, sessionOptions, m_CancellationTokenSource.Token);
+            await MatchmakerHandler.Instance.ConnectClientAsync();
         }
 
         public override void StopClient()
         {
-            m_CancellationTokenSource.Cancel();
+            MatchmakerHandler.Instance.CancelConnectToDedicatedGameServer();
         }
     }
 }

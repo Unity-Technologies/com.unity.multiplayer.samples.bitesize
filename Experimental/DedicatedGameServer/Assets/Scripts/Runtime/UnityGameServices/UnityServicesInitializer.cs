@@ -15,6 +15,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
         const string k_ServerID = "SERVER";
         public static UnityServicesInitializer Instance { get; private set; }
 
+        [SerializeField]
+        MatchmakerHandler m_MatchmakerHandler;
+        public MatchmakerHandler Matchmaker => m_MatchmakerHandler;
+
         const string k_Environment =
 #if LIVE
                                         "production";

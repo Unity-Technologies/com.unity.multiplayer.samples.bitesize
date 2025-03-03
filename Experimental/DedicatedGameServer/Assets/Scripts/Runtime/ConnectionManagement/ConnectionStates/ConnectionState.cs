@@ -21,7 +21,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         public virtual void StartClientIP(string ipaddress, ushort port) { }
 
-        public virtual void StartClientMatchmaker(string queueName, int maxPlayers) { }
+        public virtual void StartClientMatchmaker() { }
 
         public virtual void StopClient() { }
 

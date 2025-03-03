@@ -140,9 +140,9 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             m_CurrentState.StartClientIP(ipaddress, port);
         }
 
-        public void StartClientMatchmaker(string queueName, int maxPlayers)
+        public void StartClientMatchmaker()
         {
-            m_CurrentState.StartClientMatchmaker(queueName, maxPlayers);
+            m_CurrentState.StartClientMatchmaker();
         }
 
         public void StopClient()

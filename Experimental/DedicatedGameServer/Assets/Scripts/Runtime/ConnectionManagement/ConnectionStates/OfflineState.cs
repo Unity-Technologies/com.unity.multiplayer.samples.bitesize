@@ -22,9 +22,9 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             ConnectionManager.ChangeState(ConnectionManager.m_ClientConnecting);
         }
 
-        public override void StartClientMatchmaker(string queueName, int maxPlayers)
+        public override void StartClientMatchmaker()
         {
-            var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager, queueName, maxPlayers);
+            var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager);
             ConnectionManager.m_ClientMatchmaking.Configure(connectionMethod);
             ConnectionManager.ChangeState(ConnectionManager.m_ClientMatchmaking);
         }
@@ -43,7 +43,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         {
             if (MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Server)
             {
-                var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager, string.Empty, maxPlayers);
+                var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager);
                 ConnectionManager.m_StartingServer.Configure(connectionMethod);
                 ConnectionManager.ChangeState(ConnectionManager.m_StartingServer);
             }

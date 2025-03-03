@@ -16,6 +16,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         public override void Enter()
         {
+            #if UNITY_SERVER
+            MatchmakerHandler.Instance.StartServerQuery();
+            #endif
+
             // todo setup gsh to receive matchmaker tickets
             m_MinPlayerConnected = false;
         }
@@ -32,6 +36,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 m_MinPlayerConnected = true;
                 ConnectionManager.EventManager.Broadcast(new MinNumberPlayersConnectedEvent());
             }
+
+#if UNITY_SERVER
+            MatchmakerHandler.Instance.UpdatePlayerCount((ushort)ConnectionManager.NetworkManager.ConnectedClientsIds.Count);
+#endif
         }
 
         public override void OnClientDisconnect(ulong clientId)
@@ -47,6 +55,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.ServerEndedSession });
                 ConnectionManager.ChangeState(ConnectionManager.m_Offline);
             }
+
+#if UNITY_SERVER
+            MatchmakerHandler.Instance.UpdatePlayerCount((ushort)ConnectionManager.NetworkManager.ConnectedClientsIds.Count);
+#endif
         }
 
         public override void OnUserRequestedShutdown()
@@ -66,6 +78,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         {
             ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.GenericDisconnect });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
+
+#if UNITY_SERVER
+            MatchmakerHandler.Instance.Cleanup();
+#endif
         }
 
         /// <summary>
