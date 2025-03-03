@@ -1,7 +1,7 @@
 using UnityEngine.UIElements;
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class MainMenuView : View<MetagameApplication>
+    class MainMenuView : View<MetagameApplication>
     {
         Button m_FindMatchButton;
         Button m_JoinDirectIPButton;

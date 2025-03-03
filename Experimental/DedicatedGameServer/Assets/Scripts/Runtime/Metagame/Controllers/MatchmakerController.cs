@@ -39,12 +39,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
         void OnEnterMatchmakerQueue(EnterMatchmakerQueueEvent evt)
         {
             View.Show();
+            App.Model.ClientConnecting.InitializeTimer();
             ConnectionManager.Instance.StartClientMatchmaker(k_QueueName, ApplicationEntryPoint.k_MaxPlayers);
         }
 
         void OnExitMatchmakerQueue(ExitMatchmakerQueueEvent evt)
         {
             View.Hide();
+            ConnectionManager.Instance.StopClient();
         }
 
         void OnConnectionEvent(ConnectionEvent evt)

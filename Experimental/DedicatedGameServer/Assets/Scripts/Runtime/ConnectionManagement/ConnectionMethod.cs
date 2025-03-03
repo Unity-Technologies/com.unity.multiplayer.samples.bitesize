@@ -32,6 +32,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         public abstract Task ConnectClientAsync();
 
+        public abstract void StopClient();
+
         protected ConnectionMethodBase(ConnectionManager connectionManager)
         {
             m_ConnectionManager = connectionManager;
@@ -81,6 +83,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             }
             return Task.CompletedTask;
         }
+
+        public override void StopClient()
+        {
+            // nothing to tear down for this connection type as offline state will shutdown NetworkManager
+        }
     }
 
     /// <summary>
@@ -90,6 +97,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
     {
         int m_MaxPlayers;
         string m_QueueName;
+
+        CancellationTokenSource m_CancellationTokenSource;
 
         public ConnectionMethodMatchmaker(
             ConnectionManager connectionManager,
@@ -119,9 +128,14 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 MaxPlayers = m_MaxPlayers
             }.WithDirectNetwork();
 
-            var matchmakerCancellationSource = new CancellationTokenSource();
+            m_CancellationTokenSource = new CancellationTokenSource();
 
-            await MultiplayerService.Instance.MatchmakeSessionAsync(matchmakerOptions, sessionOptions, matchmakerCancellationSource.Token);
+            await MultiplayerService.Instance.MatchmakeSessionAsync(matchmakerOptions, sessionOptions, m_CancellationTokenSource.Token);
+        }
+
+        public override void StopClient()
+        {
+            m_CancellationTokenSource.Cancel();
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         internal readonly OfflineState m_Offline = new();
         internal readonly ClientConnectingState m_ClientConnecting = new();
+        internal readonly ClientMatchmakingState m_ClientMatchmaking = new();
         internal readonly ClientConnectedState m_ClientConnected = new();
 
         void Awake()
@@ -53,7 +54,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             {
                 Instance = this;
             }
-            List<ConnectionState> states = new() {m_Offline, m_ClientConnecting, m_ClientConnected};
+            List<ConnectionState> states = new() {m_Offline, m_ClientConnecting, m_ClientMatchmaking, m_ClientConnected};
             foreach (var state in states)
             {
                 state.ConnectionManager = this;
@@ -142,6 +143,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public void StartClientMatchmaker(string queueName, int maxPlayers)
         {
             m_CurrentState.StartClientMatchmaker(queueName, maxPlayers);
+        }
+
+        public void StopClient()
+        {
+            m_CurrentState.StopClient();
         }
 
         public void StartServerMatchmaker(int maxPlayers)

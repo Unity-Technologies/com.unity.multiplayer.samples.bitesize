@@ -25,8 +25,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public override void StartClientMatchmaker(string queueName, int maxPlayers)
         {
             var connectionMethod = new ConnectionMethodMatchmaker(ConnectionManager, queueName, maxPlayers);
-            ConnectionManager.m_ClientConnecting.Configure(connectionMethod);
-            ConnectionManager.ChangeState(ConnectionManager.m_ClientConnecting);
+            ConnectionManager.m_ClientMatchmaking.Configure(connectionMethod);
+            ConnectionManager.ChangeState(ConnectionManager.m_ClientMatchmaking);
         }
 
         public override void StartServerIP(string ipaddress, ushort port)
