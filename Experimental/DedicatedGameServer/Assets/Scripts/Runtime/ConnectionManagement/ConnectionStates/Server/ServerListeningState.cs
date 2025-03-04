@@ -16,7 +16,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         public override void Enter()
         {
-            #if UNITY_SERVER
+            #if UNITY_SERVER && !UNITY_EDITOR
             MatchmakerHandler.Instance.StartServerQuery();
             #endif
 
@@ -37,7 +37,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 ConnectionManager.EventManager.Broadcast(new MinNumberPlayersConnectedEvent());
             }
 
-#if UNITY_SERVER
+#if UNITY_SERVER && !UNITY_EDITOR
             MatchmakerHandler.Instance.UpdatePlayerCount((ushort)ConnectionManager.NetworkManager.ConnectedClientsIds.Count);
 #endif
         }
@@ -56,7 +56,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 ConnectionManager.ChangeState(ConnectionManager.m_Offline);
             }
 
-#if UNITY_SERVER
+#if UNITY_SERVER && !UNITY_EDITOR
             MatchmakerHandler.Instance.UpdatePlayerCount((ushort)ConnectionManager.NetworkManager.ConnectedClientsIds.Count);
 #endif
         }
@@ -79,7 +79,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.GenericDisconnect });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
 
-#if UNITY_SERVER
+#if UNITY_SERVER && !UNITY_EDITOR
             MatchmakerHandler.Instance.Cleanup();
 #endif
         }

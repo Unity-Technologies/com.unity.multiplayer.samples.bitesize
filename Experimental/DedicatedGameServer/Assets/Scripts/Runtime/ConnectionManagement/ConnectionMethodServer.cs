@@ -42,7 +42,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             // nothing to set up here
         }
 
-#if UNITY_SERVER
+#if UNITY_SERVER && !UNITY_EDITOR
         public override async Task ConnectServerAsync()
         {
             await MatchmakerHandler.Instance.ConnectToDedicatedGameServer();
