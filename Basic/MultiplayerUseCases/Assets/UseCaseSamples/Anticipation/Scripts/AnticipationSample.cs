@@ -45,6 +45,14 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         public NetworkManager NetworkManagerObject;
         public PlayerMovableObject Player;
 
+        void Awake()
+        {
+            if (!NetworkManagerObject.IsListening && !Restart)
+            {
+                SetDebugSimulatorParameters(Latency, Jitter, 0);
+            }
+        }
+
         [Rpc(SendTo.Server)]
         void SetValueARpc(float value)
         {
@@ -281,25 +289,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                     GUILayout.EndArea();
                 }
             }
-            else
-            {
-                GUILayout.BeginArea(new Rect(0, 0, 300, 600));
-
-                if (!NetworkManagerObject.IsListening && !Restart)
-                {
-                    if (GUILayout.Button("Start Server"))
-                    {
-                        SetDebugSimulatorParameters(Latency, Jitter, 0);
-                        NetworkManagerObject.StartServer();
-                    }
-                    if (GUILayout.Button("Start Client"))
-                    {
-                        SetDebugSimulatorParameters(Latency, Jitter, 0);
-                        NetworkManagerObject.StartClient();
-                    }
-                }
-                GUILayout.EndArea();
-            }
         }
 
         void SetDebugSimulatorParameters(int latency, int jitter, int dropRate)
@@ -310,5 +299,4 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             networkSimulator.ChangeConnectionPreset(preset);
         }
     }
-
 }
