@@ -42,8 +42,19 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         /// </summary>
         public AnticipatedNetworkVariable<float> ValueE = new AnticipatedNetworkVariable<float>(0, StaleDataHandling.Reanticipate);
 
-        public NetworkManager NetworkManagerObject;
-        public PlayerMovableObject Player;
+        NetworkManager NetworkManagerObject => NetworkManager.Singleton;
+        PlayerMovableObject Player
+        {
+            get
+            {
+                if (m_Player == null)
+                {
+                    m_Player = FindFirstObjectByType<PlayerMovableObject>();
+                }
+                return m_Player;
+            }
+        }
+        PlayerMovableObject m_Player;
 
         void Awake()
         {

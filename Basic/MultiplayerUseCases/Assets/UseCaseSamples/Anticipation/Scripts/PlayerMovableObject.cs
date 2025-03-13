@@ -6,14 +6,35 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
     public class PlayerMovableObject : NetworkBehaviour
     {
-        public Transform GhostTrasform;
-        public AnticipatedNetworkTransform MyTransform;
-        public InputManager InputManager;
+        [SerializeField]
+        GameObject m_GhostPrefab;
+
+        public Transform GhostTrasform
+        {
+            get
+            {
+                if (m_GhostTrasform == null)
+                {
+                    m_GhostTrasform = Instantiate(m_GhostPrefab, transform.position, transform.rotation).transform;
+                }
+                return m_GhostTrasform;
+            }
+        }
+        Transform m_GhostTrasform;
+        AnticipatedNetworkTransform m_MyTransform;
+
+        [SerializeField]
+        InputManager m_InputManager;
         public float SmoothTime = 0.1f;
         public float SmoothDistance = 3f;
 
-        private Vector3 m_LastTeleportLocation;
-        private Quaternion m_LastTeleportRotation;
+        Vector3 m_LastTeleportLocation;
+        Quaternion m_LastTeleportRotation;
+
+        void Awake()
+        {
+            m_MyTransform = GetComponent<AnticipatedNetworkTransform>();
+        }
 
         /// <summary>
         /// Handles movement for a given frame, moving the player according to the delta time recorded
@@ -25,25 +46,25 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             if ((inputs & InputList.Up) != 0)
             {
                 var newPosition = transform.position + transform.right * (Time.fixedDeltaTime * 4);
-                MyTransform.AnticipateMove(newPosition);
+                m_MyTransform.AnticipateMove(newPosition);
             }
 
             if ((inputs & InputList.Down) != 0)
             {
                 var newPosition = transform.position - transform.right * (Time.fixedDeltaTime * 4);
-                MyTransform.AnticipateMove(newPosition);
+                m_MyTransform.AnticipateMove(newPosition);
             }
 
             if ((inputs & InputList.Left) != 0)
             {
                 transform.Rotate(Vector3.up, -180f * Time.fixedDeltaTime);
-                MyTransform.AnticipateRotate(transform.rotation);
+                m_MyTransform.AnticipateRotate(transform.rotation);
             }
 
             if ((inputs & InputList.Right) != 0)
             {
                 transform.Rotate(Vector3.up, 180f * Time.fixedDeltaTime);
-                MyTransform.AnticipateRotate(transform.rotation);
+                m_MyTransform.AnticipateRotate(transform.rotation);
             }
 
             if ((inputs & InputList.RandomTeleport) != 0)
@@ -62,8 +83,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                     m_LastTeleportLocation = newPosition;
                     m_LastTeleportRotation = newRotation;
                 }
-                MyTransform.AnticipateMove(newPosition);
-                MyTransform.AnticipateRotate(newRotation);
+                m_MyTransform.AnticipateMove(newPosition);
+                m_MyTransform.AnticipateRotate(newRotation);
             }
 
             if ((inputs & InputList.SmallRandomTeleport) != 0)
@@ -80,8 +101,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                     m_LastTeleportLocation = newPosition;
                     m_LastTeleportRotation = newRotation;
                 }
-                MyTransform.AnticipateMove(newPosition);
-                MyTransform.AnticipateRotate(newRotation);
+                m_MyTransform.AnticipateMove(newPosition);
+                m_MyTransform.AnticipateRotate(newRotation);
             }
 
             if ((inputs & InputList.PredictableTeleport) != 0)
@@ -98,8 +119,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                     m_LastTeleportLocation = newPosition;
                     m_LastTeleportRotation = newRotation;
                 }
-                MyTransform.AnticipateMove(newPosition);
-                MyTransform.AnticipateRotate(newRotation);
+                m_MyTransform.AnticipateMove(newPosition);
+                m_MyTransform.AnticipateRotate(newRotation);
             }
         }
 
@@ -107,7 +128,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         {
             // Have to store the transform's previous state because calls to AnticipateMove() and
             // AnticipateRotate() will overwrite it.
-            var previousState = MyTransform.PreviousAnticipatedState;
+            var previousState = m_MyTransform.PreviousAnticipatedState;
 
             var authorityTime = NetworkManager.LocalTime.Time - lastRoundTripTime;
             // Here we re-anticipate the new position of the player based on the updated server position.
@@ -115,7 +136,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             // since the reported authority time, re-applying all the movement we have applied since then
             // to arrive at a new anticipated player location.
 
-            foreach (var item in InputManager.GetHistory())
+            foreach (var item in m_InputManager.GetHistory())
             {
                 if (item.Time <= authorityTime)
                 {
@@ -127,7 +148,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             // Clear out all the input history before the given authority time. We don't need anything before that
             // anymore as we won't get any more updates from the server from before this one. We keep the current
             // authority time because theoretically another system may need that.
-            InputManager.RemoveBefore(authorityTime);
+            m_InputManager.RemoveBefore(authorityTime);
             // It's not always desirable to smooth the transform. In cases of very large discrepencies in state,
             // it can sometimes be desirable to simply teleport to the new position. We use the SmoothDistance
             // value (and use SqrMagnitude instead of Distance for efficiency) as a threshold for teleportation.
@@ -135,11 +156,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             // in the replay set, we could set a flag to disable smoothing because we know we are teleporting.
             if (SmoothTime != 0.0)
             {
-                var sqDist = Vector3.SqrMagnitude(previousState.Position - MyTransform.AnticipatedState.Position);
+                var sqDist = Vector3.SqrMagnitude(previousState.Position - m_MyTransform.AnticipatedState.Position);
                 if (sqDist <= 0.25 * 0.25)
                 {
                     // This prevents small amounts of wobble from slight differences.
-                    MyTransform.AnticipateState(previousState);
+                    m_MyTransform.AnticipateState(previousState);
                 }
                 else if (sqDist < SmoothDistance * SmoothDistance)
                 {
@@ -148,7 +169,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                     // anticipated state (stored in "anticipatedValue") to the new state (which, because we have used
                     // the "Move" method that updates the anticipated state of the transform, is now the current
                     // transform anticipated state)
-                    MyTransform.Smooth(previousState, MyTransform.AnticipatedState, SmoothTime);
+                    m_MyTransform.Smooth(previousState, m_MyTransform.AnticipatedState, SmoothTime);
                 }
             }
 
@@ -160,7 +181,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         /// </summary>
         public override void OnNetworkSpawn()
         {
-            InputManager.Clear();
+            m_InputManager.Clear();
         }
 
         /// <summary>
@@ -174,21 +195,21 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         [Rpc(SendTo.Server)]
         private void ServerMoveRpc(InputList inputs)
         {
-            var currentPosition = MyTransform.AnticipatedState;
+            var currentPosition = m_MyTransform.AnticipatedState;
             // Calling Anticipate functions on the authority sets the authority value, too, so we can
             // just reuse the same method here with no problem.
             Move(inputs);
             // Server can use Smoothing for interpolation purposes as well.
-            MyTransform.Smooth(currentPosition, MyTransform.AuthoritativeState, SmoothTime);
+            m_MyTransform.Smooth(currentPosition, m_MyTransform.AuthoritativeState, SmoothTime);
         }
 
         public void Update()
         {
             // The "ghost transform" here is a little smaller player object that shows the current authority position,
             // which is a few frames behind our anticipated value. This helps render the difference.
-            GhostTrasform.position = MyTransform.AuthoritativeState.Position;
-            GhostTrasform.rotation = MyTransform.AuthoritativeState.Rotation;
-            GhostTrasform.localScale = MyTransform.AuthoritativeState.Scale * 0.75f;
+            GhostTrasform.position = m_MyTransform.AuthoritativeState.Position;
+            GhostTrasform.rotation = m_MyTransform.AuthoritativeState.Rotation;
+            GhostTrasform.localScale = m_MyTransform.AuthoritativeState.Scale * 0.75f;
         }
 
         // Input processing happens in FixedUpdate rather than Update because the frame rate of server and client
@@ -206,7 +227,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             }
             if (!IsServer)
             {
-                var inputs = InputManager.GetInput();
+                var inputs = m_InputManager.GetInput();
                 Move(inputs);
                 ServerMoveRpc(inputs);
             }
