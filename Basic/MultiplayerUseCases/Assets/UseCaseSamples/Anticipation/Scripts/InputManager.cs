@@ -11,9 +11,9 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
     /// </summary>
     public class InputManager : MonoBehaviour
     {
-        public NetworkManager NetworkManager;
-        private FrameHistory<InputList> m_HistoricalInput = new FrameHistory<InputList>();
-        private InputList m_LastInput;
+        NetworkManager NetworkManager => NetworkManager.Singleton;
+        FrameHistory<InputList> m_HistoricalInput = new FrameHistory<InputList>();
+        InputList m_LastInput;
 
         /// <summary>
         /// Retrieve input for the current frame.
