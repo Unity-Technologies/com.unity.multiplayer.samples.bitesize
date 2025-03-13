@@ -1,10 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
-namespace DefaultNamespace
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
     /// <summary>
     /// Stores current and historical player input and allows that input to be queried.

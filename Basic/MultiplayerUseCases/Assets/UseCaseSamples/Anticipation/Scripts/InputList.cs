@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace DefaultNamespace
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
     /// <summary>
     /// Simple enum representing the player inputs that are used by this little demo.

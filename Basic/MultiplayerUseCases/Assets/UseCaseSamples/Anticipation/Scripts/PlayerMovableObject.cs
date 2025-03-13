@@ -1,11 +1,8 @@
-﻿using System;
-using Unity.Mathematics;
-using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace DefaultNamespace
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
     public class PlayerMovableObject : NetworkBehaviour
     {

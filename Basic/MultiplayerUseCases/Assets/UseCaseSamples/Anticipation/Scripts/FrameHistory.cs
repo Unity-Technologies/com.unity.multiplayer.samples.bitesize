@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+using System.Collections.Generic;
 
-namespace DefaultNamespace
+namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
     /// <summary>
     /// Simple container to store historical data associated with a frame for the sake of replaying that data.
@@ -29,7 +28,7 @@ namespace DefaultNamespace
         /// <param name="value"></param>
         public void Add(double time, T value)
         {
-            m_History.Add(new ItemFrameData{Time = time, Item = value});
+            m_History.Add(new ItemFrameData { Time = time, Item = value });
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace DefaultNamespace
         /// </summary>
         public void Clear()
         {
-            m_History.Clear();;
+            m_History.Clear(); ;
         }
 
         /// <summary>
