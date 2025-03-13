@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
@@ -14,6 +15,22 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         NetworkManager NetworkManager => NetworkManager.Singleton;
         FrameHistory<InputList> m_HistoricalInput = new FrameHistory<InputList>();
         InputList m_LastInput;
+        InputAction m_RandomTeleportAction;
+        InputAction m_SmallRandomTeleportAction;
+        InputAction m_PredictableTeleportAction;
+
+        public Vector2 m_Move;
+        public void OnMove(InputValue value)
+        {
+            m_Move = value.Get<Vector2>();
+        }
+
+        void Start()
+        {
+            m_RandomTeleportAction = InputSystem.actions.FindAction("RandomTeleport");
+            m_SmallRandomTeleportAction = InputSystem.actions.FindAction("SmallRandomTeleport");
+            m_PredictableTeleportAction = InputSystem.actions.FindAction("PredictableTeleport");
+        }
 
         /// <summary>
         /// Retrieve input for the current frame.
@@ -27,31 +44,31 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             }
 
             InputList input = 0;
-            if (Input.GetKey(KeyCode.W))
+            if (m_Move.y > 0)
             {
                 input |= InputList.Up;
             }
-            if (Input.GetKey(KeyCode.A))
+            if (m_Move.x < 0)
             {
                 input |= InputList.Left;
             }
-            if (Input.GetKey(KeyCode.S))
+            if (m_Move.y < 0)
             {
                 input |= InputList.Down;
             }
-            if (Input.GetKey(KeyCode.D))
+            if (m_Move.x > 0)
             {
                 input |= InputList.Right;
             }
-            if (Input.GetKey(KeyCode.Q))
+            if (m_RandomTeleportAction.IsPressed())
             {
                 input |= InputList.RandomTeleport;
             }
-            if (Input.GetKey(KeyCode.E))
+            if (m_SmallRandomTeleportAction.IsPressed())
             {
                 input |= InputList.SmallRandomTeleport;
             }
-            if (Input.GetKey(KeyCode.R))
+            if (m_PredictableTeleportAction.IsPressed())
             {
                 input |= InputList.PredictableTeleport;
             }
