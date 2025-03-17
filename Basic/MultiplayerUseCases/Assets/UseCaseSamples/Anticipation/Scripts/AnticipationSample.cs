@@ -190,10 +190,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, scale);
             if (NetworkManagerObject.IsListening)
             {
-                GUILayout.BeginArea(new Rect(0, 0, 900, 72));
-                GUILayout.Label("Anticipated Network Variable:");
-                GUILayout.Label("Each pair of sliders represents a network variable's authoritative and anticipate values. Changing the top slider sends an RPC to the server, which updates the bottom slider. The top slider shows the current 'anticipated' value, including any smoothing, while the bottom represents the authoritative value.");
-                GUILayout.EndArea();
                 GUILayout.BeginArea(new Rect(0, 72, 300, 300));
 
                 GUILayout.BeginVertical("Box");
