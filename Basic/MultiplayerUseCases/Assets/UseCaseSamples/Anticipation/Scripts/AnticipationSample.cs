@@ -63,6 +63,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         VisualElement m_UIRoot;
         Button m_ToggleServerVisualizationButton;
         Button m_ApplyLatencyAndJitterButton;
+        Slider m_TransformSmoothDurationSlider;
+        Slider m_TransformSmoothDistanceThresholdSlider;
         SliderInt m_JitterSlider;
         SliderInt m_LatencySlider;
 
@@ -79,9 +81,9 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             RefreshJitterLabel();
             m_LatencySlider = UIElementsUtils.SetupIntSlider("LatencySlider", 0, 300, Latency, 1, OnLatencyChanged, m_UIRoot);
             RefreshLatencyLabel();
-            //m_UIDocument.gameObject.SetActive(false);
+            m_TransformSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("DurationSlider", 0, 1, 0, 0.1f, OnPlayerSmoothDurationChanged, m_UIRoot);
+            m_TransformSmoothDistanceThresholdSlider = UIElementsUtils.SetupFloatSlider("DistanceThresholdSlider", 0, 50, 0, 0.5f, OnPlayerSmoothDistanceThresholdChanged, m_UIRoot);
         }
-
 
         void OnClickToggleVisualization()
         {
@@ -119,13 +121,22 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         void OnLatencyChanged(ChangeEvent<int> evt)
         {
             Latency = evt.newValue;
-            Debug.Log("OnLatencyChanged: " + Latency);
             RefreshLatencyLabel();
         }
 
         void RefreshLatencyLabel()
         {
             m_LatencySlider.label = $"Latency: {Latency}ms";
+        }
+
+        void OnPlayerSmoothDurationChanged(ChangeEvent<float> evt)
+        {
+            Player.SmoothTime = evt.newValue;
+        }
+
+        void OnPlayerSmoothDistanceThresholdChanged(ChangeEvent<float> evt)
+        {
+            Player.SmoothDistance = evt.newValue;
         }
 
         [Rpc(SendTo.Server)]
@@ -241,6 +252,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             {
                 ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime) % 10;
             }
+            if (NetworkManagerObject.IsListening && IsClient)
+            {
+                m_TransformSmoothDurationSlider.label = $"Transform smooth duration: {Player.SmoothTime}s";
+                m_TransformSmoothDistanceThresholdSlider.label = $"Transform smooth distance threshold: {Player.SmoothDistance}";
+            }
         }
 
         int Latency = 200;
@@ -325,16 +341,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 }
 
                 GUILayout.EndArea();
-                if (IsClient)
-                {
-                    GUILayout.BeginArea(new Rect(0, 310, 600, 300));
-
-                    GUILayout.Label($"Transform smooth duration: {Player.SmoothTime}s");
-                    Player.SmoothTime = GUILayout.HorizontalSlider(Player.SmoothTime, 0, 1);
-                    GUILayout.Label($"Transform smooth distance threshold: {Player.SmoothDistance}");
-                    Player.SmoothDistance = GUILayout.HorizontalSlider(Player.SmoothDistance, 0, 50);
-                    GUILayout.EndArea();
-                }
             }
         }
 
