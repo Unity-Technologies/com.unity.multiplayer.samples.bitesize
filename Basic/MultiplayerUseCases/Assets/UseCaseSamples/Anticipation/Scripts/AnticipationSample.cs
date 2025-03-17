@@ -268,12 +268,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 if (IsClient)
                 {
                     GUILayout.BeginArea(new Rect(0, 310, 600, 300));
-                    GUILayout.Label("Anticipated Network Transform controls:");
-                    GUILayout.Label("W: Move Forward | S: Move Backward | A: Turn Left | D: Turn Right");
-                    GUILayout.Label("Q: Large random teleport (very different server result)");
-                    GUILayout.Label("E: Small random teleport (slightly different server result)");
-                    GUILayout.Label("R: Return to center (same server result)");
-                    GUILayout.Label("");
 
                     GUILayout.Label($"Transform smooth duration: {Player.SmoothTime}s");
                     Player.SmoothTime = GUILayout.HorizontalSlider(Player.SmoothTime, 0, 1);
