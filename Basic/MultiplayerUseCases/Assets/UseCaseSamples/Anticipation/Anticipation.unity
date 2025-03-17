@@ -280,6 +280,7 @@ RectTransform:
   m_Children:
   - {fileID: 2120169333}
   - {fileID: 1372087611}
+  - {fileID: 982150566}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -678,12 +679,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1678000487}
+  m_Father: {fileID: 42263588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 732.5, y: -415}
-  m_SizeDelta: {x: 1505, y: 1030}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 20, y: -99.99994}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982150567
 MonoBehaviour:
@@ -700,7 +701,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: bb97c42b0da64184d8f6ef64e0c20845, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 1dc8ca34233a04e4f843af7d6737cd95, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
@@ -834,6 +835,7 @@ MonoBehaviour:
     m_AuthoritativeValue:
       m_InternalValue: 0
     StaleDataHandling: 1
+  m_UIDocument: {fileID: 982150567}
   networkSimulator: {fileID: 29158230}
 --- !u!114 &1597120076
 MonoBehaviour:
@@ -971,7 +973,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1678000487
 RectTransform:
   m_ObjectHideFlags: 0
@@ -983,13 +985,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 982150566}
+  m_Children: []
   m_Father: {fileID: 1372087611}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 227.5, y: -125}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 415, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1678000488
@@ -1061,7 +1062,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1

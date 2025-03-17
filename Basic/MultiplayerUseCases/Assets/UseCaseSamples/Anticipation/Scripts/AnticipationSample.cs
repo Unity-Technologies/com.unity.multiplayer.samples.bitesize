@@ -1,6 +1,8 @@
 using Unity.Collections;
 using Unity.Multiplayer.Tools.NetworkSimulator.Runtime;
+using Unity.Netcode.Samples.MultiplayerUseCases.Common;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
@@ -56,12 +58,74 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         }
         PlayerMovableObject m_Player;
 
+        [SerializeField]
+        UIDocument m_UIDocument;
+        VisualElement m_UIRoot;
+        Button m_ToggleServerVisualizationButton;
+        Button m_ApplyLatencyAndJitterButton;
+        SliderInt m_JitterSlider;
+        SliderInt m_LatencySlider;
+
         void Awake()
         {
             if (!NetworkManagerObject.IsListening && !Restart)
             {
                 SetDebugSimulatorParameters(Latency, Jitter, 0);
             }
+            m_UIRoot = m_UIDocument.rootVisualElement;
+            m_ToggleServerVisualizationButton = UIElementsUtils.SetupButton("ToggleVisualizationButton", OnClickToggleVisualization, true, m_UIRoot, "Toggle Server Visualization (Follower)");
+            m_ApplyLatencyAndJitterButton = UIElementsUtils.SetupButton("ApplyButton", OnClickApplyLatencyAndJitter, true, m_UIRoot, "Apply");
+            m_JitterSlider = UIElementsUtils.SetupIntSlider("JitterSlider", 0, 50, Jitter, 1, OnJitterChanged, m_UIRoot);
+            RefreshJitterLabel();
+            m_LatencySlider = UIElementsUtils.SetupIntSlider("LatencySlider", 0, 300, Latency, 1, OnLatencyChanged, m_UIRoot);
+            RefreshLatencyLabel();
+            //m_UIDocument.gameObject.SetActive(false);
+        }
+
+
+        void OnClickToggleVisualization()
+        {
+            if (!IsClient)
+            {
+                return;
+            }
+            foreach (var childRenderer in Player.GhostTrasform.GetComponentsInChildren<MeshRenderer>())
+            {
+                childRenderer.enabled = !childRenderer.enabled;
+            }
+        }
+
+        void OnClickApplyLatencyAndJitter()
+        {
+            if (!IsClient)
+            {
+                return;
+            }
+            Restart = true;
+            NetworkManagerObject.Shutdown();
+        }
+
+        void OnJitterChanged(ChangeEvent<int> evt)
+        {
+            Jitter = evt.newValue;
+            RefreshJitterLabel();
+        }
+
+        void RefreshJitterLabel()
+        {
+            m_JitterSlider.label = $"Jitter: {Jitter}ms";
+        }
+
+        void OnLatencyChanged(ChangeEvent<int> evt)
+        {
+            Latency = evt.newValue;
+            Debug.Log("OnLatencyChanged: " + Latency);
+            RefreshLatencyLabel();
+        }
+
+        void RefreshLatencyLabel()
+        {
+            m_LatencySlider.label = $"Latency: {Latency}ms";
         }
 
         [Rpc(SendTo.Server)]
@@ -269,24 +333,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                     Player.SmoothTime = GUILayout.HorizontalSlider(Player.SmoothTime, 0, 1);
                     GUILayout.Label($"Transform smooth distance threshold: {Player.SmoothDistance}");
                     Player.SmoothDistance = GUILayout.HorizontalSlider(Player.SmoothDistance, 0, 50);
-                    if (GUILayout.Button("Toggle Server Visualization (Follower)"))
-                    {
-                        foreach (var childRenderer in Player.GhostTrasform.GetComponentsInChildren<MeshRenderer>())
-                        {
-                            childRenderer.enabled = !childRenderer.enabled;
-                        }
-                    }
-                    GUILayout.EndArea();
-                    GUILayout.BeginArea(new Rect(610, 456, 300, 150));
-                    GUILayout.Label($"Latency: {Latency}ms");
-                    Latency = (int)GUILayout.HorizontalSlider(Latency, 0, 300);
-                    GUILayout.Label($"Jitter: {Jitter}ms");
-                    Jitter = (int)GUILayout.HorizontalSlider(Jitter, 0, 50);
-                    if (GUILayout.Button("Apply"))
-                    {
-                        Restart = true;
-                        NetworkManagerObject.Shutdown();
-                    }
                     GUILayout.EndArea();
                 }
             }

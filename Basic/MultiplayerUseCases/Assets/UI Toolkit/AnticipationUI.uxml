@@ -10,8 +10,8 @@
             <ui:Button text="Toggle Server visualization (Follower)" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ToggleVisualizationButton" class="button UseCaseButton" style="font-size: 26px;" />
         </ui:VisualElement>
         <ui:VisualElement name="LatencyAndJitter" style="max-width: 40%; flex-grow: 1;">
-            <ui:SliderInt label="Latency: XXms" value="42" high-value="300" name="LatencySlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
-            <ui:SliderInt label="Jitter: XXms" value="0" high-value="50" name="JitterSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
+            <ui:SliderInt label="Latency: XXms" name="LatencySlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
+            <ui:SliderInt label="Jitter: XXms" name="JitterSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
             <ui:Button text="Apply" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ApplyButton" class="button UseCaseButton" style="font-size: 26px;" />
         </ui:VisualElement>
     </ui:VisualElement>
