@@ -9,6 +9,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 {
     public class AnticipationSample : NetworkBehaviour
     {
+        const float k_ValueEChangePerSecond = 2.5f;
+
         /// <summary>
         /// This value is a snap value with correct anticipation. When the player changes the value, an RPC will be
         /// sent to the server, and the server will change to the same value.
@@ -78,22 +80,29 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         Label m_ValueDValuesLabel;
         Label m_ValueEValuesLabel;
 
+        [SerializeField]
+        NetworkSimulator networkSimulator;
+        int m_Latency = 200;
+        int m_Jitter = 25;
+        float m_SmoothTime = 0.25f;
+        bool m_Restart = false;
+
         void Awake()
         {
-            if (!NetworkManagerObject.IsListening && !Restart)
+            if (!NetworkManagerObject.IsListening && !m_Restart)
             {
-                SetDebugSimulatorParameters(Latency, Jitter, 0);
+                SetDebugSimulatorParameters(m_Latency, m_Jitter, 0);
             }
             m_UIRoot = m_UIDocument.rootVisualElement;
             m_ToggleServerVisualizationButton = UIElementsUtils.SetupButton("ToggleVisualizationButton", OnClickToggleVisualization, true, m_UIRoot, "Toggle Server Visualization (Follower)");
             m_ApplyLatencyAndJitterButton = UIElementsUtils.SetupButton("ApplyButton", OnClickApplyLatencyAndJitter, true, m_UIRoot, "Apply");
-            m_JitterSlider = UIElementsUtils.SetupIntSlider("JitterSlider", 0, 50, Jitter, 1, OnJitterChanged, m_UIRoot);
+            m_JitterSlider = UIElementsUtils.SetupIntSlider("JitterSlider", 0, 50, m_Jitter, 1, OnJitterChanged, m_UIRoot);
             RefreshJitterLabel();
-            m_LatencySlider = UIElementsUtils.SetupIntSlider("LatencySlider", 0, 300, Latency, 1, OnLatencyChanged, m_UIRoot);
+            m_LatencySlider = UIElementsUtils.SetupIntSlider("LatencySlider", 0, 300, m_Latency, 1, OnLatencyChanged, m_UIRoot);
             RefreshLatencyLabel();
             m_TransformSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("DurationSlider", 0, 1, 0, 0.1f, OnPlayerSmoothDurationChanged, m_UIRoot);
             m_TransformSmoothDistanceThresholdSlider = UIElementsUtils.SetupFloatSlider("DistanceThresholdSlider", 0, 50, 0, 0.5f, OnPlayerSmoothDistanceThresholdChanged, m_UIRoot);
-            m_VariableSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("VariableSmoothDurationSlider", 0, 1, SmoothTime, 0.1f, OnVariableSmoothDurationChanged, m_UIRoot);
+            m_VariableSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("VariableSmoothDurationSlider", 0, 1, m_SmoothTime, 0.1f, OnVariableSmoothDurationChanged, m_UIRoot);
             RefreshVariableSmoothDurationLabel();
             m_ValueASlider = UIElementsUtils.SetupFloatSlider("ValueASlider", 0, 10, ValueA.Value, 0.1f, OnValueAChanged, m_UIRoot);
             m_ValueAValuesLabel = m_UIRoot.Query<Label>("ValueAValuesLabel");
@@ -124,30 +133,30 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             {
                 return;
             }
-            Restart = true;
+            m_Restart = true;
             NetworkManagerObject.Shutdown();
         }
 
         void OnJitterChanged(ChangeEvent<int> evt)
         {
-            Jitter = evt.newValue;
+            m_Jitter = evt.newValue;
             RefreshJitterLabel();
         }
 
         void RefreshJitterLabel()
         {
-            m_JitterSlider.label = $"Jitter: {Jitter}ms";
+            m_JitterSlider.label = $"Jitter: {m_Jitter}ms";
         }
 
         void OnLatencyChanged(ChangeEvent<int> evt)
         {
-            Latency = evt.newValue;
+            m_Latency = evt.newValue;
             RefreshLatencyLabel();
         }
 
         void RefreshLatencyLabel()
         {
-            m_LatencySlider.label = $"Latency: {Latency}ms";
+            m_LatencySlider.label = $"Latency: {m_Latency}ms";
         }
 
         void OnPlayerSmoothDurationChanged(ChangeEvent<float> evt)
@@ -162,13 +171,13 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 
         void OnVariableSmoothDurationChanged(ChangeEvent<float> evt)
         {
-            SmoothTime = evt.newValue;
+            m_SmoothTime = evt.newValue;
             RefreshVariableSmoothDurationLabel();
         }
 
         void RefreshVariableSmoothDurationLabel()
         {
-            m_VariableSmoothDurationSlider.label = $"Variable smooth duration: {SmoothTime}s";
+            m_VariableSmoothDurationSlider.label = $"Variable smooth duration: {m_SmoothTime}s";
         }
 
         void OnValueAChanged(ChangeEvent<float> evt)
@@ -226,7 +235,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         {
             var previousValue = ValueC.AuthoritativeValue;
             ValueC.AuthoritativeValue = value;
-            ValueC.Smooth(previousValue, value, SmoothTime, Mathf.Lerp);
+            ValueC.Smooth(previousValue, value, m_SmoothTime, Mathf.Lerp);
             LogEverywhereRpc($"Set value C to {ValueC.AuthoritativeValue}");
         }
 
@@ -242,10 +251,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         {
             Debug.Log(message.ToString());
         }
-
-
-        const float k_ValueEChangePerSecond = 2.5f;
-
+                
         public override void OnReanticipate(double lastRoundTripTime)
         {
             // Initialize the reanticipation for all of the values:
@@ -255,11 +261,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 
             if (ValueC.ShouldReanticipate)
             {
-                ValueC.Smooth(ValueC.PreviousAnticipatedValue, ValueC.AuthoritativeValue, SmoothTime, Mathf.Lerp);
+                ValueC.Smooth(ValueC.PreviousAnticipatedValue, ValueC.AuthoritativeValue, m_SmoothTime, Mathf.Lerp);
             }
             if (ValueD.ShouldReanticipate)
             {
-                ValueD.Smooth(ValueD.PreviousAnticipatedValue, ValueD.AuthoritativeValue, SmoothTime, Mathf.Lerp);
+                ValueD.Smooth(ValueD.PreviousAnticipatedValue, ValueD.AuthoritativeValue, m_SmoothTime, Mathf.Lerp);
             }
 
             // E is actually trying to anticipate the current value of a constantly changing object to hide latency.
@@ -276,7 +282,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 // value - the difference between current time and authoritativeTime represents a full round trip, but the
                 // actual time difference here is only a half round trip, so we multiply by 0.5.
                 // Then, because smoothing adds its own latency, we add the smooth time into the mix.
-                var secondsBehind = lastRoundTripTime * 0.5f + SmoothTime;
+                var secondsBehind = lastRoundTripTime * 0.5f + m_SmoothTime;
 
                 var newAnticipatedValue = (float)(ValueE.AuthoritativeValue + k_ValueEChangePerSecond * secondsBehind) % 10;
 
@@ -284,7 +290,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 // down to 0. Without this, there is either weird smoothing behavior, or hitching.
                 // This keeps the interpolation going, and handles the case where the interpolated value
                 // goes over 10 and has to jump back to 0.
-                ValueE.Smooth(ValueE.PreviousAnticipatedValue, newAnticipatedValue, SmoothTime, ((start, end, amount) =>
+                ValueE.Smooth(ValueE.PreviousAnticipatedValue, newAnticipatedValue, m_SmoothTime, ((start, end, amount) =>
                 {
                     if (end < 3 && start > 7)
                     {
@@ -305,16 +311,13 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             ValueD.OnAuthoritativeValueChanged = onUpdate;
         }
 
-        [SerializeField]
-        NetworkSimulator networkSimulator;
-
         void Update()
         {
-            if (Restart && !NetworkManagerObject.IsListening && !NetworkManagerObject.ShutdownInProgress)
+            if (m_Restart && !NetworkManagerObject.IsListening && !NetworkManagerObject.ShutdownInProgress)
             {
-                SetDebugSimulatorParameters(Latency, Jitter, 0);
+                SetDebugSimulatorParameters(m_Latency, m_Jitter, 0);
                 NetworkManagerObject.StartClient();
-                Restart = false;
+                m_Restart = false;
             }
             if (IsServer)
             {
@@ -335,16 +338,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             }
         }
 
-        int Latency = 200;
-        int Jitter = 25;
-        float SmoothTime = 0.25f;
-        bool Restart = false;
-
         void SetDebugSimulatorParameters(int latency, int jitter, int dropRate)
         {
             INetworkSimulatorPreset preset = networkSimulator.CurrentPreset;
-            preset.PacketDelayMs = Latency;
-            preset.PacketJitterMs = Jitter;
+            preset.PacketDelayMs = m_Latency;
+            preset.PacketJitterMs = m_Jitter;
             networkSimulator.ChangeConnectionPreset(preset);
         }
     }
