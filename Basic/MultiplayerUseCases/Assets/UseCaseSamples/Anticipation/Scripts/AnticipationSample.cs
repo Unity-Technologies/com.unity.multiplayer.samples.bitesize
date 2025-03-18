@@ -65,6 +65,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         Button m_ApplyLatencyAndJitterButton;
         Slider m_TransformSmoothDurationSlider;
         Slider m_TransformSmoothDistanceThresholdSlider;
+        Slider m_VariableSmoothDurationSlider;
         SliderInt m_JitterSlider;
         SliderInt m_LatencySlider;
 
@@ -83,6 +84,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             RefreshLatencyLabel();
             m_TransformSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("DurationSlider", 0, 1, 0, 0.1f, OnPlayerSmoothDurationChanged, m_UIRoot);
             m_TransformSmoothDistanceThresholdSlider = UIElementsUtils.SetupFloatSlider("DistanceThresholdSlider", 0, 50, 0, 0.5f, OnPlayerSmoothDistanceThresholdChanged, m_UIRoot);
+            m_VariableSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("VariableSmoothDurationSlider", 0, 1, SmoothTime, 0.1f, OnVariableSmoothDurationChanged, m_UIRoot);
+            RefreshVariableSmoothDurationLabel();
         }
 
         void OnClickToggleVisualization()
@@ -137,6 +140,17 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         void OnPlayerSmoothDistanceThresholdChanged(ChangeEvent<float> evt)
         {
             Player.SmoothDistance = evt.newValue;
+        }
+
+        void OnVariableSmoothDurationChanged(ChangeEvent<float> evt)
+        {
+            SmoothTime = evt.newValue;
+            RefreshVariableSmoothDurationLabel();
+        }
+
+        void RefreshVariableSmoothDurationLabel()
+        {
+            m_VariableSmoothDurationSlider.label = $"Variable smooth duration: {SmoothTime}s";
         }
 
         [Rpc(SendTo.Server)]
@@ -270,7 +284,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, scale);
             if (NetworkManagerObject.IsListening)
             {
-                GUILayout.BeginArea(new Rect(0, 72, 300, 300));
+                GUILayout.BeginArea(new Rect(0, 372, 300, 300));
 
                 GUILayout.BeginVertical("Box");
                 GUILayout.Label("Value A (snap, correct anticipation):");
@@ -297,7 +311,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 GUILayout.EndVertical();
 
                 GUILayout.EndArea();
-                GUILayout.BeginArea(new Rect(305, 72, 300, 300));
+                GUILayout.BeginArea(new Rect(305, 372, 300, 300));
 
                 GUILayout.BeginVertical("Box");
                 GUILayout.Label("Value C (smooth, correct anticipation):");
@@ -324,7 +338,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 GUILayout.EndVertical();
 
                 GUILayout.EndArea();
-                GUILayout.BeginArea(new Rect(610, 72, 300, 300));
+                GUILayout.BeginArea(new Rect(610, 372, 300, 300));
 
                 GUILayout.BeginVertical("Box");
                 GUILayout.Label("Value E (Server-controlled, continuous anticipation):");
@@ -332,13 +346,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 GUILayout.Label("Value E Current Server Value:");
                 GUILayout.HorizontalSlider(ValueE.AuthoritativeValue, 0, 10);
                 GUILayout.EndVertical();
-
-                if (IsClient)
-                {
-                    GUILayout.Label("");
-                    GUILayout.Label($"Variable smooth duration: {SmoothTime}s");
-                    SmoothTime = GUILayout.HorizontalSlider(SmoothTime, 0, 1);
-                }
 
                 GUILayout.EndArea();
             }

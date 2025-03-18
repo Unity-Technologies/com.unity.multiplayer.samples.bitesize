@@ -1,18 +1,19 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/UseCasesStyleClass.uss?fileID=7433441132597879392&amp;guid=cac46a420be955345b18ac0d5d2d9e37&amp;type=3#UseCasesStyleClass" />
     <ui:VisualElement name="Background" style="bottom: 0; left: 0; right: auto; flex-grow: 1;">
-        <ui:Label text="Anticipated Network Variable:&#10;&#10;Each pair of sliders represents a network variable&apos;s authoritative and anticipate values. Changing the top slider sends an RPC to the server, which updates the bottom slider. The top slider shows the current &apos;anticipated&apos; value, including any smoothing, while the bottom represents the authoritative value.&#10;&#10;- W: Move Forward | S: Move Backward | A: Turn Left | D: Turn Right&#10;- Q: Large random teleport (very different server result)&#10;- E: Small random teleport (slightly different server result)&#10;- R: Return to center (same server result)" name="TitleLabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px; position: absolute; right: 20%; left: 0;" />
-    </ui:VisualElement>
-    <ui:VisualElement style="flex-direction: row; bottom: 20px; justify-content: space-evenly; align-self: auto; align-items: flex-end;">
-        <ui:VisualElement name="TransformSmooth" style="flex-grow: 1; max-width: 40%; font-size: 28px;">
-            <ui:Slider label="Transform smooth duration: XX,Xs" value="42" high-value="1" fill="false" name="DurationSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
-            <ui:Slider label="Transform smooth distance threshold: XX,X" value="42" high-value="1" fill="false" name="DistanceThresholdSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
-            <ui:Button text="Toggle Server visualization (Follower)" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ToggleVisualizationButton" class="button UseCaseButton" style="font-size: 26px; max-height: none;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="LatencyAndJitter" style="max-width: 40%; flex-grow: 1;">
-            <ui:SliderInt label="Latency: XXms" name="LatencySlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
-            <ui:SliderInt label="Jitter: XXms" name="JitterSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
-            <ui:Button text="Apply" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ApplyButton" class="button UseCaseButton" style="font-size: 26px; max-height: none;" />
+        <ui:Label text="Anticipated Network Variable:&#10;&#10;Each pair of sliders represents a network variable&apos;s authoritative and anticipate values. Changing the top slider sends an RPC to the server, which updates the bottom slider. The top slider shows the current &apos;anticipated&apos; value, including any smoothing, while the bottom represents the authoritative value.&#10;&#10;- W: Move Forward | S: Move Backward | A: Turn Left | D: Turn Right&#10;- Q: Large random teleport (very different server result)&#10;- E: Small random teleport (slightly different server result)&#10;- R: Return to center (same server result)" name="TitleLabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px; position: relative; max-width: 90%;" />
+        <ui:Slider label="Variable smooth duration: XX,Xs" name="VariableSmoothDurationSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left; max-width: 30%;" />
+        <ui:VisualElement style="flex-direction: row; bottom: 20px; justify-content: space-evenly; align-self: auto; align-items: flex-end; position: absolute; right: 0; left: 0;">
+            <ui:VisualElement name="TransformSmooth" style="flex-grow: 1; max-width: 40%; font-size: 28px;">
+                <ui:Slider label="Transform smooth duration: XX,Xs" name="DurationSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
+                <ui:Slider label="Transform smooth distance threshold: XX,X" name="DistanceThresholdSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
+                <ui:Button text="Toggle Server visualization (Follower)" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ToggleVisualizationButton" class="button UseCaseButton" style="font-size: 26px; max-height: none;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="LatencyAndJitter" style="max-width: 40%; flex-grow: 1;">
+                <ui:SliderInt label="Latency: XXms" name="LatencySlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
+                <ui:SliderInt label="Jitter: XXms" name="JitterSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left;" />
+                <ui:Button text="Apply" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ApplyButton" class="button UseCaseButton" style="font-size: 26px; max-height: none;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
