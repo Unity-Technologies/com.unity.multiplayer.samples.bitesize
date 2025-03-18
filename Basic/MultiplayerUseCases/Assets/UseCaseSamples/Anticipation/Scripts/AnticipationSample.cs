@@ -72,6 +72,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         Label m_ValueAValuesLabel;
         Slider m_ValueBSlider;
         Label m_ValueBValuesLabel;
+        Slider m_ValueCSlider;
+        Label m_ValueCValuesLabel;
+        Slider m_ValueDSlider;
+        Label m_ValueDValuesLabel;
         Label m_ValueEValuesLabel;
 
         void Awake()
@@ -95,6 +99,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             m_ValueAValuesLabel = m_UIRoot.Query<Label>("ValueAValuesLabel");
             m_ValueBSlider = UIElementsUtils.SetupFloatSlider("ValueBSlider", 0, 10, ValueB.Value, 0.1f, OnValueBChanged, m_UIRoot);
             m_ValueBValuesLabel = m_UIRoot.Query<Label>("ValueBValuesLabel");
+            m_ValueCSlider = UIElementsUtils.SetupFloatSlider("ValueCSlider", 0, 10, ValueC.Value, 0.1f, OnValueCChanged, m_UIRoot);
+            m_ValueCValuesLabel = m_UIRoot.Query<Label>("ValueCValuesLabel");
+            m_ValueDSlider = UIElementsUtils.SetupFloatSlider("ValueDSlider", 0, 10, ValueD.Value, 0.1f, OnValueDChanged, m_UIRoot);
+            m_ValueDValuesLabel = m_UIRoot.Query<Label>("ValueDValuesLabel");
             m_ValueEValuesLabel = m_UIRoot.Query<Label>("ValueEValuesLabel");
         }
 
@@ -178,6 +186,24 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             {
                 ValueB.Anticipate(evt.newValue);
                 SetValueBRpc(evt.newValue);
+            }
+        }
+
+        void OnValueCChanged(ChangeEvent<float> evt)
+        {
+            if (evt.newValue != ValueC.Value)
+            {
+                ValueC.Anticipate(evt.newValue);
+                SetValueCRpc(evt.newValue);
+            }
+        }
+
+        void OnValueDChanged(ChangeEvent<float> evt)
+        {
+            if (evt.newValue != ValueD.Value)
+            {
+                ValueD.Anticipate(evt.newValue);
+                SetValueDRpc(evt.newValue);
             }
         }
 
@@ -298,6 +324,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             {
                 m_ValueAValuesLabel.text = $"Client value: '{ValueA.Value}' | Server value: '{ValueA.AuthoritativeValue}'";
                 m_ValueBValuesLabel.text = $"Client value: '{ValueB.Value}' | Server value: '{ValueB.AuthoritativeValue}'";
+                m_ValueCValuesLabel.text = $"Client value: '{ValueC.Value}' | Server value: '{ValueC.AuthoritativeValue}'";
+                m_ValueDValuesLabel.text = $"Client value: '{ValueD.Value}' | Server value: '{ValueD.AuthoritativeValue}'";
                 m_ValueEValuesLabel.text = $"Client value: '{ValueE.Value}' | Server value: '{ValueE.AuthoritativeValue}'";
                 if (IsClient)
                 {
@@ -311,42 +339,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         int Jitter = 25;
         float SmoothTime = 0.25f;
         bool Restart = false;
-
-        void OnGUI()
-        {
-            Vector3 scale = new Vector3(Screen.width / 910f, Screen.height / 600f, 1.0f);
-            GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, scale);
-            if (NetworkManagerObject.IsListening)
-            {
-                GUILayout.BeginArea(new Rect(305, 372, 300, 300));
-
-                GUILayout.BeginVertical("Box");
-                GUILayout.Label("Value C (smooth, correct anticipation):");
-                var updatedValue = GUILayout.HorizontalSlider(ValueC.Value, 0, 10);
-                if (updatedValue != ValueC.Value)
-                {
-                    ValueC.Anticipate(updatedValue);
-                    SetValueCRpc(updatedValue);
-                }
-                GUILayout.Label("Value C Current Server Value:");
-                GUILayout.HorizontalSlider(ValueC.AuthoritativeValue, 0, 10);
-                GUILayout.EndVertical();
-
-                GUILayout.BeginVertical("Box");
-                GUILayout.Label("Value D (smooth, incorrect anticipation):");
-                updatedValue = GUILayout.HorizontalSlider(ValueD.Value, 0, 10);
-                if (updatedValue != ValueD.Value)
-                {
-                    ValueD.Anticipate(updatedValue);
-                    SetValueDRpc(updatedValue);
-                }
-                GUILayout.Label("Value D Current Server Value:");
-                GUILayout.HorizontalSlider(ValueD.AuthoritativeValue, 0, 10);
-                GUILayout.EndVertical();
-
-                GUILayout.EndArea();
-            }
-        }
 
         void SetDebugSimulatorParameters(int latency, int jitter, int dropRate)
         {
