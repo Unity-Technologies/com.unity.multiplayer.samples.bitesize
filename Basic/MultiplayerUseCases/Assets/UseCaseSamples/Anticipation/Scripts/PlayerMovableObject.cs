@@ -184,6 +184,15 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             m_InputManager.Clear();
         }
 
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            if (m_GhostTrasform)
+            {
+                Destroy(m_GhostTrasform.gameObject);
+            }
+        }
+
         /// <summary>
         /// Pass client inputs to the server so the server can mirror the client simulation.
         ///
