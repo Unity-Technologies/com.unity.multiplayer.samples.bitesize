@@ -351,7 +351,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 m_ValueCValuesLabel.text = $"Client value: '{ValueC.Value}' | Server value: '{ValueC.AuthoritativeValue}'";
                 m_ValueDValuesLabel.text = $"Client value: '{ValueD.Value}' | Server value: '{ValueD.AuthoritativeValue}'";
                 m_ValueEValuesLabel.text = $"Client value: '{ValueE.Value}' | Server value: '{ValueE.AuthoritativeValue}'";
-                if (IsClient)
+                if (IsClient && Player)
                 {
                     m_TransformSmoothDurationSlider.label = $"Transform smooth duration: {Player.SmoothTime}s";
                     m_TransformSmoothDistanceThresholdSlider.label = $"Transform smooth distance threshold: {Player.SmoothDistance}";
