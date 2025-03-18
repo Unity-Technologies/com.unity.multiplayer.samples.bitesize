@@ -7,6 +7,10 @@
             <ui:Slider label="Value A (snap, correct anticipation)" name="ValueASlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left; max-width: 30%; flex-grow: 1;" />
             <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueAValuesLabel" class="labelText" style="white-space: normal; font-size: 25px; -unity-text-align: middle-left;" />
         </ui:VisualElement>
+        <ui:VisualElement name="ValueBContainer" style="flex-direction: row;">
+            <ui:Slider label="Value B (snap, incorrect anticipation)" name="ValueBSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left; max-width: 30%; flex-grow: 1;" />
+            <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueBValuesLabel" class="labelText" style="white-space: normal; font-size: 25px; -unity-text-align: middle-left;" />
+        </ui:VisualElement>
         <ui:VisualElement name="ValueEContainer" style="flex-direction: row;">
             <ui:Label text="Value E (Server-controlled, continuous anticipation): " name="ValueELabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px;" />
             <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueEValuesLabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px; flex-grow: 1;" />

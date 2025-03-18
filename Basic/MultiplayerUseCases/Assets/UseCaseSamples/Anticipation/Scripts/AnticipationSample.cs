@@ -70,6 +70,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         SliderInt m_LatencySlider;
         Slider m_ValueASlider;
         Label m_ValueAValuesLabel;
+        Slider m_ValueBSlider;
+        Label m_ValueBValuesLabel;
         Label m_ValueEValuesLabel;
 
         void Awake()
@@ -91,6 +93,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             RefreshVariableSmoothDurationLabel();
             m_ValueASlider = UIElementsUtils.SetupFloatSlider("ValueASlider", 0, 10, ValueA.Value, 0.1f, OnValueAChanged, m_UIRoot);
             m_ValueAValuesLabel = m_UIRoot.Query<Label>("ValueAValuesLabel");
+            m_ValueBSlider = UIElementsUtils.SetupFloatSlider("ValueBSlider", 0, 10, ValueB.Value, 0.1f, OnValueBChanged, m_UIRoot);
+            m_ValueBValuesLabel = m_UIRoot.Query<Label>("ValueBValuesLabel");
             m_ValueEValuesLabel = m_UIRoot.Query<Label>("ValueEValuesLabel");
         }
 
@@ -165,6 +169,15 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             {
                 ValueA.Anticipate(evt.newValue);
                 SetValueARpc(evt.newValue);
+            }
+        }
+
+        void OnValueBChanged(ChangeEvent<float> evt)
+        {
+            if (evt.newValue != ValueB.Value)
+            {
+                ValueB.Anticipate(evt.newValue);
+                SetValueBRpc(evt.newValue);
             }
         }
 
@@ -284,6 +297,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             if (NetworkManagerObject.IsListening)
             {
                 m_ValueAValuesLabel.text = $"Client value: '{ValueA.Value}' | Server value: '{ValueA.AuthoritativeValue}'";
+                m_ValueBValuesLabel.text = $"Client value: '{ValueB.Value}' | Server value: '{ValueB.AuthoritativeValue}'";
                 m_ValueEValuesLabel.text = $"Client value: '{ValueE.Value}' | Server value: '{ValueE.AuthoritativeValue}'";
                 if (IsClient)
                 {
@@ -304,26 +318,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, scale);
             if (NetworkManagerObject.IsListening)
             {
-                GUILayout.BeginArea(new Rect(0, 372, 300, 300));
-
-                GUILayout.BeginVertical("Box");
-                GUILayout.Label("Value B (snap, incorrect anticipation):");
-                var updatedValue = GUILayout.HorizontalSlider(ValueB.Value, 0, 10);
-                if (updatedValue != ValueB.Value)
-                {
-                    ValueB.Anticipate(updatedValue);
-                    SetValueBRpc(updatedValue);
-                }
-                GUILayout.Label("Value B Current Server Value:");
-                GUILayout.HorizontalSlider(ValueB.AuthoritativeValue, 0, 10);
-                GUILayout.EndVertical();
-
-                GUILayout.EndArea();
                 GUILayout.BeginArea(new Rect(305, 372, 300, 300));
 
                 GUILayout.BeginVertical("Box");
                 GUILayout.Label("Value C (smooth, correct anticipation):");
-                updatedValue = GUILayout.HorizontalSlider(ValueC.Value, 0, 10);
+                var updatedValue = GUILayout.HorizontalSlider(ValueC.Value, 0, 10);
                 if (updatedValue != ValueC.Value)
                 {
                     ValueC.Anticipate(updatedValue);
@@ -344,9 +343,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 GUILayout.Label("Value D Current Server Value:");
                 GUILayout.HorizontalSlider(ValueD.AuthoritativeValue, 0, 10);
                 GUILayout.EndVertical();
-
-                GUILayout.EndArea();
-                GUILayout.BeginArea(new Rect(610, 372, 300, 300));
 
                 GUILayout.EndArea();
             }
