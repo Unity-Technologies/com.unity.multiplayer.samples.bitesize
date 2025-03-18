@@ -68,6 +68,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         Slider m_VariableSmoothDurationSlider;
         SliderInt m_JitterSlider;
         SliderInt m_LatencySlider;
+        Label m_ValueEValuesLabel;
 
         void Awake()
         {
@@ -86,6 +87,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             m_TransformSmoothDistanceThresholdSlider = UIElementsUtils.SetupFloatSlider("DistanceThresholdSlider", 0, 50, 0, 0.5f, OnPlayerSmoothDistanceThresholdChanged, m_UIRoot);
             m_VariableSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("VariableSmoothDurationSlider", 0, 1, SmoothTime, 0.1f, OnVariableSmoothDurationChanged, m_UIRoot);
             RefreshVariableSmoothDurationLabel();
+            m_ValueEValuesLabel = m_UIRoot.Query<Label>("ValueEValuesLabel");
         }
 
         void OnClickToggleVisualization()
@@ -266,10 +268,14 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             {
                 ValueE.AuthoritativeValue = (ValueE.AuthoritativeValue + k_ValueEChangePerSecond * Time.deltaTime) % 10;
             }
-            if (NetworkManagerObject.IsListening && IsClient)
+            if (NetworkManagerObject.IsListening)
             {
-                m_TransformSmoothDurationSlider.label = $"Transform smooth duration: {Player.SmoothTime}s";
-                m_TransformSmoothDistanceThresholdSlider.label = $"Transform smooth distance threshold: {Player.SmoothDistance}";
+                m_ValueEValuesLabel.text = $"Client value: '{ValueE.Value}' | Server value: '{ValueE.AuthoritativeValue}'";
+                if (IsClient)
+                {
+                    m_TransformSmoothDurationSlider.label = $"Transform smooth duration: {Player.SmoothTime}s";
+                    m_TransformSmoothDistanceThresholdSlider.label = $"Transform smooth distance threshold: {Player.SmoothDistance}";
+                }
             }
         }
 
@@ -339,13 +345,6 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 
                 GUILayout.EndArea();
                 GUILayout.BeginArea(new Rect(610, 372, 300, 300));
-
-                GUILayout.BeginVertical("Box");
-                GUILayout.Label("Value E (Server-controlled, continuous anticipation):");
-                GUILayout.HorizontalSlider(ValueE.Value, 0, 10);
-                GUILayout.Label("Value E Current Server Value:");
-                GUILayout.HorizontalSlider(ValueE.AuthoritativeValue, 0, 10);
-                GUILayout.EndVertical();
 
                 GUILayout.EndArea();
             }
