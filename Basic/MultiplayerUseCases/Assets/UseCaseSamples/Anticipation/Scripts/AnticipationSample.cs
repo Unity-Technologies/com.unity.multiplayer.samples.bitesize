@@ -61,6 +61,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         PlayerMovableObject m_Player;
 
         [SerializeField]
+        UIDocument m_OfflineUIDocument;
+        [SerializeField]
         UIDocument m_UIDocument;
         VisualElement m_UIRoot;
         Button m_ToggleServerVisualizationButton;
@@ -91,6 +93,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         {
             NetworkManagerObject.OnClientStarted += OnClientStarted;
             NetworkManagerObject.OnServerStarted += OnServerStarted;
+            NetworkManagerObject.OnClientStopped += OnClientStopped;
+            NetworkManagerObject.OnServerStopped += OnServerStopped;
             if (!NetworkManagerObject.IsListening && !m_Restart)
             {
                 SetDebugSimulatorParameters(m_Latency, m_Jitter, 0);
@@ -99,6 +103,13 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 
         void InitializeUI()
         {
+            if (!NetworkManagerObject.IsListening)
+            {
+                m_OfflineUIDocument.gameObject.SetActive(true);
+                m_UIDocument.gameObject.SetActive(false);
+                return;
+            }
+            m_OfflineUIDocument.gameObject.SetActive(false);
             m_UIDocument.gameObject.SetActive(true);
             m_UIRoot = m_UIDocument.rootVisualElement;
             m_ToggleServerVisualizationButton = UIElementsUtils.SetupButton("ToggleVisualizationButton", OnClickToggleVisualization, true, m_UIRoot, "Toggle Server Visualization (Follower)");
@@ -132,6 +143,20 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         }
 
         void OnServerStarted()
+        {
+            InitializeUI();
+        }
+
+        void OnClientStopped(bool wasHost)
+        {
+            if (wasHost) //Hosts already initialize the UI in OnServerStopped
+            {
+                return;
+            }
+            InitializeUI();
+        }
+
+        void OnServerStopped(bool wasHost)
         {
             InitializeUI();
         }
@@ -272,7 +297,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         {
             Debug.Log(message.ToString());
         }
-                
+
         public override void OnReanticipate(double lastRoundTripTime)
         {
             // Initialize the reanticipation for all of the values:
