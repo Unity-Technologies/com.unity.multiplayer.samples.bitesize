@@ -103,6 +103,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 
         void InitializeUI()
         {
+            if (m_Restart)
+            {
+                return;
+            }
             if (!NetworkManagerObject.IsListening)
             {
                 m_OfflineUIDocument.gameObject.SetActive(true);
