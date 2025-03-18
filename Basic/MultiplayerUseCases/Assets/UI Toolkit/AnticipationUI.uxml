@@ -3,9 +3,13 @@
     <ui:VisualElement name="Background" style="bottom: 0; left: 0; right: auto; flex-grow: 1;">
         <ui:Label text="Anticipated Network Variable:&#10;&#10;Each pair of sliders represents a network variable&apos;s authoritative and anticipate values. Changing the top slider sends an RPC to the server, which updates the bottom slider. The top slider shows the current &apos;anticipated&apos; value, including any smoothing, while the bottom represents the authoritative value.&#10;&#10;- W: Move Forward | S: Move Backward | A: Turn Left | D: Turn Right&#10;- Q: Large random teleport (very different server result)&#10;- E: Small random teleport (slightly different server result)&#10;- R: Return to center (same server result)" name="TitleLabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px; max-width: 90%;" />
         <ui:Slider label="Variable smooth duration: XX,Xs" name="VariableSmoothDurationSlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left; max-width: 30%;" />
+        <ui:VisualElement name="ValueAContainer" style="flex-direction: row;">
+            <ui:Slider label="Value A (snap, correct anticipation)" name="ValueASlider" class="labelText" style="font-size: 22px; -unity-text-align: upper-left; max-width: 30%; flex-grow: 1;" />
+            <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueAValuesLabel" class="labelText" style="white-space: normal; font-size: 25px; -unity-text-align: middle-left;" />
+        </ui:VisualElement>
         <ui:VisualElement name="ValueEContainer" style="flex-direction: row;">
             <ui:Label text="Value E (Server-controlled, continuous anticipation): " name="ValueELabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px;" />
-            <ui:Label text="Client value: &quot;XX&quot; | Server value: &quot;XX&quot;" name="ValueEValuesLabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px; flex-grow: 1;" />
+            <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueEValuesLabel" class="labelText" style="-unity-text-align: upper-left; white-space: normal; font-size: 25px; flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-direction: row; bottom: 20px; justify-content: space-evenly; align-self: auto; align-items: flex-end; position: absolute; right: 0; left: 0;">
             <ui:VisualElement name="TransformSmooth" style="flex-grow: 1; max-width: 40%; font-size: 28px;">

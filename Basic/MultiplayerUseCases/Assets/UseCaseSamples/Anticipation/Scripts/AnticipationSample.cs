@@ -68,6 +68,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         Slider m_VariableSmoothDurationSlider;
         SliderInt m_JitterSlider;
         SliderInt m_LatencySlider;
+        Slider m_ValueASlider;
+        Label m_ValueAValuesLabel;
         Label m_ValueEValuesLabel;
 
         void Awake()
@@ -87,6 +89,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             m_TransformSmoothDistanceThresholdSlider = UIElementsUtils.SetupFloatSlider("DistanceThresholdSlider", 0, 50, 0, 0.5f, OnPlayerSmoothDistanceThresholdChanged, m_UIRoot);
             m_VariableSmoothDurationSlider = UIElementsUtils.SetupFloatSlider("VariableSmoothDurationSlider", 0, 1, SmoothTime, 0.1f, OnVariableSmoothDurationChanged, m_UIRoot);
             RefreshVariableSmoothDurationLabel();
+            m_ValueASlider = UIElementsUtils.SetupFloatSlider("ValueASlider", 0, 10, ValueA.Value, 0.1f, OnValueAChanged, m_UIRoot);
+            m_ValueAValuesLabel = m_UIRoot.Query<Label>("ValueAValuesLabel");
             m_ValueEValuesLabel = m_UIRoot.Query<Label>("ValueEValuesLabel");
         }
 
@@ -153,6 +157,15 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         void RefreshVariableSmoothDurationLabel()
         {
             m_VariableSmoothDurationSlider.label = $"Variable smooth duration: {SmoothTime}s";
+        }
+
+        void OnValueAChanged(ChangeEvent<float> evt)
+        {
+            if (evt.newValue != ValueA.Value)
+            {
+                ValueA.Anticipate(evt.newValue);
+                SetValueARpc(evt.newValue);
+            }
         }
 
         [Rpc(SendTo.Server)]
@@ -270,6 +283,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             }
             if (NetworkManagerObject.IsListening)
             {
+                m_ValueAValuesLabel.text = $"Client value: '{ValueA.Value}' | Server value: '{ValueA.AuthoritativeValue}'";
                 m_ValueEValuesLabel.text = $"Client value: '{ValueE.Value}' | Server value: '{ValueE.AuthoritativeValue}'";
                 if (IsClient)
                 {
@@ -293,20 +307,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
                 GUILayout.BeginArea(new Rect(0, 372, 300, 300));
 
                 GUILayout.BeginVertical("Box");
-                GUILayout.Label("Value A (snap, correct anticipation):");
-                var updatedValue = GUILayout.HorizontalSlider(ValueA.Value, 0, 10);
-                if (updatedValue != ValueA.Value)
-                {
-                    ValueA.Anticipate(updatedValue);
-                    SetValueARpc(updatedValue);
-                }
-                GUILayout.Label("Value A Current Server Value:");
-                GUILayout.HorizontalSlider(ValueA.AuthoritativeValue, 0, 10);
-                GUILayout.EndVertical();
-
-                GUILayout.BeginVertical("Box");
                 GUILayout.Label("Value B (snap, incorrect anticipation):");
-                updatedValue = GUILayout.HorizontalSlider(ValueB.Value, 0, 10);
+                var updatedValue = GUILayout.HorizontalSlider(ValueB.Value, 0, 10);
                 if (updatedValue != ValueB.Value)
                 {
                     ValueB.Anticipate(updatedValue);
