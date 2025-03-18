@@ -89,10 +89,17 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
 
         void Awake()
         {
+            NetworkManagerObject.OnClientStarted += OnClientStarted;
+            NetworkManagerObject.OnServerStarted += OnServerStarted;
             if (!NetworkManagerObject.IsListening && !m_Restart)
             {
                 SetDebugSimulatorParameters(m_Latency, m_Jitter, 0);
             }
+        }
+
+        void InitializeUI()
+        {
+            m_UIDocument.gameObject.SetActive(true);
             m_UIRoot = m_UIDocument.rootVisualElement;
             m_ToggleServerVisualizationButton = UIElementsUtils.SetupButton("ToggleVisualizationButton", OnClickToggleVisualization, true, m_UIRoot, "Toggle Server Visualization (Follower)");
             m_ApplyLatencyAndJitterButton = UIElementsUtils.SetupButton("ApplyButton", OnClickApplyLatencyAndJitter, true, m_UIRoot, "Apply");
@@ -113,6 +120,20 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
             m_ValueDSlider = UIElementsUtils.SetupFloatSlider("ValueDSlider", 0, 10, ValueD.Value, 0.1f, OnValueDChanged, m_UIRoot);
             m_ValueDValuesLabel = m_UIRoot.Query<Label>("ValueDValuesLabel");
             m_ValueEValuesLabel = m_UIRoot.Query<Label>("ValueEValuesLabel");
+        }
+
+        void OnClientStarted()
+        {
+            if (IsServer) //Hosts already initialize the UI in OnServerStarted
+            {
+                return;
+            }
+            InitializeUI();
+        }
+
+        void OnServerStarted()
+        {
+            InitializeUI();
         }
 
         void OnClickToggleVisualization()
