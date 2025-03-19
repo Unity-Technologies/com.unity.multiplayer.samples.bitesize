@@ -2,14 +2,30 @@
 
 ## [unreleased] yyyy-mm-dd
 
+### Dynamic Addressables Network Prefabs
+
+#### Added
+- Added Multiplayer Play Mode to the project (#271)
+
+#### Changed
+- Upgraded the project to Unity 6000.0.34f1 LTS (#271) Other changes include:
+  - Netcode for GameObjects upgraded from v1.7.1 to v2.2.0
+  - ParrelSync removed from the project
+
+## [1.10.0] 2024-12-23
+
 ### Distributed Authority Social Hub
 
 #### Added
 - Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
 - Mobile and gamepad support, with associated UI for mobile controls using UIToolkit has been integrated to the sample (#256)
 - Positional voicechat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. See limitations in PR.(#261)
-- Improve usability on Mobile, general UI improvements. 
-
+- Improve usability on Mobile, general UI improvements. (#266)
+- In-editor tutorials have been added to the sample (#268) They walk you through:
+  - Associating your project with a Unity Cloud Id
+  - Creating a Virtual Player through Multiplayer Play Mode
+  - Enabling Network Scene Visualization through Multiplayer Tools
+  - A typical session owner promotion while connected to a session
 
 #### Changed
 - Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
@@ -18,20 +34,21 @@
 ### 2D Space Shooter
 
 #### Added
-- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to 2D Space Shooter Sample
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to 2D Space Shooter Sample (#264)
 
 #### Changed
-- Update Project to Unity 6
-- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+- Update Project to Unity 6 (#263)
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode (#263)
+- Replaced old input system with new input system (#267)
 
 ### Client Driven
 
 #### Added
-- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample (#262)
 
 #### Changed
-- Updated project to Unity 6
-- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+- Updated project to Unity 6 (#259)
+  - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
 
 ## [1.9.0] 2024-10-31
 
