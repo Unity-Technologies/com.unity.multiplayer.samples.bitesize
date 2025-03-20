@@ -1,6 +1,8 @@
 using System;
+using Unity.DedicatedGameServerSample.Shared;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
@@ -34,6 +36,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
         [Tooltip("This physics and navmesh obstacle is enabled when the door is closed.")]
         GameObject m_PhysicsObject;
 
+        [SerializeField]
+        VisualTreeAsset m_DoorAsset;
+
+        VisualElement m_DoorUI;
+
+        [SerializeField]
+        UIDocument m_UIDocument;
+
         public override void OnNetworkSpawn()
         {
             IsOpen.OnValueChanged += OnDoorStateChanged;
@@ -43,6 +53,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 // initialize visuals based on current server state (or else we default to "closed")
                 m_PhysicsObject.SetActive(!IsOpen.Value);
+
+                m_DoorUI = m_DoorAsset.CloneTree().GetFirstChild();
+                m_DoorUI.AddToClassList(UIUtils.s_ActiveUSSClass);
+                //WorldSpaceUIHandler.Instance.AddUIElement(m_DoorUI);
             }
 
             if (IsServer)
@@ -79,6 +93,11 @@ namespace Unity.DedicatedGameServerSample.Runtime
                     Debug.Log("[Client] Local player opening door");
                     ServerOpenRpc();
                 }
+            }
+
+            if (IsClient)
+            {
+                //WorldSpaceUIHandler.Instance.UpdateUIDocument(m_UIDocument, transform);
             }
         }
 
@@ -144,7 +163,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                  * because its value is being recalculated by the server
                  * at the same time and we could have an outdated value.
                  */
-                m_UI.SetActive(!IsOpen.Value);
+                ClientSideSetActive(!IsOpen.Value);
             }
         }
 
@@ -160,7 +179,20 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 Debug.Log("[Client] Hiding UI!");
                 m_LocalPlayerIsNearby = false;
-                m_UI.SetActive(false);
+                ClientSideSetActive(false);
+            }
+        }
+
+        void ClientSideSetActive(bool value)
+        {
+            m_UI.SetActive(value);
+            if (value)
+            {
+                //WorldSpaceUIHandler.Instance.AddUIElement(m_DoorUI, transform);
+            }
+            else
+            {
+                //WorldSpaceUIHandler.Instance.RemoveUIElement(m_DoorUI, transform);
             }
         }
 

@@ -1,23 +1,29 @@
 using System;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UIElements;
+using Unity.DedicatedGameServerSample.Shared;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
     class ClientPlayerColor : NetworkBehaviour
     {
-        [SerializeField]
-        Renderer m_PlayerNumberMesh;
         [ColorUsage(false, true)]
         [SerializeField]
         Color[] m_PlayerColors;
         [ColorUsage(false, true)]
         [SerializeField]
         Color[] m_PlayerEmissiveColors;
-        [SerializeField]
         int m_PlayerNumber;
-        [SerializeField]
         Vector2 m_PlayerNumberVector;
+
+        [SerializeField]
+        VisualTreeAsset m_PlayerNumberAsset;
+
+        [SerializeField]
+        UIDocument m_PlayerNumberDocument;
+
+        VisualElement m_PlayerNumberVisual;
 
         public override void OnNetworkSpawn()
         {
@@ -42,8 +48,15 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 m_PlayerNumberVector = new Vector2(Int32.Parse(numberCharArray[0].ToString()), Int32.Parse(numberCharArray[1].ToString()));
             }
 
-            m_PlayerNumberMesh.material.SetVector("_PlayerNumber", m_PlayerNumberVector);
-            m_PlayerNumberMesh.material.SetColor("_PlayerColor", m_PlayerColors[playerColorIndex]);
+            m_PlayerNumberVisual = m_PlayerNumberAsset.CloneTree().GetFirstChild();
+            WorldSpaceUIHandler.Instance.AddUIElement(m_PlayerNumberVisual, transform);
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            WorldSpaceUIHandler.Instance.RemoveUIElement(transform);
         }
     }
 }
