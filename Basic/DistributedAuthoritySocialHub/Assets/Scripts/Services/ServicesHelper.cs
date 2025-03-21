@@ -25,6 +25,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         async void Start()
         {
+            UnityServices.Initialized += OnUnityServicesInitialized;
             await UnityServices.InitializeAsync();
 
             if (!s_InitialLoad)
@@ -40,6 +41,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             GameplayEventHandler.OnQuitGameButtonPressed += OnQuitGameButtonPressed;
 
             await VivoxManager.Instance.Initialize();
+        }
+
+        async void OnUnityServicesInitialized()
+        {
+            UnityServices.Initialized -= OnUnityServicesInitialized;
+            await SignIn();
         }
 
         async void OnStartButtonPressed(string playerName, string sessionName)
@@ -94,6 +101,7 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
             {
                 Name = sessionName,
                 MaxPlayers = 64,
+                IsPrivate = false,
             }.WithDistributedAuthorityNetwork();
 
             m_CurrentSession = await MultiplayerService.Instance.CreateOrJoinSessionAsync(sessionName, options);
@@ -131,7 +139,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Services
 
         void SignInFailed(RequestFailedException e)
         {
-            Debug.LogWarning($"Sign in via Authentication failed: obj.ErrorCode {e.ErrorCode}");
+            AuthenticationService.Instance.SignInFailed -= SignInFailed;
+            Debug.LogWarning($"Sign in via Authentication failed: e.ErrorCode {e.ErrorCode}");
         }
 
         void RemovedFromSession()
