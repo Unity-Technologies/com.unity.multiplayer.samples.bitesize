@@ -851,6 +851,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4094115448901536954, guid: f695aa2910ca6824cbf06c786912a509, type: 3}
+      propertyPath: m_ServerOnlyOverlay
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094115448901536954, guid: f695aa2910ca6824cbf06c786912a509, type: 3}
+      propertyPath: m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4094115448901536955, guid: f695aa2910ca6824cbf06c786912a509, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -872,7 +880,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5831250524098789844, guid: f695aa2910ca6824cbf06c786912a509, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f695aa2910ca6824cbf06c786912a509, type: 3}
