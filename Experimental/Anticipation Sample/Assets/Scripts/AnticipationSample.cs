@@ -1,10 +1,9 @@
-using System;
 using DefaultNamespace;
 using Unity.Collections;
-using UnityEngine;
+using Unity.Multiplayer.Tools.NetworkSimulator.Runtime;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-using UnityEditor;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class AnticipationSample : NetworkBehaviour
@@ -84,7 +83,7 @@ public class AnticipationSample : NetworkBehaviour
     }
 
 
-    private const float k_ValueEChangePerSecond = 2.5f;
+    const float k_ValueEChangePerSecond = 2.5f;
 
     public override void OnReanticipate(double lastRoundTripTime)
     {
@@ -106,7 +105,7 @@ public class AnticipationSample : NetworkBehaviour
         // It uses the amount of time that has passed since the authoritativetime to gauge the latency of this update
         // and anticipates a new value based on that delay. The server value is in the past, so the predicted value
         // attempts to guess what the value is in the present.
-        if(ValueE.ShouldReanticipate)
+        if (ValueE.ShouldReanticipate)
         {
             // There is an important distinction between the smoothing this is doing and the smoothing the player object
             // is doing:
@@ -145,12 +144,14 @@ public class AnticipationSample : NetworkBehaviour
         ValueD.OnAuthoritativeValueChanged = onUpdate;
     }
 
-    private void Update()
+    [SerializeField]
+    NetworkSimulator networkSimulator;
+
+    void Update()
     {
         if (Restart && !NetworkManagerObject.IsListening && !NetworkManagerObject.ShutdownInProgress)
         {
-            var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
-            unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
+            SetDebugSimulatorParameters(Latency, Jitter, 0);
             NetworkManagerObject.StartClient();
             Restart = false;
         }
@@ -160,15 +161,15 @@ public class AnticipationSample : NetworkBehaviour
         }
     }
 
-    private int Latency = 200;
-    private int Jitter = 25;
-    private float SmoothTime = 0.25f;
-    private bool Restart = false;
+    int Latency = 200;
+    int Jitter = 25;
+    float SmoothTime = 0.25f;
+    bool Restart = false;
 
     void OnGUI()
     {
-        Vector3 scale = new Vector3 (Screen.width / 910f, Screen.height / 600f, 1.0f);
-        GUI.matrix = Matrix4x4.TRS (new Vector3(0, 0, 0), Quaternion.identity, scale);
+        Vector3 scale = new Vector3(Screen.width / 910f, Screen.height / 600f, 1.0f);
+        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, scale);
         if (NetworkManagerObject.IsListening)
         {
             GUILayout.BeginArea(new Rect(0, 0, 900, 72));
@@ -246,7 +247,7 @@ public class AnticipationSample : NetworkBehaviour
             }
 
             GUILayout.EndArea();
-            if(IsClient)
+            if (IsClient)
             {
                 GUILayout.BeginArea(new Rect(0, 310, 600, 300));
                 GUILayout.Label("Anticipated Network Transform controls:");
@@ -285,21 +286,28 @@ public class AnticipationSample : NetworkBehaviour
         {
             GUILayout.BeginArea(new Rect(0, 0, 300, 600));
 
-            if (!NetworkManagerObject.IsListening && !Restart){
+            if (!NetworkManagerObject.IsListening && !Restart)
+            {
                 if (GUILayout.Button("Start Server"))
                 {
-                    var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
-                    unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
+                    SetDebugSimulatorParameters(Latency, Jitter, 0);
                     NetworkManagerObject.StartServer();
                 }
                 if (GUILayout.Button("Start Client"))
                 {
-                    var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
-                    unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
+                    SetDebugSimulatorParameters(Latency, Jitter, 0);
                     NetworkManagerObject.StartClient();
                 }
             }
             GUILayout.EndArea();
         }
+    }
+
+    void SetDebugSimulatorParameters(int latency, int jitter, int dropRate)
+    {
+        INetworkSimulatorPreset preset = networkSimulator.CurrentPreset;
+        preset.PacketDelayMs = Latency;
+        preset.PacketJitterMs = Jitter;
+        networkSimulator.ChangeConnectionPreset(preset);
     }
 }

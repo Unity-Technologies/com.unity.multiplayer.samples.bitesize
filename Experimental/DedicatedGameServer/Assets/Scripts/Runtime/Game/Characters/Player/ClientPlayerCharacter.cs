@@ -1,5 +1,5 @@
 using System;
-using Cinemachine;
+using Unity.Cinemachine;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -71,8 +71,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
             // position on owning clients
             m_CharacterController.enabled = true;
 
-            var cinemachineVirtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
-            cinemachineVirtualCamera.Follow = m_CameraFollow;
+            var cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
+            cinemachineCamera.Follow = m_CameraFollow;
 
             GameApplication.Instance.Model.PlayerCharacter = this;
         }
