@@ -29,6 +29,8 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         string m_SelectionScreenSceneName;
         [SerializeField]
         GameObject m_ServerOnlyOverlay;
+        [SerializeField]
+        bool m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer = true;
 
         void Awake()
         {
@@ -46,7 +48,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void Start()
         {
-            m_ServerOnlyOverlay.gameObject.SetActive(false);
+            if (m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer)
+            {
+                m_ServerOnlyOverlay.gameObject.SetActive(false);
+            }
         }
 
         void StartServer()
@@ -55,7 +60,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             NetworkManager.Singleton.StartServer();
             EnableAndHighlightButtons(m_ServerButton, false);
             SetButtonStateAndColor(m_DisconnectButton, false, true);
-            m_ServerOnlyOverlay.gameObject.SetActive(true);
+            if (m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer)
+            {
+                m_ServerOnlyOverlay.gameObject.SetActive(true);
+            }
         }
 
         void StartHost()
@@ -79,7 +87,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             NetworkManager.Singleton.Shutdown();
             EnableAndHighlightButtons(null, true);
             SetButtonStateAndColor(m_DisconnectButton, false, false);
-            m_ServerOnlyOverlay.gameObject.SetActive(false);
+            if (m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer)
+            {
+                m_ServerOnlyOverlay.gameObject.SetActive(false);
+            }
         }
 
         void QuitScene()
