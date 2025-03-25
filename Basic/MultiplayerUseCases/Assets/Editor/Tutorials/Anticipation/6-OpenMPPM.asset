@@ -1,5 +1,28 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4006684631982611019
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f095ab04ffe3b514c808035bb335fa56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Completed:
+    m_PersistentCalls:
+      m_Calls: []
+  Invalidated:
+    m_PersistentCalls:
+      m_Calls: []
+  isTesting: 0
+  m_EditorWindowType:
+    m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow, Unity.Multiplayer.Playmode.WorkflowUI.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_CloseIfAlreadyOpen: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,10 +33,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 35-InspectOtherCube
+  m_Name: 6-OpenMPPM
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cubes
+    m_Untranslated: Client and server setup
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -21,8 +44,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -34,38 +60,16 @@ MonoBehaviour:
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
-            m_TypeName: UnityEditor.SceneHierarchyWindow, UnityEditor.CoreModule,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
           m_MaskSizeModifier: 0
-          m_UnmaskedControls:
-          - m_SelectorMode: 4
-            m_SelectorMatchType: 1
-            m_GUIContent:
-              m_Text: ColoredCube
-              m_Image: {fileID: 0}
-              m_Tooltip: 
-            m_ControlName: 
-            m_PropertyPath: 
-            m_TargetType:
-              m_TypeName: 
-            m_GUIStyleName: 
-            m_ObjectReference:
-              m_SceneObjectReference:
-                m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
-                m_GameObjectGuid: 063177df-ab76-45f1-aec3-a4ade0de669d
-                m_SerializedComponentType:
-                  m_TypeName: 
-                m_ComponentIndex: 0
-                m_AssetObject: {fileID: 0}
-                m_Prefab: {fileID: 0}
-              m_FutureObjectReference: {fileID: 0}
-            m_VisualElementClassName: 
-            m_VisualElementName: 
-            m_VisualElementTypeName: 
+          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -75,10 +79,18 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: Now select the other Cube to see the differences between
-          it and the first one.
+        m_Untranslated: 'To explore this sample, you need to run a Server-only and
+          a Client-only instance of it.
+
+
+          You can use the Multiplayer Play
+          Mode to create a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
+          Player</a> for one of the two Unity Editor instances you''ll need. '
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -93,19 +105,22 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Select the ColoredCube
+        m_Untranslated: Open the Multiplayer Play Mode window
       Text:
-        m_Untranslated: 
+        m_Untranslated: Go to Window > Multiplayer > Multiplayer Play Mode
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
         m_Items:
         - Type:
-            m_TypeName: Unity.Tutorials.Core.Editor.RequiredSelectionCriterion, Unity.Tutorials.Core.Editor,
+            m_TypeName: Unity.Tutorials.Core.Editor.EditorWindowCriterion, Unity.Tutorials.Core.Editor,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: 4722472266157362047}
+          Criterion: {fileID: -4006684631982611019}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -168,33 +183,3 @@ MonoBehaviour:
       m_Calls: []
   m_NextButton: Next
   m_DoneButton: Done
---- !u!114 &4722472266157362047
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255ef86cb95f04796b8e3b3f5b23efe7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Completed:
-    m_PersistentCalls:
-      m_Calls: []
-  Invalidated:
-    m_PersistentCalls:
-      m_Calls: []
-  isTesting: 0
-  m_ObjectReferences:
-    m_Items:
-    - m_SceneObjectReference:
-        m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
-        m_GameObjectGuid: 063177df-ab76-45f1-aec3-a4ade0de669d
-        m_SerializedComponentType:
-          m_TypeName: 
-        m_ComponentIndex: 0
-        m_AssetObject: {fileID: 0}
-        m_Prefab: {fileID: 0}
-      m_FutureObjectReference: {fileID: 0}

@@ -21,8 +21,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -34,6 +37,7 @@ MonoBehaviour:
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
             m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
@@ -52,18 +56,21 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 'To test our network functionalities, you need to start the
-          game either as a <b>Server</b>, a <b>Client</b> or a <b>Host</b> (server
-          + client).
+          game either as a <b>Server</b>, or a <b>Client</b>.
 
 
-          You can select the network mode to use by pressing
-          one of the buttons at the top-right corner of the game''s UI.
+          You can
+          select the network mode to use by pressing one of the buttons at the top-right
+          corner of the game''s UI.
 
 
-          To
-          test the game without making a client build, select the <b>Host</b>  mode.'
+          Select the <b>Server</b> mode on
+          the Virtual Player, and then select the <b>Client</b> mode in this editor.'
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -80,9 +87,13 @@ MonoBehaviour:
       Title:
         m_Untranslated: Select the Host network mode
       Text:
-        m_Untranslated: Press the <b>Host</b> button to start the game in Host mode
+        m_Untranslated: Select the <b>Server</b> mode on the Virtual Player, and
+          then select the <b>Client</b> mode in this editor to start the game.
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -174,7 +185,7 @@ MonoBehaviour:
   isTesting: 0
   m_Callback:
     _target: {fileID: 11400000, guid: a801694c599b91149aecf05212674c82, type: 2}
-    _methodName: IsRunningAsHost
+    _methodName: IsRunningAsClientOnly
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,

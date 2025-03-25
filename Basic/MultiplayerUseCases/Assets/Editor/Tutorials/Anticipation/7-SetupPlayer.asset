@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 40-InspectTheCube2
+  m_Name: 7-SetupPlayer
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cube
+    m_Untranslated: Client and server setup
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -21,8 +21,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -32,10 +35,13 @@ MonoBehaviour:
         m_UnmaskedViews:
         - m_SelectorType: 1
           m_ViewType:
-            m_TypeName: 
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.InspectorWindow, UnityEditor.CoreModule, Version=0.0.0.0,
+            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
+          m_EditorWindowType:
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
@@ -44,9 +50,10 @@ MonoBehaviour:
           - m_SelectorMode: 5
             m_SelectorMatchType: 0
             m_GUIContent:
-              m_Text: ColorManager
+              m_Text: 
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
@@ -54,18 +61,17 @@ MonoBehaviour:
             m_GUIStyleName: 
             m_ObjectReference:
               m_SceneObjectReference:
-                m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
-                m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
+                m_SceneGuid: 
+                m_GameObjectGuid: 
                 m_SerializedComponentType:
-                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager, com.unity.samples.multiplayer-use-cases.rpcvsnetvar,
-                    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+                  m_TypeName: 
                 m_ComponentIndex: 0
                 m_AssetObject: {fileID: 0}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Color Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+            m_VisualElementName: PlayerViewHeader
+            m_VisualElementTypeName: 
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -75,13 +81,13 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The ColorManager script manages the color of the cube. \n\nFor
-          this GameObject, the color is not managed by a <b>NetworkVariable</b>.
-          Instead, it is managed by <b>ServerRPCs</b> and <b>ClientRPCs</b>.\n\nYou
-          can read more about ServerRPCs <a href=\"https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/serverrpc\">here</a>,
-          and about ClientRPCs <a href=\"https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/clientrpc/index.html\">here</a>"
+        m_Untranslated: Check the checbkox of the "Player 4" virtual player to enable
+          it.
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -96,11 +102,15 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Press Next to continue
+        m_Untranslated: Enable the "Player 4" virtual player
       Text:
-        m_Untranslated: 
+        m_Untranslated: Check the checkbox of the "Player 4" virtual player, then
+          wait until its status becoms "Active", then press "Next".
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
