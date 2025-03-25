@@ -269,7 +269,16 @@ PrefabInstance:
       propertyPath: m_GameObjectRolesMask
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4074790896732394817, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      propertyPath: m_GameObjectRolesMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074790896732394817, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      propertyPath: m_ComponentsRolesMasks.Array.data[0].m_Object
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: [{fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3},
+      {fileID: 3125594499909882602, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}]
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -521,19 +530,19 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8188383779474413381, guid: 0dff047fe330e3947b10253ba41de7eb, type: 3}
-      propertyPath: 'm_Patrols.Array.data[0]'
+      propertyPath: m_Patrols.Array.data[0]
       value: 
       objectReference: {fileID: 1611378409}
     - target: {fileID: 8188383779474413381, guid: 0dff047fe330e3947b10253ba41de7eb, type: 3}
-      propertyPath: 'm_Patrols.Array.data[1]'
+      propertyPath: m_Patrols.Array.data[1]
       value: 
       objectReference: {fileID: 1611378408}
     - target: {fileID: 8188383779474413381, guid: 0dff047fe330e3947b10253ba41de7eb, type: 3}
-      propertyPath: 'm_Patrols.Array.data[2]'
+      propertyPath: m_Patrols.Array.data[2]
       value: 
       objectReference: {fileID: 1611378407}
     - target: {fileID: 8188383779474413381, guid: 0dff047fe330e3947b10253ba41de7eb, type: 3}
-      propertyPath: 'm_Patrols.Array.data[3]'
+      propertyPath: m_Patrols.Array.data[3]
       value: 
       objectReference: {fileID: 1611378406}
     m_RemovedComponents: []
