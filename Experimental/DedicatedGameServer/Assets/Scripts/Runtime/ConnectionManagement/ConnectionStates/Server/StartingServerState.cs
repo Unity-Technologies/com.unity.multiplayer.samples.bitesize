@@ -1,5 +1,5 @@
 using System;
-using Unity.Netcode.Transports.UTP;
+using Unity.Multiplayer;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
@@ -10,15 +10,13 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
     /// </summary>
     class StartingServerState : OnlineState
     {
-        string m_IPAddress;
-        ushort m_Port;
+        ConnectionMethodBase m_ConnectionMethod;
 
-        public void Configure(string iPAddress, ushort port)
+        public void Configure(ConnectionMethodBase baseConnectionMethod)
         {
-            m_IPAddress = iPAddress;
-            m_Port = port;
+            m_ConnectionMethod = baseConnectionMethod;
         }
-        
+
         public override void Enter()
         {
             StartServer();
@@ -36,29 +34,23 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         {
             StartServerFailed();
         }
-        
+
         void StartServerFailed()
         {
             ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.StartServerFailed });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
         }
 
-        void StartServer()
+        async void StartServer()
         {
             try
             {
-                var utp = (UnityTransport)ConnectionManager.NetworkManager.NetworkConfig.NetworkTransport;
-                utp.SetConnectionData(m_IPAddress, m_Port);
-                
-                // NGO's StartServer launches everything
-                Debug.Log($"Starting server, listening on {m_IPAddress} with port {m_Port}");
-                if (!ConnectionManager.NetworkManager.StartServer())
-                {
-                    StartServerFailed();
-                }
+                m_ConnectionMethod.SetupServerConnection();
+                await m_ConnectionMethod.ConnectServerAsync();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.LogException(e);
                 StartServerFailed();
                 throw;
             }

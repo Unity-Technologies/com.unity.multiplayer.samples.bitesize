@@ -14,16 +14,20 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         public abstract void Exit();
 
         public virtual void OnClientConnected(ulong clientId) { }
-        
+
         public virtual void OnClientDisconnect(ulong clientId) { }
 
         public virtual void OnServerStarted() { }
 
-        public virtual void StartClient(string ipaddress, ushort port) { }
+        public virtual void StartClientIP(string ipaddress, ushort port) { }
+
+        public virtual void StartClientMatchmaker() { }
+
+        public virtual void StopClient() { }
 
         public virtual void StartServerIP(string ipaddress, ushort port) { }
 
-        public virtual void StartServerMatchmaker() { }
+        public virtual void StartServerMatchmaker(int maxPlayers) { }
 
         public virtual void OnUserRequestedShutdown() { }
 
