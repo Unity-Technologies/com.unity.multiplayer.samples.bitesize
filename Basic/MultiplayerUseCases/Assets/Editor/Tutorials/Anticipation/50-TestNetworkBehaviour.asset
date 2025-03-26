@@ -120,23 +120,19 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Now that you know how to make scene objects interact with
-          the local player in theory, you should test it in practice.
+        m_Untranslated: 'Now that you know how to use AnticipatedNetworkVariable,
+          you can experiment with the Jitter and Latency sliders in the scenes to
+          see how the character moves even when the network conditions are not optimal.
 
 
-          You
-          can do so by creating a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
-          Player</a> or a build of this project, and run it as a Host.
+          For
+          more details about how client-side anticipation works, refer to the <a
+          href="https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/client-anticipation/">official
+          documentation</a> and the scripts mentioned earlier.
 
 
-          Enter
-          PlayMode and connect to your player/build as a Client from the editor to
-          see how the command to change colors is executed only when issued while
-          the local player is close enough.
-
-
-          Once you''re done, press
-          <b>Done</b> to complete this tutorial.'
+          Once you''re
+          done, press <b>Done</b> to complete this tutorial.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
