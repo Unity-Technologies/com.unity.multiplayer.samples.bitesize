@@ -42,15 +42,18 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'In this tutorial you''ll learn more about how you can use
-          the <a href="https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@2.2/api/Unity.Netcode.AnticipatedNetworkVariable-1.html">AnticipatedNetworkVariable</a>
-          to implement ''Prediction and Reconciliation'' techniques.
-
-
-          With
+        m_Untranslated: "Games with a server-authoritative architecture need to make
+          the game feel responsive regardless of latency. \n\nFor example, when a
+          user wants to change the color of an object from green to blue they click
+          a button in the UI, an RPC is sent to the server, and the server changes
+          the object to blue. From the client's perspective, the object doesn't change
+          to blue until the server responds to that message, resulting in a perceived
+          delay for the player.\n\nIn this tutorial you'll learn more about how you
+          can use the <a href=\"https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@2.2/api/Unity.Netcode.AnticipatedNetworkVariable-1.html\">AnticipatedNetworkVariable</a>
+          to implement a simplified form of 'Prediction and Reconciliation' techniques.\n\nWith
           AnticipatedNetworkVariable, the client can set a value on the belief that
           the server will update it to reflect the same value in a future update
-          (i.e., as the result of an RPC call).'
+          (i.e., as the result of an RPC call)."
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}

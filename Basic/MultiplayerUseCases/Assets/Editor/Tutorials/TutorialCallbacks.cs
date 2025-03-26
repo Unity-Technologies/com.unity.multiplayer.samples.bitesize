@@ -77,6 +77,11 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases
             return Selection.activeObject && Selection.activeObject.name == "Player(Clone)";
         }
 
+        public bool IsPlayerSelectedInAnticipationScene()
+        {
+            return Selection.activeObject && Selection.activeObject.name == "Player(Clone)";
+        }
+
         public void OpenURL(string url)
         {
             TutorialEditorUtils.OpenUrl(url);

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 30-InspectTheCube1
+  m_Name: 30-InspectComponents
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cube
+    m_Untranslated: Inspect the Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -46,7 +46,7 @@ MonoBehaviour:
           m_MaskSizeModifier: 0
           m_UnmaskedControls:
           - m_SelectorMode: 5
-            m_SelectorMatchType: 0
+            m_SelectorMatchType: 1
             m_GUIContent:
               m_Text: ColorManager
               m_Image: {fileID: 0}
@@ -70,8 +70,35 @@ MonoBehaviour:
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Proximity Checker (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+            m_VisualElementName: Input Manager (Script)Header
+            m_VisualElementTypeName: 
+          - m_SelectorMode: 5
+            m_SelectorMatchType: 1
+            m_GUIContent:
+              m_Text: ColorManager
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+              m_TextWithWhitespace: 
+            m_ControlName: 
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: 
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 9fc0d4010bbf28b4594072e72b8655ab
+                m_GameObjectGuid: 23f5c3a2-0ce1-4e20-9406-5fff9bf3874d
+                m_SerializedComponentType:
+                  m_TypeName: Unity.Netcode.Samples.MultiplayerUseCases.ColorManager,
+                    com.unity.samples.multiplayer-use-cases.rpcvsnetvar, Version=0.0.0.0,
+                    Culture=neutral, PublicKeyToken=null
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 0}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: 
+            m_VisualElementName: Player Movable Object (Script)Header
+            m_VisualElementTypeName: 
           - m_SelectorMode: 5
             m_SelectorMatchType: 0
             m_GUIContent:
@@ -97,8 +124,8 @@ MonoBehaviour:
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Color Manager (Script)
-            m_VisualElementTypeName: UnityEditor.UIElements.EditorElement
+            m_VisualElementName: Anticipated Network TransformHeader
+            m_VisualElementTypeName: 
         - m_SelectorType: 1
           m_ViewType:
             m_TypeName: 
@@ -130,7 +157,7 @@ MonoBehaviour:
                 m_SerializedComponentType:
                   m_TypeName: 
                 m_ComponentIndex: 0
-                m_AssetObject: {fileID: 11500000, guid: 8303682e75eacae45b055146e3bad7a3, type: 3}
+                m_AssetObject: {fileID: 11500000, guid: 1b6ed98ea0a745db9c83f65a7aeb16b4, type: 3}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
@@ -155,7 +182,7 @@ MonoBehaviour:
                 m_SerializedComponentType:
                   m_TypeName: 
                 m_ComponentIndex: 0
-                m_AssetObject: {fileID: 11500000, guid: bbf27a146cf84ed40a739ec969ed86a9, type: 3}
+                m_AssetObject: {fileID: 11500000, guid: a9ed26aec89e49849b94a877f998e41c, type: 3}
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
@@ -170,12 +197,18 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'The <b>ProximityChecker</b> script manages the interactability
-          of the cube.
+        m_Untranslated: 'The <b>InputManager</b>stores current and historical player
+          inputs and allows them to be queried by the <b>PlayerMovableObject</b>,
+          which uses it to drive the <b>AnticipatedNetworkTransform</b> and the <b>PlayerGhost</b>
+          object.
 
 
-          It makes the <b>ColorManager</b> ready to interact
-          with the player when it approaches the object.'
+          You can open the scripts from the <b>Project Browser</b>
+          to have a deeper look at the code and understand how they work.
+
+
+          Once
+          you''re done, press <b>Next</b> to continue.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -250,25 +283,12 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Assets/UseCaseSamples/ProximityChecks/Scripts/com.unity.samples.multiplayer-use-cases.proximity.asmdef
+          m_StringArgument: Assets/UseCaseSamples/Anticipation/Scripts/com.unity.samples.multiplayer-use-cases.anticipation.asmdef
           m_BoolArgument: 0
         m_CallState: 1
   Shown:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 0bbd71a4713de434d8c94e72034b789c, type: 2}
-        m_TargetAssemblyTypeName: Unity.Tutorials.Core.Editor.CommonTutorialCallbacks,
-          Unity.Tutorials.Core.Editor
-        m_MethodName: SelectGameObject
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: CubeMesh
-          m_BoolArgument: 0
-        m_CallState: 1
+      m_Calls: []
   Staying:
     m_PersistentCalls:
       m_Calls: []

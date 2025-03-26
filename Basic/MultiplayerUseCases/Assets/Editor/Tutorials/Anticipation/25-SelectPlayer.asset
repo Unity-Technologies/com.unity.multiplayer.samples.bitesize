@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 25-InspectNetworkVarCube
+  m_Name: 25-SelectPlayer
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Inspect Colored Cube
+    m_Untranslated: Inspect the Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -21,8 +21,11 @@ MonoBehaviour:
         m_Untranslated: 
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -34,6 +37,7 @@ MonoBehaviour:
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
+          m_FocusEditorWindow: 0
           m_EditorWindowType:
             m_TypeName: UnityEditor.SceneHierarchyWindow, UnityEditor.CoreModule,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -45,9 +49,10 @@ MonoBehaviour:
           - m_SelectorMode: 0
             m_SelectorMatchType: 1
             m_GUIContent:
-              m_Text: ColoredCube
+              m_Text: Player(Clone)
               m_Image: {fileID: 0}
               m_Tooltip: 
+              m_TextWithWhitespace: 
             m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
@@ -75,10 +80,13 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "The cube in the scene is the ColoredCube in the hierarchy.
-          \n\nSelect it to see how it works."
+        m_Untranslated: "The character moving in the scene is the Player(Clone) object
+          in the hierarchy. \n\nSelect it to see how it works."
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
@@ -93,19 +101,22 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Select the ColoredCube
+        m_Untranslated: Select the Player(Clone) object
       Text:
         m_Untranslated: 
+      m_CodeSample: 
+      m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
+      m_VideoUrl: 
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
         m_Items:
         - Type:
-            m_TypeName: Unity.Tutorials.Core.Editor.RequiredSelectionCriterion, Unity.Tutorials.Core.Editor,
+            m_TypeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion, Unity.Tutorials.Core.Editor,
               Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          Criterion: {fileID: 4722472266157362047}
+          Criterion: {fileID: 3813620192382759562}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -168,7 +179,7 @@ MonoBehaviour:
       m_Calls: []
   m_NextButton: Next
   m_DoneButton: Done
---- !u!114 &4722472266157362047
+--- !u!114 &3813620192382759562
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,7 +188,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 255ef86cb95f04796b8e3b3f5b23efe7, type: 3}
+  m_Script: {fileID: 11500000, guid: 7231e8df50e16c74c979c4a2affab91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Completed:
@@ -186,15 +197,20 @@ MonoBehaviour:
   Invalidated:
     m_PersistentCalls:
       m_Calls: []
-  isTesting: 1
-  m_ObjectReferences:
-    m_Items:
-    - m_SceneObjectReference:
-        m_SceneGuid: 2ed7b73fcf7a6f1438fb72c1480678e0
-        m_GameObjectGuid: a38a079e-a495-4ffd-aed3-cf441bea5f57
-        m_SerializedComponentType:
-          m_TypeName: 
-        m_ComponentIndex: 0
-        m_AssetObject: {fileID: 0}
-        m_Prefab: {fileID: 0}
-      m_FutureObjectReference: {fileID: 0}
+  isTesting: 0
+  m_Callback:
+    _target: {fileID: 11400000, guid: a801694c599b91149aecf05212674c82, type: 2}
+    _methodName: IsPlayerSelectedInAnticipationScene
+    _args: []
+    _dynamic: 0
+    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
+  m_AutoCompleteCallback:
+    _target: {fileID: 0}
+    _methodName: 
+    _args: []
+    _dynamic: 0
+    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
