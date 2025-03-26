@@ -19,7 +19,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Anticipation
         InputAction m_SmallRandomTeleportAction;
         InputAction m_PredictableTeleportAction;
 
-        public Vector2 m_Move;
+        Vector2 m_Move;
         public void OnMove(InputValue value)
         {
             m_Move = value.Get<Vector2>();
