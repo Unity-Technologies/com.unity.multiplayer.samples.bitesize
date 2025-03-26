@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Threading.Tasks;
 using Unity.Services.Core;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.Multiplayer;
+using Unity.Services.Core.Environments;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime
@@ -11,13 +10,16 @@ namespace Unity.DedicatedGameServerSample.Runtime
     ///Initializes all the Unity Services managers
     ///</summary>
     [MultiplayerRoleRestricted]
-    internal class UnityServicesInitializer : MonoBehaviour
+    class UnityServicesInitializer : MonoBehaviour
     {
-        public const string k_ServerID = "SERVER";
+        const string k_ServerID = "SERVER";
         public static UnityServicesInitializer Instance { get; private set; }
-        public MatchmakerTicketer Matchmaker { get; private set; }
 
-        public const string k_Environment =
+        [SerializeField]
+        MatchmakerHandler m_MatchmakerHandler;
+        public MatchmakerHandler Matchmaker => m_MatchmakerHandler;
+
+        const string k_Environment =
 #if LIVE
                                         "production";
 #elif STAGE
@@ -42,7 +44,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             await Initialize(MultiplayerRolesManager.ActiveMultiplayerRoleMask == MultiplayerRoleFlags.Client);
         }
 
-        async public Task Initialize(bool isClient)
+        async Task Initialize(bool isClient)
         {
             string serviceProfileName = ProfileManager.Singleton.Profile;
             if (!isClient)
@@ -51,29 +53,22 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 UnityServices.ExternalUserId = k_ServerID;
             }
 
-            bool signedIn = await UnityServiceAuthenticator.TrySignInAsync(k_Environment, serviceProfileName);
+            await UnityServices.InitializeAsync(new InitializationOptions().SetEnvironmentName(k_Environment));
+
             if (isClient)
             {
+                var signedIn = await UnityServiceAuthenticator.TrySignInAsync(k_Environment, serviceProfileName);
                 //wait for the MetagameApplication to be instantiated, to avoid race conditions
                 StartCoroutine(CoroutinesHelper.WaitAndDo(new WaitUntil(() => MetagameApplication.Instance), () =>
                 {
                     //at this point, it's safe to tell the Application that the player signed in
                     MetagameApplication.Instance.Broadcast(new PlayerSignedIn(signedIn, UnityServiceAuthenticator.PlayerId));
-                    if (signedIn)
-                    {
-                        InitializeClientOnlyServices();
-                    }
-                    else
+                    if (!signedIn)
                     {
                         Debug.LogError("User could not sign in. Please check that your device is connected to the internet, and that the project is linked to an existing Project in the Unity Cloud.");
                     }
                 }));
             }
-        }
-
-        void InitializeClientOnlyServices()
-        {
-            Matchmaker = gameObject.AddComponent<MatchmakerTicketer>();
         }
     }
 }

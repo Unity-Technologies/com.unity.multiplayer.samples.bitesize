@@ -1,19 +1,11 @@
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class EnterMatchmakerQueueEvent : AppEvent
-    {
-        public string QueueName { get; private set; }
-
-        public EnterMatchmakerQueueEvent(string queueName)
-        {
-            QueueName = queueName;
-        }
-    }
+    internal class EnterMatchmakerQueueEvent : AppEvent { }
 
     internal class ExitMatchmakerQueueEvent : AppEvent { }
-    
+
     internal class EnterIPConnectionEvent : AppEvent { }
-    
+
     internal class ExitIPConnectionEvent : AppEvent { }
 
     internal class JoinThroughDirectIPEvent : AppEvent
@@ -21,14 +13,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
         public string ipAddress;
         public ushort port;
     }
-    
+
     internal class CancelConnectionEvent: AppEvent { }
-    
+
     /// <summary>
     /// Called when a match is entered (I.E: after matchmaking finds enough players)
     /// </summary>
     internal class MatchEnteredEvent : AppEvent { }
-    
+
     internal class PlayerSignedIn : AppEvent
     {
         public bool Success { get; private set; }

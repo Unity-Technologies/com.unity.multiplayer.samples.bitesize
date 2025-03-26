@@ -1,5 +1,5 @@
 using System;
-using Cinemachine;
+using Unity.Cinemachine;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,10 +37,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             Cursor.visible = false;
 
             // ThirdPersonController & CharacterController are enabled only on owning clients. Ghost player objects have
-            // these two components disabled, and will enable a CapsuleCollider. Per the CharacterController documentation: 
+            // these two components disabled, and will enable a CapsuleCollider. Per the CharacterController documentation:
             // https://docs.unity3d.com/Manual/CharacterControllers.html, a Character controller can push rigidbody
             // objects aside while moving but will not be accelerated by incoming collisions. This means that a primitive
-            // CapsuleCollider must instead be used for ghost clients to simulate collisions between owning players and 
+            // CapsuleCollider must instead be used for ghost clients to simulate collisions between owning players and
             // ghost clients.
             m_ThirdPersonController.enabled = false;
             m_PlayerInput.enabled = false;
@@ -71,8 +71,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
             // position on owning clients
             m_CharacterController.enabled = true;
 
-            var cinemachineVirtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
-            cinemachineVirtualCamera.Follow = m_CameraFollow;
+            var cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
+            cinemachineCamera.Follow = m_CameraFollow;
 
             GameApplication.Instance.Model.PlayerCharacter = this;
         }
@@ -87,7 +87,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         public void SetInputsActive(bool active)
         {
-            m_PlayerInput.enabled = active;
+            if (m_PlayerInput != null)
+            {
+                m_PlayerInput.enabled = active;
+            }
             Cursor.lockState = active ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = !active;
         }

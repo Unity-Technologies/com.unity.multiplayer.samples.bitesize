@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a689d91966dfb46499fb63f130d9b905, type: 3}
+  m_Name: DeployToUGS
+  m_EditorClassIdentifier: 
+  m_Description: Deploys a remote instance of a build to a fleet defined inside your
+    environment. Make sure to change to the desired build profile before entering
+    Play mode such that the build is configured with the correct build profile settings.
+  m_EnableEditors: 1
+  m_MainEditorInstance:
+    Name: Main Editor
+    <CorrespondingNodeId>k__BackingField: Main Editor|0_run
+    m_Nodes:
+    - Main Editor|0_run
+    - Main Editor|0_deploy
+    m_Role: 1
+    m_PlayerTag: 
+    m_InitialScene: {fileID: 102900000, guid: 6e5c529b4669aaf4e9530f6c3f5e45f4, type: 3}
+  m_EditorInstances:
+  - Name: Player 2
+    <CorrespondingNodeId>k__BackingField: Player 2|1_run
+    m_Nodes:
+    - Player 2|1_run
+    - Player 2|1_deploy
+    m_Role: 1
+    m_PlayerTag: 
+    m_InitialScene: {fileID: 0}
+    m_AdvancedConfiguration:
+      StreamLogsToMainEditor: 0
+      LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
+  - Name: Player 3
+    <CorrespondingNodeId>k__BackingField: 
+    m_Nodes: []
+    m_Role: 1
+    m_PlayerTag: 
+    m_InitialScene: {fileID: 0}
+    m_AdvancedConfiguration:
+      StreamLogsToMainEditor: 0
+      LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
+  - Name: Player 4
+    <CorrespondingNodeId>k__BackingField: 
+    m_Nodes: []
+    m_Role: 1
+    m_PlayerTag: 
+    m_InitialScene: {fileID: 0}
+    m_AdvancedConfiguration:
+      StreamLogsToMainEditor: 0
+      LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
+  m_LocalInstances: []
+  m_RemoteInstances:
+  - Name: Instance
+    <CorrespondingNodeId>k__BackingField: Instance - Run
+    m_Nodes:
+    - Instance - Build
+    - Instance - Deploy Build
+    - Instance - Deploy Build Configuration
+    - Instance - Deploy Fleet
+    - Instance - Allocate
+    - Instance - Run
+    m_BuildProfile: {fileID: 11400000, guid: b6a6de8c4e140432cabc953c551a2d1c, type: 2}
+    advancedConfiguration:
+      m_Identifier: LinuxServer
+      m_FleetRegion: North America
+      m_InstanceAmountOfCores: 1
+      m_InstanceAmountOfMemoryMB: 800
+      m_InstanceCpuFrequencyMHz: 750
+      m_StreamLogsToMainEditor: 0
+      m_LogsColor: {r: 0.3643, g: 0.866, b: 0.513, a: 1}
+      m_Arguments: -port $$port$$ -queryport $$query_port$$ -logFile $$log_dir$$/Engine.log
+  m_OverridePort: 0
+  m_Port: 0
+  m_MainEditorInstanceObsolete:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

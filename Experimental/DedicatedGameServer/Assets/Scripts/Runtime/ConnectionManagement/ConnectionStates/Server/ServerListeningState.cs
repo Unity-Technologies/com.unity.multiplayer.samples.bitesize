@@ -16,22 +16,30 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
 
         public override void Enter()
         {
+            #if UNITY_SERVER && !UNITY_EDITOR
+            MatchmakerHandler.Instance.StartServerQuery();
+            #endif
+
             // todo setup gsh to receive matchmaker tickets
             m_MinPlayerConnected = false;
         }
 
         public override void Exit() { }
-        
+
         public override void OnClientConnected(ulong clientId)
         {
             Debug.Log($"Client {clientId} connected to the server.");
             ConnectionManager.EventManager.Broadcast(new ClientConnectedEvent());
-            
-            if (!m_MinPlayerConnected && ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Singleton.MinPlayers)
+
+            if (!m_MinPlayerConnected && ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.k_MinPlayers)
             {
                 m_MinPlayerConnected = true;
                 ConnectionManager.EventManager.Broadcast(new MinNumberPlayersConnectedEvent());
             }
+
+#if UNITY_SERVER && !UNITY_EDITOR
+            MatchmakerHandler.Instance.UpdatePlayerCount((ushort)ConnectionManager.NetworkManager.ConnectedClientsIds.Count);
+#endif
         }
 
         public override void OnClientDisconnect(ulong clientId)
@@ -47,6 +55,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
                 ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.ServerEndedSession });
                 ConnectionManager.ChangeState(ConnectionManager.m_Offline);
             }
+
+#if UNITY_SERVER && !UNITY_EDITOR
+            MatchmakerHandler.Instance.UpdatePlayerCount((ushort)ConnectionManager.NetworkManager.ConnectedClientsIds.Count);
+#endif
         }
 
         public override void OnUserRequestedShutdown()
@@ -66,6 +78,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         {
             ConnectionManager.EventManager.Broadcast(new ConnectionEvent { status = ConnectStatus.GenericDisconnect });
             ConnectionManager.ChangeState(ConnectionManager.m_Offline);
+
+#if UNITY_SERVER && !UNITY_EDITOR
+            MatchmakerHandler.Instance.Cleanup();
+#endif
         }
 
         /// <summary>
@@ -78,8 +94,8 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
         /// when connection is refused, for example).
         /// </remarks>
         /// <param name="request"> The initial request contains, among other things, binary data passed into StartClient. In our case, this is the client's GUID,
-        /// which is a unique identifier for their install of the game that persists across app restarts.
-        ///  <param name="response"> Our response to the approval process. In case of connection refusal with custom return message, we delay using the Pending field.
+        /// which is a unique identifier for their install of the game that persists across app restarts.</param>
+        /// <param name="response"> Our response to the approval process. In case of connection refusal with custom return message, we delay using the Pending field.</param>
         public override void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
         {
             var connectionData = request.Payload;
@@ -108,10 +124,10 @@ namespace Unity.DedicatedGameServerSample.Runtime.ConnectionManagement
             response.Approved = false;
             response.Reason = JsonUtility.ToJson(gameReturnStatus);
         }
-        
+
         ConnectStatus GetConnectStatus(ConnectionPayload connectionPayload)
         {
-            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.Singleton.MaxPlayers)
+            if (ConnectionManager.NetworkManager.ConnectedClientsIds.Count >= ApplicationEntryPoint.k_MaxPlayers)
             {
                 return ConnectStatus.ServerFull;
             }

@@ -1,14 +1,12 @@
 using System;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 using UnityEngine;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class MainMenuController : Controller<MetagameApplication>
+    class MainMenuController : Controller<MetagameApplication>
     {
         MainMenuView View => App.View.MainMenu;
-        ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
 
         void Awake()
         {
@@ -16,7 +14,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             AddListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
             AddListener<EnterIPConnectionEvent>(OnEnterIPConnection);
             AddListener<ExitIPConnectionEvent>(OnExitIPConnection);
-            ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            }
         }
 
         void OnDestroy()
@@ -30,7 +31,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
             RemoveListener<ExitMatchmakerQueueEvent>(OnExitMatchmakerQueue);
             RemoveListener<EnterIPConnectionEvent>(OnEnterIPConnection);
             RemoveListener<ExitIPConnectionEvent>(OnExitIPConnection);
-            ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            }
         }
 
         void OnEnterMatchmakerQueue(EnterMatchmakerQueueEvent evt)

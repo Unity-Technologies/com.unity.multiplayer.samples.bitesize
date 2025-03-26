@@ -1,7 +1,7 @@
 using UnityEngine.UIElements;
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class MainMenuView : View<MetagameApplication>
+    class MainMenuView : View<MetagameApplication>
     {
         Button m_FindMatchButton;
         Button m_JoinDirectIPButton;
@@ -39,7 +39,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnClickFindMatch(ClickEvent evt)
         {
-            Broadcast(new EnterMatchmakerQueueEvent("Queue01"));
+            Broadcast(new EnterMatchmakerQueueEvent());
         }
 
         void OnClickJoinDirectIP(ClickEvent evt)
