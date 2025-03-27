@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 50-TestNetworkBehaviour
+  m_Name: 25-SelectPlayer
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Witness the difference
+    m_Untranslated: Inspect the Player
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -33,35 +33,35 @@ MonoBehaviour:
       m_MaskingSettings:
         m_MaskingEnabled: 1
         m_UnmaskedViews:
-        - m_SelectorType: 0
+        - m_SelectorType: 1
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
           m_FocusEditorWindow: 0
           m_EditorWindowType:
-            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
+            m_TypeName: UnityEditor.SceneHierarchyWindow, UnityEditor.CoreModule,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
           m_MaskSizeModifier: 0
           m_UnmaskedControls:
-          - m_SelectorMode: 5
-            m_SelectorMatchType: 0
+          - m_SelectorMode: 0
+            m_SelectorMatchType: 1
             m_GUIContent:
-              m_Text: 
+              m_Text: Player(Clone)
               m_Image: {fileID: 0}
               m_Tooltip: 
               m_TextWithWhitespace: 
-            m_ControlName: ToolbarPlayModePlayButton
+            m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
               m_TypeName: 
             m_GUIStyleName: 
             m_ObjectReference:
               m_SceneObjectReference:
-                m_SceneGuid: 
-                m_GameObjectGuid: 
+                m_SceneGuid: 2ed7b73fcf7a6f1438fb72c1480678e0
+                m_GameObjectGuid: a38a079e-a495-4ffd-aed3-cf441bea5f57
                 m_SerializedComponentType:
                   m_TypeName: 
                 m_ComponentIndex: 0
@@ -69,48 +69,8 @@ MonoBehaviour:
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Play
+            m_VisualElementName: 
             m_VisualElementTypeName: 
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.Build.Profile.BuildProfileWindow, UnityEditor.BuildProfileModule,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
-              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -120,23 +80,8 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Now that you know how to make scene objects interact with
-          the local player in theory, you should test it in practice.
-
-
-          You
-          can do so by creating a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
-          Player</a> or a build of this project, and run it as a Host.
-
-
-          Enter
-          PlayMode and connect to your player/build as a Client from the editor to
-          see how the command to change colors is executed only when issued while
-          the local player is close enough.
-
-
-          Once you''re done, press
-          <b>Done</b> to complete this tutorial.'
+        m_Untranslated: "The character moving in the scene is the Player(Clone) object
+          in the hierarchy. \n\nSelect it to see how it works."
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -156,9 +101,9 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Press Done to complete the tutorial
+        m_Untranslated: Select the Player(Clone) object
       Text:
-        m_Untranslated: On press the button below to load the next one
+        m_Untranslated: 
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -167,29 +112,11 @@ MonoBehaviour:
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 2
-      Title:
-        m_Untranslated: 
-      Text:
-        m_Untranslated: 'Tutorial 5: Anticipation'
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 11400000, guid: 5104526ead32a4c45b80184161a7c75a, type: 2}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
+        m_Items:
+        - Type:
+            m_TypeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion, Unity.Tutorials.Core.Editor,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          Criterion: {fileID: 3813620192382759562}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []
@@ -219,7 +146,7 @@ MonoBehaviour:
   DoneButton:
     m_Untranslated: Done
   m_CompletedSound: {fileID: 0}
-  m_AutoAdvance: 0
+  m_AutoAdvance: 1
   Showing:
     m_PersistentCalls:
       m_Calls: []
@@ -252,3 +179,38 @@ MonoBehaviour:
       m_Calls: []
   m_NextButton: Next
   m_DoneButton: Done
+--- !u!114 &3813620192382759562
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7231e8df50e16c74c979c4a2affab91b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Completed:
+    m_PersistentCalls:
+      m_Calls: []
+  Invalidated:
+    m_PersistentCalls:
+      m_Calls: []
+  isTesting: 0
+  m_Callback:
+    _target: {fileID: 11400000, guid: a801694c599b91149aecf05212674c82, type: 2}
+    _methodName: IsPlayerSelectedInAnticipationScene
+    _args: []
+    _dynamic: 0
+    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
+  m_AutoCompleteCallback:
+    _target: {fileID: 0}
+    _methodName: 
+    _args: []
+    _dynamic: 0
+    _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0

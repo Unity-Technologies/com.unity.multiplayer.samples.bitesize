@@ -1,5 +1,25 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2524440291040570054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 641211c85919e4aceb79a0d364004d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Completed:
+    m_PersistentCalls:
+      m_Calls: []
+  Invalidated:
+    m_PersistentCalls:
+      m_Calls: []
+  isTesting: 0
+  m_RequiredPlayModeState: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,10 +30,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 50-TestNetworkBehaviour
+  m_Name: 20-PlayAround
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Witness the difference
+    m_Untranslated: Try out the Game
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -26,7 +46,7 @@ MonoBehaviour:
       m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_VideoUrl: 
-      m_Video: {fileID: 0}
+      m_Video: {fileID: 32900000, guid: 076f9c6b2584d3d4bb2b6439a28afcee, type: 3}
       m_CriteriaCompletion: 0
       m_Criteria:
         m_Items: []
@@ -84,33 +104,6 @@ MonoBehaviour:
           m_MaskType: 0
           m_MaskSizeModifier: 0
           m_UnmaskedControls: []
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.Build.Profile.BuildProfileWindow, UnityEditor.BuildProfileModule,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
-              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -120,23 +113,13 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Now that you know how to make scene objects interact with
-          the local player in theory, you should test it in practice.
+        m_Untranslated: 'Follow the instructions in the game''s UI to navigate the
+          scene and interact with scene objects.
 
 
-          You
-          can do so by creating a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
-          Player</a> or a build of this project, and run it as a Host.
-
-
-          Enter
-          PlayMode and connect to your player/build as a Client from the editor to
-          see how the command to change colors is executed only when issued while
-          the local player is close enough.
-
-
-          Once you''re done, press
-          <b>Done</b> to complete this tutorial.'
+          Pay attention to how
+          the character and the values displayed in the UI of both the Server and
+          Client instances change as you interact with the Client''s UI.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -156,9 +139,10 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Press Done to complete the tutorial
+        m_Untranslated: Explore the in-game UI, then press Next
       Text:
-        m_Untranslated: On press the button below to load the next one
+        m_Untranslated: When you're done, select <b>Next</b> to have a look at the
+          scene's setup.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -167,29 +151,11 @@ MonoBehaviour:
       m_Video: {fileID: 0}
       m_CriteriaCompletion: 0
       m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 2
-      Title:
-        m_Untranslated: 
-      Text:
-        m_Untranslated: 'Tutorial 5: Anticipation'
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 11400000, guid: 5104526ead32a4c45b80184161a7c75a, type: 2}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
+        m_Items:
+        - Type:
+            m_TypeName: Unity.Tutorials.Core.Editor.PlayModeStateCriterion, Unity.Tutorials.Core.Editor,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+          Criterion: {fileID: -2524440291040570054}
       m_MaskingSettings:
         m_MaskingEnabled: 0
         m_UnmaskedViews: []

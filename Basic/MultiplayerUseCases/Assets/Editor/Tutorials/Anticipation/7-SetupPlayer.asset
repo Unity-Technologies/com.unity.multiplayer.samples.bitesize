@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 50-TestNetworkBehaviour
+  m_Name: 7-SetupPlayer
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Witness the difference
+    m_Untranslated: Client and server setup
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -33,14 +33,15 @@ MonoBehaviour:
       m_MaskingSettings:
         m_MaskingEnabled: 1
         m_UnmaskedViews:
-        - m_SelectorType: 0
+        - m_SelectorType: 1
           m_ViewType:
             m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
               Culture=neutral, PublicKeyToken=null
           m_FocusEditorWindow: 0
           m_EditorWindowType:
-            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
+            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
+              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
@@ -53,7 +54,7 @@ MonoBehaviour:
               m_Image: {fileID: 0}
               m_Tooltip: 
               m_TextWithWhitespace: 
-            m_ControlName: ToolbarPlayModePlayButton
+            m_ControlName: 
             m_PropertyPath: 
             m_TargetType:
               m_TypeName: 
@@ -69,48 +70,8 @@ MonoBehaviour:
                 m_Prefab: {fileID: 0}
               m_FutureObjectReference: {fileID: 0}
             m_VisualElementClassName: 
-            m_VisualElementName: Play
+            m_VisualElementName: PlayerViewHeader
             m_VisualElementTypeName: 
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.GameView, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.Build.Profile.BuildProfileWindow, UnityEditor.BuildProfileModule,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: UnityEditor.Toolbar, UnityEditor.CoreModule, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: Unity.Multiplayer.Playmode.WorkflowUI.Editor.MultiplayerWindow,
-              Unity.Multiplayer.Playmode.WorkflowUI.Editor, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -120,23 +81,8 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Now that you know how to make scene objects interact with
-          the local player in theory, you should test it in practice.
-
-
-          You
-          can do so by creating a <a href="https://docs-multiplayer.unity3d.com/mppm/current/virtual-players/">Virtual
-          Player</a> or a build of this project, and run it as a Host.
-
-
-          Enter
-          PlayMode and connect to your player/build as a Client from the editor to
-          see how the command to change colors is executed only when issued while
-          the local player is close enough.
-
-
-          Once you''re done, press
-          <b>Done</b> to complete this tutorial.'
+        m_Untranslated: Check the checkbox of the "Player 4" virtual player to enable
+          it.
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -156,34 +102,13 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Press Done to complete the tutorial
+        m_Untranslated: Enable the "Player 4" virtual player
       Text:
-        m_Untranslated: On press the button below to load the next one
+        m_Untranslated: Check the checkbox of the "Player 4" virtual player, then
+          wait until its status becoms "Active", then press "Next".
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 2
-      Title:
-        m_Untranslated: 
-      Text:
-        m_Untranslated: 'Tutorial 5: Anticipation'
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 11400000, guid: 5104526ead32a4c45b80184161a7c75a, type: 2}
       m_Image: {fileID: 0}
       m_VideoUrl: 
       m_Video: {fileID: 0}
