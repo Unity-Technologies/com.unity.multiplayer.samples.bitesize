@@ -8,6 +8,7 @@ using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
+using UnityEditor.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace Unity.DedicatedGameServerSample.Editor.Tutorials
@@ -239,6 +240,17 @@ namespace Unity.DedicatedGameServerSample.Editor.Tutorials
         public bool IsOnlyEditorInSession()
         {
             return m_JoinedSession != null && m_JoinedSession.Players.Count == 1 && m_JoinedSession.IsHost;
+        }
+
+        public void OpenPrefabView(GameObject prefab)
+        {
+            AssetDatabase.OpenAsset(prefab);
+            SceneView.FrameLastActiveSceneView();
+        }
+
+        public void ExitPrefabView()
+        {
+            StageUtility.GoToMainStage();
         }
     }
 }
