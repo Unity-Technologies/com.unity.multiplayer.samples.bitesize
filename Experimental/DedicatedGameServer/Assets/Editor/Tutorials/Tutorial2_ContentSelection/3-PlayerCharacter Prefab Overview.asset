@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 8-Virtual Player Successfully Created
+  m_Name: 3-PlayerCharacter Prefab Overview
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Multiplayer Workflows Setup Complete!
+    m_Untranslated: PlayerCharacter Prefab
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -38,8 +38,8 @@ MonoBehaviour:
             m_TypeName: 
           m_FocusEditorWindow: 0
           m_EditorWindowType:
-            m_TypeName: UnityEditor.ProjectSettingsWindow, UnityEditor.CoreModule,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            m_TypeName: UnityEditor.InspectorWindow, UnityEditor.CoreModule, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
           m_AlternateEditorWindowTypes:
             m_Items: []
           m_MaskType: 0
@@ -52,66 +52,29 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 0
       Title:
-        m_Untranslated: Page title
-      Text:
-        m_Untranslated: 'Your project is now ready to enter Play mode with a Virtual
-          Player.
-
-
-          Note: Virtual Players do not automatically deactivate
-          when you close the Virtual Player window. To deactivate a Virtual Player,
-          deselect the checkbox for the active Virtual Player.
-
-
-          Continue
-          to the next tutorial to learn how to use Network Scene Visualization.'
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 0}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 1
-      Title:
-        m_Untranslated: Multiplayer Virtual Player created successfully
-      Text:
-        m_Untranslated: Select <b>Done</b> to exit this tutorial.
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 0}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 2
-      Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Next: Content Selection tutorial'
+        m_Untranslated: 'Let''s take a look at the <b>PlayerCharacter</b> Prefab.
+          This Prefab is composed of Components that only exist on Clients, on Servers,
+          and on both.
+
+
+          We''ll explore the scenario where Components are
+          set to exist on both Clients and the Server.
+
+
+          An example of
+          this is the <b>NetworkedPlayerCharacter</b> component.
+
+
+          This
+          script inherits from NetworkBehaviour. It synchronizes data and sends messages
+          between the server and clients. This Component exists on both clients and
+          the server, as is reflected by the Content Selection icon selected for
+          this Component.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 11400000, guid: c70bd412514ea45c4b25ee87242c14a4, type: 2}
+      m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_VideoUrl: 
       m_Video: {fileID: 0}
@@ -150,7 +113,20 @@ MonoBehaviour:
   m_AutoAdvance: 0
   Showing:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: af1ac43a89738ed47bc67422d798da3e, type: 2}
+        m_TargetAssemblyTypeName: Unity.DedicatedGameServerSample.Editor.Tutorials.TutorialCallbacks,
+          Unity.DedicatedGameServerSample.Editor.Tutorials
+        m_MethodName: OpenPrefabView
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1092933507198879514, guid: 453db16f5dbae264a8d01c33e4839e6e, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
   Shown:
     m_PersistentCalls:
       m_Calls: []

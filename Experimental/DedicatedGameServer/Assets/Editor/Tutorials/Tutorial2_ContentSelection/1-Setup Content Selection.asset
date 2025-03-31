@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 8-Virtual Player Successfully Created
+  m_Name: 1-Setup Content Selection
   m_EditorClassIdentifier: 
   Title:
-    m_Untranslated: Multiplayer Workflows Setup Complete!
+    m_Untranslated: Configure Content Selection
   m_Paragraphs:
     m_Items:
     - m_Type: 6
@@ -32,19 +32,7 @@ MonoBehaviour:
         m_Items: []
       m_MaskingSettings:
         m_MaskingEnabled: 1
-        m_UnmaskedViews:
-        - m_SelectorType: 1
-          m_ViewType:
-            m_TypeName: 
-          m_FocusEditorWindow: 0
-          m_EditorWindowType:
-            m_TypeName: UnityEditor.ProjectSettingsWindow, UnityEditor.CoreModule,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-          m_AlternateEditorWindowTypes:
-            m_Items: []
-          m_MaskType: 0
-          m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
+        m_UnmaskedViews: []
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -52,66 +40,19 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 0
       Title:
-        m_Untranslated: Page title
-      Text:
-        m_Untranslated: 'Your project is now ready to enter Play mode with a Virtual
-          Player.
-
-
-          Note: Virtual Players do not automatically deactivate
-          when you close the Virtual Player window. To deactivate a Virtual Player,
-          deselect the checkbox for the active Virtual Player.
-
-
-          Continue
-          to the next tutorial to learn how to use Network Scene Visualization.'
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 0}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 1
-      Title:
-        m_Untranslated: Multiplayer Virtual Player created successfully
-      Text:
-        m_Untranslated: Select <b>Done</b> to exit this tutorial.
-      m_CodeSample: 
-      m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 0}
-      m_Image: {fileID: 0}
-      m_VideoUrl: 
-      m_Video: {fileID: 0}
-      m_CriteriaCompletion: 0
-      m_Criteria:
-        m_Items: []
-      m_MaskingSettings:
-        m_MaskingEnabled: 0
-        m_UnmaskedViews: []
-      m_Summary: 
-      m_Description: 
-      m_InstructionBoxTitle: 
-      m_InstructionText: 
-      m_TutorialButtonText: 
-    - m_Type: 2
-      Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: 'Next: Content Selection tutorial'
+        m_Untranslated: 'The <b>Dedicated Game Server sample</b> leverages Content
+          Selection such that the Components that are present in a Server are different
+          to those on clients.
+
+
+          We''ll explore the manner in which Components
+          are segmented for each Multiplayer Role, and Prefabs and Scenes that filter
+          content.'
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
-      m_Tutorial: {fileID: 11400000, guid: c70bd412514ea45c4b25ee87242c14a4, type: 2}
+      m_Tutorial: {fileID: 0}
       m_Image: {fileID: 0}
       m_VideoUrl: 
       m_Video: {fileID: 0}
