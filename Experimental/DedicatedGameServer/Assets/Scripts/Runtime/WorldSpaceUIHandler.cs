@@ -17,7 +17,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         const string k_WorldSpaceUIVisualElement = "WorldspaceVisualElement";
 
-        VisualElement m_WorldSpaceElement;             // Root UI container
+        VisualElement m_WorldSpaceElement;
 
         Dictionary<Transform, VisualElement> playersUI = new Dictionary<Transform, VisualElement>();
 
@@ -35,18 +35,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         internal void AddUIElement(VisualElement visualElement, Transform worldspaceTransform)
         {
-            // Create a new VisualElement for the player name
-            var playerNameLabel = new Label("Name");
-            playerNameLabel.style.fontSize = 24;
-            playerNameLabel.style.color = new StyleColor(Color.white);
-            playerNameLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
-            playerNameLabel.style.position = Position.Absolute; // Allow explicit positioning
+            // TODO: validate addition
 
             // Add it to the root visual element
-            m_WorldSpaceElement.Add(playerNameLabel);
+            m_WorldSpaceElement.Add(visualElement);
 
             // Track the player transform and its associated UI element
-            playersUI[worldspaceTransform] = playerNameLabel;
+            playersUI[worldspaceTransform] = visualElement;
         }
 
         internal void RemoveUIElement(Transform worldspaceTransform)
@@ -58,6 +53,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
         }
 
+        // TODO: validate billboarding
         void Update()
         {
             // Update the position of each player's UI element to follow their transform
