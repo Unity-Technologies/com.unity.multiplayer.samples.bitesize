@@ -29,6 +29,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         string m_SelectionScreenSceneName;
         [SerializeField]
         GameObject m_ServerOnlyOverlay;
+        [SerializeField]
+        bool m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer = true;
+        [SerializeField]
+        bool m_AllowStartingAsHost = true;
 
         void Awake()
         {
@@ -37,7 +41,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             m_AddressInputField = UIElementsUtils.SetupStringField("IPAddressField", string.Empty, k_DefaultIP, OnAddressChanged, m_Root);
             m_PortInputField = UIElementsUtils.SetupStringField("PortField", string.Empty, k_DefaultPort.ToString(), OnPortChanged, m_Root);
             m_ServerButton = UIElementsUtils.SetupButton("ServerButton", StartServer, true, m_Root, "Server", "Starts the Server");
-            m_HostButton = UIElementsUtils.SetupButton("HostButton", StartHost, true, m_Root, "Host", "Starts the Host");
+            m_HostButton = UIElementsUtils.SetupButton("HostButton", StartHost, m_AllowStartingAsHost, m_Root, "Host", "Starts the Host");
             m_ClientButton = UIElementsUtils.SetupButton("ClientButton", StartClient, true, m_Root, "Client", "Starts the Client");
             m_DisconnectButton = UIElementsUtils.SetupButton("DisconnectButton", Disconnect, false, m_Root, "Disconnect", "Disconnects participant from session");
             UIElementsUtils.SetupButton("QuitSceneButton", QuitScene, true, m_Root, "Quit Scene", "Quits scene and brings you back to the scene selection screen");
@@ -46,7 +50,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
 
         void Start()
         {
-            m_ServerOnlyOverlay.gameObject.SetActive(false);
+            if (m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer)
+            {
+                m_ServerOnlyOverlay.gameObject.SetActive(false);
+            }
         }
 
         void StartServer()
@@ -55,7 +62,10 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             NetworkManager.Singleton.StartServer();
             EnableAndHighlightButtons(m_ServerButton, false);
             SetButtonStateAndColor(m_DisconnectButton, false, true);
-            m_ServerOnlyOverlay.gameObject.SetActive(true);
+            if (m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer)
+            {
+                m_ServerOnlyOverlay.gameObject.SetActive(true);
+            }
         }
 
         void StartHost()
@@ -78,8 +88,15 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
         {
             NetworkManager.Singleton.Shutdown();
             EnableAndHighlightButtons(null, true);
+            if (!m_AllowStartingAsHost)
+            {
+                SetButtonStateAndColor(m_HostButton, false, false);
+            }
             SetButtonStateAndColor(m_DisconnectButton, false, false);
-            m_ServerOnlyOverlay.gameObject.SetActive(false);
+            if (m_DisplayServerOnlyOverlayWhenRunningAsDedicatedServer)
+            {
+                m_ServerOnlyOverlay.gameObject.SetActive(false);
+            }
         }
 
         void QuitScene()

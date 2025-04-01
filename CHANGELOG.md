@@ -2,6 +2,16 @@
 
 ## [unreleased] yyyy-mm-dd
 
+### Multiplayer Use Cases
+
+#### Added
+- Added a new 'Anticipation' scene, and related in-editor tutorial, that showcases the Client Anticipation feature of Netcode for GameObjects in several use cases.
+
+### Anticipaton Sample (Experimental)
+
+#### Changed
+- Removed project files as it is now part of the Multiplayer Use Cases sample
+
 ### Dynamic Addressables Network Prefabs
 
 #### Added
