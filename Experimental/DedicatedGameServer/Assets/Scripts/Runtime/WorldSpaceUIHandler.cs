@@ -56,27 +56,30 @@ namespace Unity.DedicatedGameServerSample.Runtime
         // TODO: validate billboarding
         void Update()
         {
-            // Update the position of each player's UI element to follow their transform
+
+            // offset in Y to have the UI above the player
+            var verticalOffset = 2f;
+
+
             foreach (var entry in playersUI)
             {
-                var playerTransform = entry.Key;
+                var playerPosition = entry.Key.position;
                 var playerUI = entry.Value;
 
-                // Convert player's world position to screen position
-                var screenPoint = m_Camera.WorldToViewportPoint(playerTransform.position + Vector3.up * 2f); // Offset above the player's head
+                // Translate the UI element to the player's position in pixel space of the UI Document.
+                var pixelsPerUnit = m_WorldspaceUI.panelSettings.referenceSpritePixelsPerUnit;
+                var x = new Length(playerPosition.x * pixelsPerUnit, LengthUnit.Pixel);
+                var y = new Length((playerPosition.y + verticalOffset)* pixelsPerUnit * -1f  , LengthUnit.Pixel);
+                var z = playerPosition.z * -1f * pixelsPerUnit;
+                playerUI.style.translate = new StyleTranslate(new Translate(x, y, z));
 
-                if (screenPoint.z > 0) // Ensure player is visible (in front of the camera)
-                {
-                    // Update the position of the UI
-                    playerUI.style.left = new Length(screenPoint.x * m_WorldSpaceElement.resolvedStyle.width, LengthUnit.Pixel);
-                    playerUI.style.top = new Length((1 - screenPoint.y) * m_WorldSpaceElement.resolvedStyle.height, LengthUnit.Pixel);
-                    playerUI.style.display = DisplayStyle.Flex; // Ensure the UI is visible
-                }
-                else
-                {
-                    // Hide UI elements when player is behind the camera
-                    playerUI.style.display = DisplayStyle.None;
-                }
+                // Get Vector between the camera and the player
+                var lookAtVector =  playerPosition - m_Camera.transform.position;
+                // clear the Y component to only rotate around the Y axis
+                lookAtVector.y = 0;
+                playerUI.transform.rotation = Quaternion.LookRotation(lookAtVector, Vector3.up);
+                //invert the rotation ( not sure why we need that but it was flipped)
+                playerUI.transform.rotation = Quaternion.Inverse(playerUI.transform.rotation);
             }
         }
     }
