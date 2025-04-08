@@ -131,6 +131,30 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases.Common
             return uxmlField;
         }
 
+        public static Slider SetupFloatSlider(string name, float min, float max, float value, float step, EventCallback<ChangeEvent<float>> onValueChanged, VisualElement parent)
+        {
+            var uxmlField = parent.Q<Slider>(name);
+            uxmlField.lowValue = min;
+            uxmlField.highValue = max;
+            uxmlField.pageSize = step;
+            uxmlField.value = value;
+            uxmlField.SetEnabled(true);
+            uxmlField.RegisterCallback(onValueChanged);
+            return uxmlField;
+        }
+
+        public static SliderInt SetupIntSlider(string name, int min, int max, int value, int step, EventCallback<ChangeEvent<int>> onValueChanged, VisualElement parent)
+        {
+            var uxmlField = parent.Q<SliderInt>(name);
+            uxmlField.lowValue = min;
+            uxmlField.highValue = max;
+            uxmlField.pageSize = step;
+            uxmlField.value = value;
+            uxmlField.SetEnabled(true);
+            uxmlField.RegisterCallback(onValueChanged);
+            return uxmlField;
+        }
+
         /// <summary>
         /// Makes a visual element invisible
         /// </summary>

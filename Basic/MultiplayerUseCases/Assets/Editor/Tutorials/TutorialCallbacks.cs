@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using Unity.Tutorials.Core.Editor;
-using Unity.Netcode;
 
 namespace Unity.Netcode.Samples.MultiplayerUseCases
 {
@@ -13,6 +12,7 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases
     public class TutorialCallbacks : ScriptableObject
     {
         [SerializeField] SceneAsset m_UseCaseSelectionScene;
+        [SerializeField] CommonTutorialCallbacks m_CommonTutorialCallbacks;
 
         /// <summary>
         /// The default file name used to create asset of this class type.
@@ -75,6 +75,23 @@ namespace Unity.Netcode.Samples.MultiplayerUseCases
         public bool IsPlayerSelectedInRPCScene()
         {
             return Selection.activeObject && Selection.activeObject.name == "Player(Clone)";
+        }
+
+        public bool IsPlayerSelectedInAnticipationScene()
+        {
+            return Selection.activeObject && Selection.activeObject.name == "Player(Clone)";
+        }
+
+        public void OpenProjectBrowserAtAnticipationScriptsFolder()
+        {
+            EditorApplication.ExecuteMenuItem("Window/General/Project");
+            EditorApplication.update += OnEditorUpdate;
+        }
+
+        void OnEditorUpdate()
+        {
+            EditorApplication.update -= OnEditorUpdate;
+            m_CommonTutorialCallbacks.PingFolderOrAsset("Assets/UseCaseSamples/Anticipation/Scripts/com.unity.samples.multiplayer-use-cases.anticipation.asmdef");
         }
 
         public void OpenURL(string url)

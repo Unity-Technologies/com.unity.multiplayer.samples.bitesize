@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UseCasesStyleClass.uss?fileID=7433441132597879392&amp;guid=cac46a420be955345b18ac0d5d2d9e37&amp;type=3#UseCasesStyleClass" />
+    <ui:VisualElement name="Background" class="anticipationUIBackground">
+        <ui:Label text="Each slider represents an Anticipated Network Variable&apos;s authoritative and anticipated values. Changing the slider on the Client sends an RPC to the Server, which updates the &apos;Server value&apos; displayed next to the slider. The &apos;Client value&apos; next to the slider shows the current &apos;anticipated&apos; value, including any smoothing, while the &apos;Server value&apos; represents the authoritative value.&#10;&#10;The ghost following the character represents the player&apos;s position on the server. The client &quot;anticipates&quot; (or &quot;predicts&quot;) where the player will be on the server, and moves the character immediately. If the prediction is incorrect, the character snaps to the ghost&apos;s position (&quot;reconciles&quot;).&#10;&#10;- W: Move Forward | S: Move Backward | A: Turn Left | D: Turn Right&#10;- Q: Large random teleport (very different server result)&#10;- E: Small random teleport (slightly different server result)&#10;- R: Return to center (same server result)" name="TitleLabel" class="labelText anticipationLabelText" />
+        <ui:VisualElement class="anticipationSlidersContainer">
+            <ui:Slider label="Variable smooth duration: XX,Xs" name="VariableSmoothDurationSlider" class="labelText anticipationSlider" />
+            <ui:VisualElement name="ValueAContainer" class="anticipationSliderWithLabel">
+                <ui:Slider label="Value A (snap, correct anticipation)" name="ValueASlider" class="labelText anticipationSlider" />
+                <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueAValuesLabel" class="labelText anticipationLabelWithinContainer" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ValueBContainer" class="anticipationSliderWithLabel">
+                <ui:Slider label="Value B (snap, incorrect anticipation)" name="ValueBSlider" class="labelText anticipationSlider" />
+                <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueBValuesLabel" class="labelText anticipationLabelWithinContainer" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ValueCContainer" class="anticipationSliderWithLabel">
+                <ui:Slider label="Value C (smooth, correct anticipation)" name="ValueCSlider" class="labelText anticipationSlider" />
+                <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueCValuesLabel" class="labelText anticipationLabelWithinContainer" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ValueDContainer" class="anticipationSliderWithLabel">
+                <ui:Slider label="Value D (smooth, incorrect anticipation)" name="ValueDSlider" class="labelText anticipationSlider" />
+                <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueDValuesLabel" class="labelText anticipationLabelWithinContainer" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ValueEContainer" class="anticipationSliderWithLabel">
+                <ui:Label text="Value E (Server-controlled, continuous anticipation): " name="ValueELabel" class="labelText anticipationLabelWithinContainerNoSlider" />
+                <ui:Label text="Client value: &apos;X&apos; | Server value: &apos;X&apos;" name="ValueEValuesLabel" class="labelText anticipationLabelWithinContainer" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="anticipationControlsContainer">
+            <ui:VisualElement name="TransformSmooth" class="anticipationControlsWithButtonContainer">
+                <ui:Slider label="Transform smooth duration: XX,Xs" name="DurationSlider" class="labelText anticipationSliderInControlGroup" />
+                <ui:Slider label="Transform smooth distance threshold: XX,X" name="DistanceThresholdSlider" class="labelText anticipationSliderInControlGroup" />
+                <ui:Button text="Toggle Server visualization (Follower)" name="ToggleVisualizationButton" class="button UseCaseButton anticipationButton" />
+            </ui:VisualElement>
+            <ui:VisualElement name="LatencyAndJitter" class="anticipationControlsWithButtonContainer">
+                <ui:SliderInt label="Latency: XXms" name="LatencySlider" class="labelText anticipationSliderInControlGroup" />
+                <ui:SliderInt label="Jitter: XXms" name="JitterSlider" class="labelText anticipationSliderInControlGroup" />
+                <ui:Button text="Apply" name="ApplyButton" class="button UseCaseButton anticipationButton" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
