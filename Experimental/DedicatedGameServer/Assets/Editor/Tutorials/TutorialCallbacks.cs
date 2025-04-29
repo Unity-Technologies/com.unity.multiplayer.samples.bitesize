@@ -101,7 +101,7 @@ namespace Unity.DedicatedGameServerSample.Editor.Tutorials
             SettingsService.OpenProjectSettings("Project/Multiplayer");
         }
 
-        public bool IsVirtualPlayerCreated()
+        public bool IsVirtualPlayer4Created()
         {
             var path = Path.Combine(Application.dataPath, k_SystemDataPath);
 
@@ -113,9 +113,9 @@ namespace Unity.DedicatedGameServerSample.Editor.Tutorials
                 var jsonObject = JObject.Parse(jsonContent);
 
                 // Access the "Data" property and then the "2" player's "Active" state
-                var isPlayer2Active = jsonObject["Data"]["2"]["Active"].Value<bool>();
+                var isPlayer4Active = jsonObject["Data"]["4"]["Active"].Value<bool>();
 
-                return isPlayer2Active;
+                return isPlayer4Active;
             }
 
             return false;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff771ccdf4150419d9ff4d342b069aae, type: 3}
-  m_Name: 2-Create a Virtual Player
+  m_Name: 3-Enable a Virtual Player
   m_EditorClassIdentifier: 
   Title:
     m_Untranslated: Multiplayer Play Mode Window
@@ -46,7 +46,32 @@ MonoBehaviour:
             m_Items: []
           m_MaskType: 0
           m_MaskSizeModifier: 0
-          m_UnmaskedControls: []
+          m_UnmaskedControls:
+          - m_SelectorMode: 5
+            m_SelectorMatchType: 0
+            m_GUIContent:
+              m_Text: 
+              m_Image: {fileID: 0}
+              m_Tooltip: 
+              m_TextWithWhitespace: 
+            m_ControlName: 
+            m_PropertyPath: 
+            m_TargetType:
+              m_TypeName: 
+            m_GUIStyleName: 
+            m_ObjectReference:
+              m_SceneObjectReference:
+                m_SceneGuid: 
+                m_GameObjectGuid: 
+                m_SerializedComponentType:
+                  m_TypeName: 
+                m_ComponentIndex: 0
+                m_AssetObject: {fileID: 0}
+                m_Prefab: {fileID: 0}
+              m_FutureObjectReference: {fileID: 0}
+            m_VisualElementClassName: 
+            m_VisualElementName: PlayerViewHeader
+            m_VisualElementTypeName: 
       m_Summary: 
       m_Description: 
       m_InstructionBoxTitle: 
@@ -56,13 +81,12 @@ MonoBehaviour:
       Title:
         m_Untranslated: 
       Text:
-        m_Untranslated: "To open the Multiplayer Play Mode window:  \n\n1. Go to
-          <b>Window</b> > <b>Multiplayer</b> > <b>Multiplayer Play Mode</b>.\n\n2.
-          Select the checkbox for Virtual Player 2. This player opens when you enter
-          Play mode.\n\n3. Wait for the Player status to change from inactive to
-          active for Virtual Player 2.\n\nWhen active, the Virtual Player(s) appear
-          in Play Mode in the main Editor Player window. A separate window opens
-          for each enabled Player with the Player name as the window title."
+        m_Untranslated: "Inside the Multiplayer Play Mode window:  \n\n1. Select
+          the checkbox for Virtual Player 4. This player opens when you enter Play
+          mode.\n\n2. Wait for the Player status to change from inactive to active
+          for Virtual Player 4.\n\nWhen active, the Virtual Player(s) appear in Play
+          Mode in the main Editor Player window. A separate window opens for each
+          enabled Player with the Player name as the window title."
       m_CodeSample: 
       m_PostInstructionImage: {fileID: 0}
       m_Tutorial: {fileID: 0}
@@ -82,7 +106,7 @@ MonoBehaviour:
       m_TutorialButtonText: 
     - m_Type: 1
       Title:
-        m_Untranslated: Create a Virtual Player
+        m_Untranslated: Enable a Virtual Player
       Text:
         m_Untranslated: Press <b>Next</b> to continue.
       m_CodeSample: 
@@ -181,7 +205,7 @@ MonoBehaviour:
   isTesting: 0
   m_Callback:
     _target: {fileID: 11400000, guid: af1ac43a89738ed47bc67422d798da3e, type: 2}
-    _methodName: IsVirtualPlayerCreated
+    _methodName: IsVirtualPlayer4Created
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
@@ -189,7 +213,7 @@ MonoBehaviour:
     dirty: 0
   m_AutoCompleteCallback:
     _target: {fileID: 11400000, guid: af1ac43a89738ed47bc67422d798da3e, type: 2}
-    _methodName: IsVirtualPlayerCreated
+    _methodName: IsVirtualPlayer4Created
     _args: []
     _dynamic: 0
     _typeName: Unity.Tutorials.Core.Editor.ArbitraryCriterion+BoolCallback, Unity.Tutorials.Core.Editor,
