@@ -41,7 +41,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
             m_PlayerNumberVisual = m_PlayerNumberAsset.CloneTree().GetFirstChild();
             var label = m_PlayerNumberVisual.Q<Label>("Label");
-            label.text = playerNumber.ToString();
+            label.text = playerNumber < 10 ? "0" + playerNumber : playerNumber.ToString();
             var playerColor = m_PlayerColors[playerColorIndex];
             playerColor.a = 1f;
             label.style.color = new StyleColor(playerColor);
