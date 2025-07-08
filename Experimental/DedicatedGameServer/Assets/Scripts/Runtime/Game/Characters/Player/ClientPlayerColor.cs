@@ -8,55 +8,51 @@ namespace Unity.DedicatedGameServerSample.Runtime
 {
     class ClientPlayerColor : NetworkBehaviour
     {
+        [SerializeField]
+        SkinnedMeshRenderer m_Renderer;
         [ColorUsage(false, true)]
         [SerializeField]
         Color[] m_PlayerColors;
         [ColorUsage(false, true)]
         [SerializeField]
         Color[] m_PlayerEmissiveColors;
-        int m_PlayerNumber;
-        Vector2 m_PlayerNumberVector;
 
         [SerializeField]
         VisualTreeAsset m_PlayerNumberAsset;
 
-        [SerializeField]
-        UIDocument m_PlayerNumberDocument;
-
         VisualElement m_PlayerNumberVisual;
+
+        const string k_CharacterColorKey = "_Character_Color";
+        const string k_CharacterEmissiveColorKey = "_Character_Emissive_Color";
+        static readonly int k_CharacterColor = Shader.PropertyToID(k_CharacterColorKey);
+        static readonly int k_CharacterEmissiveColor = Shader.PropertyToID(k_CharacterEmissiveColorKey);
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            SkinnedMeshRenderer m_Renderer = GetComponentInChildren<SkinnedMeshRenderer>();
-            m_PlayerNumber = Convert.ToInt32(OwnerClientId.ToString());
-            var playerColorIndex = m_PlayerNumber % m_PlayerColors.Length;
+            var playerNumber = Convert.ToInt32(OwnerClientId.ToString());
+            var playerColorIndex = playerNumber % m_PlayerColors.Length;
 
             foreach (var material in m_Renderer.materials)
             {
-                material.SetColor("_Character_Color", m_PlayerColors[playerColorIndex]);
-                material.SetColor("_Character_Emissive_Color", m_PlayerEmissiveColors[playerColorIndex]);
-            }
-
-            if (m_PlayerNumber < 10)
-            {
-                m_PlayerNumberVector = new Vector2(0, m_PlayerNumber);
-            }
-            else
-            {
-                char[] numberCharArray = m_PlayerNumber.ToString().ToCharArray();
-                m_PlayerNumberVector = new Vector2(Int32.Parse(numberCharArray[0].ToString()), Int32.Parse(numberCharArray[1].ToString()));
+                material.SetColor(k_CharacterColor, m_PlayerColors[playerColorIndex]);
+                material.SetColor(k_CharacterEmissiveColor, m_PlayerEmissiveColors[playerColorIndex]);
             }
 
             m_PlayerNumberVisual = m_PlayerNumberAsset.CloneTree().GetFirstChild();
-            WorldSpaceUIHandler.Instance.AddUIElement(m_PlayerNumberVisual, transform);
+            var label = m_PlayerNumberVisual.Q<Label>("Label");
+            label.text = playerNumber.ToString();
+            var playerColor = m_PlayerColors[playerColorIndex];
+            playerColor.a = 1f;
+            label.style.color = new StyleColor(playerColor);
+            WorldSpaceView.Instance.AddUIElement(m_PlayerNumberVisual, transform);
         }
 
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
 
-            WorldSpaceUIHandler.Instance.RemoveUIElement(transform);
+            WorldSpaceView.Instance.RemoveUIElement(transform);
         }
     }
 }
