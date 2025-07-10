@@ -1,6 +1,6 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
@@ -34,6 +34,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
         [Tooltip("This physics and navmesh obstacle is enabled when the door is closed.")]
         GameObject m_PhysicsObject;
 
+        [SerializeField]
+        VisualTreeAsset m_DoorAsset;
+
+        Label m_DoorUILabel;
+
+        [SerializeField]
+        UIDocument m_UIDocument;
+
         public override void OnNetworkSpawn()
         {
             IsOpen.OnValueChanged += OnDoorStateChanged;
@@ -43,12 +51,11 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 // initialize visuals based on current server state (or else we default to "closed")
                 m_PhysicsObject.SetActive(!IsOpen.Value);
+
+                m_DoorUILabel = m_UIDocument.rootVisualElement.Q<Label>();
             }
 
-            if (IsServer)
-            {
-                OnDoorStateChanged(false, IsOpen.Value);
-            }
+            OnDoorStateChanged(false, IsOpen.Value);
             OnDoorCanBeOpenedChanged(false, false);
         }
 
@@ -144,7 +151,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                  * because its value is being recalculated by the server
                  * at the same time and we could have an outdated value.
                  */
-                m_UI.SetActive(!IsOpen.Value);
+                OnClientChangeUIVisibility(!IsOpen.Value);
             }
         }
 
@@ -160,8 +167,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 Debug.Log("[Client] Hiding UI!");
                 m_LocalPlayerIsNearby = false;
-                m_UI.SetActive(false);
+                OnClientChangeUIVisibility(false);
             }
+        }
+
+        void OnClientChangeUIVisibility(bool visible)
+        {
+            Debug.Log($"[Client] Client side door visibility set to {visible}!", this);
+            m_DoorUILabel.visible = visible;
         }
 
         void OnServerUpdateCanBeOpened()
@@ -181,7 +194,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 m_PhysicsObject.SetActive(!isDoorOpen);
                 if (isDoorOpen)
                 {
-                    m_UI.SetActive(false);
+                    OnClientChangeUIVisibility(false);
                 }
             }
         }
@@ -193,7 +206,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 Debug.Log($"[Client] Door UI should be: {canBeOpened}");
                 if (gameObject.activeSelf != canBeOpened)
                 {
-                    m_UI.SetActive(canBeOpened);
+                    OnClientChangeUIVisibility(canBeOpened);
                 }
             }
         }

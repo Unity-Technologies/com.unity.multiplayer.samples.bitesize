@@ -68,6 +68,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 
         void OnDestroy()
         {
+            Instance = null;
             m_ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
         }
 
