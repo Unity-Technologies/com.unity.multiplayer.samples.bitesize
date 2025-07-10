@@ -1,5 +1,3 @@
-using System;
-using Unity.DedicatedGameServerSample.Shared;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -39,7 +37,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
         [SerializeField]
         VisualTreeAsset m_DoorAsset;
 
-        VisualElement m_DoorUI;
+        Label m_DoorUILabel;
 
         [SerializeField]
         UIDocument m_UIDocument;
@@ -54,15 +52,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 // initialize visuals based on current server state (or else we default to "closed")
                 m_PhysicsObject.SetActive(!IsOpen.Value);
 
-                m_DoorUI = m_DoorAsset.CloneTree().GetFirstChild();
-                m_DoorUI.AddToClassList(UIUtils.s_ActiveUSSClass);
-                //WorldSpaceUIHandler.Instance.AddUIElement(m_DoorUI);
+                m_DoorUILabel = m_UIDocument.rootVisualElement.Q<Label>();
             }
 
-            if (IsServer)
-            {
-                OnDoorStateChanged(false, IsOpen.Value);
-            }
+            OnDoorStateChanged(false, IsOpen.Value);
             OnDoorCanBeOpenedChanged(false, false);
         }
 
@@ -93,11 +86,6 @@ namespace Unity.DedicatedGameServerSample.Runtime
                     Debug.Log("[Client] Local player opening door");
                     ServerOpenRpc();
                 }
-            }
-
-            if (IsClient)
-            {
-                //WorldSpaceUIHandler.Instance.UpdateUIDocument(m_UIDocument, transform);
             }
         }
 
@@ -163,7 +151,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                  * because its value is being recalculated by the server
                  * at the same time and we could have an outdated value.
                  */
-                ClientSideSetActive(!IsOpen.Value);
+                OnClientChangeUIVisibility(!IsOpen.Value);
             }
         }
 
@@ -179,21 +167,14 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 Debug.Log("[Client] Hiding UI!");
                 m_LocalPlayerIsNearby = false;
-                ClientSideSetActive(false);
+                OnClientChangeUIVisibility(false);
             }
         }
 
-        void ClientSideSetActive(bool value)
+        void OnClientChangeUIVisibility(bool visible)
         {
-            m_UI.SetActive(value);
-            if (value)
-            {
-                //WorldSpaceUIHandler.Instance.AddUIElement(m_DoorUI, transform);
-            }
-            else
-            {
-                //WorldSpaceUIHandler.Instance.RemoveUIElement(m_DoorUI, transform);
-            }
+            Debug.Log($"[Client] Client side door visibility set to {visible}!", this);
+            m_DoorUILabel.visible = visible;
         }
 
         void OnServerUpdateCanBeOpened()
@@ -213,7 +194,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 m_PhysicsObject.SetActive(!isDoorOpen);
                 if (isDoorOpen)
                 {
-                    m_UI.SetActive(false);
+                    OnClientChangeUIVisibility(false);
                 }
             }
         }
@@ -225,7 +206,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 Debug.Log($"[Client] Door UI should be: {canBeOpened}");
                 if (gameObject.activeSelf != canBeOpened)
                 {
-                    m_UI.SetActive(canBeOpened);
+                    OnClientChangeUIVisibility(canBeOpened);
                 }
             }
         }
