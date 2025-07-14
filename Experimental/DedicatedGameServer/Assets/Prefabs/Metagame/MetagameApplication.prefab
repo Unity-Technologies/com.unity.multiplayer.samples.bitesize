@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 690007956843493483}
   - component: {fileID: 4613537952915011020}
+  - component: {fileID: 8149928264203889701}
   m_Layer: 0
   m_Name: MetagameApplication
   m_TagString: Untagged
@@ -47,6 +48,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ce44d2abf9817409a32baacb52e8b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &8149928264203889701
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815171797773770901}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 4613537952915011020}
+    m_RolesMask: 1
 --- !u!1 &4175558726825995447
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,6 +71,7 @@ GameObject:
   - component: {fileID: 1794868347322481598}
   - component: {fileID: 1830096468472935846}
   - component: {fileID: 7568816773190054421}
+  - component: {fileID: 3392353113538502946}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -178,12 +191,21 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+--- !u!1652712579 &3392353113538502946
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175558726825995447}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks: []
 --- !u!1 &4653335918413459185
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +217,7 @@ GameObject:
   - component: {fileID: 2735529898046788519}
   - component: {fileID: 4216581305797874140}
   - component: {fileID: 7181582686434638750}
+  - component: {fileID: 6584266808095961950}
   m_Layer: 5
   m_Name: MainMenuView
   m_TagString: Untagged
@@ -233,6 +256,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 4c4a65d85867be3439cd93bf1ef389eb, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &7181582686434638750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +271,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7a90aa8e63a234bbc2146f79845532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &6584266808095961950
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4653335918413459185}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 7181582686434638750}
+    m_RolesMask: 1
 --- !u!1 &4725549617812107662
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,6 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5873813210152660583}
   - component: {fileID: 7608159501841437823}
+  - component: {fileID: 6701110992490662543}
   m_Layer: 0
   m_Name: Views
   m_TagString: Untagged
@@ -298,6 +336,17 @@ MonoBehaviour:
   m_MatchmakerView: {fileID: 2675755657751875318}
   m_DirectIPView: {fileID: 5870602673018488666}
   m_ClientConnectingView: {fileID: 6464841519099050560}
+--- !u!1652712579 &6701110992490662543
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4725549617812107662}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 7608159501841437823}
+    m_RolesMask: 1
 --- !u!1 &6042265479794443901
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,6 +358,7 @@ GameObject:
   - component: {fileID: 2664159220117613349}
   - component: {fileID: 317646863976390653}
   - component: {fileID: 6464841519099050560}
+  - component: {fileID: 3098447526301443985}
   m_Layer: 0
   m_Name: ClientConnectingView
   m_TagString: Untagged
@@ -347,6 +397,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 221abe9c332311f469fe5c8827d16afb, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &6464841519099050560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +412,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d66e014b106e43de84422510776e47b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &3098447526301443985
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6042265479794443901}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks: []
 --- !u!1 &6762252528077546412
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +432,7 @@ GameObject:
   - component: {fileID: 1158808687355537868}
   - component: {fileID: 1438686788031507987}
   - component: {fileID: 2675755657751875318}
+  - component: {fileID: 9128411518496749637}
   m_Layer: 5
   m_Name: MatchmakerView
   m_TagString: Untagged
@@ -408,6 +471,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: a8c22ed4ad9727f45bb363e9d6b3b622, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &2675755657751875318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +486,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6c5a57b87233a4b93095dd4816d07f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &9128411518496749637
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6762252528077546412}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 2675755657751875318}
+    m_RolesMask: 1
 --- !u!1 &6796413030091351469
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,6 +508,7 @@ GameObject:
   - component: {fileID: 620830159629850781}
   - component: {fileID: 8771152792973485417}
   - component: {fileID: 5870602673018488666}
+  - component: {fileID: 8246933786287520161}
   m_Layer: 0
   m_Name: DirectIPView
   m_TagString: Untagged
@@ -469,6 +547,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 572d32af858d201419e9772514fdb9e5, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &5870602673018488666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,6 +562,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6f362afa5c4e848b4d0a41c0db4bc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &8246933786287520161
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6796413030091351469}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 5870602673018488666}
+    m_RolesMask: 1
 --- !u!1 &7866452525617413525
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +587,7 @@ GameObject:
   - component: {fileID: 8291992753301324471}
   - component: {fileID: 2013091654299207491}
   - component: {fileID: 4052344154896437112}
+  - component: {fileID: 5811233083851092228}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -577,6 +670,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b80950ff804422b9176a6ed7e8f0b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &5811233083851092228
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866452525617413525}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 2013091654299207491}
+    m_RolesMask: 1
+  - m_Object: {fileID: 8291992753301324471}
+    m_RolesMask: 1
+  - m_Object: {fileID: 1360093983642508866}
+    m_RolesMask: 1
+  - m_Object: {fileID: 448521969639622440}
+    m_RolesMask: 1
 --- !u!1 &8555614893495770896
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +698,7 @@ GameObject:
   - component: {fileID: 2925154222283962181}
   - component: {fileID: 2543586066506059114}
   - component: {fileID: 2549565680649056148}
+  - component: {fileID: 5686933506708605886}
   m_Layer: 0
   m_Name: Models
   m_TagString: Untagged
@@ -635,3 +746,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97b6f0877a6436a9142a1be40a5693c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &5686933506708605886
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8555614893495770896}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks: []

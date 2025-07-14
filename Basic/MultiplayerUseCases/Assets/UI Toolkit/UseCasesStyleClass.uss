@@ -104,7 +104,85 @@
     right: 0;
     justify-content: center;
     width: 25%;
-    margin: 0px;
+    margin: 0;
     padding: 12px;
     top: 0;
+}
+
+.anticipationControlsContainer {
+    flex-direction: row;
+    bottom: 20px;
+    justify-content: space-evenly;
+    align-self: auto;
+    align-items: flex-end;
+    position: absolute;
+    right: 0;
+    left: 0;
+}
+
+.anticipationSlidersContainer {
+    flex-direction: column;
+    bottom: 220px;
+    align-items: flex-start;
+    position: absolute;
+    right: 140px;
+    left: 140px;
+}
+
+.anticipationLabelText {
+    -unity-text-align: upper-left;
+    white-space: normal;
+    font-size: 25px;
+    max-width: 90%;
+    left: 140px;
+    top: 20px;
+}
+
+.anticipationSlider {
+    font-size: 25px;
+    -unity-text-align: upper-left;
+    max-width: 40%;
+    flex-grow: 1;
+    margin: 0 20px 0 0;
+}
+
+.anticipationSliderWithLabel {
+    flex-direction: row;
+    flex-shrink: 0;
+    min-width: 100%;
+}
+
+.anticipationLabelWithinContainer {
+    white-space: normal;
+    font-size: 25px;
+    -unity-text-align: middle-left;
+    flex-grow: 1;
+}
+
+.anticipationLabelWithinContainerNoSlider {
+    font-size: 25px;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+}
+
+.anticipationUIBackground {
+    flex-grow: 1;
+}
+
+.anticipationControlsWithButtonContainer {
+    flex-grow: 1;
+    max-width: 40%;
+    font-size: 28px;
+}
+
+.anticipationButton {
+    font-size: 26px;
+    max-height: none;
+}
+
+.anticipationSliderInControlGroup {
+    font-size: 22px;
+    -unity-text-align: upper-left;
 }

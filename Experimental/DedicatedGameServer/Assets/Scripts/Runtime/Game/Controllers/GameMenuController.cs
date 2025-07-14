@@ -1,9 +1,9 @@
 using System;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
+using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class GameMenuController : Controller<GameApplication>
+    class GameMenuController : Controller<GameApplication>
     {
         GameMenuView View => App.View.Menu;
 
@@ -44,7 +44,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnClientQuitButtonClicked(QuitButtonClickedEvent evt)
         {
-            ApplicationEntryPoint.Singleton.ConnectionManager.RequestShutdown();
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.RequestShutdown();
+            }
         }
 
         void OnMenuToggled(MenuToggleEvent evt)
@@ -69,7 +72,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 View.Hide();
             }
             App.Model.MenuVisible = isMenuActive;
-            App.Model.PlayerCharacter.SetInputsActive(!isMenuActive);
+            if (App.Model.PlayerCharacter != null)
+            {
+                App.Model.PlayerCharacter.SetInputsActive(!isMenuActive);
+            }
         }
     }
 }

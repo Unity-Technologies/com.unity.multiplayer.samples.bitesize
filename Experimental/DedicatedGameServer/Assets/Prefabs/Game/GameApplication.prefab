@@ -47,6 +47,116 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb1e22d830e50240ac8d402a642fce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1963718575922350795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 822524697503039611}
+  - component: {fileID: 9149910198809748372}
+  - component: {fileID: 5193840637828712047}
+  - component: {fileID: 8519849360510797066}
+  m_Layer: 0
+  m_Name: WorldSpaceView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &822524697503039611
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963718575922350795}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5873813210152660583}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9149910198809748372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963718575922350795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: edee1ee7d940a4324abd615d5548a85e, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 78cb835428bdf4520a97d386c0c5729e, type: 3}
+  m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+--- !u!114 &5193840637828712047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963718575922350795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8286a8aab524b41358f5204d62a0cde5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_WorldspaceUI: {fileID: 9149910198809748372}
+--- !u!1931382933 &8519849360510797066
+UIRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963718575922350795}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &4725549617812107662
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5873813210152660583}
   - component: {fileID: 2611669215631704512}
+  - component: {fileID: 4215337615736780738}
   m_Layer: 0
   m_Name: Views
   m_TagString: Untagged
@@ -81,6 +192,7 @@ Transform:
   - {fileID: 78772956734522983}
   - {fileID: 3270731372627773124}
   - {fileID: 8495312077754069265}
+  - {fileID: 822524697503039611}
   m_Father: {fileID: 690007956843493483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2611669215631704512
@@ -98,6 +210,17 @@ MonoBehaviour:
   m_MatchView: {fileID: 2984461789708840317}
   m_GameMenuView: {fileID: 3885717122117595817}
   m_MatchRecapView: {fileID: 1235063626222470819}
+--- !u!1652712579 &4215337615736780738
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4725549617812107662}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 2611669215631704512}
+    m_RolesMask: 1
 --- !u!1 &5214451676404606949
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,12 +352,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &6358639672112253857
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +369,7 @@ GameObject:
   - component: {fileID: 8495312077754069265}
   - component: {fileID: 3593997297337162782}
   - component: {fileID: 1235063626222470819}
+  - component: {fileID: 3526862514973112565}
   m_Layer: 5
   m_Name: MatchRecapView
   m_TagString: Untagged
@@ -284,6 +408,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: b6805a5cab3d15443b2d1ed8c045e6eb, type: 3}
   m_SortingOrder: 1
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &1235063626222470819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +423,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc5ce18e77c2b34ea655c7f5cc75da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &3526862514973112565
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6358639672112253857}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 1235063626222470819}
+    m_RolesMask: 1
 --- !u!1 &7866452525617413525
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +528,7 @@ GameObject:
   - component: {fileID: 3270731372627773124}
   - component: {fileID: 3828751765032560145}
   - component: {fileID: 3885717122117595817}
+  - component: {fileID: 4371688875375132571}
   m_Layer: 0
   m_Name: GameMenuView
   m_TagString: Untagged
@@ -428,6 +567,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 1ff75d80c87cc2b489bd2814dcb04afd, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &3885717122117595817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +582,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96303d2e55be47b468191628fe6b95ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &4371688875375132571
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7938230458218682338}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 3885717122117595817}
+    m_RolesMask: 1
 --- !u!1 &7979579331580006965
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +604,7 @@ GameObject:
   - component: {fileID: 78772956734522983}
   - component: {fileID: 4603705401790786008}
   - component: {fileID: 2984461789708840317}
+  - component: {fileID: 2126062413074753193}
   m_Layer: 5
   m_Name: MatchView
   m_TagString: Untagged
@@ -489,6 +643,9 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 858502808a6fb6f43b789452691e5766, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!114 &2984461789708840317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +658,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aedc21ba435348e48851c5b98d981f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1652712579 &2126062413074753193
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7979579331580006965}
+  m_GameObjectRolesMask: 3
+  m_ComponentsRolesMasks:
+  - m_Object: {fileID: 2984461789708840317}
+    m_RolesMask: 1
 --- !u!1 &8555614893495770896
 GameObject:
   m_ObjectHideFlags: 0

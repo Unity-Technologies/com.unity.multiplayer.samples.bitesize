@@ -437,6 +437,7 @@ GameObject:
   - component: {fileID: 4680286588841021115}
   - component: {fileID: 4935476356901397277}
   - component: {fileID: 3990845602713028015}
+  - component: {fileID: 921591167717247587}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -521,6 +522,9 @@ Light:
   m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!114 &3990845602713028015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,6 +548,15 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1652712579 &921591167717247587
+MultiplayerRolesData:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524315117345717254}
+  m_GameObjectRolesMask: 1
+  m_ComponentsRolesMasks: []
 --- !u!1 &585092542132206183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,6 +1389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}

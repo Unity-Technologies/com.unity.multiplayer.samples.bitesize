@@ -419,6 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_OverrideArea: 1
   m_Area: 1
   m_OverrideGenerateLinks: 0
@@ -469,6 +470,7 @@ GameObject:
   - component: {fileID: 3356548232797367102}
   - component: {fileID: 8198653287587426195}
   - component: {fileID: 8902413190047583302}
+  - component: {fileID: 1489919067652442767}
   m_Layer: 0
   m_Name: UIDocument
   m_TagString: Untagged
@@ -503,10 +505,13 @@ MonoBehaviour:
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PanelSettings: {fileID: 11400000, guid: 3405937bf1481d5449638a592677cbe5, type: 2}
+  m_PanelSettings: {fileID: 11400000, guid: edee1ee7d940a4324abd615d5548a85e, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 1fcaf722e02fa0847846b9c9e94fe9e3, type: 3}
   m_SortingOrder: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
 --- !u!1652712579 &8902413190047583302
 MultiplayerRolesData:
   m_ObjectHideFlags: 2
@@ -518,64 +523,22 @@ MultiplayerRolesData:
   m_ComponentsRolesMasks:
   - m_Object: {fileID: 8198653287587426195}
     m_RolesMask: 1
---- !u!1 &5421232948051531449
-GameObject:
+--- !u!1931382933 &1489919067652442767
+UIRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8096287556080331715}
-  - component: {fileID: 5203847949036600066}
-  - component: {fileID: 6762261585824825886}
-  - component: {fileID: 139682764693067848}
-  m_Layer: 0
-  m_Name: Quad
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8096287556080331715
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5421232948051531449}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.97}
-  m_LocalScale: {x: 2, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4886477488530207384}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5203847949036600066
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5421232948051531449}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6762261585824825886
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5421232948051531449}
+  m_GameObject: {fileID: 4275807960707065670}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
-  m_MotionVectors: 2
+  m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 2
+  m_RayTracingMode: 0
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
@@ -583,7 +546,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1dd533cc4e0f6e44fb155b7f90c03806, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -604,16 +567,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1652712579 &139682764693067848
-MultiplayerRolesData:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5421232948051531449}
-  m_GameObjectRolesMask: 1
-  m_ComponentsRolesMasks: []
 --- !u!1 &6393189244461284900
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,12 +593,11 @@ Transform:
   m_GameObject: {fileID: 6393189244461284900}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -1.5}
+  m_LocalPosition: {x: -9.5, y: 7.4, z: -0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3356548232797367102}
-  - {fileID: 8096287556080331715}
   m_Father: {fileID: 2090224359952975097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1652712579 &1883109393939702575
@@ -728,6 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 3322828992578250737}
 --- !u!1 &6636459383749091022
@@ -955,7 +908,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3387826871
+  GlobalObjectIdHash: 3211394941
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -963,6 +919,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &5552746568232565716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,10 +933,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6052574cd80ab4a940feee78103150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_Animator: {fileID: 3322828992578250737}
   m_UI: {fileID: 6393189244461284900}
   m_ForceOpen: 0
   m_PhysicsObject: {fileID: 93667969746612329}
+  m_DoorAsset: {fileID: 9197481963319205126, guid: 1fcaf722e02fa0847846b9c9e94fe9e3, type: 3}
+  m_UIDocument: {fileID: 8198653287587426195}
 --- !u!65 &6440564718939996764
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1159,6 +1120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
   m_OverrideArea: 1
   m_Area: 1
   m_OverrideGenerateLinks: 0

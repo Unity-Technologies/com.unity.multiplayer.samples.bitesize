@@ -1,5 +1,27 @@
 # Changelog
 
+## [unreleased] yyyy-mm-dd
+
+### Multiplayer Use Cases
+
+#### Added
+- Added a new 'Anticipation' scene, and related in-editor tutorial, that showcases the Client Anticipation feature of Netcode for GameObjects in several use cases.
+
+### Anticipaton Sample (Experimental)
+
+#### Changed
+- Removed project files as it is now part of the Multiplayer Use Cases sample
+
+### Dynamic Addressables Network Prefabs
+
+#### Added
+- Added Multiplayer Play Mode to the project (#271)
+
+#### Changed
+- Upgraded the project to Unity 6000.0.34f1 LTS (#271) Other changes include:
+  - Netcode for GameObjects upgraded from v1.7.1 to v2.2.0
+  - ParrelSync removed from the project
+
 ## [1.10.0] 2024-12-23
 
 ### Distributed Authority Social Hub
