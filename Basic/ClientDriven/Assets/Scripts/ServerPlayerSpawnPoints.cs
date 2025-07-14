@@ -14,7 +14,7 @@ public class ServerPlayerSpawnPoints : MonoBehaviour
         {
             if (s_Instance == null)
             {
-                s_Instance = FindObjectOfType<ServerPlayerSpawnPoints>();
+                s_Instance = FindFirstObjectByType<ServerPlayerSpawnPoints>();
             }
 
             return s_Instance;
@@ -32,7 +32,7 @@ public class ServerPlayerSpawnPoints : MonoBehaviour
         {
             return null;
         }
-        
+
         var toReturn = m_SpawnPoints[m_SpawnPoints.Count - 1];
         m_SpawnPoints.RemoveAt(m_SpawnPoints.Count - 1);
         return toReturn;

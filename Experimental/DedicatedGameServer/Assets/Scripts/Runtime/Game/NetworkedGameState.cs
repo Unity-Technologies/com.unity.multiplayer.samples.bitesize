@@ -19,13 +19,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         internal event Action OnMatchStarted;
         internal event Action OnMatchEnded;
-        
+
 
         const uint k_CountdownStartValue = 300;
         const float k_ShutdownDelayAfterCountdownEnd = 30;
-        
+
         Coroutine m_CountdownRoutine;
-        
+
         ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
 
         public override void OnNetworkSpawn()
@@ -65,7 +65,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             Debug.Log("[Server] Starting match!");
             m_MatchStarted = true;
             OnServerStartCountdown();
-            StartMatchClientRpc();
+            ClientStartMatchRpc();
             OnMatchStarted?.Invoke();
         }
 
@@ -85,8 +85,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
             m_CountdownRoutine = StartCoroutine(OnServerDoCountdown());
         }
 
-        [ClientRpc]
-        void StartMatchClientRpc()
+        [Rpc(SendTo.ClientsAndHost)]
+        void ClientStartMatchRpc()
         {
             OnMatchStarted?.Invoke();
         }
@@ -111,12 +111,12 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 m_CountdownRoutine = null;
             }
 
-            EndMatchClientRpc();
+            ClientEndMatchRpc();
             StartCoroutine(CoroutinesHelper.WaitAndDo(new WaitForSeconds(k_ShutdownDelayAfterCountdownEnd), () => ConnectionManager.RequestShutdown()));
         }
 
-        [ClientRpc]
-        void EndMatchClientRpc()
+        [Rpc(SendTo.ClientsAndHost)]
+        void ClientEndMatchRpc()
         {
             OnMatchEnded?.Invoke();
         }

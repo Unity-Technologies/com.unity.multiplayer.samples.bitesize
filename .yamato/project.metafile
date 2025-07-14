@@ -19,41 +19,40 @@ projects:
   - name: 2dspaceshooter
     path: Basic/2DSpaceShooter
     test_editors:
-      - 2022.3
+      - 6000.0
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
-    test_filter: 
-  - name: invaders
-    path: Basic/Invaders
-    test_editors:
-      - 2022.3
-    run_editor_tests: !!bool false
-    run_playmode_tests: !!bool false
-    test_filter: 
+    test_filter:
   - name: clientdriven
     path: Basic/ClientDriven
     test_editors:
-      - 2022.3
+      - 6000.0
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
-    test_filter: 
+    test_filter:
   - name: dynamicaddressablesnetworkprefabs
     path: Basic/DynamicAddressablesNetworkPrefabs
     test_editors:
       - 2022.3
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool false
-    test_filter: 
+    test_filter:
   - name: dedicatedgameserver
     path: Experimental/DedicatedGameServer
     test_editors:
-      - 2023.3.0a17
+      - 6000.0.3
     run_editor_tests: !!bool false
     run_playmode_tests: !!bool true
     test_filter: Unity.DedicatedGameServerSample.Tests
   - name: multiplayerusecases
-    path: Experimental/MultiplayerUseCases
+    path: Basic/MultiplayerUseCases
     test_editors:
-      - 2022.3
+      - 6000.0.23
     run_editor_tests: !!bool true
+    run_playmode_tests: !!bool false
+  - name: DistributedAuthoritySample
+    path: Basic/DistributedAuthoritySocialHub
+    test_editors:
+      - 6000.0.24
+    run_editor_tests: !!bool false
     run_playmode_tests: !!bool false

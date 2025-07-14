@@ -1,0 +1,266 @@
+.pickup-indicator {
+    -unity-font-definition: var(--script-font);
+    position: absolute;
+    left: -50px;
+    align-items: flex-start;
+    transition-property: scale, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out-sine;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-radius: var(--border-radius);
+    padding: 4px 2px 2px 2px;
+    min-height: var(--pickup-base-height);
+    flex-shrink: 1;
+    flex-grow: 1;
+    color: var(--dark-text-color);
+    background-color: var(--pickup-background-color);
+}
+
+.pickup-indicator__keycode {
+    margin-left: 3px;
+    width: 18px;
+    height: 18px;
+    font-size: 17px;
+    -unity-font-style: bold;
+    background-color: var(--main-color);
+    border-radius: var(--border-radius);
+    color: var(--secondary-color);
+    -unity-text-align: middle-center;
+    text-shadow: 1px 1px 5px rgba(41, 41, 41, 0.69);
+}
+
+.pickup-indicator__call-to-action {
+    -unity-text-align: middle-left;
+    padding: 4px;
+    color: var(--secondary-color);
+}
+
+.pickup-indicator__border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    border-color: var(--secondary-color);
+    border-radius: var(--border-radius);
+    border-width: 2px;
+}
+
+.carrybox {
+    transition-property: scale;
+    transition-duration: 0ms;
+}
+
+.player-top-ui {
+    position: absolute;
+    align-items: center;
+    translate: -50% 0;
+}
+
+.player-mic-icon {
+    display: none;
+    padding: 0;
+    border-radius: 48px;
+    border-color: var(--secondary-color);
+    border-width: 4px;
+    translate: -50% 0;
+    left: 50%;
+    background-color: var(--pickup-background-color);
+    width: 96px;
+    height: 96px;
+    background-image: url("project://database/Assets/UI/Textures/announcement-icon.png?fileID=2800000&guid=4d053bc77d6ef4386ba76d053b365f00&type=3#announcement-icon");
+    position: absolute;
+    top: -96px;
+    background-size: 70% 70%;
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+}
+
+.player-mic-icon__mute-indicator {
+    flex-grow: 1;
+    max-height: 5px;
+    min-height: 5px;
+    min-width: 103%;
+    max-width: 103%;
+    background-color: var(--secondary-color);
+    position: absolute;
+    top: 50%;
+    rotate: -29deg;
+    display: none;
+}
+
+.player-mic-icon--muted{
+    background-image: url("project://database/Assets/UI/Textures/announcement-icon_mute.png?fileID=2800000&guid=acad70a62480a491789d7313f1ba2806&type=3#announcement-icon_mute");
+}
+
+.player-mic-icon--muted .player-mic-icon__mute-indicator {
+    display: flex;
+}
+
+.player-mic-icon--disable {
+    opacity: 0;
+}
+
+.player-name {
+    -unity-font-definition: var(--script-font);
+    font-size: 36px;
+    color: var(--light-text-color);
+    -unity-text-outline-color: rgba(0, 0, 0, 0.29);
+    -unity-text-outline-width: 1px;
+}
+
+#in-game-menu {
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#burger-button {
+    position: absolute;
+    -unity-font-style: bold;
+    font-size: var(--regular-font-size);
+    left: 20px;
+    top: 20px;
+}
+
+.ingame-panel {
+    border-radius: var(--border-radius);
+    -unity-font-definition: var(--script-font);
+    transition-property: scale, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out-bounce;
+    justify-content: center;
+    background-color: var(--main-color);
+    align-self: center;
+    min-width: 400px;
+    padding: 32px;
+}
+
+#menu #btn-close-menu {
+    position: absolute;
+    right: -25px;
+    top: -32px;
+}
+
+.hide {
+    scale: 0.8;
+    opacity: 0;
+}
+
+.show {
+    scale: 1;
+    opacity: 1;
+}
+
+.text-chat {
+    position: absolute;
+    left: -600px;
+    bottom: 50px;
+    height: 560px;
+    width: 600px;
+    transition: left 0.2s ease-in-out;
+}
+
+.text-chat--visible {
+    left: -3px;
+}
+
+.text-chat--visible > .text-chat__collapsebutton {
+    scale: -1 1;
+    background-position-x: left 0px;
+}
+
+.text-chat__ui {
+    font-size: var(--regular-font-size);
+    flex-grow: 1;
+    background-color: var(--main-color);
+    border-radius: var(--border-radius);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.text-chat__collapsebutton {
+    -unity-font-style: bold;
+    position: absolute;
+    background-position-x: left 15px;
+    padding-left: 20px;
+    bottom: 100px;
+    width: 80px;
+    right: -75px;
+}
+
+.text-chat__messagelist {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    border-top-right-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.text-chat__messageinput {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-left: 0;
+    min-width: auto;
+}
+
+.text-chat .unity-scroll-view__content-container {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.text-chat__submit {
+    font-size: var(--menu-button-font-size);
+    min-width: 60px;
+}
+
+.background-overlay{
+    display: none;
+    width: 3000px;
+    height: 3000px;
+    position: absolute;
+    background-color: rgba(62, 43, 39, 0.80);
+    opacity: 1;
+    left: -50%;
+    transition: opacity 0.2s linear;
+}
+
+#input-container {
+    padding: 8px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: row;
+}
+
+.message {
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: var(--pickup-background-color);
+    border-radius: 16px;
+}
+
+.message__sender {
+    -unity-text-align: upper-right;
+    opacity: 0.8;
+}
+
+.message__text {
+    white-space: normal;
+    overflow: visible;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.icon-submit{
+    background-image: url("project://database/Assets/UI/Textures/icon_send.png?fileID=2800000&amp;guid=72b7d5348da81408099819d725e06390&amp;type=3#icon_send");
+    background-size: contain;
+}
+
+.icon-arrow{
+    background-image: url("project://database/Assets/UI/Textures/icon_arrow.png?fileID=2800000&amp;guid=26de36c45382b4176ac53bc7a2e74e90&amp;type=3#icon_arrow");
+    background-size: contain;
+}

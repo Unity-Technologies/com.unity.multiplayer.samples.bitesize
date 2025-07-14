@@ -1,5 +1,169 @@
 # Changelog
 
+## [1.10.0] 2024-12-23
+
+### Distributed Authority Social Hub
+
+#### Added
+- Textchat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. (#258)
+- Mobile and gamepad support, with associated UI for mobile controls using UIToolkit has been integrated to the sample (#256)
+- Positional voicechat feature has been added. Chat is using Vivox, UI was integrated using UI Toolkit. See limitations in PR.(#261)
+- Improve usability on Mobile, general UI improvements. (#266)
+- In-editor tutorials have been added to the sample (#268) They walk you through:
+  - Associating your project with a Unity Cloud Id
+  - Creating a Virtual Player through Multiplayer Play Mode
+  - Enabling Network Scene Visualization through Multiplayer Tools
+  - A typical session owner promotion while connected to a session
+
+#### Changed
+- Player spawning has been deferred to be performed manually by an in-scene placed NetworkObject (#257) Player spawn has been moved to coincide with NetworkManager's OnNetworkSessionSynchronized callback, ensuring the player is spawned after synchronizing the game scene's NetworkObjects.
+- Adjusted lighting and shadow settings and custom shaders to improve the overall look of the sample, also water transparency issue has been fixed (#265)
+
+### 2D Space Shooter
+
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to 2D Space Shooter Sample (#264)
+
+#### Changed
+- Update Project to Unity 6 (#263)
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode (#263)
+- Replaced old input system with new input system (#267)
+
+### Client Driven
+
+#### Added
+- Added a welcome dialog and the standard Table of Contents for Bitesize Samples to the ClientDriven sample (#262)
+
+#### Changed
+- Updated project to Unity 6 (#259)
+  - Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+
+## [1.9.0] 2024-10-31
+
+### Distributed Authority Social Hub
+
+#### Changed
+- This sample is no longer "Experimental", and it has been moved into the "Basic" folder
+
+## [1.8.0] 2024-10-23
+
+### Multiplayer Use Cases
+
+#### Added
+- The last page of the "Data/Event Synchronization" tutorial redirects to the "Proximity Checks" tutorial
+- Imported TextMeshPro essentials so you don't have to do it
+
+#### Changed
+- Updated project to Unity 6
+- All inputs are handled through the new Unity Input System
+- In-Game UI is now responsive and adapts to screen size
+- Replaced 3rd party ParrelSync package with Unity's Multiplayer Play Mode
+- Disabled compatibility mode for RenderGraph, as it's going to be deprecated and throws warnings
+- Removed runtime network stats monitor from the scene to improve readability
+- Removed deprecated visual studio code package
+- Updated packages: Rider to 3.0.31, Input System to 1.11.1, Tutorial Framework to 4.0.2, Multiplayer Tools to 2.2.1, Netcode For GameObjects to 2.0.0, UGUI to 2.0.0, Test Framework to 1.4.5, Universal Render Pipeline to 17.0.3
+
+#### Fixed
+- Fixed "Build Profile" window not being clickable during the last page of each tutorial
+
+## [1.7.0] 2024-08-31
+
+### Bitesize Samples Repository
+
+#### Added
+- Added a "Deprecated" folder for samples that are no longer supported
+
+### Invaders
+
+#### Changed
+- This sample is now "Deprecated"
+
+### Multiplayer Use Cases
+
+#### Changed
+- This sample is no longer "Experimental", and it has been moved into the "Basic" folder
+- In-game UI now uses UIToolkit instead of UGUI
+- Updated README to provide a clear path to the onboarding resources in case a user closed the Tutorial window 
+
+### Dedicated Game Server
+
+#### Changed
+- Upgraded project to Unity 6000.0.3f1
+- Updated dedicated server packages to 1.1.0
+- Updated Netcode For GameObjects version to 1.8.1, and replaced RPCs using the new workflow provided
+
+## [1.6.0] 2024-05-30
+
+### Bitesize Samples Repository
+
+#### Cleanup
+- Formatted .cs files inside the Bitesize Samples repository to adhere to coding standards (#156) Internal testing job definition files were added in order for internal processes to execute.
+
+### 2D Space Shooter
+
+#### Added
+- Added local pooling for explosionParticles to optimize performance and showcase built-in pooling component (#167)
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#170)
+  - upgraded to com.unity.burst v1.8.13
+  - added com.unity.modules.jsonserialize v1.0.0
+  - upgraded to com.unity.render-pipelines.core v14.0.11
+  - upgraded to com.unity.render-pipelines.universal-config v14.0.10
+  - upgraded to com.unity.shadergraph v14.0.11
+  - upgraded to com.unity.services.authentication v2.7.4
+  - upgraded to com.unity.services.qos v1.3.0
+  - upgraded to com.unity.transport v1.4.1
+  - upgraded to com.unity.services.core v1.12.5
+- Upgraded to Netcode for GameObjects v1.8.1 (#174)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to newer API for Connection Events, OnConnectionEvent
+
+#### Fixed
+- Reset values and buffs after respawn of ship (#167)
+
+### Client Driven
+
+#### Changed
+- Upgraded to Netcode for GameObjects v1.8.1 (#164)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - The place of execution for a client's position was moved to ClientNetworkTransform child class, ClientDrivenNetworkTransform. This ensures no race condition issues on a client's first position sync. Server code now modifies a NetworkVariable that client-owned instances of ClientDrivenNetworkTransform use on OnNetworkSpawn to initially move a player
+  - Upgraded to use NetworkObject.InstantiateAndSpawn() API where appropriate (#173)
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#175)
+  - com.unity.render-pipelines.core upgraded to v14.0.11
+  - com.unity.services.authentication upgraded to v2.7.4
+  - com.unity.services.core upgraded to v1.12.5
+  - com.unity.services.qos upgraded to v1.3.0
+  - com.unity.transport upgraded to v1.4.1
+
+#### Fixed
+- Added Spawner with event executed on Server Start to fix inconsistent ghost ingredients issue (#157)
+
+### Dynamic Addressables Network Prefabs
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#176)
+  - com.unity.transport upgraded to v1.4.1
+
+#### Fixed
+- Releasing an Addressables handle on OnDestroy inside Preloading scene to prevent releasing loaded dynamic prefab from memory (#179)
+
+### Invaders
+
+#### Changed
+- Upgraded to IDE Rider v3.0.28 (#166)
+- Upgraded to Unity 2022.3.27f1 (#169)
+- Upgraded to Netcode for GameObjects v1.8.1 (#172)
+  - Upgraded to the newer API for Rpcs, Universal Rpcs
+  - Upgraded to the newer API for NetworkObject spawning to use NetworkObject.InstantiateAndSpawn
+  - Upgraded usage of NetworkManager.OnClientConnectedCallback to the new NetworkManager.OnConnectionEvent 
+
+#### Fixed
+- Optimized NetworkTransform on all networked prefabs so the Clients objects movements are closer to the Host ones (#168)
+
 ## [1.5.0] 2023-12-15
 
 ### Bitesize Samples Repository
@@ -73,13 +237,6 @@
 #### Changed
 - Upgraded to Netcode for GameObjects v1.6.0 (#134)
 - Upgraded sample to 2022.3.9f1 LTS (#134)
-
-## [Unreleased]
-
-### Dedicated Game Server
-todo: the changelog entry for this sample will be updated with subsequent PRs before being merged when ready
-
-- New Dedicated Game Server sample. (#1) This sample's goal is to demonstrate how to use the different tools and packages available to create a game using the dedicated server approach. It requires editor version 2023.3.
 
 ## [1.3.0] - 2023-07-07
 
@@ -282,7 +439,7 @@ A new sample was added named client driven. It focus on client driven movements,
 
 #### Known Issues
 
-- Upon import a MissingReferenceException is triggered from within MLAPI: **"MissingReferenceException: The object of type ‘GameObject’ has been destroyed but you are still trying to access it.
+- Upon import a MissingReferenceException is triggered from within MLAPI: **"MissingReferenceException: The object of type ‘GameObject' has been destroyed but you are still trying to access it.
   Your script should either check if it is null or you should not destroy the object."** in:
   - UnityEngine.GameObject.GetComponent[T] () (at /Users/bokken/buildslave/unity/build/Runtime/Export/Scripting/GameObject.bindings.cs:28)
 

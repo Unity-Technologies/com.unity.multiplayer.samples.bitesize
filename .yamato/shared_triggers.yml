@@ -1,0 +1,50 @@
+{% metadata_file .yamato/project.metafile %}
+---
+
+# Run all relevant tasks when a pull request targets the develop / main or a sample branch
+pull_request_trigger:
+  name: Pull Request Trigger (main, develop, & sample branches)
+  dependencies:
+{% for project in projects -%}
+{% for editor in project.test_editors -%}
+{% for platform in test_platforms -%}
+    - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
+{% if project.run_editor_tests or project.run_playmode_tests -%} # Only run tests for projects where relevant
+    - .yamato/tests.yml#test_{{ project.name }}_{{ editor }}_{{ platform.name }}
+{% endif -%}
+{% endfor -%}
+{% if project.name != "dedicatedgameserver" -%}
+    # iOS
+    - .yamato/mobile-build-and-run.yml#Build_Player_With_Tests_iOS_{{ project.name }}_{{ editor }}
+    # Android
+    - .yamato/mobile-build-and-run.yml#Build_Player_With_Tests_Android_{{ project.name }}_{{ editor }}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+  triggers:
+    cancel_old_ci: true
+    pull_requests:
+    - targets:
+        only:
+          - "main"
+          - "develop"
+          - "/^sample\//"
+          - "/sample\/.*/"
+
+# Run all tasks on the bitesize sample develop branch (head) when there is a push to the Netcode for GameObjects develop branch
+external_ngo_develop_pull_request_trigger:
+  name: Netcode for GameObjects (External) Develop Branch Triggers
+  dependencies:
+{% for project in projects -%}
+{% for editor in project.test_editors -%}
+{% for platform in test_platforms -%}
+    - .yamato/build.yml#build_{{ project.name }}_{{ editor }}_{{ platform.name }}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+  triggers:
+    external:
+      source: git@github.com/Unity-Technologies/com.unity.netcode.gameobjects.git
+      expression: push.branch eq "develop"
+      refs_on_this_repository:
+        - develop

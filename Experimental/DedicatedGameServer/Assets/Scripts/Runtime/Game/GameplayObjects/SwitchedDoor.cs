@@ -77,7 +77,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
                 if (GameApplication.Instance.Model.PlayerCharacter.PlayerInput.actions[k_OpenDoorAction].WasPressedThisFrame())
                 {
                     Debug.Log("[Client] Local player opening door");
-                    OnServerOpenServerRpc();
+                    ServerOpenRpc();
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             {
                 m_LocalPlayerIsNearby = true;
                 /*
-                 * we do not use m_CanBeOpened here to predict if we can display the UI or not, 
+                 * we do not use m_CanBeOpened here to predict if we can display the UI or not,
                  * because its value is being recalculated by the server
                  * at the same time and we could have an outdated value.
                  */
@@ -198,8 +198,8 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        void OnServerOpenServerRpc()
+        [Rpc(SendTo.Server)]
+        void ServerOpenRpc()
         {
             OnServerOpenDoor();
         }

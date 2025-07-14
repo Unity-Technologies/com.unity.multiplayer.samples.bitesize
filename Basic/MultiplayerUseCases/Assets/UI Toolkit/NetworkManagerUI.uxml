@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/UseCasesStyleClass.uss?fileID=7433441132597879392&amp;guid=cac46a420be955345b18ac0d5d2d9e37&amp;type=3#UseCasesStyleClass" />
+    <ui:VisualElement name="NetworkManagerUI">
+        <ui:Label text="IP Address" display-tooltip-when-elided="true" name="IPLabel" class="labelText" style="flex-shrink: 1; flex-direction: row; display: flex;" />
+        <ui:TextField name="IPAddressField" focusable="true" is-delayed="true" password="false" tabindex="1" value="127.0.0.1" />
+        <ui:Label text="Port" display-tooltip-when-elided="true" name="PortLabel" class="labelText" style="flex-shrink: 1; flex-direction: row;" />
+        <ui:TextField name="PortField" focusable="true" is-delayed="true" tabindex="2" value="7979" />
+        <ui:Button text="Server" display-tooltip-when-elided="true" name="ServerButton" parse-escape-sequences="true" class="UseCaseButton" style="margin-top: 8px;" />
+        <ui:Button text="Host" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HostButton" class="UseCaseButton" />
+        <ui:Button text="Client" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClientButton" class="button UseCaseButton" />
+        <ui:Button text="Disconnect" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DisconnectButton" class="button UseCaseButton" style="margin-top: 14px;" />
+        <ui:Button text="Quit Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitSceneButton" class="button UseCaseButton" />
+    </ui:VisualElement>
+</ui:UXML>

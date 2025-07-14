@@ -2,10 +2,12 @@
 <br><br>
 # Netcode for GameObjects Bitesize Samples
 
-[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2022.3%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.0)
-[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-1.7.1-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F1.7.1)
-[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.5.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.5.0)
+[![UnityVersion](https://img.shields.io/badge/Unity%20Version:-2022.3+%20LTS-57b9d3.svg?logo=unity&color=2196F3)](https://unity.com/releases/editor/whats-new/2022.3.0)
+[![NetcodeVersion](https://img.shields.io/badge/Netcode%20Version:-2.0.0+-57b9d3.svg?logo=unity&color=2196F3)](https://github.com/Unity-Technologies/com.unity.netcode.gameobjects/releases/tag/ngo%2F2.0.0)*
+[![LatestRelease](https://img.shields.io/badge/Latest%20%20Github%20Release:-v1.10.0-57b9d3.svg?logo=github&color=brightgreen)](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/releases/tag/v1.10.0)
 <br><br>
+
+*: Due to a regression in Netcode for GameObjects pertaining to the destruction of NetworkObjects when a client unsuccessfully connects, the Dynamic Addressables Network Prefabs sample has remained at v1.7.1. It will be upgraded in the near future with the latest Netcode version including a fix for the regression.
 
 This repository contains a collection of bitesize sample projects and games that showcase different techniques
 which can help you get started with development of a multiplayer 
@@ -19,9 +21,18 @@ project using [Netcode for GameObjects](https://github.com/Unity-Technologies/co
 The [2D Space Shooter Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/2DSpaceShooter) was a UNET sample that has been converted over to NGO. Check it out to learn more about physics movement and status effects using Netcode `NetworkVariables` and `ObjectPooling`.
 <br><br>
 
-### Invaders Overview
+### Distributed Authority Social Hub
 
-The [Invaders Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/Invaders) was a UNET sample that has been converted over to NGO. Learn more about game flow, modes, unconventional networked movement, and using a shared timer in this sample.
+[Social Hub](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/DistributedAuthoritySocialHub) is built with the Distributed Authority topology, showcasing recommended approaches to designing gameplay features with the new framework inside Netcode for GameObjects v2.0 in tandem with the Multiplayer SDK. This sample serves as the educational entry point for users who are looking to implement a similar networking topology inside their projects.
+<br><br>
+
+### Multiplayer Use Cases Overview
+
+The [Multiplayer Use Cases sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/MultiplayerUseCases) show you how to perform common actions in a multiplayer environment, so that you can build the features of your game with them in mind.
+
+In this sample you'll learn about the core features of Netcode For GameObjects (Netcode) through practical examples that you'll be able to extend and adapt to fit the gameplay logic of your own game. 
+
+Each scene comes with an in-editor tutorial that will help you explore the main scripts and object of each scene, so you know where to look at to find what you're looking for.
 <br><br>
 
 ### Client Driven Overview
@@ -30,7 +41,7 @@ See the [Client Driven Sample](https://github.com/Unity-Technologies/com.unity.m
 
 ### Dynamic Addressables Network Prefabs Overview
 
-Check out the new [Dynamic Addressables Network Prefabs Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/DynamicAddressablesNetworkPrefabs) to learn more about the dynamic prefab system, which allows us to add new spawnable network prefabs at runtime.
+Check out the [Dynamic Addressables Network Prefabs Sample](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.bitesize/tree/main/Basic/DynamicAddressablesNetworkPrefabs) to learn more about the dynamic prefab system, which allows us to add new spawnable network prefabs at runtime.
 <br><br>
 
 ---

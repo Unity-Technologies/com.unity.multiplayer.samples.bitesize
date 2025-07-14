@@ -1,0 +1,110 @@
+* {
+    --font-size: 16px;
+    --text-color: rgb(250, 250, 250);
+    --mid-blue-color: rgb(79, 120, 168);
+    --mid-blue-color: rgb(79, 120, 168);
+    --dark-blue-color: rgb(47, 79, 112);
+    --light-blue-color: rgb(127, 179, 224);
+    --highlight-color: rgb(76, 178, 113);
+    --highlight-border-color: rgb(166, 243, 185);
+}
+
+.UseCaseButton {
+    background-color: var(--mid-blue-color);
+    border-color: var(--light-blue-color);
+    border-width: 2px;
+    color: var(--text-color);
+    -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
+    font-size: var(--font-size);
+    border-radius: 5px;
+    margin: 4px;
+    padding: 10px;
+    width: 100%;
+    align-self: center;
+    justify-content: flex-start;
+    align-items: stretch;
+    max-height: 24px;
+    min-height: 24px;
+}
+
+.UseCaseButton:disabled {
+    background-color: var(--dark-blue-color);
+    border-color: var(--light-blue-color);
+}
+
+.UseCaseButton:hover {
+    border-color: var(--light-blue-color);
+}
+
+.UseCaseButton:focus {
+    border-color: var(--highlight-border-color);
+}
+
+.UseCaseButtonHighlight {
+    background-color: var(--highlight-color);
+    border-color: var(--highlight-border-color);
+}
+
+.UseCaseButtonHighlight:disabled {
+    background-color: var(--highlight-color);
+    border-color: var(--highlight-border-color);
+}
+
+.unity-text-field {
+    margin: 0 0 2px;
+    font-size: var(--font-size);
+    width: 100%;
+    height: 25px;
+    -unity-text-align: middle-center;
+    flex-direction: row;
+    border-color: var(--light-blue-color);
+    -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
+    align-self: center;
+}
+
+.unity-text-field__input {
+    border-radius: 5px;
+    padding: 0;
+    background-color: rgb(45, 81, 123);
+    -unity-text-align: middle-center;
+    color: rgb(213, 236, 255);
+    border-width: 2px;
+    align-self: center;
+    max-width: 245px;
+    border-color: rgb(127, 179, 224);
+    font-size: var(--font-size);
+}
+
+.unity-text-field:focus {
+    border-color: var(--highlight-border-color);
+}
+
+.unity-text-field:focus .unity-text-field__input {
+    border-color: var(--highlight-border-color);
+}
+
+.labelText {
+    padding: 0;
+    margin: 2px;
+    flex-direction: row;
+    -unity-text-align: upper-center;
+    color: var(--text-color);
+    -unity-font: url("project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans");
+    -unity-font-style: normal;
+    font-size: var(--font-size);
+}
+
+#NetworkManagerUI {
+    position: absolute;
+    background-color: rgb(40, 40, 42);
+    max-width: 200px;
+    min-width: 100px;
+    display: flex;
+    border-bottom-left-radius: 7px;
+    right: 0;
+    justify-content: center;
+    width: 25%;
+    margin: 0px;
+    padding: 12px;
+    top: 0;
+}
