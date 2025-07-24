@@ -2,6 +2,12 @@
 
 ## [unreleased] yyyy-mm-dd
 
+### Distributed Authority Social Hub
+
+#### Fixed
+- Fixed issue where a non-authority player instance could improperly initialize when two clients are connecting to the same session at the "relative" same time. (#281)
+- Fixed issue with spam logging on collision messages. (#281)
+
 ### Multiplayer Use Cases
 
 #### Added
