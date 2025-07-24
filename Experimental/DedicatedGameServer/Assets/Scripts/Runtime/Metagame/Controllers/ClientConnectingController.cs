@@ -1,5 +1,4 @@
 using System;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 using UnityEngine;
 
@@ -8,11 +7,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
     public class ClientConnectingController : Controller<MetagameApplication>
     {
         ClientConnectingView View => App.View.ClientConnecting;
-        ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
 
         void Awake()
         {
-            ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
+            }
             AddListener<CancelConnectionEvent>(OnCancelConnection);
         }
 
@@ -23,7 +24,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         internal override void RemoveListeners()
         {
-            ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
+            }
             RemoveListener<CancelConnectionEvent>(OnCancelConnection);
         }
 
@@ -51,7 +55,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnCancelConnection(CancelConnectionEvent evt)
         {
-            ConnectionManager.RequestShutdown();
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.RequestShutdown();
+            }
         }
     }
 }

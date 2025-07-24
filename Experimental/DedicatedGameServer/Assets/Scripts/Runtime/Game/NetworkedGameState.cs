@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
 using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 using Unity.Netcode;
 using UnityEngine;
@@ -26,17 +25,18 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         Coroutine m_CountdownRoutine;
 
-        ConnectionManager ConnectionManager => ApplicationEntryPoint.Singleton.ConnectionManager;
-
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
             if (IsServer)
             {
                 m_MatchEnded = false;
-                ConnectionManager.EventManager.AddListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
-                ConnectionManager.EventManager.AddListener<ClientConnectedEvent>(OnServerClientConnected);
-                ConnectionManager.EventManager.AddListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
+                if (ConnectionManager.Instance.EventManager != null)
+                {
+                    ConnectionManager.Instance.EventManager.AddListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
+                    ConnectionManager.Instance.EventManager.AddListener<ClientConnectedEvent>(OnServerClientConnected);
+                    ConnectionManager.Instance.EventManager.AddListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
+                }
                 playersConnected.Value = NetworkManager.ConnectedClientsIds.Count;
             }
         }
@@ -50,9 +50,13 @@ namespace Unity.DedicatedGameServerSample.Runtime
                     StopCoroutine(m_CountdownRoutine);
                     m_CountdownRoutine = null;
                 }
-                ConnectionManager.EventManager.RemoveListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
-                ConnectionManager.EventManager.RemoveListener<ClientConnectedEvent>(OnServerClientConnected);
-                ConnectionManager.EventManager.RemoveListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
+
+                if (ConnectionManager.Instance != null)
+                {
+                    ConnectionManager.Instance.EventManager.RemoveListener<MinNumberPlayersConnectedEvent>(OnServerMinNumberPlayersConnected);
+                    ConnectionManager.Instance.EventManager.RemoveListener<ClientConnectedEvent>(OnServerClientConnected);
+                    ConnectionManager.Instance.EventManager.RemoveListener<ClientDisconnectedEvent>(OnServerClientDisconnected);
+                }
             }
         }
 
@@ -112,7 +116,7 @@ namespace Unity.DedicatedGameServerSample.Runtime
             }
 
             ClientEndMatchRpc();
-            StartCoroutine(CoroutinesHelper.WaitAndDo(new WaitForSeconds(k_ShutdownDelayAfterCountdownEnd), () => ConnectionManager.RequestShutdown()));
+            StartCoroutine(CoroutinesHelper.WaitAndDo(new WaitForSeconds(k_ShutdownDelayAfterCountdownEnd), () => ConnectionManager.Instance.RequestShutdown()));
         }
 
         [Rpc(SendTo.ClientsAndHost)]

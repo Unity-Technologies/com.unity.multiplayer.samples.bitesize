@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 using Unity.Multiplayer;
+using Unity.Multiplayer.Playmode;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,24 +18,24 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
     {
         const string k_DefaultServerListenAddress = "0.0.0.0";
         const string k_DefaultClientAutoConnectServerAddress = "127.0.0.1";
-        public static ApplicationEntryPoint Singleton { get; private set; }
-        
+        public static ApplicationEntryPoint Instance { get; private set; }
+
 #if UNITY_EDITOR
         public static bool s_AreTestsRunning = false;
         public bool AreTestsRunning => s_AreTestsRunning;
 #endif
-        bool AutoConnectOnStartup
+        public bool AutoConnectOnStartup
         {
             get
             {
-                bool startAutomatically = false;
+                var startAutomatically = false;
                 switch (MultiplayerRolesManager.ActiveMultiplayerRoleMask)
                 {
                     case MultiplayerRoleFlags.Server:
                         startAutomatically = true;
                         break;
                     case MultiplayerRoleFlags.Client:
-                        startAutomatically = m_AutoconnectIfClient;
+                        startAutomatically = ContainsString(CurrentPlayer.ReadOnlyTags(), k_AutoconnectPlayerTag);
                         break;
                 }
 #if UNITY_EDITOR
@@ -47,43 +47,44 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 
         [SerializeField]
         ConnectionManager m_ConnectionManager;
-        public ConnectionManager ConnectionManager => m_ConnectionManager;
 
-        [SerializeField]
-        internal int MinPlayers = 2;
-        [SerializeField]
-        internal int MaxPlayers = 2;
-        [SerializeField]
-        bool m_AutoconnectIfClient = false;
+        internal const int k_MinPlayers = 2;
+        internal const int k_MaxPlayers = 10;
+
+        // this is the Tag created for a Virtual Player
+        const string k_AutoconnectPlayerTag = "Autoconnect";
+        const string k_MetagameSceneName = "MetagameScene";
+        const string k_GameSceneName = "GameScene01";
 
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            if (Singleton is null)
+            if (Instance is null)
             {
-                Singleton = this;
+                Instance = this;
             }
             m_ConnectionManager.EventManager.AddListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         void OnDestroy()
         {
+            Instance = null;
             m_ConnectionManager.EventManager.RemoveListener<ConnectionEvent>(OnConnectionEvent);
         }
 
         [RuntimeInitializeOnLoadMethod]
         static void OnApplicationStarted()
         {
-            if (!Singleton) //this happens during PlayMode tests
+            if (!Instance) //this happens during PlayMode tests
             {
                 return;
             }
-            Singleton.InitializeNetworkLogic(); //note: this is the entry point for all autoconnected instances (including standalone servers)
+            Instance.InitializeNetworkLogic(); //note: this is the entry point for all autoconnected instances (including standalone servers)
         }
 
         /// <summary>
         /// Initializes the application's network-related behaviour according to the configuration. Servers load the main
-        /// game scene and automatically start. Clients load the metagame scene and, if autonnect is set to true, attempt
+        /// game scene and automatically start. Clients load the metagame scene and, if autoconnect is set to true, attempt
         /// to connect to a server automatically based on the IP and port passed through the configuration or the command
         /// line arguments.
         /// </summary>
@@ -97,14 +98,27 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                     //lock framerate on dedicated servers
                     Application.targetFrameRate = commandLineArgumentsParser.TargetFramerate;
                     QualitySettings.vSyncCount = 0;
+
+                    // Multiplayer Play Mode Scenarios are as follows:
+                    // * EditorAsClient (one Virtual Player with Server role, Editor and rest of Virtual Players autoconnect)
+                    // * EditorAsServer (editor is Server role, rest of Virtual Players with Client role autoconnect)
+                    // * DeployToUGS (deploys server to a separate fleet in UGS, Virtual Player clients can connect to the allocated server's IP & port)
+                    // * Live (Virtual Players clients can connect to the last deployed server)
+#if UNITY_SERVER && !UNITY_EDITOR
+                    m_ConnectionManager.StartServerMatchmaker(k_MaxPlayers);
+#elif UNITY_EDITOR
                     m_ConnectionManager.StartServerIP(k_DefaultServerListenAddress, listeningPort);
+                    #endif
                     break;
                 case MultiplayerRoleFlags.Client:
                 {
-                    SceneManager.LoadScene("MetagameScene");
                     if (AutoConnectOnStartup)
                     {
-                        m_ConnectionManager.StartClient(k_DefaultClientAutoConnectServerAddress, listeningPort);
+                        m_ConnectionManager.StartClientIP(k_DefaultClientAutoConnectServerAddress, listeningPort);
+                    }
+                    else
+                    {
+                        SceneManager.LoadScene(k_MetagameSceneName);
                     }
                     break;
                 }
@@ -127,7 +141,7 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                         break;
                     case ConnectStatus.Success:
                         // If server successfully starts, load game scene
-                        NetworkManager.Singleton.SceneManager.LoadScene("GameScene01", LoadSceneMode.Single);
+                        NetworkManager.Singleton.SceneManager.LoadScene(k_GameSceneName, LoadSceneMode.Single);
                         break;
                 }
             }
@@ -138,8 +152,11 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
                     case ConnectStatus.GenericDisconnect:
                     case ConnectStatus.UserRequestedDisconnect:
                     case ConnectStatus.ServerEndedSession:
-                        // If client is disconnected, return to metagame scene
-                        SceneManager.LoadScene("MetagameScene");
+                        if (!AutoConnectOnStartup)
+                        {
+                            // If client is disconnected, return to metagame scene
+                            SceneManager.LoadScene(k_MetagameSceneName);
+                        }
                         break;
                 }
             }
@@ -152,6 +169,21 @@ namespace Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle
 #else
             Application.Quit();
 #endif
+        }
+
+        static bool ContainsString(string[] source, string value, bool ignoreCase = false)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            return Array.Exists(source, str =>
+                ignoreCase
+                    ? string.Equals(str, value, StringComparison.OrdinalIgnoreCase)
+                    : str == value
+            );
         }
     }
 }

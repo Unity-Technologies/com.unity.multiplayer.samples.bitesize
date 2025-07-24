@@ -1,8 +1,8 @@
-using Unity.DedicatedGameServerSample.Runtime.ApplicationLifecycle;
+using Unity.DedicatedGameServerSample.Runtime.ConnectionManagement;
 
 namespace Unity.DedicatedGameServerSample.Runtime
 {
-    internal class MatchRecapController : Controller<GameApplication>
+    class MatchRecapController : Controller<GameApplication>
     {
         MatchRecapView View => App.View.MatchRecap;
 
@@ -31,7 +31,10 @@ namespace Unity.DedicatedGameServerSample.Runtime
 
         void OnClientMatchEndAcknowledged(MatchEndAcknowledgedEvent evt)
         {
-            ApplicationEntryPoint.Singleton.ConnectionManager.RequestShutdown();
+            if (ConnectionManager.Instance != null)
+            {
+                ConnectionManager.Instance.RequestShutdown();
+            }
         }
     }
 }

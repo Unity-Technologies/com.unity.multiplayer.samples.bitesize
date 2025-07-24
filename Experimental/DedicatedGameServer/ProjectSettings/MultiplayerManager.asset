@@ -5,12 +5,18 @@ MultiplayerManager:
   m_ObjectHideFlags: 0
   m_EnableMultiplayerRoles: 1
   m_StrippingTypes:
-    1: []
+    1:
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ServerAICharacter
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ServerPlayerCharacter
+    - Unity.Multiplayer.Samples.Utilities:Unity.Multiplayer.Samples.Utilities:ServerAdditiveSceneLoader
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ServerAISpawner
+    - com.unity.sample.dedicated-server.runtime::ServerPlayerSpawnPoints
     2:
     - UnityEngine.UI:UnityEngine.UI:PositionAsUV1
     - UnityEngine.UI:UnityEngine.EventSystems:TouchInputModule
     - UnityEngine.UI:UnityEngine.UI:Toggle
     - UnityEngine.UI:UnityEngine.UI:ContentSizeFitter
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ClientConnectingView
     - UnityEngine.UI:UnityEngine.UI:CanvasScaler
     - UnityEngine.UI:UnityEngine.UIElements:PanelEventHandler
     - UnityEngine.CoreModule:UnityEngine:Light
@@ -26,6 +32,7 @@ MultiplayerManager:
     - UnityEngine.AudioModule:UnityEngine:AudioSource
     - UnityEngine.AudioModule:UnityEngine:AudioHighPassFilter
     - UnityEngine.UI:UnityEngine.UI:HorizontalLayoutGroup
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ClientPlayerCharacter
     - UnityEngine.UI:UnityEngine.UI:GraphicRaycaster
     - UnityEngine.UI:UnityEngine.UI:Dropdown
     - UnityEngine.UI:UnityEngine.UI:BaseMeshEffect
@@ -44,6 +51,7 @@ MultiplayerManager:
     - UnityEngine.UI:UnityEngine.EventSystems:PhysicsRaycaster
     - UnityEngine.UI:UnityEngine.EventSystems:BaseInputModule
     - UnityEngine.UI:UnityEngine.UI:Dropdown/DropdownItem
+    - Unity.Multiplayer.Samples.Utilities:Unity.Multiplayer.Samples.Utilities:ClientLoadingScreen
     - UnityEngine.UI:UnityEngine.UI:HorizontalOrVerticalLayoutGroup
     - UnityEngine.UI:UnityEngine.EventSystems:BaseInput
     - UnityEngine.UI:UnityEngine.UI:InputField
@@ -56,6 +64,7 @@ MultiplayerManager:
     - UnityEngine.UI:UnityEngine.UI:Image
     - UnityEngine.UI:UnityEngine.UI:MaskableGraphic
     - UnityEngine.AudioModule:UnityEngine:AudioBehaviour
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ClientConnectingController
     - UnityEngine.UI:UnityEngine.UI:Scrollbar
     - UnityEngine.UI:UnityEngine.UI:Text
     - UnityEngine.UI:UnityEngine.UI:GridLayoutGroup
@@ -66,6 +75,9 @@ MultiplayerManager:
     - UnityEngine.UI:UnityEngine.UI:Button
     - UnityEngine.UI:UnityEngine.UI:LayoutElement
     - UnityEngine.UI:UnityEngine.EventSystems:Physics2DRaycaster
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ClientConnectingModel
+    - com.unity.sample.dedicated-server.runtime:Unity.DedicatedGameServerSample.Runtime:ClientAICharacter
+    - Unity.Multiplayer.Samples.Utilities.ClientAuthority:Unity.Multiplayer.Samples.Utilities.ClientAuthority:ClientNetworkTransform
     - UnityEngine.AudioModule:UnityEngine:AudioDistortionFilter
     - UnityEngine.CoreModule:UnityEngine:SkinnedMeshRenderer
     - UnityEngine.UI:UnityEngine.UI:Graphic
@@ -73,6 +85,7 @@ MultiplayerManager:
     - UnityEngine.AudioModule:UnityEngine:AudioReverbZone
     - UnityEngine.CoreModule:UnityEngine:TrailRenderer
     - UnityEngine.AudioModule:UnityEngine:AudioReverbFilter
+    - Unity.Multiplayer.Samples.Utilities.ClientAuthority:Unity.Multiplayer.Samples.Utilities.ClientAuthority:ClientNetworkAnimator
     - UnityEngine.AudioModule:UnityEngine:AudioChorusFilter
     - UnityEngine.UI:UnityEngine.EventSystems:EventTrigger
     - UnityEngine.VFXModule:UnityEngine.VFX:VFXRenderer

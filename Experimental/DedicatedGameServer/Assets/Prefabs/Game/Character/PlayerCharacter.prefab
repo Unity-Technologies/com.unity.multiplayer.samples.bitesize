@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4416926081852918491, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -72,6 +76,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5597113867290821413, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b28c6ed24cb5d4f27a64e342aa438bda, type: 2}
+    - target: {fileID: 5597113867290821413, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 950af5257db6346a6b05fb7aaec95914, type: 2}
+    - target: {fileID: 5597113867290821413, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1a96905b2aae54f82aa3275ad28f59b0, type: 2}
     - target: {fileID: 6480834101704243505, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.30831507
@@ -105,7 +121,7 @@ PrefabInstance:
       addedObject: {fileID: 8339456619134380110}
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 132630580526056716}
+      addedObject: {fileID: 4665443069360817876}
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2427093694310210962}
@@ -114,10 +130,10 @@ PrefabInstance:
       addedObject: {fileID: 3939772342160869286}
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1691060497006864908}
+      addedObject: {fileID: 141398023266614687}
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 141398023266614687}
+      addedObject: {fileID: 1691060497006864908}
     - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7649842775098529702}
@@ -148,11 +164,6 @@ MultiplayerRolesData:
   m_GameObject: {fileID: 514797524429996834}
   m_GameObjectRolesMask: 3
   m_ComponentsRolesMasks: []
---- !u!23 &898828323309504372 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4476495000965352127, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-  m_PrefabInstance: {fileID: 3631858316268162507}
-  m_PrefabAsset: {fileID: 0}
 --- !u!143 &1092933507198879504 stripped
 CharacterController:
   m_CorrespondingSourceObject: {fileID: 4416926081852918491, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
@@ -220,7 +231,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3552800169
+  GlobalObjectIdHash: 3505752152
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -228,7 +242,9 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &132630580526056716
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &4665443069360817876
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,18 +253,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1092933507198879514}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AuthorityMode: 1
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 1
+  SyncRotAngleX: 0
   SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -256,6 +277,7 @@ MonoBehaviour:
   UseQuaternionCompression: 0
   UseHalfFloatPrecision: 0
   InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
 --- !u!114 &2427093694310210962
@@ -270,6 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8deae8091111f4eb30a56c1f4e0d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 5945065160673298394}
 --- !u!114 &3939772342160869286
@@ -284,24 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72cdb96278bc495ea1450b659fef8403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1691060497006864908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092933507198879514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb8100e3fcda6294a8656d145e5951d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NetworkedPlayerCharacter: {fileID: 3939772342160869286}
-  m_CharacterController: {fileID: 1092933507198879504}
-  m_ThirdPersonController: {fileID: 1092933507198879505}
-  m_CapsuleCollider: {fileID: 7252483717728775064}
-  m_CameraFollow: {fileID: 4745943045923667526}
-  m_PlayerInput: {fileID: 1092933507198879510}
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1652712579 &141398023266614687
 MultiplayerRolesData:
   m_ObjectHideFlags: 2
@@ -325,6 +331,24 @@ MultiplayerRolesData:
     m_RolesMask: 2
   - m_Object: {fileID: 3143591770897947506}
     m_RolesMask: 1
+--- !u!114 &1691060497006864908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092933507198879514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8100e3fcda6294a8656d145e5951d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NetworkedPlayerCharacter: {fileID: 3939772342160869286}
+  m_CharacterController: {fileID: 1092933507198879504}
+  m_ThirdPersonController: {fileID: 1092933507198879505}
+  m_CapsuleCollider: {fileID: 7252483717728775064}
+  m_CameraFollow: {fileID: 4745943045923667526}
+  m_PlayerInput: {fileID: 1092933507198879510}
 --- !u!114 &-7649842775098529702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,7 +373,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc55263d027ad72419720fde3696727a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerNumberMesh: {fileID: 898828323309504372}
+  ShowTopMostFoldoutHeaderGroup: 1
+  m_Renderer: {fileID: 9208175193749327598}
   m_PlayerColors:
   - {r: 2, g: 0, b: 0.19999981, a: 1}
   - {r: 0, g: 0.41029543, b: 1.7176471, a: 1}
@@ -360,8 +385,7 @@ MonoBehaviour:
   - {r: 0, g: 0.34600186, b: 1.8483082, a: 0}
   - {r: 2, g: 1.0665532, b: 0.004249378, a: 1}
   - {r: 0, g: 0.8357703, b: 0.5409957, a: 0}
-  m_PlayerNumber: 0
-  m_PlayerNumberVector: {x: 0, y: 0}
+  m_PlayerNumberAsset: {fileID: 9197481963319205126, guid: fe49b5ff43d974d748846659bb76d7b9, type: 3}
 --- !u!114 &3712300999824694118 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 135756642000475821, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
@@ -411,3 +435,8 @@ MultiplayerRolesData:
   m_GameObject: {fileID: 6929592776227403486}
   m_GameObjectRolesMask: 1
   m_ComponentsRolesMasks: []
+--- !u!137 &9208175193749327598 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5597113867290821413, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  m_PrefabInstance: {fileID: 3631858316268162507}
+  m_PrefabAsset: {fileID: 0}
