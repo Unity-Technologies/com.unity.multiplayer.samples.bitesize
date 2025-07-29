@@ -13,7 +13,13 @@ build_{{ project.name }}_{{ editor }}_{{ platform.name }}:
     image: {{ platform.image }}
     flavor: {{ platform.flavor}}
   commands:
-    - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+{% if platform.name == "mac" -%}
+    - brew tap Unity-Technologies/homebrew-unity git@github.cds.internal.unity3d.com:unity/homebrew-unity.git
+    - brew install Unity-Technologies/homebrew-unity/unity-downloader-cli
+    - brew upgrade Unity-Technologies/homebrew-unity/unity-downloader-cli
+{% else -%}
+    - choco install unity-downloader-cli -y -s https://artifactory.prd.it.unity3d.com/artifactory/api/nuget/unity-choco-local
+{% endif -%}
 {% if project.name == "dedicatedgameserver" -%} #dedicatedgameserver sample builds via custom editor script. This script generates client and server builds on the Mac, Windows, and Linux platforms
     - unity-downloader-cli -u {{ editor }} -c editor -c macOS -c Windows -c Linux -c macOSDedicatedServerBuildSupport -c LinuxDedicatedServerBuildSupport -c WindowsDedicatedServerBuildSupport --wait --published --fast
 {% if platform.name == "win" -%} #windows
