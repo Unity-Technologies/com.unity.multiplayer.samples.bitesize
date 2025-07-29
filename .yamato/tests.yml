@@ -13,7 +13,13 @@ test_{{ project.name }}_{{ editor }}_{{ platform.name }}:
     image: {{ platform.image }}
     flavor: {{ platform.flavor}}
   commands:
-    - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple
+{% if platform.name == "mac" -%}
+    - brew tap Unity-Technologies/homebrew-unity git@github.cds.internal.unity3d.com:unity/homebrew-unity.git
+    - brew install Unity-Technologies/homebrew-unity/unity-downloader-cli
+    - brew upgrade Unity-Technologies/homebrew-unity/unity-downloader-cli
+{% else -%}
+    - choco install unity-downloader-cli -y -s https://artifactory.prd.it.unity3d.com/artifactory/api/nuget/unity-choco-local
+{% endif -%}
     - unity-downloader-cli -u {{ editor }} -c editor -w --fast
 {% if platform.name == "win" -%} #windows
     - curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
