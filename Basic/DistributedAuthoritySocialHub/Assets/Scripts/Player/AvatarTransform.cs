@@ -27,9 +27,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
         NetworkVariable<FixedString32Bytes> m_PlayerName = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
         NetworkVariable<FixedString32Bytes> m_PlayerId = new NetworkVariable<FixedString32Bytes>(string.Empty, readPerm: NetworkVariableReadPermission.Everyone, writePerm: NetworkVariableWritePermission.Owner);
 
-
         public override void OnNetworkSpawn()
         {
+            // Always invoke base.OnNetworkSpawn before any other script.
+            base.OnNetworkSpawn();
             gameObject.name = $"[Client-{OwnerClientId}]{name}";
 
             m_TopUIController = FindFirstObjectByType<PlayersTopUIController>();
@@ -37,9 +38,8 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             m_PlayerId.OnValueChanged += OnPlayerIdChanged;
             OnPlayerNameChanged(string.Empty, m_PlayerName.Value);
 
-            if (!HasAuthority)
+            if (!CanCommitToTransform)
             {
-                base.OnNetworkSpawn();
                 return;
             }
 
@@ -66,8 +66,6 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
             {
                 Debug.LogError("CameraControl not found on the Main Camera or Main Camera is missing.");
             }
-
-            base.OnNetworkSpawn();
         }
 
         public override void OnNetworkDespawn()
@@ -114,12 +112,12 @@ namespace Unity.Multiplayer.Samples.SocialHub.Player
 
         void OnPlayerNameChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_TopUIController.AddOrUpdatePlayer(gameObject, newValue.Value,m_PlayerId.Value.Value);
+            m_TopUIController.AddOrUpdatePlayer(gameObject, newValue.Value, m_PlayerId.Value.Value);
         }
 
         void OnPlayerIdChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            m_TopUIController.AddOrUpdatePlayer(gameObject, m_PlayerName.Value.Value,newValue.Value);
+            m_TopUIController.AddOrUpdatePlayer(gameObject, m_PlayerName.Value.Value, newValue.Value);
         }
 
         public void NetworkUpdate(NetworkUpdateStage updateStage)

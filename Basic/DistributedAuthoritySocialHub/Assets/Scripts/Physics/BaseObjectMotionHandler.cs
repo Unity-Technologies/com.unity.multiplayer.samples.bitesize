@@ -27,13 +27,17 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
 
         protected NetworkRigidbody NetworkRigidbody { get; private set; }
 
-        [Tooltip("Enables/Disables collision logging (based on per derived type)")]
+        [Tooltip("Enables/Disables collision logging (based on per derived type).")]
         [SerializeField]
         protected bool m_DebugCollisions;
 
-        [Tooltip("Enables/Disables damage logging (based on per derived type)")]
+        [Tooltip("Enables/Disables damage logging (based on per derived type).")]
         [SerializeField]
         protected bool m_DebugDamage;
+
+        [Tooltip("Enables/Disables general message logging (it is verbose and can generate a lot of messages).")]
+        [SerializeField]
+        protected bool m_GeneralLogMessages;
 
         [Tooltip("Add all colliders to this list that will be used to detect collisions (exclude triggers).")]
         [SerializeField]
@@ -193,7 +197,10 @@ namespace Unity.Multiplayer.Samples.SocialHub.Physics
             // If authority changes while this message is in flight, forward it to the new authority
             if (!HasAuthority)
             {
-                LogMessage($"[HandleCollisionRpc][Not Owner][Routing Collision][{name}] Routing to Client-{OwnerClientId}");
+                if (m_GeneralLogMessages)
+                {
+                    LogMessage($"[HandleCollisionRpc][Not Owner][Routing Collision][{name}] Routing to Client-{OwnerClientId}");
+                }
                 SendCollisionMessage(m_CollisionMessage);
                 return;
             }
