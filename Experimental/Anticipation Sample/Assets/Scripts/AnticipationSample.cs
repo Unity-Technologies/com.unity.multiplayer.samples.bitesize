@@ -1,6 +1,7 @@
 using System;
 using DefaultNamespace;
 using Unity.Collections;
+using Unity.Multiplayer;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -147,6 +148,12 @@ public class AnticipationSample : NetworkBehaviour
 
     private void Update()
     {
+        if (!NetworkManagerObject.IsListening && !Restart && (MultiplayerRolesManager.ActiveMultiplayerRoleMask & MultiplayerRoleFlags.Server) != 0)
+        {
+            var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
+            unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
+            NetworkManagerObject.StartServer();
+        }
         if (Restart && !NetworkManagerObject.IsListening && !NetworkManagerObject.ShutdownInProgress)
         {
             var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
@@ -164,6 +171,7 @@ public class AnticipationSample : NetworkBehaviour
     private int Jitter = 25;
     private float SmoothTime = 0.25f;
     private bool Restart = false;
+    private string IP = "127.0.0.1";
 
     void OnGUI()
     {
@@ -286,6 +294,8 @@ public class AnticipationSample : NetworkBehaviour
             GUILayout.BeginArea(new Rect(0, 0, 300, 600));
 
             if (!NetworkManagerObject.IsListening && !Restart){
+                GUILayout.Label($"Connect IP");
+                IP = GUILayout.TextField(IP);
                 if (GUILayout.Button("Start Server"))
                 {
                     var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
@@ -296,6 +306,7 @@ public class AnticipationSample : NetworkBehaviour
                 {
                     var unityTransport = NetworkManagerObject.NetworkConfig.NetworkTransport as UnityTransport;
                     unityTransport.SetDebugSimulatorParameters(Latency, Jitter, 0);
+                    unityTransport.SetConnectionData(IP, 7777);
                     NetworkManagerObject.StartClient();
                 }
             }
