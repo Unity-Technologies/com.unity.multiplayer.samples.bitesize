@@ -49,21 +49,50 @@ public class AsteroidSpawnManagement : NetworkBehaviour
 
         if (IsSessionOwner)
         {
+#if SESSION_STORE_ENABLED
             // Don't try to spawn more asteroids if the session is already initialized
             if (!m_IsAsteroidFieldInitialized.Value)
+#endif
             {
                 StartCoroutine(SpawnInitialField());
             }
+#if SESSION_STORE_ENABLED
             else
             {
                 StartCoroutine(GetAsteroidPool());
             }
+#endif
         }
         else
         {
             StartCoroutine(GetAsteroidPool());
         }
+        NetworkManager.OnSessionOwnerPromoted += OnSessionOwnerPromoted;
         base.OnNetworkSpawn();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        NetworkManager.OnSessionOwnerPromoted -= OnSessionOwnerPromoted;
+        base.OnNetworkDespawn();
+    }
+
+    private void OnSessionOwnerPromoted(ulong sessionOwnerPromoted)
+    {
+        if (NetworkManager.LocalClientId == sessionOwnerPromoted && !IsOwner)
+        {
+            NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
+        }
+    }
+
+    protected override void OnOwnershipChanged(ulong previous, ulong current)
+    {
+        if (IsSessionOwner && current != NetworkManager.LocalClientId)
+        {
+            NetworkManagerHelper.Instance.LogMessage($"[{name}] In-Scene placed NetworkObject changed ownership to Client-{current} who is not the session owner! (Reverting)");
+            NetworkObject.ChangeOwnership(NetworkManager.LocalClientId);
+        }
+        base.OnOwnershipChanged(previous, current);
     }
 
     private IEnumerator GetAsteroidPool()

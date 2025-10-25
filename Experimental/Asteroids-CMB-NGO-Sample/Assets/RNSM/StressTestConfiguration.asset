@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisplayElements>k__BackingField:
   - <FieldsInitialized>k__BackingField: 1
-    <Type>k__BackingField: 1
+    <Type>k__BackingField: 2
     <Label>k__BackingField: 
     <Stats>k__BackingField:
     - <TypeIndex>k__BackingField: 1
       <EnumValue>k__BackingField: 1
+    - <TypeIndex>k__BackingField: 1
+      <EnumValue>k__BackingField: 0
     <CounterConfiguration>k__BackingField:
       <SmoothingMethod>k__BackingField: 1
       <AggregationMethod>k__BackingField: 1
@@ -33,8 +35,7 @@ MonoBehaviour:
     <GraphConfiguration>k__BackingField:
       m_SampleCount: 512
       <SampleRate>k__BackingField: 0
-      <VariableColors>k__BackingField:
-      - {r: 0.7735849, g: 0.3816161, b: 0.08392668, a: 1}
+      <VariableColors>k__BackingField: []
       <XAxisType>k__BackingField: 0
       <LineGraphConfiguration>k__BackingField:
         m_LineThickness: 2
@@ -42,32 +43,6 @@ MonoBehaviour:
     - <TypeName>k__BackingField: GenericBall+MoverMetrics, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       <ValueName>k__BackingField: Inbound
-  - <FieldsInitialized>k__BackingField: 1
-    <Type>k__BackingField: 1
-    <Label>k__BackingField: 
-    <Stats>k__BackingField:
-    - <TypeIndex>k__BackingField: 1
-      <EnumValue>k__BackingField: 0
-    <CounterConfiguration>k__BackingField:
-      <SmoothingMethod>k__BackingField: 1
-      <AggregationMethod>k__BackingField: 1
-      m_SignificantDigits: 3
-      <HighlightLowerBound>k__BackingField: -3.4028235e+38
-      <HighlightUpperBound>k__BackingField: 3.402823e+38
-      <ExponentialMovingAverageParams>k__BackingField:
-        m_HalfLife: 1000000000
-      <SimpleMovingAverageParams>k__BackingField:
-        m_SampleCount: 6
-        <SampleRate>k__BackingField: 1
-    <GraphConfiguration>k__BackingField:
-      m_SampleCount: 512
-      <SampleRate>k__BackingField: 0
-      <VariableColors>k__BackingField:
-      - {r: 0, g: 0.8865161, b: 1, a: 1}
-      <XAxisType>k__BackingField: 0
-      <LineGraphConfiguration>k__BackingField:
-        m_LineThickness: 1
-    <SerializedStats>k__BackingField:
     - <TypeName>k__BackingField: GenericBall+MoverMetrics, Assembly-CSharp, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       <ValueName>k__BackingField: Outbound

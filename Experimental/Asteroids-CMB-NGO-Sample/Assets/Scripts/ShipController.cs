@@ -229,6 +229,16 @@ public class ShipController : PhysicsObjectMotion
         UpdateTractorBeam();
     }
 
+    private void DetachMineFromShip()
+    {
+        m_Minebot.NetworkRigidbody.DetachFromFixedJoint();
+        IgnoreCollision(m_Minebot.gameObject, gameObject, false);
+        m_Minebot.ReleaseMine(transform.forward, GetObjectVelocity());
+        m_Minebot = null;
+        m_MinebotLocked = false;
+        m_MinebotLocking = false;
+    }
+
     /// <summary>
     /// Handles the tractor beam logic
     /// </summary>
@@ -243,12 +253,7 @@ public class ShipController : PhysicsObjectMotion
                     if (m_Minebot != null)
                     {
                         // Detatch the mine (if attached)
-                        m_Minebot.NetworkRigidbody.DetachFromFixedJoint();
-                        IgnoreCollision(m_Minebot.gameObject, gameObject, false);
-                        m_Minebot.ReleaseMine(transform.forward, GetObjectVelocity());
-                        m_Minebot = null;
-                        m_MinebotLocked = false;
-                        m_MinebotLocking = false;
+                        DetachMineFromShip();
                     }
                     else
                     {
@@ -267,11 +272,7 @@ public class ShipController : PhysicsObjectMotion
                     if (m_Minebot != null)
                     {
                         // Detatch the mine (if attached)
-                        m_Minebot.NetworkRigidbody.DetachFromFixedJoint();
-                        IgnoreCollision(m_Minebot.gameObject, gameObject, false);
-                        m_Minebot.ReleaseMine(transform.forward, GetObjectVelocity());
-                        m_Minebot = null;
-                        m_MinebotLocked = false;
+                        DetachMineFromShip();
                     }
                     if (!m_MinebotLocking)
                     {
@@ -581,6 +582,14 @@ public class ShipController : PhysicsObjectMotion
         // to doing any child specific spawn initialization.
         base.OnNetworkSpawn();
 
+        if (!Rigidbody.isKinematic)
+        {
+            Rigidbody.angularVelocity = Vector3.zero;
+            Rigidbody.linearVelocity = Vector3.zero;
+        }
+
+        NetworkManagerHelper.Instance.OnShuttingDown += OnShuttingDown;
+
         // Assure the name of the ship remains the same, but the spawned
         // name is specific to the authority instance. This is primarily
         // since we are using pools and players can connect and disconnect
@@ -628,9 +637,7 @@ public class ShipController : PhysicsObjectMotion
     protected override void OnNetworkPostSpawn()
     {
         PlayerIdentifier.text = $"Player-{OwnerClientId}";
-
         InterestShipMarker.color = PlayerColor.GetPlayerColor(OwnerClientId);
-
         base.OnNetworkPostSpawn();
     }
 
@@ -647,6 +654,19 @@ public class ShipController : PhysicsObjectMotion
         m_SpawnAtLocation = true;
     }
 
+    private void OnShuttingDown()
+    {
+        NetworkManagerHelper.Instance.OnShuttingDown -= OnShuttingDown;
+        if (!Rigidbody.isKinematic) 
+        {
+            Rigidbody.angularVelocity = Vector3.zero;
+            Rigidbody.linearVelocity = Vector3.zero;
+        }
+        m_RotationRate = 0.0f;
+        m_RotationThrust = 0.0f;
+        m_ForwardThrust = 0.0f;
+    }
+
     public override void OnNetworkDespawn()
     {
         gameObject.name = m_OriginalName;
@@ -656,7 +676,7 @@ public class ShipController : PhysicsObjectMotion
             Camera.main.transform.SetParent(null, false);
             if (m_Minebot != null)
             {
-                m_Minebot.NetworkObject.TryRemoveParent();
+                DetachMineFromShip();
             }
         }
         else
@@ -668,6 +688,9 @@ public class ShipController : PhysicsObjectMotion
         m_Minebot = null;
         m_MinebotLocked = false;
         m_MinebotLocking = false;
+        m_RotationRate = 0.0f;
+        m_RotationThrust = 0.0f;
+        m_ForwardThrust = 0.0f;
 
         if (TractorBeam != null)
         {
